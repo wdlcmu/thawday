@@ -15,9 +15,24 @@
     -webkit-font-smoothing: antialiased;
   }
   main {
-    flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;
-    text-align: center; padding: 3rem 1.5rem; max-width: 42rem; margin: 0 auto; width: 100%;
+    display: flex; flex-direction: column; justify-content: flex-start; align-items: center;
+    text-align: center; padding: 4rem 1.5rem 3.5rem; max-width: 42rem; margin: 0 auto; width: 100%;
   }
+  .steps {
+    display: flex; align-items: flex-start; justify-content: center; gap: 0;
+    margin-top: 2.75rem; width: 100%; max-width: 30rem;
+  }
+  .step { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; }
+  .step::before {
+    content: ""; position: absolute; top: 0.45rem; left: -50%; width: 100%;
+    border-top: 2px solid #e7d8c3;
+  }
+  .step:first-child::before { display: none; }
+  .step .dot {
+    width: 0.9rem; height: 0.9rem; border-radius: 50%; background: var(--accent);
+    position: relative; z-index: 1; margin-bottom: 0.5rem;
+  }
+  .step .label { font-size: 0.9375rem; font-weight: 600; color: #374151; }
   .kicker {
     display: inline-block; font-size: 0.875rem; font-weight: 600; letter-spacing: 0.08em;
     text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem;
@@ -42,10 +57,15 @@
   <h1>ThawDay</h1>
   <p class="tagline">Tell it when dinner is. It tells you when to buy, thaw, brine, and roast the turkey.</p>
   <p class="promise"><span>Free forever.</span> No ads. No accounts.</p>
+  <div class="steps" aria-hidden="true">
+    <div class="step"><span class="dot"></span><span class="label">Buy</span></div>
+    <div class="step"><span class="dot"></span><span class="label">Thaw</span></div>
+    <div class="step"><span class="dot"></span><span class="label">Brine</span></div>
+    <div class="step"><span class="dot"></span><span class="label">Roast</span></div>
+  </div>
 </main>
 <footer>
-  <p>Made by Billy. One free tool a month.</p>
-  <p><a href="https://myweeklymove.com">Start with My Weekly Move</a></p>
+  <p>Made by Billy.</p>
 </footer>
 </body>
 </html>
