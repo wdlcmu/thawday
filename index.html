@@ -37,10 +37,10 @@
     },
     {
       "@type": "Question",
-      "name": "When does the full timeline tool launch?",
+      "name": "How does the timeline tool work?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The full ThawDay timeline tool launches in November 2026, ahead of Thanksgiving. Tell it when dinner is and how big the turkey is, and it gives you dated buy, thaw, brine, and roast times."
+        "text": "The timeline tool is live now. Tell it when dinner is and how big the turkey is, and it gives you dated buy, thaw, brine, and roast times."
       }
     },
     {
@@ -99,6 +99,11 @@
   footer a { color: var(--accent); font-weight: 600; text-decoration: none; }
   footer a:hover { text-decoration: underline; }
   .countdown { margin-top: 2rem; font-size: 1.0625rem; font-weight: 600; color: var(--accent); }
+  .cta { margin-top: 2rem; }
+  .cta a {
+    display: inline-block; background: var(--accent); color: #fff; font-weight: 700;
+    font-size: 1.0625rem; padding: 0.8rem 1.6rem; border-radius: 999px; text-decoration: none;
+  }
   .info { text-align: left; margin-top: 3rem; width: 100%; max-width: 34rem; }
   .info h2 { font-size: 1.375rem; font-weight: 700; margin-bottom: 0.75rem; text-align: center; }
   .info p { color: #374151; margin-bottom: 0.75rem; }
@@ -116,6 +121,7 @@
   <h1>ThawDay</h1>
   <p class="tagline">Tell it when dinner is. It tells you when to buy, thaw, brine, and roast the turkey.</p>
   <p class="promise"><span>Free forever.</span> No ads. No accounts.</p>
+  <p class="cta"><a href="/calculator">Get my turkey timeline</a></p>
   <div class="steps" aria-hidden="true">
     <div class="step"><span class="dot"></span><span class="label">Buy</span></div>
     <div class="step"><span class="dot"></span><span class="label">Thaw</span></div>
@@ -151,8 +157,8 @@
       <p>The fridge is the hands off option: 24 hours per 4 to 5 pounds, with nothing to watch. Cold water is faster, about 30 minutes per pound, but you must change the water every 30 minutes and cook the turkey right after it thaws. Never thaw a turkey on the counter.</p>
     </div>
     <div class="qa">
-      <h3>When does the full timeline tool launch?</h3>
-      <p>The full ThawDay timeline tool launches in November 2026, ahead of Thanksgiving. Tell it when dinner is and how big the turkey is, and it gives you dated buy, thaw, brine, and roast times.</p>
+      <h3>How does the timeline tool work?</h3>
+      <p>The timeline tool is live now. Tell it when dinner is and how big the turkey is, and it gives you dated buy, thaw, brine, and roast times.</p>
     </div>
     <div class="qa">
       <h3>Is ThawDay free?</h3>
@@ -162,6 +168,7 @@
 </main>
 <footer>
   <p>Built with Muse.</p>
+  <p>Timings verified against USDA FSIS charts on Oct 22, 2026.</p>
 </footer>
 <script>
 (function () {
