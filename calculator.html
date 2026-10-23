@@ -136,7 +136,7 @@ function thawDays(lb){ for(const [max,d] of CONSTANTS.fridgeThawBands.bands){ if
 function roastMinutes(lb){ for(const [max,[lo,hi]] of CONSTANTS.roastBandsUnstuffed.bands){ if(lb<max) return Math.round((lo+hi)/2); } return 285; }
 function buildTimeline(dinner, lb, state, brine, now){
   const rows=[]; const DAY=86400000, MIN=60000;
-  if(state==="frozen"){ rows.push({id:"buy", label:"Buy the turkey", when:new Date(dinner.getTime()-11*DAY), detail:"Buy by this date. Frozen birds sell out the weekend before Thanksgiving."});
+  if(state==="frozen"){ rows.push({id:"buy", label:"Buy the turkey", when:new Date(dinner.getTime()-11*DAY), detail:"Buy by this date (kitchen practice). Frozen birds sell out the weekend before Thanksgiving."});
     const thawStart=new Date(dinner.getTime()-thawDays(lb)*DAY);
     if(now && now>thawStart){ rows.push({id:"thaw", late:true, label:"Thaw in cold water today", when:new Date(now.getTime()), detail:"Fridge thaw start has passed. Cold water takes about "+(lb*30/60)+" hours (30 minutes per pound). Change the water every 30 minutes, and cook it right after it thaws."}); }
     else { rows.push({id:"thaw", label:"Move the turkey to the fridge", when:thawStart, detail:"Fridge thaw, per the USDA chart."}); }
