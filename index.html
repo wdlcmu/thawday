@@ -184,7 +184,7 @@
   if (days === 0) {
     text = "Thanksgiving is today, " + dateText + ".";
   } else if (days <= 6) {
-    text = "Thanksgiving is this week: " + dateText + ".";
+    text = "Thanksgiving is this week, in " + days + (days === 1 ? " day" : " days") + ": " + dateText + ".";
   } else if (rolled) {
     text = "Thanksgiving has passed for this year. Next Thanksgiving is " + dateText + ", in " + days + " days.";
   } else {
