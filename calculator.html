@@ -225,9 +225,9 @@ function render(){
   const warnTxt = warning ? (warning.kind==="late" ? `Warning: cold water cannot finish in time for this dinner. Thaw ends ${fmt(warning.finish)}. ` : "Note: that dinner time is already past. ") : "";
   const txt = warnTxt + (state==="frozen"
     ? (thaw.late
-      ? `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): Fridge thaw start has passed. Cold-water thaw today, about ${lb*30/60} hours.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. https://thawday.com/calculator`
-      : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): Buy by ${buyShort}. Fridge thaw starts ${fmt(thaw.when)}.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. https://thawday.com/calculator`)
-    : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb fresh turkey): Buy by ${buyShort}.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. https://thawday.com/calculator`);
+      ? `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): Fridge thaw start has passed. Cold-water thaw today, about ${lb*30/60} hours.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. https://thawday.com/calculator?via=share`
+      : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): Buy by ${buyShort}. Fridge thaw starts ${fmt(thaw.when)}.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. https://thawday.com/calculator?via=share`)
+    : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb fresh turkey): Buy by ${buyShort}.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. https://thawday.com/calculator?via=share`);
   document.getElementById("sharetext").textContent=txt;
   lastPlan={rows:rows,lb:lb,state:state,dinner:dinner,warning:warning};
   document.getElementById("cardarea").hidden=false;
@@ -313,6 +313,85 @@ document.getElementById("go").addEventListener("click",()=>{render(); document.g
 document.getElementById("share").addEventListener("click",async()=>{ const t=render(); try{ await navigator.clipboard.writeText(t); document.getElementById("sharetext").textContent=t+" (copied)"; }catch(e){ /* long-press fallback: text stays visible */ } });
 document.getElementById("printplan").addEventListener("click",()=>{ window.print(); });
 render();
+</script>
+<script>
+"use strict";
+/* ================= Fleet analytics — PostHog rollout (2026-10-25) =================
+   ThawDay joins the fleet PostHog project (624507), rolling out the
+   pattern the Present Picker pilot proved on 2026-10-25. Every event
+   carries $host automatically; site_id is registered as the friendly
+   label. Posture: autocapture off, session recording off, no
+   identify(), anonymous only. Payloads are counts and enums only —
+   never answers, never personal data. */
+var _fleetQ = [];
+function fleetTrack(name, props){
+  try {
+    if (window.posthog && posthog.capture) posthog.capture(name, props || {});
+    else _fleetQ.push([name, props || {}]);
+  } catch (e) {}
+}
+function fleetSessionMarks(){
+  try {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get("via") === "share" && !sessionStorage.getItem("td_arr")){
+      sessionStorage.setItem("td_arr", "1");
+      fleetTrack("share_arrival", {tool: "turkey-timeline", via: "share-link"});
+    }
+    if (!sessionStorage.getItem("td_ret")){
+      var raw = null;
+      try { raw = localStorage.getItem("thawday_plan_v1"); } catch (e) {}
+      if (raw){
+        sessionStorage.setItem("td_ret", "1");
+        fleetTrack("return_visit", {tool: "turkey-timeline"});
+      }
+    }
+  } catch (e) {}
+}
+(function(){
+  var s = document.createElement("script");
+  s.async = true;
+  s.src = "https://us.i.posthog.com/static/array.js";
+  s.onload = function(){
+    try {
+      if (window.posthog && posthog.init){
+        posthog.init("phc_t9dkHXAZR5VEjPFm3K5JDzGKFsNNxKcwSxxcEBEeLbS7", {api_host: "https://us.i.posthog.com", autocapture: false, capture_pageview: true, disable_session_recording: true});
+        posthog.register({site_id: "thawday", site_name: "ThawDay"});
+        _fleetQ.splice(0).forEach(function(e){ try { posthog.capture(e[0], e[1]); } catch (x) {} });
+        fleetSessionMarks();
+      }
+    } catch (e) {}
+  };
+  document.head.appendChild(s);
+})();
+(function(){
+  var started = false, completed = false;
+  var go = document.getElementById("go");
+  if (go) go.addEventListener("click", function(){
+    if (!started){ started = true; fleetTrack("tool_start", {tool: "turkey-timeline", entry: "calculator"}); }
+  });
+  var cardarea = document.getElementById("cardarea");
+  if (cardarea && window.MutationObserver){
+    var check = function(){
+      if (!completed && !cardarea.hidden){
+        completed = true;
+        try { localStorage.setItem("thawday_plan_v1", "1"); } catch (e) {}
+        fleetTrack("tool_complete", {tool: "turkey-timeline", results_count: document.querySelectorAll("#out .row").length});
+      }
+      if (cardarea.hidden) completed = false;
+    };
+    new MutationObserver(check).observe(cardarea, {attributes: true, attributeFilter: ["hidden"]});
+  }
+  var cb = document.getElementById("cardbtn");
+  if (cb) cb.addEventListener("click", function(){ fleetTrack("artifact_created", {tool: "turkey-timeline", artifact: "turkey-card"}); });
+  var dl = document.getElementById("carddl");
+  if (dl) dl.addEventListener("click", function(){ fleetTrack("artifact_created", {tool: "turkey-timeline", artifact: "card-download"}); });
+  var pp = document.getElementById("printplan");
+  if (pp) pp.addEventListener("click", function(){ fleetTrack("artifact_created", {tool: "turkey-timeline", artifact: "printed-plan"}); });
+  var sh = document.getElementById("share");
+  if (sh) sh.addEventListener("click", function(){ fleetTrack("share_intent", {tool: "turkey-timeline", channel: "clipboard"}); });
+  var cs = document.getElementById("cardshare");
+  if (cs) cs.addEventListener("click", function(){ fleetTrack("share_intent", {tool: "turkey-timeline", channel: "native"}); });
+})();
 </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "7488774fc7d54208bf7ece1b8a072e01"}'></script>
 </body>
