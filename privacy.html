@@ -4,16 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Privacy · ThawDay</title>
-<meta name="description" content="Privacy for ThawDay: the calculator keeps your details in your browser, and Cloudflare Web Analytics counts visits.">
+<meta name="description" content="Privacy for ThawDay: the calculator keeps your details in your browser, and Cloudflare and PostHog count visits.">
 <link rel="canonical" href="https://thawday.com/privacy">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ThawDay">
 <meta property="og:title" content="Privacy · ThawDay">
-<meta property="og:description" content="The calculator keeps your details in your browser. Cloudflare Web Analytics counts visits.">
+<meta property="og:description" content="The calculator keeps your details in your browser. Cloudflare and PostHog count visits.">
 <meta property="og:url" content="https://thawday.com/privacy">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Privacy · ThawDay">
-<meta name="twitter:description" content="The calculator keeps your details in your browser. Cloudflare Web Analytics counts visits.">
+<meta name="twitter:description" content="The calculator keeps your details in your browser. Cloudflare and PostHog count visits.">
 <style>
   :root { --accent: #b45309; --ink: #1a1a1a; --muted: #6b7280; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -52,7 +52,7 @@
   <span class="kicker">Privacy</span>
   <h1>Privacy</h1>
   <div class="note">
-    <p><strong>The short version:</strong> Your dinner details stay in your browser. Cloudflare Web Analytics counts visits to this site. There are no accounts or sign-ups.</p>
+    <p><strong>The short version:</strong> Your dinner details stay in your browser. Cloudflare and PostHog count visits to this site. There are no accounts or sign-ups.</p>
   </div>
   <div class="note">
     <h2>What the calculator does</h2>
@@ -60,8 +60,9 @@
     <p>You say frozen or fresh, and brine or not.</p>
     <p>The timeline math runs in your browser.</p>
     <p>Nothing you type is sent to us.</p>
-    <p>Our own code stores nothing on your device.</p>
-    <p>Your plan lives only in the open tab.</p>
+    <p>It saves no plan details on your device.</p>
+    <p>It saves a small flag instead.</p>
+    <p>The flag says a plan was made.</p>
   </div>
   <div class="note">
     <h2>Sharing your plan</h2>
@@ -77,6 +78,12 @@
     <p>It sends page and performance counts to Cloudflare.</p>
     <p>Cloudflare says its beacon uses no cookies.</p>
     <p>Cloudflare says its beacon does not read local storage.</p>
+    <p>The home page and calculator run PostHog.</p>
+    <p>PostHog counts page views and tool starts.</p>
+    <p>It counts plan finishes, shares, and downloads.</p>
+    <p>Your typed answers are never sent to it.</p>
+    <p>It does not record your screen.</p>
+    <p>Our code reads the flag for return visits.</p>
   </div>
   <div class="note">
     <h2>Contact</h2>
