@@ -32,7 +32,7 @@
       "name": "My turkey is still frozen and dinner is tomorrow. Am I doomed?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Use the cold-water method below: about 30 minutes per pound, change the water every 30 minutes, cook it right after it thaws."
+        "text": "Use the cold-water method: about 30 minutes per pound, change the water every 30 minutes, cook it right after it thaws."
       }
     },
     {
@@ -68,12 +68,13 @@
  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;max-width:720px;margin:0 auto;padding:24px 20px 40px;line-height:1.5;color:var(--ink);background:#fffdf8;-webkit-font-smoothing:antialiased}
  a{color:var(--accent)}
  .brand{font-weight:800;font-size:1.125rem;margin:0}
- .brand a{color:var(--ink);text-decoration:none}
+ .brand a{color:var(--ink);text-decoration:none;display:inline-block;padding:12px 8px;margin:-12px -8px}
  h1{font-size:clamp(1.75rem,6vw,2.5rem);font-weight:800;letter-spacing:-0.02em;margin:10px 0 8px}
  h2{font-size:1.25rem;margin:28px 0 8px}
  label{display:block;margin:14px 0 4px;font-weight:600}
- input,select{font-size:16px;padding:10px;width:100%;border:1px solid #d6cfc4;border-radius:8px;background:#fff;color:var(--ink)}
+ input,select{font-size:16px;min-height:44px;padding:10px;width:100%;border:1px solid #d6cfc4;border-radius:8px;background:#fff;color:var(--ink)}
  .row{border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:8px 0;background:#fff}
+ .warnrow{background:#fef2f2;border-color:#e5a3a3}
  .safety{background:#fff8e1;border:1px solid #e6c200;border-radius:8px;padding:12px 14px;margin-top:16px}
  button{font-size:16px;font-weight:700;padding:12px 18px;margin:8px 8px 8px 0;border:1px solid var(--accent);border-radius:999px;background:var(--accent);color:#fff;cursor:pointer}
  button.secondary{background:#fff;color:var(--accent)}
@@ -82,6 +83,20 @@
  summary{font-weight:700;cursor:pointer}
  footer{margin-top:40px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:.9375rem;color:var(--muted);text-align:center}
  footer p{margin:4px 0}
+ footer a{color:var(--accent);font-weight:600;text-decoration:none;display:inline-block;padding:12px 6px;min-height:44px}
+ footer a:hover{text-decoration:underline}
+ #cardout img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px;display:block}
+ /* 2026-10-24 (value pass): print = the timeline only. The plan is a set of
+    dated actions; before the turkey card (Item 43) ships, print is the one
+    way to keep it off-screen (fridge door). Hide controls, card, share
+    text, safety box, FAQ and footer; keep the timeline + cold-water rows. */
+ @media print{
+  .brand,label,input,select,button,#hint,#cardarea,#sharetext,.safety,details,footer,h2{display:none!important}
+  #cold h2{display:block!important}
+  body{padding:0}
+ }
+ #carddl{font-weight:700}
+ #cardhint{color:var(--muted)}
 </style>
 </head>
 <body>
@@ -105,22 +120,34 @@
 
 <section id="out" aria-live="polite"></section>
 
+<section id="cardarea" hidden>
+<h2>Your turkey card</h2>
+<p>One picture with the whole plan on it. Good for the group chat.</p>
+<button id="cardbtn" type="button">Get my turkey card</button>
+<p id="cardout"></p>
+<p id="cardhint"></p>
+<button id="cardshare" type="button" hidden>Share the card</button>
+<a id="carddl" href="#" download="turkey-plan.png" hidden>Download the card (PNG)</a>
+<img id="turkeyart" alt="" src="data:image/png;base64,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" hidden>
+</section>
+
 <div class="safety"><strong>Safety:</strong> When in doubt, use a meat thermometer: 165 F in the thickest part of the bird. Never thaw a turkey on the counter.</div>
 
 <section id="cold"></section>
 
 <h2>Share</h2>
-<button id="share" class="secondary" type="button">Send this to whoever is hosting</button>
+<button id="share" class="secondary" type="button">Share this plan</button>
+<button id="printplan" class="secondary" type="button">Print this plan</button>
 <p id="sharetext"></p>
 
 <h2>FAQ</h2>
 <details><summary>Where do these numbers come from?</summary><p>The USDA Food Safety and Inspection Service thaw chart and 325 F roasting chart. See footer date.</p></details>
-<details><summary>My turkey is still frozen and dinner is tomorrow. Am I doomed?</summary><p>Use the cold-water method below: about 30 minutes per pound, change the water every 30 minutes, cook it right after it thaws.</p></details>
+<details><summary>My turkey is still frozen and dinner is tomorrow. Am I doomed?</summary><p>Use the cold-water method: about 30 minutes per pound, change the water every 30 minutes, cook it right after it thaws.</p></details>
 <details><summary>Stuffed or unstuffed?</summary><p>This version plans unstuffed birds only.</p></details>
 <details><summary>How do I know it is done?</summary><p>A meat thermometer: 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing. Color is not a reliable signal.</p></details>
 <details><summary>Does this work for Christmas dinner?</summary><p>The math is the same. A Christmas version is planned.</p></details>
 
-<footer><p>Built with Muse.</p><p>Timings verified against USDA FSIS charts on Oct 22, 2026.</p></footer>
+<footer><p>Built with Muse.</p><p><a href="/privacy">Privacy</a> <a href="/terms">Terms</a></p><p>Timings verified against USDA FSIS charts on Oct 22, 2026.</p></footer>
 
 <script>
 // ENGINE START
@@ -132,8 +159,8 @@ const CONSTANTS = {
   sidesBeforeMinutes: {value:90, source:"kitchen practice"},
   brineBeforeOvenMinutes: {value:1440, source:"kitchen practice; USDA hard rule: refrigerated at 40F or less, never longer than 2 days, discard brine"}
 };
-function thawDays(lb){ for(const [max,d] of CONSTANTS.fridgeThawBands.bands){ if(lb<max) return d; } return 6; }
-function roastMinutes(lb){ for(const [max,[lo,hi]] of CONSTANTS.roastBandsUnstuffed.bands){ if(lb<max) return Math.round((lo+hi)/2); } return 285; }
+function thawDays(lb){ for(const [max,d] of CONSTANTS.fridgeThawBands.bands){ if(lb<=max) return d; } return 6; }
+function roastMinutes(lb){ for(const [max,[lo,hi]] of CONSTANTS.roastBandsUnstuffed.bands){ if(lb<=max) return Math.round((lo+hi)/2); } return 285; }
 function buildTimeline(dinner, lb, state, brine, now){
   const rows=[]; const DAY=86400000, MIN=60000;
   if(state==="frozen"){ rows.push({id:"buy", label:"Buy the turkey", when:new Date(dinner.getTime()-11*DAY), detail:"Buy by this date (kitchen practice). Frozen birds sell out the weekend before Thanksgiving."});
@@ -148,31 +175,137 @@ function buildTimeline(dinner, lb, state, brine, now){
   rows.push({id:"rest", label:"Rest and carve", when:new Date(dinner.getTime()-CONSTANTS.restMinutes.value*MIN), detail:"Rest before carving. Done at 165 F in the thickest part."});
   rows.sort((a,b)=>a.when-b.when); return rows;
 }
+function planWarning(rows,lb,dinner,now){
+  // Feasibility only: compares the plan's own computed times against each
+  // other. No USDA numbers live here; the only figure used is the same
+  // cold-water minutes-per-pound constant the thaw row already quotes.
+  if(now && dinner.getTime()<=now.getTime()) return {kind:"past"};
+  const thaw=rows.find(r=>r.id==="thaw"), oven=rows.find(r=>r.id==="oven");
+  if(thaw && thaw.late && oven){
+    const finish=new Date(thaw.when.getTime()+lb*CONSTANTS.coldWaterMinPerLb.value*60000);
+    if(finish.getTime()>oven.when.getTime()) return {kind:"late", finish:finish};
+  }
+  return null;
+}
 // ENGINE END
 function fmt(d){ return d.toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}); }
 function fmtShort(d){ return d.toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric",hour:"numeric"}).replace(":00",""); }
+let lastPlan=null, lastCardBlob=null;
 function render(){
   const date=document.getElementById("date").value, time=document.getElementById("time").value;
   const lb=Number(document.getElementById("weight").value), state=document.getElementById("state").value, brine=document.getElementById("brine").value;
   const hint=document.getElementById("hint"), out=document.getElementById("out"), cold=document.getElementById("cold");
-  if(!date||!time){ hint.textContent="Check the date and time."; out.innerHTML=""; cold.innerHTML=""; return; }
-  if(!(lb>=8&&lb<=24)){ hint.textContent="This tool covers 8 to 24 lb birds, the range in the USDA charts it uses. It cannot give a timeline outside that range."; out.innerHTML=""; cold.innerHTML=""; return; }
+  if(!date||!time){ hint.textContent="Check the date and time."; out.innerHTML=""; cold.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; return; }
+  if(!(lb>=8&&lb<=24)){ hint.textContent="This tool covers 8 to 24 lb birds, the range in the USDA charts it uses. It cannot give a timeline outside that range."; out.innerHTML=""; cold.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; return; }
   hint.textContent=""; const dinner=new Date(date+"T"+time);
-  const rows=buildTimeline(dinner,lb,state,brine,new Date());
-  out.innerHTML=rows.map(r=>`<div class="row"><strong>${fmt(r.when)}</strong><br>${r.label}<br>${r.detail}</div>`).join("");
+  const now=new Date();
+  const rows=buildTimeline(dinner,lb,state,brine,now);
+  /* 2026-10-24 (feasibility warning, Billy's tap): the late cold-water path
+     never checked whether the thaw can finish before oven-in, so it could
+     hand over a plan that cannot happen, with no warning. planWarning()
+     compares the plan's own times; this box carries the verdict plus the
+     honest outs. No USDA math changed. */
+  const warning=planWarning(rows,lb,dinner,now);
+  const warnHtml=warning?`<div class="row warnrow"><strong>${warning.kind==="past"?"That dinner time is already past.":"This plan cannot work as entered."}</strong><br>${warning.kind==="past"?"Pick a date and time ahead of you, and the plan will line up.":`Cold water from now finishes thawing at ${fmt(warning.finish)}. The turkey needs to be in the oven before then. What can work instead: a smaller bird, a fresh bird, or a later dinner.`}</div>`:"";
+  out.innerHTML=warnHtml+rows.map(r=>`<div class="row"><strong>${fmt(r.when)}</strong><br>${r.label}<br>${r.detail}</div>`).join("");
   cold.innerHTML = state==="frozen" ? `<h2>Cold-water backup</h2><p>Running late? Cold water thaws in about ${lb*30/60} hours (${lb} lb at 30 minutes per pound). Keep the bird in its wrapper, change the water every 30 minutes, and cook it right after it thaws.</p>` : "";
-  const thaw=rows.find(r=>r.id==="thaw"), oven=rows.find(r=>r.id==="oven"), buy=rows.find(r=>r.id==="buy");
+  const thaw=rows.find(r=>r.id==="thaw"), oven=rows.find(r=>r.id==="oven"), buy=rows.find(r=>r.id==="buy"), brineRow=rows.find(r=>r.id==="brine");
   const buyShort=buy.when.toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric"});
-  const txt = state==="frozen"
+  /* 2026-10-24 (value pass): the copied plan text is the keeper artifact,
+     but it dropped the brine step entirely (and the buy date for fresh
+     birds) -- dated actions the keeper most needs. Include every dated
+     action the timeline shows. */
+  const brineTxt = brineRow ? ` Brine starts ${fmt(brineRow.when)}.` : "";
+  const warnTxt = warning ? (warning.kind==="late" ? `Warning: cold water cannot finish in time for this dinner. Thaw ends ${fmt(warning.finish)}. ` : "Note: that dinner time is already past. ") : "";
+  const txt = warnTxt + (state==="frozen"
     ? (thaw.late
-      ? `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): Fridge thaw start has passed. Cold-water thaw today, about ${lb*30/60} hours. Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. thawday.com`
-      : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): Buy by ${buyShort}. Fridge thaw starts ${fmt(thaw.when)}. Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. thawday.com`)
-    : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb fresh turkey): Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. thawday.com`;
-  document.getElementById("sharetext").textContent=txt; return txt;
+      ? `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): Fridge thaw start has passed. Cold-water thaw today, about ${lb*30/60} hours.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. https://thawday.com/calculator`
+      : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): Buy by ${buyShort}. Fridge thaw starts ${fmt(thaw.when)}.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. https://thawday.com/calculator`)
+    : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb fresh turkey): Buy by ${buyShort}.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. https://thawday.com/calculator`);
+  document.getElementById("sharetext").textContent=txt;
+  lastPlan={rows:rows,lb:lb,state:state,dinner:dinner,warning:warning};
+  document.getElementById("cardarea").hidden=false;
+  return txt;
 }
+// TURKEY CARD START - the card reads only lastPlan, the same rows render() just put on screen. It never recomputes dates.
+function cardLines(plan){
+  const rows=plan.rows;
+  const thaw=rows.find(r=>r.id==="thaw"), brineRow=rows.find(r=>r.id==="brine"), oven=rows.find(r=>r.id==="oven");
+  const beats=[{label:"Turkey", value:plan.lb+" lb"}];
+  let signTitle="Start thawing:", signValue="";
+  if(thaw){
+    if(thaw.late){ beats.push({label:"Thaw in cold water", value:fmt(thaw.when)}); signTitle="Thaw in cold water"; signValue="today"; }
+    else { beats.push({label:"Thaw start", value:fmt(thaw.when)}); signValue=fmt(thaw.when); }
+  }
+  if(brineRow) beats.push({label:"Brine start", value:fmt(brineRow.when)});
+  if(oven) beats.push({label:"Oven in", value:fmt(oven.when)});
+  beats.push({label:"Dinner time", value:fmt(plan.dinner)});
+  if(!thaw&&oven){ signTitle="Oven in:"; signValue=fmt(oven.when); }
+  /* 2026-10-24 (feasibility warning): a plan that cannot work never rides
+     the card as a normal plan. The sign carries the verdict and the finish
+     time (or the passed date); a red Warning beat repeats it in the list.
+     All strings come from plan.warning, which render() computed from the
+     same rows this card draws. Nothing is recomputed here. */
+  if(plan.warning){
+    if(plan.warning.kind==="late"){ signTitle="Cannot finish in time"; signValue=fmt(plan.warning.finish); beats.push({label:"Warning", value:"Thaw ends "+fmtShort(plan.warning.finish), warn:true}); }
+    else { signTitle="Date has passed"; signValue=fmt(plan.dinner); beats.push({label:"Warning", value:"Pick a date ahead of you", warn:true}); }
+  }
+  return {signTitle:signTitle, signValue:signValue, beats:beats};
+}
+function rr(c,x,y,w,h,r){ c.beginPath(); c.moveTo(x+r,y); c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r); c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath(); }
+function drawCard(){
+  if(!lastPlan) return;
+  const plan=lastPlan, lines=cardLines(plan);
+  const cv=document.createElement("canvas"); cv.width=1200; cv.height=630;
+  const c=cv.getContext("2d");
+  const F="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+  c.fillStyle="#fbf7ee"; c.fillRect(0,0,1200,630);
+  c.fillStyle="#1a1a1a"; c.font="800 56px "+F;
+  c.fillText("Your Turkey Thaw Plan",56,102);
+  let y=200;
+  for(const b of lines.beats){
+    c.font="700 31px "+F; c.fillStyle=b.warn?"#b91c1c":"#b45309"; c.fillText(b.label,56,y);
+    const w=c.measureText(b.label).width;
+    c.font="400 31px "+F; c.fillStyle=b.warn?"#b91c1c":"#1a1a1a"; c.fillText(b.value,56+w+16,y);
+    y+=62;
+  }
+  const img=document.getElementById("turkeyart");
+  if(img.complete&&img.naturalWidth) c.drawImage(img,806,58,330,330);
+  const sx=722, sy=420, sw=422, sh=122;
+  c.fillStyle="#fffdf8"; c.strokeStyle="#8a5a2b"; c.lineWidth=6;
+  rr(c,sx,sy,sw,sh,14); c.fill(); c.stroke();
+  c.fillStyle="#1a1a1a"; c.textAlign="center";
+  c.font="700 30px "+F; c.fillText(lines.signTitle,sx+sw/2,sy+50);
+  c.font="400 29px "+F; c.fillText(lines.signValue,sx+sw/2,sy+92);
+  c.textAlign="left";
+  c.font="400 20px "+F; c.fillStyle="#6b7280";
+  c.fillText("Built with Muse.",56,600);
+  const site="thawday.com";
+  c.fillText(site,1200-56-c.measureText(site).width,600);
+  cv.toBlob(blob=>{
+    lastCardBlob=blob;
+    const url=cv.toDataURL("image/png");
+    window.__lastCard={dataURL:url, lines:lines};
+    const wrap=document.getElementById("cardout"); wrap.innerHTML="";
+    const im=document.createElement("img"); im.alt="Your turkey thaw plan card"; im.src=url; wrap.appendChild(im);
+    const dl=document.getElementById("carddl"); dl.href=url; dl.hidden=false;
+    let can=false;
+    try{ can=!!(blob&&navigator.canShare&&navigator.canShare({files:[new File([blob],"turkey-plan.png",{type:"image/png"})]})); }catch(e){ can=false; }
+    document.getElementById("cardshare").hidden=!can;
+    document.getElementById("cardhint").textContent=can?"Tap share to send it, or download the picture.":"Download the picture and send it to whoever is cooking with you.";
+  },"image/png");
+}
+document.getElementById("cardbtn").addEventListener("click",()=>{ drawCard(); document.getElementById("cardout").scrollIntoView(); });
+document.getElementById("cardshare").addEventListener("click",async()=>{
+  if(!lastCardBlob) return;
+  const f=new File([lastCardBlob],"turkey-plan.png",{type:"image/png"});
+  try{ await navigator.share({files:[f], title:"Your Turkey Thaw Plan"}); }catch(e){ /* sheet closed, nothing to do */ }
+});
+// TURKEY CARD END
 ["date","time","weight","state","brine"].forEach(id=>document.getElementById(id).addEventListener("input",render));
 document.getElementById("go").addEventListener("click",()=>{render(); document.getElementById("out").scrollIntoView();});
 document.getElementById("share").addEventListener("click",async()=>{ const t=render(); try{ await navigator.clipboard.writeText(t); document.getElementById("sharetext").textContent=t+" (copied)"; }catch(e){ /* long-press fallback: text stays visible */ } });
+document.getElementById("printplan").addEventListener("click",()=>{ window.print(); });
 render();
 </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "7488774fc7d54208bf7ece1b8a072e01"}'></script>
