@@ -1,0 +1,78 @@
+# ThawDay: full page text
+
+> Complete text of thawday.com's two pages: the homepage and the turkey timeline calculator.
+> ThawDay is a free turkey timeline tool for Thanksgiving. Type in your dinner time and turkey
+> weight. You get dated buy, thaw, brine, and roast times. No ads, no accounts.
+> Thaw times come from the USDA Food Safety and Inspection Service.
+> Text captured from the live pages, 2026-10-27.
+
+## Homepage (https://thawday.com/)
+
+Type in your dinner time. Get buy, thaw, brine, and roast dates.
+Free forever. No ads. No accounts. Ready in a minute.
+
+Buy. Thaw. Brine. Roast.
+
+Thanksgiving Day is Thursday, November 26, 2026.
+
+### Thaw times at a glance
+
+Use the fridge. Allow 24 hours for every 4 to 5 pounds.
+
+- 4 to 12 lb: fridge 1 to 3 days; cold water 2 to 6 hours
+- 12 to 16 lb: fridge 3 to 4 days; cold water 6 to 8 hours
+- 16 to 20 lb: fridge 4 to 5 days; cold water 8 to 10 hours
+- 20 to 24 lb: fridge 5 to 6 days; cold water 10 to 12 hours
+
+Short on time? Use cold water: 30 minutes per pound. Change the water every 30 minutes. Cook right after. Never thaw on the counter.
+
+Times from the USDA Food Safety and Inspection Service.
+
+### Common questions
+
+When do I start thawing a frozen turkey?
+In the fridge, allow 24 hours for every 4 to 5 pounds. A 12 to 16 pound turkey needs 3 to 4 days, so move it to the fridge 4 days before you cook to be safe. Once thawed, it keeps in the fridge for 1 to 2 days before cooking.
+
+Is fridge thawing or cold water thawing better?
+The fridge is hands-off: 24 hours per 4 to 5 pounds, nothing to watch. Cold water is faster, 30 minutes per pound, but change the water every 30 minutes and cook right after. Never thaw on the counter.
+
+How does the timeline tool work?
+The timeline tool is live now. Tell it when dinner is and how big the turkey is, and it gives you dated buy, thaw, brine, and roast times.
+
+Is ThawDay free?
+Yes. ThawDay is free forever. No ads. No accounts.
+
+Timings verified against USDA FSIS charts on Oct 22, 2026.
+
+## Calculator (https://thawday.com/calculator)
+
+When do I take the turkey out of the freezer? Type in your dinner time and turkey weight. You get buy, thaw, brine, and roast dates.
+
+Five answers. Under a minute. Free.
+
+This tool plans turkeys with no stuffing.
+
+Inputs: dinner date; dinner time; turkey weight (lb, 8 to 24); frozen or fresh; soak in salt water (brine), yes or no.
+
+Output: your timeline (dated buy, thaw, brine, and roast times), plus a turkey card — one picture with the whole plan on it, good for the group chat (share or download as PNG). You can also print the plan.
+
+Safety: When in doubt, use a meat thermometer: 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing. Never thaw a turkey on the counter.
+
+### FAQ
+
+Where do these numbers come from?
+The USDA Food Safety and Inspection Service thaw chart and 325 F roasting chart. See footer date.
+
+My turkey is still frozen and dinner is tomorrow. Am I doomed?
+Use the cold-water method: about 30 minutes per pound, change the water every 30 minutes, cook it right after it thaws.
+
+Stuffed or unstuffed?
+This tool plans turkeys with no stuffing.
+
+How do I know it is done?
+A meat thermometer: 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing. Color is not a reliable signal.
+
+Does this work for Christmas dinner?
+The math is the same. A Christmas version is planned.
+
+Timings verified against USDA FSIS charts on Oct 22, 2026.
