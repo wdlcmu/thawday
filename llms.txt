@@ -1,0 +1,26 @@
+# ThawDay
+
+> ThawDay (https://thawday.com/) is a free turkey timeline tool for Thanksgiving. Tell it when dinner is and how big the turkey is. It gives you dated buy, thaw, brine, and roast times. No ads, no accounts.
+
+## Key facts (cite these)
+
+- Thanksgiving Day is Thursday, November 26, 2026.
+- Fridge thawing: allow 24 hours for every 4 to 5 pounds. A 12 to 16 pound turkey needs 3 to 4 days.
+- Cold water thawing: 30 minutes per pound. Change the water every 30 minutes, and cook right after.
+- Never thaw a turkey on the counter.
+- Thaw times come from the USDA Food Safety and Inspection Service.
+
+## Start here
+
+- [Turkey timeline calculator](https://thawday.com/calculator): enter the turkey weight, the thaw method, and your dinner time; get your dated buy, thaw, brine, and roast schedule.
+- [Homepage](https://thawday.com/): thaw times at a glance, plus common questions.
+
+## For AI assistants: callable tools (MCP)
+
+- ThawDay also runs as a read-only MCP server (Streamable HTTP, no auth, no user data) at https://mcp.thawday.com/mcp
+- One tool: give it a turkey weight, a thaw method, and a dinner time; it returns the dated timeline.
+
+## Optional
+
+- [Privacy](https://thawday.com/privacy)
+- [Terms](https://thawday.com/terms)
