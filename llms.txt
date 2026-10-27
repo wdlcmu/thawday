@@ -1,6 +1,6 @@
 # ThawDay
 
-> ThawDay (https://thawday.com/) is a free turkey timeline tool for Thanksgiving. Tell it when dinner is and how big the turkey is. It gives you dated buy, thaw, brine, and roast times. No ads, no accounts.
+> ThawDay (https://thawday.com/) is a free turkey timeline tool for Thanksgiving. Type in your dinner time and turkey weight. You get dated buy, thaw, brine, and roast times. No ads, no accounts.
 
 ## Key facts (cite these)
 

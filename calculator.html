@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ThawDay - When do I take the turkey out of the freezer?</title>
-<meta name="description" content="Type in when dinner is and how big your turkey is. Get the whole timeline, date-stamped.">
+<meta name="description" content="Type in your dinner time and turkey weight. You get buy, thaw, brine, and roast dates.">
 <link rel="canonical" href="https://thawday.com/calculator">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ThawDay">
 <meta property="og:title" content="ThawDay - When do I take the turkey out of the freezer?">
-<meta property="og:description" content="Type in when dinner is and how big your turkey is. Get the whole timeline, date-stamped.">
+<meta property="og:description" content="Type in your dinner time and turkey weight. You get buy, thaw, brine, and roast dates.">
 <meta property="og:url" content="https://thawday.com/calculator">
 <meta property="og:image" content="https://thawday.com/og-card.png">
 <meta property="og:image:width" content="1200">
@@ -21,7 +21,7 @@
 <meta name="twitter:image" content="https://thawday.com/og-card.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ThawDay - When do I take the turkey out of the freezer?">
-<meta name="twitter:description" content="Type in when dinner is and how big your turkey is. Get the whole timeline, date-stamped.">
+<meta name="twitter:description" content="Type in your dinner time and turkey weight. You get buy, thaw, brine, and roast dates.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -48,7 +48,7 @@
       "name": "Stuffed or unstuffed?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "This version plans unstuffed birds only."
+        "text": "This tool plans turkeys with no stuffing."
       }
     },
     {
@@ -112,8 +112,9 @@
 <body>
 <p class="brand"><a href="/">ThawDay</a></p>
 <h1>ThawDay</h1>
-<p>When do I take the turkey out of the freezer? Type in when dinner is and how big your bird is. Get the whole timeline, date-stamped.</p>
-<p>This version plans unstuffed birds only.</p>
+<p>When do I take the turkey out of the freezer? Type in your dinner time and turkey weight. You get buy, thaw, brine, and roast dates.</p>
+<p>Five answers. Under a minute. Free.</p>
+<p>This tool plans turkeys with no stuffing.</p>
 
 <label for="date">Dinner date</label>
 <input id="date" type="date" value="2026-11-26">
@@ -121,13 +122,14 @@
 <input id="time" type="time" value="17:00">
 <label for="weight">Turkey weight (lb, 8 to 24)</label>
 <input id="weight" type="number" min="8" max="24" step="1" value="14">
-<label for="state">Turkey</label>
+<label for="state">Frozen or fresh?</label>
 <select id="state"><option value="frozen" selected>Frozen</option><option value="fresh">Fresh</option></select>
-<label for="brine">Brining?</label>
+<label for="brine">Soak in salt water (brine)?</label>
 <select id="brine"><option value="no" selected>No</option><option value="yes">Yes</option></select>
 <p id="hint" role="alert"></p>
 <button id="go" type="button">Get my timeline</button>
 
+<h2>Your timeline</h2>
 <section id="out" aria-live="polite"></section>
 
 <section id="cardarea" hidden>
@@ -153,7 +155,7 @@
 <h2>FAQ</h2>
 <details><summary>Where do these numbers come from?</summary><p>The USDA Food Safety and Inspection Service thaw chart and 325 F roasting chart. See footer date.</p></details>
 <details><summary>My turkey is still frozen and dinner is tomorrow. Am I doomed?</summary><p>Use the cold-water method: about 30 minutes per pound, change the water every 30 minutes, cook it right after it thaws.</p></details>
-<details><summary>Stuffed or unstuffed?</summary><p>This version plans unstuffed birds only.</p></details>
+<details><summary>Stuffed or unstuffed?</summary><p>This tool plans turkeys with no stuffing.</p></details>
 <details><summary>How do I know it is done?</summary><p>A meat thermometer: 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing. Color is not a reliable signal.</p></details>
 <details><summary>Does this work for Christmas dinner?</summary><p>The math is the same. A Christmas version is planned.</p></details>
 
