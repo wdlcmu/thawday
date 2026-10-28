@@ -22,5 +22,6 @@
 
 ## Optional
 
+- [Full page text](https://thawday.com/llms-full.txt): the full text of the homepage and the calculator page, for readers that prefer one file.
 - [Privacy](https://thawday.com/privacy)
 - [Terms](https://thawday.com/terms)
