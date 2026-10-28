@@ -18,7 +18,9 @@
 ## For AI assistants: callable tools (MCP)
 
 - ThawDay also runs as a read-only MCP server (Streamable HTTP, no auth, no user data) at https://mcp.thawday.com/mcp
-- One tool: give it a turkey weight, a thaw method, and a dinner time; it returns the dated timeline.
+- Three tools: plan_turkey_timeline (the full dated plan), get_thaw_time (thaw time only), and get_roast_time (roast time only).
+- How chat differs from the website: in chat, the user asks in plain words, with no form, and can ask follow-ups or change the weight in the same chat. The website gives what chat does not: a picture plan card, a print view, and a share link.
+- The ChatGPT and Claude store listings are not live yet. The server can be connected directly at the URL above.
 
 ## Optional
 
