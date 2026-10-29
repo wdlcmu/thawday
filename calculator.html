@@ -210,6 +210,24 @@ function planWarning(rows,lb,dinner,now){
      card. Same feasibility rule, one step later: if the oven time has
      already passed, the roast cannot finish before this dinner. */
   if(now && oven && oven.when.getTime()<=now.getTime()) return {kind:"lead", oven:oven.when};
+  /* 2026-10-29 (ADV-2): a brine step that cannot happen was shown as a
+     normal step. The brine is stamped 24 hours before oven-in, so a
+     dinner less than a day away puts its start in the past, and on the
+     late cold-water path it can be stamped before the thaw it depends
+     on even finishes. Brining is optional, so this warns (it does not
+     drop the step): the honest outs are a shorter brine or none. This
+     check runs last, so the stronger past / late / lead verdicts above
+     keep winning exactly as before. No USDA numbers live here either:
+     the cold-water finish reuses the same finish the late check just
+     computed from the plan's own rows. */
+  const brineRow=rows.find(r=>r.id==="brine");
+  if(now && brineRow){
+    if(thaw && thaw.late){
+      const cwFinish=new Date(thaw.when.getTime()+lb*CONSTANTS.coldWaterMinPerLb.value*60000);
+      if(brineRow.when.getTime()<cwFinish.getTime()) return {kind:"brine", brine:brineRow.when, finish:cwFinish, reason:"thaw"};
+    }
+    if(brineRow.when.getTime()<=now.getTime()) return {kind:"brine", brine:brineRow.when, reason:"past"};
+  }
   return null;
 }
 // ENGINE END
@@ -234,7 +252,7 @@ function render(){
      compares the plan's own times; this box carries the verdict plus the
      honest outs. No USDA math changed. */
   const warning=planWarning(rows,lb,dinner,now);
-  const warnHtml=warning?`<div class="row warnrow"><strong>${warning.kind==="past"?"That dinner time is already past.":"This plan cannot work as entered."}</strong><br>${warning.kind==="past"?"Pick a date and time ahead of you, and the plan will line up.":warning.kind==="lead"?`The turkey would have had to go in the oven at ${fmt(warning.oven)}. There is not enough time to roast it before this dinner. What can work instead: a smaller bird, or a later dinner.`:`Cold water from now finishes thawing at ${fmt(warning.finish)}. The turkey needs to be in the oven before then. What can work instead: a smaller bird, a fresh bird, or a later dinner.`}</div>`:"";
+  const warnHtml=warning?`<div class="row warnrow"><strong>${warning.kind==="past"?"That dinner time is already past.":"This plan cannot work as entered."}</strong><br>${warning.kind==="past"?"Pick a date and time ahead of you, and the plan will line up.":warning.kind==="lead"?`The turkey would have had to go in the oven at ${fmt(warning.oven)}. There is not enough time to roast it before this dinner. What can work instead: a smaller bird, or a later dinner.`:warning.kind==="brine"?(warning.reason==="thaw"?`Brining was set to start at ${fmt(warning.brine)}, but the turkey does not finish thawing until ${fmt(warning.finish)}. A brine cannot start before the bird is thawed. What can work instead: skip the brine, or use a shorter brine once it thaws.`:`Brining was set to start at ${fmt(warning.brine)}. That time has already passed, so a full brine cannot fit before this dinner. What can work instead: skip the brine, or use a shorter brine that starts now.`):`Cold water from now finishes thawing at ${fmt(warning.finish)}. The turkey needs to be in the oven before then. What can work instead: a smaller bird, a fresh bird, or a later dinner.`}</div>`:"";
   out.innerHTML=warnHtml+rows.map(r=>`<div class="row"><strong>${fmt(r.when)}</strong><br>${r.label}<br>${r.detail}</div>`).join("");
   cold.innerHTML = state==="frozen" ? `<h2>Cold-water backup</h2><p>Running late? Cold water thaws in about ${Math.round((lb*30/60)*10)/10} hours (${lb} lb at 30 minutes per pound). Keep the bird in its wrapper, change the water every 30 minutes, and cook it right after it thaws.</p>` : "";
   const thaw=rows.find(r=>r.id==="thaw"), oven=rows.find(r=>r.id==="oven"), buy=rows.find(r=>r.id==="buy"), brineRow=rows.find(r=>r.id==="brine");
@@ -244,7 +262,7 @@ function render(){
      birds) -- dated actions the keeper most needs. Include every dated
      action the timeline shows. */
   const brineTxt = brineRow ? ` Brine starts ${fmt(brineRow.when)}.` : "";
-  const warnTxt = warning ? (warning.kind==="late" ? `Warning: cold water cannot finish in time for this dinner. Thaw ends ${fmt(warning.finish)}. ` : warning.kind==="lead" ? `Warning: there is not enough time to roast this turkey before this dinner. Oven time was ${fmt(warning.oven)}. ` : "Note: that dinner time is already past. ") : "";
+  const warnTxt = warning ? (warning.kind==="late" ? `Warning: cold water cannot finish in time for this dinner. Thaw ends ${fmt(warning.finish)}. ` : warning.kind==="lead" ? `Warning: there is not enough time to roast this turkey before this dinner. Oven time was ${fmt(warning.oven)}. ` : warning.kind==="brine" ? (warning.reason==="thaw" ? `Warning: brining is set to start before the turkey finishes thawing. Thaw ends ${fmt(warning.finish)}. Skip the brine, or use a shorter brine after it thaws. ` : `Warning: the brine start time has passed. Brine was set to start ${fmt(warning.brine)}. Skip the brine, or use a shorter brine that starts now. `) : "Note: that dinner time is already past. ") : "";
   const txt = warnTxt + (state==="frozen"
     ? (thaw.late
       ? `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): Fridge thaw start has passed. Cold-water thaw today, about ${Math.round((lb*30/60)*10)/10} hours.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. https://thawday.com/calculator?via=share`
@@ -277,6 +295,7 @@ function cardLines(plan){
   if(plan.warning){
     if(plan.warning.kind==="late"){ signTitle="Cannot finish in time"; signValue=fmt(plan.warning.finish); beats.push({label:"Warning", value:"Thaw ends "+fmtShort(plan.warning.finish), warn:true}); }
     else if(plan.warning.kind==="lead"){ signTitle="Not enough time"; signValue=fmt(plan.warning.oven); beats.push({label:"Warning", value:"Oven time has passed", warn:true}); }
+    else if(plan.warning.kind==="brine"){ signTitle="Brine cannot fit"; signValue=fmt(plan.warning.brine); beats.push({label:"Warning", value:plan.warning.reason==="thaw"?"Brine starts before thaw ends":"Brine start has passed", warn:true}); }
     else { signTitle="Date has passed"; signValue=fmt(plan.dinner); beats.push({label:"Warning", value:"Pick a date ahead of you", warn:true}); }
   }
   return {signTitle:signTitle, signValue:signValue, beats:beats};
