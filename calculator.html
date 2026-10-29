@@ -203,6 +203,13 @@ function planWarning(rows,lb,dinner,now){
     const finish=new Date(thaw.when.getTime()+lb*CONSTANTS.coldWaterMinPerLb.value*60000);
     if(finish.getTime()>oven.when.getTime()) return {kind:"late", finish:finish};
   }
+  /* 2026-10-29 (adversarial pass): a fresh bird (or any bird whose thaw
+     already fits) with dinner too soon for the roast itself got no
+     warning at all -- the oven time landed in the past and the plan
+     still read as normal on screen, in the copied text, and on the
+     card. Same feasibility rule, one step later: if the oven time has
+     already passed, the roast cannot finish before this dinner. */
+  if(now && oven && oven.when.getTime()<=now.getTime()) return {kind:"lead", oven:oven.when};
   return null;
 }
 // ENGINE END
@@ -227,7 +234,7 @@ function render(){
      compares the plan's own times; this box carries the verdict plus the
      honest outs. No USDA math changed. */
   const warning=planWarning(rows,lb,dinner,now);
-  const warnHtml=warning?`<div class="row warnrow"><strong>${warning.kind==="past"?"That dinner time is already past.":"This plan cannot work as entered."}</strong><br>${warning.kind==="past"?"Pick a date and time ahead of you, and the plan will line up.":`Cold water from now finishes thawing at ${fmt(warning.finish)}. The turkey needs to be in the oven before then. What can work instead: a smaller bird, a fresh bird, or a later dinner.`}</div>`:"";
+  const warnHtml=warning?`<div class="row warnrow"><strong>${warning.kind==="past"?"That dinner time is already past.":"This plan cannot work as entered."}</strong><br>${warning.kind==="past"?"Pick a date and time ahead of you, and the plan will line up.":warning.kind==="lead"?`The turkey would have had to go in the oven at ${fmt(warning.oven)}. There is not enough time to roast it before this dinner. What can work instead: a smaller bird, or a later dinner.`:`Cold water from now finishes thawing at ${fmt(warning.finish)}. The turkey needs to be in the oven before then. What can work instead: a smaller bird, a fresh bird, or a later dinner.`}</div>`:"";
   out.innerHTML=warnHtml+rows.map(r=>`<div class="row"><strong>${fmt(r.when)}</strong><br>${r.label}<br>${r.detail}</div>`).join("");
   cold.innerHTML = state==="frozen" ? `<h2>Cold-water backup</h2><p>Running late? Cold water thaws in about ${Math.round((lb*30/60)*10)/10} hours (${lb} lb at 30 minutes per pound). Keep the bird in its wrapper, change the water every 30 minutes, and cook it right after it thaws.</p>` : "";
   const thaw=rows.find(r=>r.id==="thaw"), oven=rows.find(r=>r.id==="oven"), buy=rows.find(r=>r.id==="buy"), brineRow=rows.find(r=>r.id==="brine");
@@ -237,7 +244,7 @@ function render(){
      birds) -- dated actions the keeper most needs. Include every dated
      action the timeline shows. */
   const brineTxt = brineRow ? ` Brine starts ${fmt(brineRow.when)}.` : "";
-  const warnTxt = warning ? (warning.kind==="late" ? `Warning: cold water cannot finish in time for this dinner. Thaw ends ${fmt(warning.finish)}. ` : "Note: that dinner time is already past. ") : "";
+  const warnTxt = warning ? (warning.kind==="late" ? `Warning: cold water cannot finish in time for this dinner. Thaw ends ${fmt(warning.finish)}. ` : warning.kind==="lead" ? `Warning: there is not enough time to roast this turkey before this dinner. Oven time was ${fmt(warning.oven)}. ` : "Note: that dinner time is already past. ") : "";
   const txt = warnTxt + (state==="frozen"
     ? (thaw.late
       ? `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): Fridge thaw start has passed. Cold-water thaw today, about ${Math.round((lb*30/60)*10)/10} hours.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. https://thawday.com/calculator?via=share`
@@ -269,6 +276,7 @@ function cardLines(plan){
      same rows this card draws. Nothing is recomputed here. */
   if(plan.warning){
     if(plan.warning.kind==="late"){ signTitle="Cannot finish in time"; signValue=fmt(plan.warning.finish); beats.push({label:"Warning", value:"Thaw ends "+fmtShort(plan.warning.finish), warn:true}); }
+    else if(plan.warning.kind==="lead"){ signTitle="Not enough time"; signValue=fmt(plan.warning.oven); beats.push({label:"Warning", value:"Oven time has passed", warn:true}); }
     else { signTitle="Date has passed"; signValue=fmt(plan.dinner); beats.push({label:"Warning", value:"Pick a date ahead of you", warn:true}); }
   }
   return {signTitle:signTitle, signValue:signValue, beats:beats};
