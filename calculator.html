@@ -406,6 +406,8 @@ render();
    identify(), anonymous only. Payloads are counts and enums only —
    never answers, never personal data. */
 var _fleetQ = [];
+var _fleetPlanOnArrival = null;
+try { _fleetPlanOnArrival = localStorage.getItem("thawday_plan_v1"); } catch (e) {}
 function fleetTrack(name, props){
   try {
     if (window.posthog && posthog.capture) posthog.capture(name, props || {});
@@ -420,9 +422,7 @@ function fleetSessionMarks(){
       fleetTrack("share_arrival", {tool: "turkey-timeline", via: "share-link"});
     }
     if (!sessionStorage.getItem("td_ret")){
-      var raw = null;
-      try { raw = localStorage.getItem("thawday_plan_v1"); } catch (e) {}
-      if (raw){
+      if (_fleetPlanOnArrival){
         sessionStorage.setItem("td_ret", "1");
         fleetTrack("return_visit", {tool: "turkey-timeline"});
       }
