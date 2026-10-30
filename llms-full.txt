@@ -59,7 +59,7 @@ This tool plans turkeys with no stuffing.
 
 Inputs: dinner date; dinner time; turkey weight (lb, 8 to 24); frozen or fresh; soak in salt water (brine), yes or no.
 
-Output: your timeline (dated buy, thaw, brine, and roast times), plus a turkey card — one picture with the whole plan on it, good for the group chat (share or download as PNG). You can also print the plan.
+Output: your timeline (dated buy, thaw, brine, and roast times), plus a turkey card, one picture with the whole plan on it, good for the group chat (share or download as PNG). You can also print the plan.
 
 Safety: When in doubt, use a meat thermometer: 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing. Never thaw a turkey on the counter.
 
@@ -89,6 +89,6 @@ What we don't do
 We don't store your plan. The page saves only a small flag that a plan was made. We don't send your dinner details anywhere. The timeline math runs in your browser. We don't sell turkeys, groceries, or anything else. We don't ask for your email or an account. There is nothing to sign up for.
 
 Our guarantees
-We never receive what you type — not your date, your dinner hour, or your turkey's weight. No account, no email, and no cost. The full plan is yours on the spot. There are no ads on this site.
+We never receive what you type, not your date, your dinner hour, or your turkey's weight. No account, no email, and no cost. The full plan is yours on the spot. There are no ads on this site.
 
 Timings verified against USDA FSIS charts on Oct 22, 2026.
