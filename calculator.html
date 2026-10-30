@@ -207,11 +207,20 @@ function buildTimeline(dinner, lb, state, brine, now){
      wall-clock time. Minute steps below (roast, brine, sides, rest) are
      real durations and stay in milliseconds, exactly as before. */
   const daysBefore=(d,n)=>{ const x=new Date(d.getTime()); x.setDate(x.getDate()-n); return x; };
-  if(state==="frozen"){ rows.push({id:"buy", label:"Buy the turkey", when:daysBefore(dinner,11), detail:"Buy by this date (kitchen practice). Frozen birds sell out the weekend before Thanksgiving."});
+  /* 2026-10-29 (semantic audit S2): the buy step is kitchen practice,
+     not a core step, and its date can already be past while dinner is
+     still ahead (frozen buy is 11 days out, fresh 2). That plan still
+     works -- the honest move is "buy it now" -- so this is a note on
+     the buy row itself (plus a buyPast flag render() reads for the
+     share text), NOT a planWarning: the past / late / lead / brine
+     warnings and their precedence are untouched. No date moves. */
+  const BUY_PAST_NOTE=" That buy date has passed. Buy it now if you can.";
+  const buyRow=(when,detail)=>{ const past=!!(now && when.getTime()<=now.getTime()); const r={id:"buy", label:"Buy the turkey", when:when, detail:past?detail+BUY_PAST_NOTE:detail}; if(past) r.buyPast=true; return r; };
+  if(state==="frozen"){ rows.push(buyRow(daysBefore(dinner,11),"Buy by this date (kitchen practice). Frozen birds sell out the weekend before Thanksgiving."));
     const thawStart=daysBefore(dinner,thawDays(lb));
     if(now && now>thawStart){ rows.push({id:"thaw", late:true, label:"Thaw in cold water today", when:new Date(now.getTime()), detail:"Fridge thaw start has passed. Cold water takes about "+(Math.round((lb*30/60)*10)/10)+" hours (30 minutes per pound). Change the water every 30 minutes, and cook it right after it thaws."}); }
     else { rows.push({id:"thaw", label:"Move the turkey to the fridge", when:thawStart, detail:"Fridge thaw, per the USDA chart."}); }
-  } else { rows.push({id:"buy", label:"Buy the turkey", when:daysBefore(dinner,2), detail:"Fresh: buy 1 to 2 days before cooking."}); }
+  } else { rows.push(buyRow(daysBefore(dinner,2),"Fresh: buy 1 to 2 days before cooking.")); }
   const ovenIn=new Date(dinner.getTime()-(roastMinutes(lb)+CONSTANTS.restMinutes.value)*MIN);
   if(brine==="yes") rows.push({id:"brine", label:"Start brining", when:new Date(ovenIn.getTime()-CONSTANTS.brineBeforeOvenMinutes.value*MIN), detail: state==="frozen" ? "Brine in the fridge the whole time, never longer than two days, discard the brine after. Start once the bird is thawed." : "Brine in the fridge the whole time, never longer than two days, discard the brine after."});
   rows.push({id:"oven", label:"Turkey goes in the oven", when:ovenIn, detail:"325 F. The chart aims, the thermometer decides: 165 F."});
@@ -289,11 +298,15 @@ function render(){
      action the timeline shows. */
   const brineTxt = brineRow ? ` Brine starts ${fmt(brineRow.when)}.` : "";
   const warnTxt = warning ? (warning.kind==="late" ? `Warning: cold water cannot finish in time for this dinner. Thaw ends ${fmt(warning.finish)}. ` : warning.kind==="lead" ? `Warning: there is not enough time to roast this turkey before this dinner. Oven time was ${fmt(warning.oven)}. ` : warning.kind==="brine" ? (warning.reason==="thaw" ? `Warning: brining is set to start before the turkey finishes thawing. Thaw ends ${fmt(warning.finish)}. Skip the brine, or use a shorter brine after it thaws. ` : `Warning: the brine start time has passed. Brine was set to start ${fmt(warning.brine)}. Skip the brine, or use a shorter brine that starts now. `) : "Note: that dinner time is already past. ") : "";
+  /* S2: the share text must stay truthful about a flagged buy date --
+     it cannot say "Buy by" a date that has already passed. The late
+     frozen branch names no buy date at all, so it needs no change. */
+  const buySeg = buy.buyPast ? `Buy date ${buyShort} has passed. Buy it now.` : `Buy by ${buyShort}.`;
   const txt = warnTxt + (state==="frozen"
     ? (thaw.late
       ? `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): Fridge thaw start has passed. Cold-water thaw today, about ${Math.round((lb*30/60)*10)/10} hours.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. https://thawday.com/calculator?via=share`
-      : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): Buy by ${buyShort}. Fridge thaw starts ${fmt(thaw.when)}.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. https://thawday.com/calculator?via=share`)
-    : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb fresh turkey): Buy by ${buyShort}.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. https://thawday.com/calculator?via=share`) + " Done at 165 F.";
+      : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): ${buySeg} Fridge thaw starts ${fmt(thaw.when)}.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. https://thawday.com/calculator?via=share`)
+    : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb fresh turkey): ${buySeg}${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. https://thawday.com/calculator?via=share`) + " Done at 165 F.";
   document.getElementById("sharetext").textContent=txt;
   lastPlan={rows:rows,lb:lb,state:state,dinner:dinner,warning:warning};
   document.getElementById("cardarea").hidden=false;
