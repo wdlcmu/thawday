@@ -46,6 +46,14 @@
     },
     {
       "@type": "Question",
+      "name": "Can I cook a turkey from frozen?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. USDA says it is safe, and it takes at least 50 percent longer than a thawed bird. At 325 F, a 15 lb bird needs 5 hours 45 minutes to 6 hours 30 minutes from frozen. Do not use an oven bag. Pull the giblet packet out with tongs after 20 to 30 minutes of baking. The cook-from-frozen section on this page gives the time for your bird."
+      }
+    },
+    {
+      "@type": "Question",
       "name": "Stuffed or unstuffed?",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -118,7 +126,7 @@
     (Item 98 M2: the printout is the fridge-door artifact, it keeps 165 F). */
  @media print{
   .brand,label,input,select,button,#hint,#cardarea,#sharetext,details,footer,h2{display:none!important}
-  #cold h2{display:block!important}
+  #cold h2,#frozencook h2{display:block!important}
   body{padding:0}
  }
  #carddl{font-weight:700;display:inline-block;padding:12px 6px;min-height:44px}
@@ -164,6 +172,8 @@
 
 <section id="cold"></section>
 
+<section id="frozencook"></section>
+
 <h2>Share</h2>
 <button id="share" class="secondary" type="button">Share this plan</button>
 <button id="printplan" class="secondary" type="button">Print this plan</button>
@@ -177,6 +187,7 @@
 <h2>FAQ</h2>
 <details><summary>Where do these numbers come from?</summary><p>The USDA Food Safety and Inspection Service thaw chart and 325 F roasting chart. See footer date.</p></details>
 <details><summary>My turkey is still frozen and dinner is tomorrow. Am I doomed?</summary><p>Use the cold-water method: about 30 minutes per pound, change the water every 30 minutes, cook it right after it thaws.</p></details>
+<details><summary>Can I cook a turkey from frozen?</summary><p>Yes. USDA says it is safe, and it takes at least 50 percent longer than a thawed bird. At 325 F, a 15 lb bird needs 5 hours 45 minutes to 6 hours 30 minutes from frozen. Do not use an oven bag. Pull the giblet packet out with tongs after 20 to 30 minutes of baking. The cook-from-frozen section on this page gives the time for your bird.</p></details>
 <details><summary>Stuffed or unstuffed?</summary><p>This tool plans turkeys with no stuffing.</p></details>
 <details><summary>How do I know it is done?</summary><p>A meat thermometer: 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing. Color is not a reliable signal.</p></details>
 <details><summary>Does this work for Christmas dinner?</summary><p>The math is the same. A Christmas version is planned.</p></details>
@@ -193,10 +204,13 @@ const CONSTANTS = {
   coldWaterMinPerLb: {value:30, source:"USDA, verified 2026-10-22"},
   restMinutes: {value:20, source:"kitchen practice, not a USDA number"},
   sidesBeforeMinutes: {value:90, source:"kitchen practice"},
-  brineBeforeOvenMinutes: {value:1440, source:"kitchen practice; USDA hard rule: refrigerated at 40F or less, never longer than 2 days, discard brine"}
+  brineBeforeOvenMinutes: {value:1440, source:"kitchen practice; USDA hard rule: refrigerated at 40F or less, never longer than 2 days, discard brine"},
+  roastBandsFromFrozen: {source:"USDA SOS on Turkey Day from-frozen chart (usda.gov), verified 2026-10-30", bands:[[12,[255,270]],[14,[270,345]],[18,[345,390]],[20,[390,405]],[24,[405,450]]]}
 };
 function thawDays(lb){ for(const [max,d] of CONSTANTS.fridgeThawBands.bands){ if(lb<=max) return d; } return 6; }
 function roastMinutes(lb){ for(const [max,[lo,hi]] of CONSTANTS.roastBandsUnstuffed.bands){ if(lb<=max) return Math.round((lo+hi)/2); } return 285; }
+function frozenRoastBand(lb){ for(const [max,band] of CONSTANTS.roastBandsFromFrozen.bands){ if(lb<=max) return band; } return [405,450]; }
+function frozenRoastMinutes(lb){ const [lo,hi]=frozenRoastBand(lb); return Math.round((lo+hi)/2); }
 function buildTimeline(dinner, lb, state, brine, now){
   const rows=[]; const MIN=60000;
   /* 2026-10-29 (ADV-3): day-count steps are calendar days, not 24-hour
@@ -268,16 +282,17 @@ function planWarning(rows,lb,dinner,now){
 // ENGINE END
 function fmt(d){ return d.toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}); }
 function fmtShort(d){ return d.toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric",hour:"numeric"}).replace(":00",""); }
+function durText(min){ const h=Math.floor(min/60), r=min%60; return (h?h+" hour"+(h===1?"":"s"):"")+(h&&r?" ":"")+(r?r+" minutes":""); }
 let lastPlan=null, lastCardBlob=null;
 function render(){
   const date=document.getElementById("date").value, time=document.getElementById("time").value;
   const lb=Number(document.getElementById("weight").value), state=document.getElementById("state").value, brine=document.getElementById("brine").value;
-  const hint=document.getElementById("hint"), out=document.getElementById("out"), cold=document.getElementById("cold");
-  if(!date||!time){ hint.textContent="Check the date and time."; out.innerHTML=""; cold.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; return; }
+  const hint=document.getElementById("hint"), out=document.getElementById("out"), cold=document.getElementById("cold"), frozencook=document.getElementById("frozencook");
+  if(!date||!time){ hint.textContent="Check the date and time."; out.innerHTML=""; cold.innerHTML=""; frozencook.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; return; }
   /* Item 98 L2: an empty weight field mid-typing is not an out-of-range
      bird: show no hint and keep the last plan on screen. */
   if(document.getElementById("weight").value===""){ hint.textContent=""; return; }
-  if(!(lb>=8&&lb<=24)){ hint.textContent="This tool covers 8 to 24 lb birds, the range in the USDA charts it uses. It cannot give a timeline outside that range."; out.innerHTML=""; cold.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; return; }
+  if(!(lb>=8&&lb<=24)){ hint.textContent="This tool covers 8 to 24 lb birds, the range in the USDA charts it uses. It cannot give a timeline outside that range."; out.innerHTML=""; cold.innerHTML=""; frozencook.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; return; }
   hint.textContent=""; const dinner=new Date(date+"T"+time);
   const now=new Date();
   const rows=buildTimeline(dinner,lb,state,brine,now);
@@ -290,6 +305,19 @@ function render(){
   const warnHtml=warning?`<div class="row warnrow"><strong>${warning.kind==="past"?"That dinner time is already past.":"This plan cannot work as entered."}</strong><br>${warning.kind==="past"?"Pick a date and time ahead of you, and the plan will line up.":warning.kind==="lead"?`The turkey would have had to go in the oven at ${fmt(warning.oven)}. There is not enough time to roast it before this dinner. What can work instead: a smaller bird, or a later dinner.`:warning.kind==="brine"?(warning.reason==="thaw"?`Brining was set to start at ${fmt(warning.brine)}, but the turkey does not finish thawing until ${fmt(warning.finish)}. A brine cannot start before the bird is thawed. What can work instead: skip the brine, or use a shorter brine once it thaws.`:`Brining was set to start at ${fmt(warning.brine)}. That time has already passed, so a full brine cannot fit before this dinner. What can work instead: skip the brine, or use a shorter brine that starts now.`):`Cold water from now finishes thawing at ${fmt(warning.finish)}. The turkey needs to be in the oven before then. What can work instead: a smaller bird, a fresh bird, or a later dinner.`}</div>`:"";
   out.innerHTML=warnHtml+rows.map(r=>`<div class="row"><strong>${fmt(r.when)}</strong><br>${r.label}<br>${r.detail}</div>`).join("");
   cold.innerHTML = state==="frozen" ? `<h2>Cold-water backup</h2><p>Running late? Cold water thaws in about ${Math.round((lb*30/60)*10)/10} hours (${lb} lb at 30 minutes per pound). Keep the bird in its wrapper, change the water every 30 minutes, and cook it right after it thaws.</p>` : "";
+  /* 2026-10-30 (vs-AI coverage fix): cooking from frozen was the one
+     real ask in the Oct 29 study with no ThawDay coverage at all
+     (Q10, marked UNTESTED). USDA covers it directly: safe, at least
+     50 percent longer, with its own from-frozen chart (SOS on Turkey
+     Day, usda.gov, verified 2026-10-30), the no-oven-bag rule, and
+     the giblet step. This section is additive: no timeline row,
+     warning, share text, or card beat changes. */
+  if(state==="frozen"){
+    const fb=frozenRoastBand(lb), fmid=frozenRoastMinutes(lb);
+    const fOven=new Date(dinner.getTime()-(fmid+CONSTANTS.restMinutes.value)*60000);
+    const fPast = fOven.getTime()<=now.getTime();
+    frozencook.innerHTML = `<h2>Cook it from frozen</h2><p>No time to thaw at all? USDA says cooking a turkey from frozen is safe. It takes at least 50 percent longer than a thawed bird. For a ${lb} lb bird at 325 F, plan on ${durText(fb[0])} to ${durText(fb[1])}. A plan uses the middle, ${durText(fmid)}: in the oven by ${fmt(fOven)} for this dinner, then rest 20 minutes.${fPast?" That oven time has already passed, so this path cannot finish for this dinner either. A smaller bird, or a later dinner, can work.":""}</p><p>Do not use an oven bag. Pull the giblet packet out with tongs once the bird has baked 20 to 30 minutes. Done is still 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing.</p><p>From-frozen times from the USDA chart, checked Oct 30, 2026.</p>`;
+  } else { frozencook.innerHTML=""; }
   const thaw=rows.find(r=>r.id==="thaw"), oven=rows.find(r=>r.id==="oven"), buy=rows.find(r=>r.id==="buy"), brineRow=rows.find(r=>r.id==="brine");
   const buyShort=buy.when.toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric"});
   /* 2026-10-24 (value pass): the copied plan text is the keeper artifact,

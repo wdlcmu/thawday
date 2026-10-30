@@ -47,6 +47,9 @@ The fridge is hands-off. Cold water is faster. Change the water every 30 minutes
 How does the timeline tool work?
 Tell it dinner time and turkey size. Get every date: buy, thaw, brine, roast.
 
+Can I cook a turkey from frozen?
+Yes. USDA says it is safe, and it takes at least 50 percent longer than a thawed bird. At 325 F, a 15 lb bird needs 5 hours 45 minutes to 6 hours 30 minutes from frozen. Do not use an oven bag. Pull the giblet packet out with tongs after 20 to 30 minutes of baking. The calculator gives the time for your bird.
+
 Timings verified against USDA FSIS charts on Oct 22, 2026.
 
 ## Calculator (https://thawday.com/calculator)
@@ -75,6 +78,12 @@ The USDA Food Safety and Inspection Service thaw chart and 325 F roasting chart.
 
 My turkey is still frozen and dinner is tomorrow. Am I doomed?
 Use the cold-water method: about 30 minutes per pound, change the water every 30 minutes, cook it right after it thaws.
+
+Can I cook a turkey from frozen?
+Yes. USDA says it is safe, and it takes at least 50 percent longer than a thawed bird. At 325 F, a 15 lb bird needs 5 hours 45 minutes to 6 hours 30 minutes from frozen. Do not use an oven bag. Pull the giblet packet out with tongs after 20 to 30 minutes of baking. The cook-from-frozen section on this page gives the time for your bird.
+
+Cook it from frozen (calculator section, frozen birds only)
+No time to thaw at all? USDA says cooking a turkey from frozen is safe. It takes at least 50 percent longer than a thawed bird. The calculator gives the USDA from-frozen band for your bird's weight, the middle of that band, and the oven time for your dinner. From-frozen times from the USDA chart, checked Oct 30, 2026.
 
 Stuffed or unstuffed?
 This tool plans turkeys with no stuffing.
