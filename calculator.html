@@ -73,7 +73,7 @@
       "name": "What we don't do",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "We don't store your plan. The page saves only a small flag that a plan was made. We don't send your dinner details anywhere. The timeline math runs in your browser. We don't sell turkeys, groceries, or anything else. We don't ask for your email or an account. There is nothing to sign up for."
+        "text": "Your plan stays on your device. The page saves it in your browser so it shows again when you return. We don't send your dinner details anywhere. The timeline math runs in your browser. We don't sell turkeys, groceries, or anything else. We don't ask for your email or an account. There is nothing to sign up for."
       }
     },
     {
@@ -180,7 +180,7 @@
 <details><summary>Stuffed or unstuffed?</summary><p>This tool plans turkeys with no stuffing.</p></details>
 <details><summary>How do I know it is done?</summary><p>A meat thermometer: 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing. Color is not a reliable signal.</p></details>
 <details><summary>Does this work for Christmas dinner?</summary><p>The math is the same. A Christmas version is planned.</p></details>
-<details><summary>What we don't do</summary><p>We don't store your plan. The page saves only a small flag that a plan was made.</p><p>We don't send your dinner details anywhere. The timeline math runs in your browser.</p><p>We don't sell turkeys, groceries, or anything else.</p><p>We don't ask for your email or an account. There is nothing to sign up for.</p></details>
+<details><summary>What we don't do</summary><p>Your plan stays on your device. The page saves it in your browser so it shows again when you return.</p><p>We don't send your dinner details anywhere. The timeline math runs in your browser.</p><p>We don't sell turkeys, groceries, or anything else.</p><p>We don't ask for your email or an account. There is nothing to sign up for.</p></details>
 <details><summary>Our guarantees</summary><p>We never receive what you type, not your date, your dinner hour, or your turkey's weight.</p><p>No account, no email, and no cost. The full plan is yours on the spot.</p><p>There are no ads on this site.</p></details>
 
 <footer><p>Built with Muse.</p><p><a href="/privacy">Privacy</a> <a href="/terms">Terms</a></p><p>Timings verified against USDA FSIS charts on Oct 22, 2026.</p></footer>
@@ -314,6 +314,12 @@ function render(){
   document.getElementById("sharetext").textContent=txt;
   lastPlan={rows:rows,lb:lb,state:state,dinner:dinner,warning:warning};
   document.getElementById("cardarea").hidden=false;
+  /* 2026-10-30 (Dim 12 return-restore): a made plan is saved on this
+     device only, so a return visit can restore it below. The values are
+     the same ones the share link carries (weight, state, brine, dinner
+     date/time). Nothing is sent anywhere; the thawday_plan_v1 flag the
+     analytics read is untouched. */
+  try { localStorage.setItem("thawday_plan_inputs_v1", JSON.stringify({w:lb,s:state,b:brine,d:date,t:time})); } catch (e) {}
   return txt;
 }
 // TURKEY CARD START - the card reads only lastPlan, the same rows render() just put on screen. It never recomputes dates.
@@ -402,10 +408,17 @@ document.getElementById("printplan").addEventListener("click",()=>{ window.print
    matching inputs before the first render. Each value is checked against
    its input's own range/shape; a bad or out-of-range value is ignored, so
    the input keeps its default. A plain ?via=share load (no plan
-   parameters) behaves exactly as before. */
+   parameters) behaves exactly as before.
+   2026-10-30 (Dim 12 return-restore): when the address carries NO plan
+   parameters at all, the plan saved on this device by an earlier visit
+   (render() above) is restored instead, field by field under the same
+   checks, so the returning user lands on their own plan. An explicit
+   share link always wins: any plan parameter in the address skips the
+   restore entirely. Bad stored values are ignored the same way. */
 (function(){
   try{
     const p=new URLSearchParams(window.location.search);
+    const hasPlanParams=["w","s","b","d","t"].some(k=>p.get(k)!==null);
     const w=p.get("w");
     if(w!==null&&w.trim()!==""){ const n=Number(w); if(Number.isFinite(n)&&n>=8&&n<=24) document.getElementById("weight").value=w; }
     const s=p.get("s");
@@ -416,6 +429,21 @@ document.getElementById("printplan").addEventListener("click",()=>{ window.print
     if(d&&/^\d{4}-\d{2}-\d{2}$/.test(d)){ const dt=new Date(d+"T00:00:00"); if(!isNaN(dt)&&dt.getFullYear()===Number(d.slice(0,4))&&(dt.getMonth()+1)===Number(d.slice(5,7))&&dt.getDate()===Number(d.slice(8,10))) document.getElementById("date").value=d; }
     const t=p.get("t");
     if(t&&/^([01]\d|2[0-3]):[0-5]\d$/.test(t)) document.getElementById("time").value=t;
+    if(!hasPlanParams){
+      try{
+        const saved=JSON.parse(localStorage.getItem("thawday_plan_inputs_v1")||"null");
+        if(saved&&typeof saved==="object"){
+          const sw=saved.w;
+          if(sw!==null&&sw!==undefined&&String(sw).trim()!==""){ const n=Number(sw); if(Number.isFinite(n)&&n>=8&&n<=24) document.getElementById("weight").value=String(sw); }
+          if(saved.s==="frozen"||saved.s==="fresh") document.getElementById("state").value=saved.s;
+          if(saved.b==="yes"||saved.b==="no") document.getElementById("brine").value=saved.b;
+          const sd=saved.d;
+          if(typeof sd==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(sd)){ const dt=new Date(sd+"T00:00:00"); if(!isNaN(dt)&&dt.getFullYear()===Number(sd.slice(0,4))&&(dt.getMonth()+1)===Number(sd.slice(5,7))&&dt.getDate()===Number(sd.slice(8,10))) document.getElementById("date").value=sd; }
+          const st=saved.t;
+          if(typeof st==="string"&&/^([01]\d|2[0-3]):[0-5]\d$/.test(st)) document.getElementById("time").value=st;
+        }
+      }catch(e){ /* bad stored values are ignored; the default plan renders */ }
+    }
   }catch(e){ /* bad parameters are ignored; the default plan renders */ }
 })();
 render();
