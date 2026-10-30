@@ -462,6 +462,7 @@ function fleetSessionMarks(){
       if (cardarea.hidden) completed = false;
     };
     new MutationObserver(check).observe(cardarea, {attributes: true, attributeFilter: ["hidden"]});
+    check();
   }
   var cb = document.getElementById("cardbtn");
   if (cb) cb.addEventListener("click", function(){ fleetTrack("artifact_created", {tool: "turkey-timeline", artifact: "turkey-card"}); });
