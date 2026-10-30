@@ -302,11 +302,15 @@ function render(){
      it cannot say "Buy by" a date that has already passed. The late
      frozen branch names no buy date at all, so it needs no change. */
   const buySeg = buy.buyPast ? `Buy date ${buyShort} has passed. Buy it now.` : `Buy by ${buyShort}.`;
+  /* 2026-10-30 (Dim 12 Spec A): the share link carries the plan itself --
+     the same values this text already prints in words (weight, state,
+     brine, dinner date/time). No new data; /privacy stays true unedited. */
+  const shareLink = `https://thawday.com/calculator?via=share&w=${lb}&s=${state}&b=${brine}&d=${date}&t=${time}`;
   const txt = warnTxt + (state==="frozen"
     ? (thaw.late
-      ? `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): Fridge thaw start has passed. Cold-water thaw today, about ${Math.round((lb*30/60)*10)/10} hours.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. https://thawday.com/calculator?via=share`
-      : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): ${buySeg} Fridge thaw starts ${fmt(thaw.when)}.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. https://thawday.com/calculator?via=share`)
-    : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb fresh turkey): ${buySeg}${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. https://thawday.com/calculator?via=share`) + " Done at 165 F.";
+      ? `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): Fridge thaw start has passed. Cold-water thaw today, about ${Math.round((lb*30/60)*10)/10} hours.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. ${shareLink}`
+      : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): ${buySeg} Fridge thaw starts ${fmt(thaw.when)}.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. ${shareLink}`)
+    : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb fresh turkey): ${buySeg}${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. ${shareLink}`) + " Done at 165 F.";
   document.getElementById("sharetext").textContent=txt;
   lastPlan={rows:rows,lb:lb,state:state,dinner:dinner,warning:warning};
   document.getElementById("cardarea").hidden=false;
@@ -394,6 +398,26 @@ document.getElementById("cardshare").addEventListener("click",async()=>{
 document.getElementById("go").addEventListener("click",()=>{render(); document.getElementById("out").scrollIntoView();});
 document.getElementById("share").addEventListener("click",async()=>{ const t=render(); try{ await navigator.clipboard.writeText(t); document.getElementById("sharetext").textContent=t+" (copied)"; }catch(e){ /* long-press fallback: text stays visible */ } });
 document.getElementById("printplan").addEventListener("click",()=>{ window.print(); });
+/* 2026-10-30 (Dim 12 Spec A): a shared link's plan parameters set the
+   matching inputs before the first render. Each value is checked against
+   its input's own range/shape; a bad or out-of-range value is ignored, so
+   the input keeps its default. A plain ?via=share load (no plan
+   parameters) behaves exactly as before. */
+(function(){
+  try{
+    const p=new URLSearchParams(window.location.search);
+    const w=p.get("w");
+    if(w!==null&&w.trim()!==""){ const n=Number(w); if(Number.isFinite(n)&&n>=8&&n<=24) document.getElementById("weight").value=w; }
+    const s=p.get("s");
+    if(s==="frozen"||s==="fresh") document.getElementById("state").value=s;
+    const b=p.get("b");
+    if(b==="yes"||b==="no") document.getElementById("brine").value=b;
+    const d=p.get("d");
+    if(d&&/^\d{4}-\d{2}-\d{2}$/.test(d)){ const dt=new Date(d+"T00:00:00"); if(!isNaN(dt)&&dt.getFullYear()===Number(d.slice(0,4))&&(dt.getMonth()+1)===Number(d.slice(5,7))&&dt.getDate()===Number(d.slice(8,10))) document.getElementById("date").value=d; }
+    const t=p.get("t");
+    if(t&&/^([01]\d|2[0-3]):[0-5]\d$/.test(t)) document.getElementById("time").value=t;
+  }catch(e){ /* bad parameters are ignored; the default plan renders */ }
+})();
 render();
 </script>
 <script>
