@@ -134,41 +134,155 @@
     (Item 98 M2: the printout is the fridge-door artifact, it keeps 165 F). */
  @media print{
   .brand,label,input,select,button,#hint,#cardarea,#sharetext,details,footer,h2{display:none!important}
+  #quiz,#qsummary{display:none!important}
   #cold h2,#frozencook h2{display:block!important}
   body{padding:0}
  }
  #carddl{font-weight:700;display:inline-block;padding:12px 6px;min-height:44px}
  #carddl[hidden]{display:none}
  #cardhint{color:var(--muted)}
+ /* 2026-10-31 (quiz simplification): three tap steps replace the stacked
+    form. Chips are big tap targets; steps cross-fade; the timeline rows
+    build in gently. Reduced motion turns all of it off. */
+ #quiz{margin-top:4px}
+ .qprogress{display:flex;align-items:center;gap:10px;margin:12px 0 2px}
+ .qcount{font-weight:700;color:var(--accent);font-size:.9375rem;white-space:nowrap}
+ .qbar{flex:1;height:8px;border-radius:99px;background:#f0e4cf;overflow:hidden}
+ .qbar i{display:block;height:100%;width:33%;background:var(--accent);border-radius:99px;transition:width .45s ease}
+ .qpanel.on{animation:qfade .35s ease both}
+ @keyframes qfade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+ .qtitle{font-size:1.375rem;font-weight:800;letter-spacing:-.01em;margin:14px 0 4px}
+ .qsub{margin:14px 0 0;color:var(--ink)}
+ .qsub:first-of-type{margin-top:6px}
+ .qtoggle{display:flex;gap:8px;margin:12px 0 2px}
+ .qtoggle button{flex:1;background:#fff;color:var(--accent);border:2px solid var(--accent);margin:0;min-height:48px;font-size:1rem}
+ .qtoggle button[aria-pressed="true"]{background:var(--accent);color:#fff}
+ .chips{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 4px}
+ .chip{min-width:64px;min-height:56px;padding:10px 18px;margin:0;font-size:1.125rem;font-weight:700;border:2px solid #d6cfc4;border-radius:16px;background:#fff;color:var(--ink);cursor:pointer;transition:transform .15s ease,background .15s ease,border-color .15s ease}
+ .chip small{display:block;font-size:.8125rem;font-weight:600;color:var(--muted)}
+ .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+ .chip[aria-pressed="true"] small{color:#ffe9d2}
+ .chip:active{transform:scale(.96)}
+ .qmanual{margin-top:12px}
+ .qmsg{color:#b91c1c;font-weight:600;min-height:1.2em;margin:8px 0 0}
+ .qnav{display:flex;gap:10px;margin:16px 0 4px}
+ .qnav button{margin:0}
+ .qnav .next,.qnav #go{flex:1}
+ #qsummary{border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:8px 0;background:#fff;animation:qfade .35s ease both}
+ .qsumline{margin:0 0 6px}
+ #out .row{animation:qin .5s ease both}
+ #out .row:nth-child(2){animation-delay:.06s}
+ #out .row:nth-child(3){animation-delay:.12s}
+ #out .row:nth-child(4){animation-delay:.18s}
+ #out .row:nth-child(5){animation-delay:.24s}
+ #out .row:nth-child(6){animation-delay:.30s}
+ #out .row:nth-child(7){animation-delay:.36s}
+ @keyframes qin{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+ @media (prefers-reduced-motion: reduce){
+  .qpanel.on,#qsummary,#out .row{animation:none}
+  .qbar i,.chip{transition:none}
+ }
 </style>
 </head>
 <body>
 <p class="brand"><a href="/">ThawDay</a></p>
 <h1>ThawDay</h1>
 <p>When do I take the turkey out of the freezer? Type in your dinner time and turkey weight. You get buy, thaw, brine, and roast dates.</p>
-<p>Five answers. Under a minute. Free.</p>
+<p>Three steps. Thirty seconds. Free.</p>
 <p>This tool plans turkeys with no stuffing.</p>
 
-<label for="date">Dinner date</label>
-<input id="date" type="date" value="2026-11-26">
-<label for="time">Dinner time</label>
-<input id="time" type="time" value="17:00">
-<p><strong>Not sure what size to buy?</strong></p>
+<section id="quiz" aria-label="Turkey timeline quiz">
+<div class="qprogress"><span class="qcount" id="qcount">Step 1 of 3</span><span class="qbar" aria-hidden="true"><i id="qfill"></i></span></div>
+
+<div class="qpanel on" id="qp1">
+<p class="qtitle">How many people are eating?</p>
+<div class="qtoggle" role="group" aria-label="How to size the turkey">
+<button type="button" id="modePeople" aria-pressed="true">Count people</button>
+<button type="button" id="modeWeight" aria-pressed="false">I know the weight</button>
+</div>
+<div id="peopleBox">
+<div class="chips" id="guestChips" role="group" aria-label="Number of people">
+<button type="button" class="chip" data-guests="4" aria-pressed="false">4</button>
+<button type="button" class="chip" data-guests="6" aria-pressed="false">6</button>
+<button type="button" class="chip" data-guests="8" aria-pressed="false">8</button>
+<button type="button" class="chip" data-guests="10" aria-pressed="false">10</button>
+<button type="button" class="chip" data-guests="12" aria-pressed="false">12</button>
+<button type="button" class="chip" data-guests="16" aria-pressed="false">16</button>
+<button type="button" class="chip" data-guests="20" aria-pressed="false">20</button>
+</div>
+<p class="qsub"><strong>Want leftovers too?</strong></p>
+<div class="chips" id="loChips" role="group" aria-label="Leftovers">
+<button type="button" class="chip" data-lo="no" aria-pressed="true">No<small>Just enough</small></button>
+<button type="button" class="chip" data-lo="yes" aria-pressed="false">Yes<small>Half a pound more each</small></button>
+</div>
+<p>USDA says one pound per person. For leftovers, plan half a pound more each.</p>
+<p id="guestresult" aria-live="polite"></p>
+<p id="twobird" hidden>Over 16 people? Two small birds cook faster.</p>
+<details class="qmanual">
+<summary>Type the number instead</summary>
 <label for="guests">How many people eat?</label>
 <input id="guests" type="number" min="1" max="30" step="1">
 <label for="leftovers">Want leftovers too?</label>
 <select id="leftovers"><option value="no" selected>No leftovers</option><option value="yes">Yes, leftovers</option></select>
-<p>USDA says one pound per person. For leftovers, plan half a pound more each.</p>
-<p id="guestresult" aria-live="polite"></p>
-<p id="twobird" hidden>Over 16 people? Two small birds cook faster.</p>
+</details>
+</div>
+<div id="weightBox" hidden>
+<div class="chips" id="weightChips" role="group" aria-label="Turkey weight in pounds">
+<button type="button" class="chip" data-w="10" aria-pressed="false">10 lb</button>
+<button type="button" class="chip" data-w="12" aria-pressed="false">12 lb</button>
+<button type="button" class="chip" data-w="14" aria-pressed="false">14 lb</button>
+<button type="button" class="chip" data-w="16" aria-pressed="false">16 lb</button>
+<button type="button" class="chip" data-w="18" aria-pressed="false">18 lb</button>
+<button type="button" class="chip" data-w="20" aria-pressed="false">20 lb</button>
+<button type="button" class="chip" data-w="22" aria-pressed="false">22 lb</button>
+</div>
+<details class="qmanual">
+<summary>Type the weight instead</summary>
 <label for="weight">Turkey weight (lb, 8 to 24)</label>
 <input id="weight" type="number" min="8" max="24" step="1" value="14">
+</details>
+</div>
+<p id="qmsg1" class="qmsg" role="alert"></p>
+<div class="qnav"><button type="button" class="next" id="qnext1">Next</button></div>
+</div>
+
+<div class="qpanel" id="qp2" hidden>
+<p class="qtitle">Your turkey</p>
+<p class="qsub"><strong>Frozen or fresh?</strong></p>
+<div class="chips" id="stateChips" role="group" aria-label="Frozen or fresh">
+<button type="button" class="chip" data-s="frozen" aria-pressed="true">Frozen</button>
+<button type="button" class="chip" data-s="fresh" aria-pressed="false">Fresh</button>
+</div>
+<p class="qsub"><strong>Soak in salt water (brine)?</strong></p>
+<div class="chips" id="brineChips" role="group" aria-label="Brine">
+<button type="button" class="chip" data-b="no" aria-pressed="true">No</button>
+<button type="button" class="chip" data-b="yes" aria-pressed="false">Yes</button>
+</div>
+<div class="qraw" hidden aria-hidden="true">
 <label for="state">Frozen or fresh?</label>
 <select id="state"><option value="frozen" selected>Frozen</option><option value="fresh">Fresh</option></select>
 <label for="brine">Soak in salt water (brine)?</label>
 <select id="brine"><option value="no" selected>No</option><option value="yes">Yes</option></select>
+</div>
+<div class="qnav"><button type="button" class="secondary" id="qback2">Back</button><button type="button" class="next" id="qnext2">Next</button></div>
+</div>
+
+<div class="qpanel" id="qp3" hidden>
+<p class="qtitle">When is dinner?</p>
+<p class="qsub">Thanksgiving Day at 5:00 PM is filled in. Change it only if your dinner is different.</p>
+<label for="date">Dinner date</label>
+<input id="date" type="date" value="2026-11-26">
+<label for="time">Dinner time</label>
+<input id="time" type="time" value="17:00">
+<div class="qnav"><button type="button" class="secondary" id="qback3">Back</button><button id="go" type="button">Get my timeline</button></div>
+</div>
 <p id="hint" role="alert"></p>
-<button id="go" type="button">Get my timeline</button>
+</section>
+
+<div id="qsummary" hidden>
+<p class="qsumline"><strong>Your plan:</strong> <span id="qsummaryText"></span></p>
+<button type="button" class="secondary" id="qchange">Change answers</button>
+</div>
 
 <h2>Your timeline</h2>
 <section id="out" aria-live="polite"></section>
@@ -542,6 +656,96 @@ document.getElementById("printplan").addEventListener("click",()=>{ window.print
   }catch(e){ /* bad parameters are ignored; the default plan renders */ }
 })();
 render();
+</script>
+<script>
+/* 2026-10-31 (quiz simplification, Billy's dogfood): the stacked form is
+   now a three-step tap quiz. The chips only set the same inputs the form
+   always had and fire the same events, so render(), the guest helper,
+   share links, and the saved plan behave exactly as before. Frozen, no
+   brine, and Thanksgiving at 5:00 PM are pre-picked, so most people
+   answer one thing (how many people) and tap through. */
+(function(){
+  "use strict";
+  var $=function(id){ return document.getElementById(id); };
+  var panels=[$("qp1"),$("qp2"),$("qp3")], mode="people";
+  function setVal(id,v){ var el=$(id); if(!el) return; el.value=v; el.dispatchEvent(new Event("input",{bubbles:true})); el.dispatchEvent(new Event("change",{bubbles:true})); }
+  function press(groupEl,btn){ if(!groupEl) return; var bs=groupEl.querySelectorAll("button"); for(var i=0;i<bs.length;i++) bs[i].setAttribute("aria-pressed", bs[i]===btn?"true":"false"); }
+  function pressByValue(groupEl,attr,val){ if(!groupEl) return; var bs=groupEl.querySelectorAll("button"); for(var i=0;i<bs.length;i++) bs[i].setAttribute("aria-pressed", bs[i].getAttribute(attr)===String(val)?"true":"false"); }
+  function show(n,scroll){
+    for(var i=0;i<panels.length;i++){ var on=i===n-1; panels[i].hidden=!on; panels[i].classList.toggle("on",on); }
+    $("qcount").textContent="Step "+n+" of 3";
+    $("qfill").style.width=Math.round(n/3*100)+"%";
+    if(scroll) $("quiz").scrollIntoView();
+  }
+  function setMode(m){
+    mode=m;
+    $("modePeople").setAttribute("aria-pressed", m==="people"?"true":"false");
+    $("modeWeight").setAttribute("aria-pressed", m==="weight"?"true":"false");
+    $("peopleBox").hidden = m!=="people";
+    $("weightBox").hidden = m!=="weight";
+    if(m==="weight") pressByValue($("weightChips"),"data-w",$("weight").value);
+  }
+  $("modePeople").addEventListener("click",function(){ setMode("people"); });
+  $("modeWeight").addEventListener("click",function(){ setMode("weight"); });
+  $("guestChips").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-guests]"); if(!b) return;
+    press($("guestChips"),b); $("qmsg1").textContent="";
+    setVal("guests", b.getAttribute("data-guests"));
+    setTimeout(function(){ show(2,true); },300);
+  });
+  $("loChips").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-lo]"); if(!b) return;
+    press($("loChips"),b); setVal("leftovers", b.getAttribute("data-lo"));
+  });
+  $("weightChips").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-w]"); if(!b) return;
+    press($("weightChips"),b);
+    setVal("weight", b.getAttribute("data-w"));
+    setTimeout(function(){ show(2,true); },300);
+  });
+  $("stateChips").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-s]"); if(!b) return;
+    press($("stateChips"),b); setVal("state", b.getAttribute("data-s"));
+  });
+  $("brineChips").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-b]"); if(!b) return;
+    press($("brineChips"),b); setVal("brine", b.getAttribute("data-b"));
+  });
+  /* Keep the chips honest when the fields change another way: a typed
+     guest count, or a share link / saved plan setting the fields. */
+  $("guests").addEventListener("input",function(){ var n=Math.ceil(Number($("guests").value)); pressByValue($("guestChips"),"data-guests",Number.isFinite(n)?n:""); });
+  $("leftovers").addEventListener("change",function(){ pressByValue($("loChips"),"data-lo",$("leftovers").value); });
+  $("weight").addEventListener("input",function(){ if(mode==="weight") pressByValue($("weightChips"),"data-w",$("weight").value); });
+  $("qnext1").addEventListener("click",function(){
+    if(mode==="people" && $("guests").value===""){ $("qmsg1").textContent="Tap how many people above, or type the number below."; return; }
+    $("qmsg1").textContent=""; show(2,true);
+  });
+  $("qback2").addEventListener("click",function(){ show(1,true); });
+  $("qnext2").addEventListener("click",function(){ show(3,true); });
+  $("qback3").addEventListener("click",function(){ show(2,true); });
+  $("go").addEventListener("click",function(){
+    /* render()'s listener ran first. A plan that cannot render (bad
+       date, weight out of range) leaves the card area hidden and the
+       hint showing: stay in the quiz so the hint stays on screen. */
+    if($("cardarea").hidden || $("weight").value==="") return;
+    var who="";
+    if(mode==="people" && $("guests").value!==""){ var g=Math.ceil(Number($("guests").value)); if(Number.isFinite(g)&&g>0) who=g+(g===1?" person":" people")+" \u00b7 "; }
+    var d=new Date($("date").value+"T"+$("time").value);
+    var when=isNaN(d)?"":d.toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});
+    $("qsummaryText").textContent=who+$("weight").value+" lb turkey \u00b7 "+($("state").value==="fresh"?"Fresh":"Frozen")+" \u00b7 "+($("brine").value==="yes"?"Brine":"No brine")+(when?" \u00b7 Dinner "+when:"");
+    $("quiz").hidden=true; $("qsummary").hidden=false;
+    requestAnimationFrame(function(){ $("out").scrollIntoView(); });
+  });
+  $("qchange").addEventListener("click",function(){
+    $("qsummary").hidden=true; $("quiz").hidden=false; show(1,true);
+  });
+  pressByValue($("loChips"),"data-lo",$("leftovers").value);
+  pressByValue($("stateChips"),"data-s",$("state").value);
+  pressByValue($("brineChips"),"data-b",$("brine").value);
+  pressByValue($("weightChips"),"data-w",$("weight").value);
+  if($("guests").value!==""){ var n0=Math.ceil(Number($("guests").value)); if(Number.isFinite(n0)) pressByValue($("guestChips"),"data-guests",n0); }
+  show(1,false);
+})();
 </script>
 <script>
 "use strict";

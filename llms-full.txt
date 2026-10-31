@@ -56,13 +56,13 @@ Timings verified against USDA FSIS charts on Oct 22, 2026.
 
 When do I take the turkey out of the freezer? Type in your dinner time and turkey weight. You get buy, thaw, brine, and roast dates.
 
-Five answers. Under a minute. Free.
+Three steps. Thirty seconds. Free.
 
 This tool plans turkeys with no stuffing.
 
 Not sure what size to buy? How many people eat? Want leftovers too? USDA says one pound per person. For leftovers, plan half a pound more each. The guest count sets the turkey weight: one pound per person, or one and a half pounds per person for leftovers, inside the tool's 8 to 24 pound range.
 
-Inputs: dinner date; dinner time; how many people eat (1 to 30) and want leftovers, which set the turkey weight; turkey weight (lb, 8 to 24); frozen or fresh; soak in salt water (brine), yes or no.
+Inputs, in three tap steps: how many people eat (1 to 30) and want leftovers, which set the turkey weight, or the turkey weight itself (lb, 8 to 24); frozen or fresh; soak in salt water (brine), yes or no; dinner date; dinner time. Frozen, no brine, and Thanksgiving Day at 5:00 PM are pre-picked, so most people only answer the first step.
 
 Output: your timeline (dated buy, thaw, brine, and roast times), plus a turkey card, one picture with the whole plan on it, good for the group chat (share or download as PNG). You can also print the plan.
 
