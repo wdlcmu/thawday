@@ -33,7 +33,7 @@
       "name": "When do I start thawing?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Allow 24 hours for every 4 to 5 pounds. A 12 to 16 pound bird needs 3 to 4 days. Start 4 days before you cook. Once thawed, it keeps 1 to 2 days in the fridge."
+        "text": "Allow 24 hours for every 4 to 5 pounds. 12 to 16 pounds needs 3 to 4 days. Start 4 days before you cook. It keeps 1 to 2 days once thawed. Keep it in the fridge."
       }
     },
     {
@@ -49,7 +49,7 @@
       "name": "Can I cook a turkey from frozen?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. USDA says it is safe, and it takes at least 50 percent longer than a thawed bird. At 325 F, a 15 lb bird needs 5 hours 45 minutes to 6 hours 30 minutes from frozen. Do not use an oven bag. Pull the giblet packet out with tongs after 20 to 30 minutes of baking. The calculator gives the time for your bird."
+        "text": "Yes. USDA says it is safe. It takes at least half longer than a thawed bird. For a 15 lb bird at 325 F: 5 hours 45 minutes at least, up to 6 hours 30 minutes. Do not use an oven bag. Pull the giblet packet out with tongs. Do it 20 to 30 minutes in. The calculator gives the time for your bird."
       }
     },
     {
@@ -123,6 +123,11 @@
   .faq h3 { font-size: 1.0625rem; font-weight: 700; margin-bottom: 0.25rem; }
   .ways h3 { font-size: 1.0625rem; font-weight: 700; margin-bottom: 0.25rem; }
   .source { font-size: 0.875rem; color: var(--muted); }
+  .ln { display: block; margin-bottom: 0.3rem; }
+  .how-steps { list-style: none; counter-reset: step; margin: 0.5rem 0 0; padding: 0; }
+  .how-steps li { counter-increment: step; margin-bottom: 1.25rem; font-size: 1.0625rem; }
+  .how-steps li::before { content: counter(step); display: inline-block; font-weight: 800; color: var(--accent); margin-right: 0.5rem; }
+  .how-steps .ln { margin-left: 1.6rem; color: #374151; }
 </style>
 </head>
 <body>
@@ -153,34 +158,51 @@
         <tr><td>20 to 24 lb</td><td>5 to 6 days</td><td>10 to 12 hours</td></tr>
       </tbody>
     </table>
-    <p>Short on time? Cold water: 30 minutes per pound. Change the water every 30 minutes. Cook right after. Never thaw on the counter.</p>
+    <p><span class="ln">Short on time?</span><span class="ln">Cold water: 30 minutes per pound.</span><span class="ln">Change the water every 30 minutes.</span><span class="ln">Cook right after.</span><span class="ln">Never thaw on the counter.</span></p>
     <p class="source">USDA Food Safety and Inspection Service.</p>
+  </section>
+  <section class="info how" aria-label="How it works">
+    <h2>How it works</h2>
+    <ol class="how-steps">
+      <li><strong>You enter.</strong>
+        <span class="ln">Dinner day and time.</span>
+        <span class="ln">Bird size, in pounds.</span>
+      </li>
+      <li><strong>We do the math.</strong>
+        <span class="ln">We use USDA thaw charts.</span>
+        <span class="ln">We count back from dinner.</span>
+      </li>
+      <li><strong>You get your dates.</strong>
+        <span class="ln">Buy, thaw, brine, and roast.</span>
+        <span class="ln">Print the card or share it.</span>
+      </li>
+    </ol>
   </section>
   <section class="info ways" aria-label="Two ways to use ThawDay">
     <h2>Two ways to use ThawDay</h2>
     <h3>On this site</h3>
-    <p>Use the form. Get the full dated plan and picture card. Print it. Share it.</p>
+    <p><span class="ln">Use the form.</span><span class="ln">Get the full dated plan.</span><span class="ln">Get a picture card too.</span><span class="ln">Print it. Share it.</span></p>
     <h3>In ChatGPT or Claude (coming soon)</h3>
-    <p>Ask in plain words. Follow up in the same chat. Ask just the thaw, just the roast. Or ask a new weight.</p>
-    <p>Both ways use USDA charts. The site gives a card to keep. Chat answers where you already talk.</p>
+    <p><span class="ln">Ask in plain words.</span><span class="ln">Follow up in the same chat.</span><span class="ln">Ask just the thaw.</span><span class="ln">Ask just the roast.</span><span class="ln">Or ask a new weight.</span></p>
+    <p><span class="ln">Both ways use USDA charts.</span><span class="ln">The site gives a card to keep.</span><span class="ln">Chat answers where you already talk.</span></p>
   </section>
   <section class="info faq" aria-label="Common questions">
     <h2>Questions</h2>
     <div class="qa">
       <h3>When do I start thawing?</h3>
-      <p>Allow 24 hours for every 4 to 5 pounds. A 12 to 16 pound bird needs 3 to 4 days. Start 4 days before you cook. Once thawed, it keeps 1 to 2 days in the fridge.</p>
+      <p><span class="ln">Allow 24 hours for every 4 to 5 pounds.</span><span class="ln">12 to 16 pounds needs 3 to 4 days.</span><span class="ln">Start 4 days before you cook.</span><span class="ln">It keeps 1 to 2 days once thawed.</span><span class="ln">Keep it in the fridge.</span></p>
     </div>
     <div class="qa">
       <h3>Is fridge thawing or cold water thawing better?</h3>
-      <p>The fridge is hands-off. Cold water is faster. Change the water every 30 minutes. Then cook right after. Never thaw on the counter.</p>
+      <p><span class="ln">The fridge is hands-off.</span><span class="ln">Cold water is faster.</span><span class="ln">Change the water every 30 minutes.</span><span class="ln">Then cook right after.</span><span class="ln">Never thaw on the counter.</span></p>
     </div>
     <div class="qa">
       <h3>Can I cook a turkey from frozen?</h3>
-      <p>Yes. USDA says it is safe, and it takes at least 50 percent longer than a thawed bird. At 325 F, a 15 lb bird needs 5 hours 45 minutes to 6 hours 30 minutes from frozen. Do not use an oven bag. Pull the giblet packet out with tongs after 20 to 30 minutes of baking. The calculator gives the time for your bird.</p>
+      <p><span class="ln">Yes. USDA says it is safe.</span><span class="ln">It takes at least half longer.</span><span class="ln">Than a thawed bird.</span><span class="ln">For a 15 lb bird at 325 F.</span><span class="ln">5 hours 45 minutes at least.</span><span class="ln">Up to 6 hours 30 minutes.</span><span class="ln">Do not use an oven bag.</span><span class="ln">Pull the giblet packet out with tongs.</span><span class="ln">Do it 20 to 30 minutes in.</span><span class="ln">The calculator gives the time for your bird.</span></p>
     </div>
     <div class="qa">
       <h3>How does the timeline tool work?</h3>
-      <p>Tell it dinner time and turkey size. Get every date: buy, thaw, brine, roast.</p>
+      <p><span class="ln">Tell it dinner time and turkey size.</span><span class="ln">Get every date: buy, thaw, brine, roast.</span></p>
     </div>
   </section>
 </main>
