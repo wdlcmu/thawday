@@ -732,7 +732,12 @@ render();
     if(mode==="people" && $("guests").value!==""){ var g=Math.ceil(Number($("guests").value)); if(Number.isFinite(g)&&g>0) who=g+(g===1?" person":" people")+" \u00b7 "; }
     var d=new Date($("date").value+"T"+$("time").value);
     var when=isNaN(d)?"":d.toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});
-    $("qsummaryText").textContent=who+$("weight").value+" lb turkey \u00b7 "+($("state").value==="fresh"?"Fresh":"Frozen")+" \u00b7 "+($("brine").value==="yes"?"Brine":"No brine")+(when?" \u00b7 Dinner "+when:"");
+    /* 2026-10-31 (independent cold QA, post-simplification): the two-bird
+       line lives in step 1, which the auto-advance and the finish both
+       hide -- on the chip path it was visible for ~300 ms and then gone
+       from the summary and the timeline, so the advice never reached
+       the finished plan. Carry it into the summary when it is showing. */
+    $("qsummaryText").textContent=who+$("weight").value+" lb turkey \u00b7 "+($("state").value==="fresh"?"Fresh":"Frozen")+" \u00b7 "+($("brine").value==="yes"?"Brine":"No brine")+(($("twobird")&&!$("twobird").hidden)?" \u00b7 Two small birds cook faster":"")+(when?" \u00b7 Dinner "+when:"");
     $("quiz").hidden=true; $("qsummary").hidden=false;
     requestAnimationFrame(function(){ $("out").scrollIntoView(); });
   });
