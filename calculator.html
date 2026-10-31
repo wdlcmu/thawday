@@ -30,6 +30,14 @@
   "mainEntity": [
     {
       "@type": "Question",
+      "name": "How much turkey per person?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Plan one pound of whole turkey per person. For leftovers, add half a pound per person. Bone and skin make up much of the weight."
+      }
+    },
+    {
+      "@type": "Question",
       "name": "Where do these numbers come from?",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -145,6 +153,14 @@
 <input id="date" type="date" value="2026-11-26">
 <label for="time">Dinner time</label>
 <input id="time" type="time" value="17:00">
+<p><strong>Not sure what size to buy?</strong></p>
+<label for="guests">How many people eat?</label>
+<input id="guests" type="number" min="1" max="30" step="1">
+<label for="leftovers">Want leftovers too?</label>
+<select id="leftovers"><option value="no" selected>No leftovers</option><option value="yes">Yes, leftovers</option></select>
+<p>USDA says one pound per person. For leftovers, plan half a pound more each.</p>
+<p id="guestresult" aria-live="polite"></p>
+<p id="twobird" hidden>Over 16 people? Two small birds cook faster.</p>
 <label for="weight">Turkey weight (lb, 8 to 24)</label>
 <input id="weight" type="number" min="8" max="24" step="1" value="14">
 <label for="state">Frozen or fresh?</label>
@@ -185,6 +201,7 @@
 <p>Here on the site, you get what chat does not give you: a picture card of your plan, a print view, and a share link. Both ways use USDA charts.</p>
 
 <h2>FAQ</h2>
+<details><summary>How much turkey per person?</summary><p>Plan one pound of whole turkey per person. For leftovers, add half a pound per person. Bone and skin make up much of the weight.</p></details>
 <details><summary>Where do these numbers come from?</summary><p>The USDA Food Safety and Inspection Service thaw chart and 325 F roasting chart. See footer date.</p></details>
 <details><summary>My turkey is still frozen and dinner is tomorrow. Am I doomed?</summary><p>Use the cold-water method: about 30 minutes per pound, change the water every 30 minutes, cook it right after it thaws.</p></details>
 <details><summary>Can I cook a turkey from frozen?</summary><p>Yes. USDA says it is safe, and it takes at least 50 percent longer than a thawed bird. At 325 F, a 15 lb bird needs 5 hours 45 minutes to 6 hours 30 minutes from frozen. Do not use an oven bag. Pull the giblet packet out with tongs after 20 to 30 minutes of baking. The cook-from-frozen section on this page gives the time for your bird.</p></details>
@@ -429,6 +446,42 @@ document.getElementById("cardshare").addEventListener("click",async()=>{
 });
 // TURKEY CARD END
 ["date","time","weight","state","brine"].forEach(id=>document.getElementById(id).addEventListener("input",render));
+/* 2026-10-31 (SPEC-THAW-GUESTSIZE-1): the guest helper sets the weight
+   from a head count, using the USDA FSIS rule (1 lb per person, 1.5 lb
+   per person for leftovers, rounded up). It writes the weight only when
+   a guest control changes, never locks it, and clamps to the tool's
+   8 to 24 lb range; above 24 lb of need the two-bird line shows.
+   Guests and leftovers are helper state only: they are never added to
+   the share link or to the saved plan inputs. A later hand edit of the
+   weight wins, and it clears the helper's result line. */
+let guestSetLb=null;
+function guestWeight(){
+  const gEl=document.getElementById("guests"), lEl=document.getElementById("leftovers");
+  const res=document.getElementById("guestresult"), two=document.getElementById("twobird");
+  if(!gEl||!lEl||!res||!two) return;
+  if(gEl.value===""){ res.textContent=""; two.hidden=true; guestSetLb=null; return; }
+  const g=Number(gEl.value);
+  if(!Number.isFinite(g)||g<1||g>30){ res.textContent=""; two.hidden=true; guestSetLb=null; return; }
+  const need=lEl.value==="yes"?Math.ceil(g*1.5):g;
+  const lb=Math.min(24,Math.max(8,need));
+  guestSetLb=lb;
+  document.getElementById("weight").value=String(lb);
+  const art=(lb===8||lb===11||lb===18)?"an":"a";
+  res.textContent="For "+g+(g===1?" person":" people")+", buy "+art+" "+lb+" pound bird.";
+  two.hidden=!(need>24);
+  render();
+}
+document.getElementById("guests").addEventListener("input",guestWeight);
+document.getElementById("leftovers").addEventListener("input",guestWeight);
+document.getElementById("leftovers").addEventListener("change",guestWeight);
+document.getElementById("weight").addEventListener("input",()=>{
+  if(guestSetLb===null) return;
+  if(Number(document.getElementById("weight").value)!==guestSetLb){
+    document.getElementById("guestresult").textContent="";
+    document.getElementById("twobird").hidden=true;
+    guestSetLb=null;
+  }
+});
 document.getElementById("go").addEventListener("click",()=>{render(); document.getElementById("out").scrollIntoView();});
 document.getElementById("share").addEventListener("click",async()=>{ const t=render(); try{ await navigator.clipboard.writeText(t); document.getElementById("sharetext").textContent=t+" (copied)"; }catch(e){ /* long-press fallback: text stays visible */ } });
 document.getElementById("printplan").addEventListener("click",()=>{ window.print(); });

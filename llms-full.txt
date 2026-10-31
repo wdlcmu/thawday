@@ -4,7 +4,7 @@
 > ThawDay is a free turkey timeline tool for Thanksgiving. Type in your dinner time and turkey
 > weight. You get dated buy, thaw, brine, and roast times. No ads, no accounts.
 > Thaw times come from the USDA Food Safety and Inspection Service.
-> Text captured from the live pages, 2026-10-29.
+> Text captured from the live pages, 2026-10-31.
 
 ## Homepage (https://thawday.com/)
 
@@ -60,7 +60,9 @@ Five answers. Under a minute. Free.
 
 This tool plans turkeys with no stuffing.
 
-Inputs: dinner date; dinner time; turkey weight (lb, 8 to 24); frozen or fresh; soak in salt water (brine), yes or no.
+Not sure what size to buy? How many people eat? Want leftovers too? USDA says one pound per person. For leftovers, plan half a pound more each. The guest count sets the turkey weight: one pound per person, or one and a half pounds per person for leftovers, inside the tool's 8 to 24 pound range.
+
+Inputs: dinner date; dinner time; how many people eat (1 to 30) and want leftovers, which set the turkey weight; turkey weight (lb, 8 to 24); frozen or fresh; soak in salt water (brine), yes or no.
 
 Output: your timeline (dated buy, thaw, brine, and roast times), plus a turkey card, one picture with the whole plan on it, good for the group chat (share or download as PNG). You can also print the plan.
 
@@ -72,6 +74,9 @@ In chat, there is no form. You just ask. Ask for the full plan, just the thaw ti
 Here on the site, you get what chat does not give you: a picture card of your plan, a print view, and a share link. Both ways use USDA charts.
 
 ### FAQ
+
+How much turkey per person?
+Plan one pound of whole turkey per person. For leftovers, add half a pound per person. Bone and skin make up much of the weight.
 
 Where do these numbers come from?
 The USDA Food Safety and Inspection Service thaw chart and 325 F roasting chart. See footer date.
