@@ -448,7 +448,13 @@ document.getElementById("printplan").addEventListener("click",()=>{ window.print
     const p=new URLSearchParams(window.location.search);
     const hasPlanParams=["w","s","b","d","t"].some(k=>p.get(k)!==null);
     const w=p.get("w");
-    if(w!==null&&w.trim()!==""){ const n=Number(w); if(Number.isFinite(n)&&n>=8&&n<=24) document.getElementById("weight").value=w; }
+    /* 2026-10-30 (semantic-fit audit F1): assign the canonical number
+       string, never the raw parameter. Number() accepts strings a
+       type=number input cannot hold (" 14" from a plus-encoded link,
+       "14 ", "14."); the browser blanks those, and the empty weight
+       then suppresses the whole plan with no hint — a validated link
+       landing on no plan at all. String(n) always holds. */
+    if(w!==null&&w.trim()!==""){ const n=Number(w); if(Number.isFinite(n)&&n>=8&&n<=24) document.getElementById("weight").value=String(n); }
     const s=p.get("s");
     if(s==="frozen"||s==="fresh") document.getElementById("state").value=s;
     const b=p.get("b");
@@ -462,7 +468,7 @@ document.getElementById("printplan").addEventListener("click",()=>{ window.print
         const saved=JSON.parse(localStorage.getItem("thawday_plan_inputs_v1")||"null");
         if(saved&&typeof saved==="object"){
           const sw=saved.w;
-          if(sw!==null&&sw!==undefined&&String(sw).trim()!==""){ const n=Number(sw); if(Number.isFinite(n)&&n>=8&&n<=24) document.getElementById("weight").value=String(sw); }
+          if(sw!==null&&sw!==undefined&&String(sw).trim()!==""){ const n=Number(sw); if(Number.isFinite(n)&&n>=8&&n<=24) document.getElementById("weight").value=String(n); }
           if(saved.s==="frozen"||saved.s==="fresh") document.getElementById("state").value=saved.s;
           if(saved.b==="yes"||saved.b==="no") document.getElementById("brine").value=saved.b;
           const sd=saved.d;
