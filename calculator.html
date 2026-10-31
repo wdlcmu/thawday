@@ -460,8 +460,16 @@ function guestWeight(){
   const res=document.getElementById("guestresult"), two=document.getElementById("twobird");
   if(!gEl||!lEl||!res||!two) return;
   if(gEl.value===""){ res.textContent=""; two.hidden=true; guestSetLb=null; return; }
-  const g=Number(gEl.value);
-  if(!Number.isFinite(g)||g<1||g>30){ res.textContent=""; two.hidden=true; guestSetLb=null; return; }
+  const gRaw=Number(gEl.value);
+  if(!Number.isFinite(gRaw)||gRaw<1||gRaw>30){ res.textContent=""; two.hidden=true; guestSetLb=null; return; }
+  /* 2026-10-31 (independent cold QA, post-guestsize): people come
+     whole. A fractional count (12.5) used to print "For 12.5 people,
+     buy a 12.5 pound bird." Round the count up to the next whole
+     person -- the food-safe direction, the same round-up the
+     leftovers rule already uses -- so the result line, the weight,
+     and the plan all speak in whole people. Integer counts are
+     unchanged. */
+  const g=Math.ceil(gRaw);
   const need=lEl.value==="yes"?Math.ceil(g*1.5):g;
   const lb=Math.min(24,Math.max(8,need));
   guestSetLb=lb;
