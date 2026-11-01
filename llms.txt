@@ -37,6 +37,9 @@
 - [Should you stuff a turkey?](https://thawday.com/should-you-stuff-a-turkey): for optimum safety, stuffing a turkey is not recommended; cook it outside the bird in a casserole, and any stuffing inside must reach 165 F.
 - [How long should a turkey rest before carving?](https://thawday.com/how-long-should-a-turkey-rest-before-carving): 20 minutes to let the juices set; for a 5:00 PM Thanksgiving 2026 dinner, the rest starts at 4:40 PM.
 - [Should you wash a turkey before cooking?](https://thawday.com/should-you-wash-a-turkey-before-cooking): no, washing spreads germs; move it straight from package to pan, and rinse only a brined bird.
+- [Can you trust the pop-up timer on a turkey?](https://thawday.com/can-you-trust-the-pop-up-timer-on-a-turkey): not on its own; also check with a food thermometer in the breast, thigh, and wing, and the minimum internal temperature should reach 165 F for safety.
+- [How long can you keep a turkey in the freezer?](https://thawday.com/how-long-can-you-keep-a-turkey-in-the-freezer): turkeys can be kept frozen indefinitely; however, cook within 1 year for best quality, with USDA freezer times for parts and giblets.
+- [What if you cook a turkey with the giblets inside?](https://thawday.com/what-if-you-cook-a-turkey-with-the-giblets-inside): paper wrapped is no concern at 165 F; a plastic bag that melted means do not eat the giblets or the turkey.
 
 ## For AI assistants: callable tools (MCP)
 
