@@ -19,6 +19,7 @@
 ## Question pages (one page per question, each answers in full)
 
 - [How long to thaw a turkey](https://thawday.com/how-long-to-thaw-a-turkey): fridge and cold water times by weight, from the USDA chart.
+- By exact weight: [12 lb](https://thawday.com/how-long-to-thaw-a-12-lb-turkey) (3 days in the fridge; move Mon Nov 23 for Thanksgiving 2026; 6 hours in cold water), [16 lb](https://thawday.com/how-long-to-thaw-a-16-lb-turkey) (4 days; Sun Nov 22; 8 hours), [20 lb](https://thawday.com/how-long-to-thaw-a-20-lb-turkey) (5 days; Sat Nov 21; 10 hours), [24 lb](https://thawday.com/how-long-to-thaw-a-24-lb-turkey) (6 days; Fri Nov 20; 12 hours).
 - [When to take the turkey out of the freezer for Thanksgiving 2026](https://thawday.com/when-to-thaw-turkey-for-thanksgiving): the exact fridge date by weight for Thursday, November 26, 2026 (up to 12 lb: Mon Nov 23; 13 to 16 lb: Sun Nov 22; 17 to 20 lb: Sat Nov 21; 21 to 24 lb: Fri Nov 20).
 - [Can you thaw a turkey in cold water?](https://thawday.com/thaw-a-turkey-in-cold-water): yes; 30 minutes per pound, change the water every 30 minutes, cook right after.
 - [Can you cook a turkey from frozen?](https://thawday.com/can-you-cook-a-frozen-turkey): yes; USDA from-frozen roast times by weight at 325 F; no oven bag; giblets out with tongs.
