@@ -49,7 +49,7 @@
       "name": "My turkey is still frozen and dinner is tomorrow. Am I doomed?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Use the cold-water method: about 30 minutes per pound, change the water every 30 minutes, cook it right after it thaws."
+        "text": "Use the cold-water method: seal the bird in a leak-proof plastic bag, submerge it in cold tap water, about 30 minutes per pound, change the water every 30 minutes, cook it right after it thaws."
       }
     },
     {
@@ -329,7 +329,7 @@
 <h2>FAQ</h2>
 <details><summary>How much turkey per person?</summary><p>Plan one pound of whole turkey per person. For leftovers, add half a pound per person. Bone and skin make up much of the weight.</p></details>
 <details><summary>Where do these numbers come from?</summary><p>The USDA Food Safety and Inspection Service thaw chart and 325 F roasting chart. See footer date.</p></details>
-<details><summary>My turkey is still frozen and dinner is tomorrow. Am I doomed?</summary><p>Use the cold-water method: about 30 minutes per pound, change the water every 30 minutes, cook it right after it thaws.</p></details>
+<details><summary>My turkey is still frozen and dinner is tomorrow. Am I doomed?</summary><p>Use the cold-water method: seal the bird in a leak-proof plastic bag, submerge it in cold tap water, about 30 minutes per pound, change the water every 30 minutes, cook it right after it thaws.</p></details>
 <details><summary>Can I cook a turkey from frozen?</summary><p>Yes. USDA says it is safe, and it takes at least 50 percent longer than a thawed bird. At 325 F, a 15 lb bird needs 5 hours 45 minutes to 6 hours 30 minutes from frozen. Do not use an oven bag. Pull the giblet packet out with tongs after 20 to 30 minutes of baking. The cook-from-frozen section on this page gives the time for your bird.</p></details>
 <details><summary>Stuffed or unstuffed?</summary><p>This tool plans turkeys with no stuffing.</p></details>
 <details><summary>How do I know it is done?</summary><p>A meat thermometer: 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing. Color is not a reliable signal.</p></details>
@@ -376,8 +376,8 @@ function buildTimeline(dinner, lb, state, brine, now){
   const buyRow=(when,detail)=>{ const past=!!(now && when.getTime()<=now.getTime()); const r={id:"buy", label:"Buy the turkey", when:when, detail:past?detail+BUY_PAST_NOTE:detail}; if(past) r.buyPast=true; return r; };
   if(state==="frozen"){ rows.push(buyRow(daysBefore(dinner,11),"Buy by this date (kitchen practice). Frozen birds sell out the weekend before Thanksgiving."));
     const thawStart=daysBefore(dinner,thawDays(lb));
-    if(now && now>thawStart){ rows.push({id:"thaw", late:true, label:"Thaw in cold water today", when:new Date(now.getTime()), detail:"Fridge thaw start has passed. Cold water takes about "+(Math.round((lb*30/60)*10)/10)+" hours (30 minutes per pound). Change the water every 30 minutes, and cook it right after it thaws."}); }
-    else { rows.push({id:"thaw", label:"Move the turkey to the fridge", when:thawStart, detail:"Fridge thaw, per the USDA chart."}); }
+    if(now && now>thawStart){ rows.push({id:"thaw", late:true, label:"Thaw in cold water today", when:new Date(now.getTime()), detail:"Fridge thaw start has passed. Cold water takes about "+(Math.round((lb*30/60)*10)/10)+" hours (30 minutes per pound). Seal it in a leak-proof plastic bag and submerge it in cold tap water. Change the water every 30 minutes, and cook it right after it thaws."}); }
+    else { rows.push({id:"thaw", label:"Move the turkey to the fridge", when:thawStart, detail:"Fridge thaw, per the USDA chart. Keep the fridge at 40 F or below."}); }
   } else { rows.push(buyRow(daysBefore(dinner,2),"Fresh: buy 1 to 2 days before cooking.")); }
   const ovenIn=new Date(dinner.getTime()-(roastMinutes(lb)+CONSTANTS.restMinutes.value)*MIN);
   if(brine==="yes") rows.push({id:"brine", label:"Start brining", when:new Date(ovenIn.getTime()-CONSTANTS.brineBeforeOvenMinutes.value*MIN), detail: state==="frozen" ? "Brine in the fridge the whole time, never longer than two days, discard the brine after. Start once the bird is thawed." : "Brine in the fridge the whole time, never longer than two days, discard the brine after."});
@@ -448,7 +448,7 @@ function render(){
   const warning=planWarning(rows,lb,dinner,now);
   const warnHtml=warning?`<div class="row warnrow"><strong>${warning.kind==="past"?"That dinner time is already past.":"This plan cannot work as entered."}</strong><br>${warning.kind==="past"?"Pick a date and time ahead of you, and the plan will line up.":warning.kind==="lead"?`The turkey would have had to go in the oven at ${fmt(warning.oven)}. There is not enough time to roast it before this dinner. What can work instead: a smaller bird, or a later dinner.`:warning.kind==="brine"?(warning.reason==="thaw"?`Brining was set to start at ${fmt(warning.brine)}, but the turkey does not finish thawing until ${fmt(warning.finish)}. A brine cannot start before the bird is thawed. What can work instead: skip the brine, or use a shorter brine once it thaws.`:`Brining was set to start at ${fmt(warning.brine)}. That time has already passed, so a full brine cannot fit before this dinner. What can work instead: skip the brine, or use a shorter brine that starts now.`):`Cold water from now finishes thawing at ${fmt(warning.finish)}. The turkey needs to be in the oven before then. What can work instead: a smaller bird, a fresh bird, or a later dinner.`}</div>`:"";
   out.innerHTML=warnHtml+rows.map(r=>`<div class="row"><strong>${fmt(r.when)}</strong><br>${r.label}<br>${r.detail}</div>`).join("");
-  cold.innerHTML = state==="frozen" ? `<h2>Cold-water backup</h2><p>Running late? Cold water thaws in about ${Math.round((lb*30/60)*10)/10} hours (${lb} lb at 30 minutes per pound). Keep the bird in its wrapper, change the water every 30 minutes, and cook it right after it thaws.</p>` : "";
+  cold.innerHTML = state==="frozen" ? `<h2>Cold-water backup</h2><p>Running late? Cold water thaws in about ${Math.round((lb*30/60)*10)/10} hours (${lb} lb at 30 minutes per pound). Seal the bird in a leak-proof plastic bag and submerge it in cold tap water. Change the water every 30 minutes, and cook it right after it thaws.</p>` : "";
   /* 2026-10-30 (vs-AI coverage fix): cooking from frozen was the one
      real ask in the Oct 29 study with no ThawDay coverage at all
      (Q10, marked UNTESTED). USDA covers it directly: safe, at least

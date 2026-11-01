@@ -117,8 +117,8 @@ function buildTimeline(dinner, lb, state, brine, now){
   const buyRow=(when,detail)=>{ const past=!!(now && when.getTime()<=now.getTime()); const r={id:"buy", label:"Buy the turkey", when:when, detail:past?detail+BUY_PAST_NOTE:detail}; if(past) r.buyPast=true; return r; };
   if(state==="frozen"){ rows.push(buyRow(daysBefore(dinner,11),"Buy by this date (kitchen practice). Frozen birds sell out the weekend before Thanksgiving."));
     const thawStart=daysBefore(dinner,thawDays(lb));
-    if(now && now>thawStart){ rows.push({id:"thaw", late:true, label:"Thaw in cold water today", when:new Date(now.getTime()), detail:"Fridge thaw start has passed. Cold water takes about "+(Math.round((lb*30/60)*10)/10)+" hours (30 minutes per pound). Change the water every 30 minutes, and cook it right after it thaws."}); }
-    else { rows.push({id:"thaw", label:"Move the turkey to the fridge", when:thawStart, detail:"Fridge thaw, per the USDA chart."}); }
+    if(now && now>thawStart){ rows.push({id:"thaw", late:true, label:"Thaw in cold water today", when:new Date(now.getTime()), detail:"Fridge thaw start has passed. Cold water takes about "+(Math.round((lb*30/60)*10)/10)+" hours (30 minutes per pound). Seal it in a leak-proof plastic bag and submerge it in cold tap water. Change the water every 30 minutes, and cook it right after it thaws."}); }
+    else { rows.push({id:"thaw", label:"Move the turkey to the fridge", when:thawStart, detail:"Fridge thaw, per the USDA chart. Keep the fridge at 40 F or below."}); }
   } else { rows.push(buyRow(daysBefore(dinner,2),"Fresh: buy 1 to 2 days before cooking.")); }
   const ovenIn=new Date(dinner.getTime()-(roastMinutes(lb)+CONSTANTS.restMinutes.value)*MIN);
   if(brine==="yes") rows.push({id:"brine", label:"Start brining", when:new Date(ovenIn.getTime()-CONSTANTS.brineBeforeOvenMinutes.value*MIN), detail: state==="frozen" ? "Brine in the fridge the whole time, never longer than two days, discard the brine after. Start once the bird is thawed." : "Brine in the fridge the whole time, never longer than two days, discard the brine after."});
@@ -257,7 +257,7 @@ function answerAsk(raw, nowOverride){
   else if(p.intent==="roast"&&oven){ lead=`A ${lb} lb turkey roasts in about ${durText(roastMinutes(lb))} at 325 F. In the oven by ${fmt(oven.when)} for this dinner. The full plan is below.`; }
   else if(p.intent==="fromfrozen"){ var fb0=frozenRoastBand(lb); lead=`Yes. USDA says cooking a turkey from frozen is safe. For a ${lb} lb bird at 325 F, plan on ${durText(fb0[0])} to ${durText(fb0[1])}. The details are in the plan below.`; }
   var rowsHtml=rows.map(r=>`<div class="row"><strong>${fmt(r.when)}</strong><br>${r.label}<br>${r.detail}</div>`).join("");
-  var coldHtml = state==="frozen" ? `<h2>Cold-water backup</h2><p>Running late? Cold water thaws in about ${Math.round((lb*30/60)*10)/10} hours (${lb} lb at 30 minutes per pound). Keep the bird in its wrapper, change the water every 30 minutes, and cook it right after it thaws.</p>` : "";
+  var coldHtml = state==="frozen" ? `<h2>Cold-water backup</h2><p>Running late? Cold water thaws in about ${Math.round((lb*30/60)*10)/10} hours (${lb} lb at 30 minutes per pound). Seal the bird in a leak-proof plastic bag and submerge it in cold tap water. Change the water every 30 minutes, and cook it right after it thaws.</p>` : "";
   var frozenHtml="";
   if(state==="frozen"){
     var fb=frozenRoastBand(lb), fmid=frozenRoastMinutes(lb);
