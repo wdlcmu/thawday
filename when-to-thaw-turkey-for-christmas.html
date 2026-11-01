@@ -115,6 +115,13 @@ details.xpd>summary::-webkit-details-marker{display:none}
 details.xpd>summary::before{content:"\25B8";color:var(--accent);font-weight:800}
 details.xpd[open]>summary::before{content:"\25BE"}
 details.xpd h2{margin-top:8px}
+
+.calrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0 4px}
+.calrow button{font:inherit;font-size:.9375rem;font-weight:700;padding:10px 14px;min-height:44px;border:1px solid var(--accent);border-radius:999px;background:var(--accent);color:#fff;cursor:pointer}
+.calrow a.cal-g{font-size:.9375rem;font-weight:700;padding:10px 14px;min-height:44px;border:1px solid var(--accent);border-radius:999px;background:#fff;color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;box-sizing:border-box}
+.calrow-s{margin:8px 0 2px}
+.calrow-s button,.calrow-s a.cal-g{font-size:.875rem;padding:7px 12px;min-height:44px}
+.cal-note{flex-basis:100%;color:var(--muted);font-size:.875rem;margin:2px 0 0}
 </style>
 </head>
 <body>
@@ -122,7 +129,7 @@ details.xpd h2{margin-top:8px}
 <h1>When should I take the turkey out of the freezer for Christmas?</h1>
 <p class="answer"><strong>Christmas dinner is Friday, December 25, 2026.</strong> Find your weight. That is your move date.</p>
 <h2>The move dates, by weight</h2>
-<div class="tlrows"><div class="tlrow"><div class="tlrow-top"><span><span class="tlrow-w">Up to 12 lb</span> &middot; Tue, Dec 22</span><span class="tlrow-d">Fri 25</span></div><div class="tl-track"><span class="tl-dots"><i></i><i></i><i></i></span><span class="tl-cap">3 days</span></div></div><div class="tlrow"><div class="tlrow-top"><span><span class="tlrow-w">13–16 lb</span> &middot; Mon, Dec 21</span><span class="tlrow-d">Fri 25</span></div><div class="tl-track"><span class="tl-dots"><i></i><i></i><i></i><i></i></span><span class="tl-cap">4 days</span></div></div><div class="tlrow"><div class="tlrow-top"><span><span class="tlrow-w">17–20 lb</span> &middot; Sun, Dec 20</span><span class="tlrow-d">Fri 25</span></div><div class="tl-track"><span class="tl-dots"><i></i><i></i><i></i><i></i><i></i></span><span class="tl-cap">5 days</span></div></div><div class="tlrow"><div class="tlrow-top"><span><span class="tlrow-w">21–24 lb</span> &middot; Sat, Dec 19</span><span class="tlrow-d">Fri 25</span></div><div class="tl-track"><span class="tl-dots"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="tl-cap">6 days</span></div></div></div>
+<div class="tlrows"><div class="tlrow"><div class="tlrow-top"><span><span class="tlrow-w">Up to 12 lb</span> &middot; Tue, Dec 22</span><span class="tlrow-d">Fri 25</span></div><div class="tl-track"><span class="tl-dots"><i></i><i></i><i></i></span><span class="tl-cap">3 days</span></div><div class="calrow calrow-s"><button type="button" class="mvb" data-i="0">Add to calendar (.ics)</button><a class="cal-g mvg" data-i="0" href="#" target="_blank" rel="noopener">Google Calendar</a></div></div><div class="tlrow"><div class="tlrow-top"><span><span class="tlrow-w">13–16 lb</span> &middot; Mon, Dec 21</span><span class="tlrow-d">Fri 25</span></div><div class="tl-track"><span class="tl-dots"><i></i><i></i><i></i><i></i></span><span class="tl-cap">4 days</span></div><div class="calrow calrow-s"><button type="button" class="mvb" data-i="1">Add to calendar (.ics)</button><a class="cal-g mvg" data-i="1" href="#" target="_blank" rel="noopener">Google Calendar</a></div></div><div class="tlrow"><div class="tlrow-top"><span><span class="tlrow-w">17–20 lb</span> &middot; Sun, Dec 20</span><span class="tlrow-d">Fri 25</span></div><div class="tl-track"><span class="tl-dots"><i></i><i></i><i></i><i></i><i></i></span><span class="tl-cap">5 days</span></div><div class="calrow calrow-s"><button type="button" class="mvb" data-i="2">Add to calendar (.ics)</button><a class="cal-g mvg" data-i="2" href="#" target="_blank" rel="noopener">Google Calendar</a></div></div><div class="tlrow"><div class="tlrow-top"><span><span class="tlrow-w">21–24 lb</span> &middot; Sat, Dec 19</span><span class="tlrow-d">Fri 25</span></div><div class="tl-track"><span class="tl-dots"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="tl-cap">6 days</span></div><div class="calrow calrow-s"><button type="button" class="mvb" data-i="3">Add to calendar (.ics)</button><a class="cal-g mvg" data-i="3" href="#" target="_blank" rel="noopener">Google Calendar</a></div></div></div>
 <div class="chips"><span class="chip"><strong>Fridge rule</strong> 24 hours per 4–5 lb</span><span class="chip"><strong>Dinner</strong> Fri, Dec 25</span></div>
 <details class="xpd"><summary>Why this date</summary>
 <p>Exactly: 12 lb Tuesday, December 22. 14 lb and 16 lb Monday, December 21. 18 lb and 20 lb Sunday, December 20. 22 lb and 24 lb Saturday, December 19.</p>
@@ -154,6 +161,34 @@ details.xpd h2{margin-top:8px}
 <p>Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. Change the water every 30 minutes. Cook it right after it thaws.</p>
 
 </details></section>
+
+<script>
+/* 2026-11-01 (competitor steal #1): the fridge-move moment as a calendar
+   event. The dates below are the exact move dates this page prints above,
+   for a 5 PM dinner -- the convention this page states itself. The parity
+   harness (cal-move-2026-11-01/parity.mjs) checks every date here against
+   the calculator engine's thaw row for the same dinner and weight. The
+   file is built in the browser; nothing leaves the device. */
+(function(){
+var DINNER="Christmas dinner, Friday, December 25, 2026 at 5 PM";
+var PAGE="https://thawday.com/when-to-thaw-turkey-for-christmas";
+var MOVES=[{lb:null,band:"Up to 12 lb",days:3,y:2026,mo:12,d:22},{lb:null,band:"13–16 lb",days:4,y:2026,mo:12,d:21},{lb:null,band:"17–20 lb",days:5,y:2026,mo:12,d:20},{lb:null,band:"21–24 lb",days:6,y:2026,mo:12,d:19}];
+function esc(s){return String(s).replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\r?\n/g,"\\n");}
+function utc(d){return d.toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"");}
+function fold(l){var o=[];while(l.length>73){o.push(l.slice(0,73));l=" "+l.slice(73);}o.push(l);return o.join("\r\n");}
+function when(m){return new Date(m.y,m.mo-1,m.d,17,0);}
+function title(m){return m.lb?("Move the "+m.lb+" lb turkey to the fridge"):"Move the turkey to the fridge";}
+function detail(m){return (m.lb?("Fridge thaw: "+m.days+" days for a "+m.lb+" lb turkey."):"For a "+m.band+" turkey: "+m.days+" days in the fridge.")+" Dinner: "+DINNER+". Fridge thaw, per the USDA chart. Keep the fridge at 40 F or below. Never thaw a turkey on the counter. Plan from ThawDay: "+PAGE;}
+function ics(m){var st=when(m),en=new Date(st.getTime()+30*60000);var L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//ThawDay//Turkey Plan//EN","CALSCALE:GREGORIAN","METHOD:PUBLISH","BEGIN:VEVENT","UID:thawday-move-"+(m.lb||m.band.replace(/[^0-9]/g,""))+"-"+utc(st)+"@thawday.com","DTSTAMP:"+utc(new Date()),"DTSTART:"+utc(st),"DTEND:"+utc(en),"SUMMARY:"+esc(title(m)),"DESCRIPTION:"+esc(detail(m)),"BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+esc(title(m)),"TRIGGER:-P1D","END:VALARM","END:VEVENT","END:VCALENDAR"];return L.map(fold).join("\r\n")+"\r\n";}
+function gurl(m){var st=when(m),en=new Date(st.getTime()+30*60000);return "https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(title(m))+"&dates="+utc(st)+"/"+utc(en)+"&details="+encodeURIComponent(detail(m));}
+function dl(m){var blob=new Blob([ics(m)],{type:"text/calendar"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="thawday-fridge-move.ics";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url);},4000);}
+var b=document.getElementById("movebtn");if(b){b.addEventListener("click",function(){dl(MOVES[0]);var n=document.getElementById("movemsg");if(n){n.textContent="Calendar file downloaded. Open it to add the fridge move.";}});}
+var g=document.getElementById("moveg");if(g){g.href=gurl(MOVES[0]);}
+var bs=document.querySelectorAll(".mvb"),gs=document.querySelectorAll(".mvg"),i;
+for(i=0;i<bs.length;i++){(function(el){el.addEventListener("click",function(){dl(MOVES[Number(el.getAttribute("data-i"))]);});})(bs[i]);}
+for(i=0;i<gs.length;i++){gs[i].href=gurl(MOVES[Number(gs[i].getAttribute("data-i"))]);}
+})();
+</script>
 <section class="more">
 <h2>More turkey questions, answered</h2>
 <ul>

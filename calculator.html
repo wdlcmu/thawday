@@ -367,6 +367,9 @@
 <button id="calbtn" class="secondary" type="button">Add to calendar (.ics)</button>
 <p id="sharetext"></p>
 <p id="calmsg" aria-live="polite"></p>
+<button id="movebtn" class="secondary" type="button">Add the fridge move only (.ics)</button>
+<button id="movegbtn" class="secondary" type="button">Add the fridge move in Google Calendar</button>
+<p id="movemsg" aria-live="polite"></p>
 
 <h2>Prefer to ask in chat?</h2>
 <p>ThawDay is also built for ChatGPT and Claude. It is not in their stores yet.</p>
@@ -706,6 +709,51 @@ document.getElementById("calbtn").addEventListener("click",()=>{
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),4000);
   msg.textContent="Calendar file downloaded. Open it to add your dates.";
+});
+/* 2026-11-01 (competitor steal #1): the fridge-move moment on its own.
+   Same discipline as buildICS: reads only lastPlan's thaw row, never
+   recomputes a date. A fresh bird has no thaw row and a late plan's thaw
+   row is the cold-water rescue, so both get an honest message instead of
+   a file. */
+function moveParts(plan){
+  const thaw=plan.rows.find(r=>r.id==="thaw");
+  return {when:thaw.when, title:"Move the "+plan.lb+" lb turkey to the fridge",
+    detail:thaw.detail+" Dinner: "+fmt(plan.dinner)+". Never thaw a turkey on the counter. Plan from ThawDay: https://thawday.com/calculator"};
+}
+function buildMoveICS(plan){
+  const mp=moveParts(plan), stamp=icsUTC(new Date()), end=new Date(mp.when.getTime()+30*60000);
+  const lines=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//ThawDay//Turkey Plan//EN","CALSCALE:GREGORIAN","METHOD:PUBLISH",
+    "BEGIN:VEVENT","UID:thawday-move-"+plan.lb+"lb-"+icsUTC(mp.when)+"@thawday.com","DTSTAMP:"+stamp,
+    "DTSTART:"+icsUTC(mp.when),"DTEND:"+icsUTC(end),"SUMMARY:"+icsEscape(mp.title),"DESCRIPTION:"+icsEscape(mp.detail),
+    "BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+icsEscape(mp.title),"TRIGGER:-P1D","END:VALARM","END:VEVENT","END:VCALENDAR"];
+  return lines.map(icsFold).join("\r\n")+"\r\n";
+}
+function moveThaw(){
+  render();
+  const msg=document.getElementById("movemsg");
+  if(!lastPlan){ msg.textContent="Set your dinner date and time first."; return null; }
+  if(lastPlan.warning&&lastPlan.warning.kind==="past"){ msg.textContent="That dinner time is already past, so there is no calendar to add."; return null; }
+  const thaw=lastPlan.rows.find(r=>r.id==="thaw");
+  if(!thaw){ msg.textContent="A fresh turkey is already in the fridge, so there is no fridge move to add."; return null; }
+  if(thaw.late){ msg.textContent="Your fridge start date has passed. The plan above starts with cold water today, so there is no fridge move to add."; return null; }
+  return thaw;
+}
+document.getElementById("movebtn").addEventListener("click",()=>{
+  if(!moveThaw()) return;
+  const blob=new Blob([buildMoveICS(lastPlan)],{type:"text/calendar"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a"); a.href=url; a.download="thawday-fridge-move.ics";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),4000);
+  document.getElementById("movemsg").textContent="Fridge-move file downloaded. Open it to add the date.";
+});
+document.getElementById("movegbtn").addEventListener("click",()=>{
+  if(!moveThaw()) return;
+  const mp=moveParts(lastPlan), end=new Date(mp.when.getTime()+30*60000);
+  const url="https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(mp.title)
+    +"&dates="+icsUTC(mp.when)+"/"+icsUTC(end)+"&details="+encodeURIComponent(mp.detail);
+  window.open(url,"_blank");
+  document.getElementById("movemsg").textContent="Google Calendar opened with the fridge move filled in.";
 });
 // CALENDAR FILE END
 ["date","time","weight","state","brine"].forEach(id=>document.getElementById(id).addEventListener("input",render));
