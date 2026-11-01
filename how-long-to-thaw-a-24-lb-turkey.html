@@ -70,14 +70,48 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:.
 footer p{margin:4px 0}
 footer a{color:var(--accent);font-weight:600;text-decoration:none;display:inline-block;padding:12px 6px;min-height:44px}
 footer a:hover{text-decoration:underline}
+
+.tl{display:flex;align-items:flex-start;gap:10px;margin:18px 0 6px}
+.tl-node{display:flex;flex-direction:column;min-width:76px}
+.tl-node strong{font-size:1rem;line-height:1.3}
+.tl-end{text-align:right}
+.tl-k{font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--accent)}
+.tl-track{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding-top:8px;min-width:56px}
+.tl-dots{position:relative;display:flex;justify-content:center;gap:7px;width:100%}
+.tl-dots::before{content:"";position:absolute;left:0;right:0;top:50%;border-top:2px solid var(--line)}
+.tl-dots i{width:11px;height:11px;border-radius:50%;background:var(--accent);position:relative;flex:none}
+.tl-cap{font-size:.875rem;font-weight:600;color:var(--muted)}
+.bands{margin:12px 0}
+.band{display:grid;grid-template-columns:78px 1fr 70px 102px;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)}
+.bands .band:last-child{border-bottom:0}
+.band-h{font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.band-w{font-weight:700;white-space:nowrap}
+.band-bar{display:block;height:12px;background:#f7ecd9;border-radius:6px;overflow:hidden}
+.band-bar i{display:block;height:100%;background:var(--accent);border-radius:6px}
+.band-t{font-weight:600}
+.band-c{color:var(--muted);font-size:.9375rem}
+.ways3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:14px 0}
+.way{border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px 8px 10px;text-align:center}
+.way svg{display:block;margin:0 auto 6px}
+.way strong{display:block;font-size:1rem}
+.way span{display:block;font-size:.875rem;color:var(--muted);margin-top:2px}
+.way em{display:block;font-style:normal;font-weight:700;font-size:.8rem;color:var(--accent);margin-top:5px}
+.tlrows{margin:12px 0}
+.tlrow{padding:10px 0 12px;border-bottom:1px solid var(--line)}
+.tlrow:last-child{border-bottom:0}
+.tlrow-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.tlrow-w{font-weight:700}
+.tlrow-d{color:var(--muted);font-size:.9375rem}
+.tlrow .tl-track{padding-top:6px}
 </style>
 </head>
 <body>
 <p class="brand"><a href="/">ThawDay</a></p>
 <h1>How long to thaw a 24 lb turkey</h1>
 <p class="answer"><strong>6 days in the fridge.</strong> For a 5 PM Thanksgiving dinner on Thursday, November 26, 2026, move it to the fridge on <strong>Friday, November 20</strong>. In cold water: 12 hours.</p>
+<div class="tl"><div class="tl-node"><span class="tl-k">Move</span><strong>Fri, Nov 20</strong></div><div class="tl-track"><span class="tl-dots"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="tl-cap">6 days</span></div><div class="tl-node tl-end"><span class="tl-k">Dinner</span><strong>Thu, Nov 26</strong></div></div>
 <h2>In the fridge</h2>
-<p>Fridge thawing takes about 24 hours for every 4 to 5 pounds. Keep the fridge at 40 F or below. Put the turkey on a tray, breast up. Leave it in its wrapper. Give it the full 6 days. Your band is 21 to 24 lb; every bird in it shares this date.</p>
+<p>Fridge thawing takes about 24 hours for every 4 to 5 pounds. Keep the fridge at 40 F or below. Put the turkey on a tray, breast up. Leave it in its wrapper. Your band is 21 to 24 lb; every bird in it shares this date.</p>
 <p>Once thawed, cook it within <a href="/how-long-can-a-thawed-turkey-stay-in-the-fridge">1 to 2 days in the fridge</a>. Start early; a late start is the problem.</p>
 <h2>In a hurry? Cold water</h2>
 <p>Cold water takes 12 hours for 24 lb. Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. Change the water every 30 minutes. Cook it right after it thaws. Full steps: <a href="/thaw-a-turkey-in-cold-water">thawing a turkey in cold water</a>.</p>
@@ -86,7 +120,7 @@ footer a:hover{text-decoration:underline}
 </div>
 <div class="door">
 <h2>Your exact date, in seconds</h2>
-<p>Use the <a href="/calculator">calculator</a> for your buy, thaw, brine, and roast dates. Or <a href="/ask">ask in your own words</a>: "24 lb frozen turkey, dinner Thursday."</p>
+<p>Use the <a href="/calculator">calculator</a> for your buy, thaw, brine, and roast dates. Or <a href="/ask">ask in your own words</a>.</p>
 </div>
 <section class="more">
 <h2>More turkey questions, answered</h2>
