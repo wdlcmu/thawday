@@ -1,6 +1,6 @@
 # ThawDay: full page text
 
-> Complete text of thawday.com's pages: the homepage, the turkey timeline calculator, the ask page, and the sixteen question pages.
+> Complete text of thawday.com's pages: the homepage, the turkey timeline calculator, the ask page, and the nineteen question pages.
 > ThawDay is a free turkey timeline tool for Thanksgiving. Type in your dinner time and turkey
 > weight. You get dated buy, thaw, brine, and roast times. No ads, no accounts.
 > Thaw times come from the USDA Food Safety and Inspection Service.
@@ -174,3 +174,15 @@ No. Never thaw a turkey on the counter. The outside warms up hours before the in
 ## Can you thaw a turkey in the microwave? (https://thawday.com/can-you-thaw-a-turkey-in-the-microwave)
 
 Yes. USDA's third safe way is the microwave: follow your oven manual for size and timing, and cook the turkey right after it thaws. ThawDay prints no microwave minutes, because the manual is the only honest source for them. Too big for the microwave: cold water at 30 minutes per pound, or the fridge at about 24 hours for every 4 to 5 pounds.
+
+## How much turkey per person? (https://thawday.com/how-much-turkey-per-person)
+
+Plan one pound of whole turkey per person. For leftovers, add half a pound per person. Bone and skin make up much of the weight. Bird sizes: 8 people buy 8 lb, or 12 lb with leftovers; 12 people buy 12 lb, or 18 lb; 16 people buy 16 lb, or 24 lb; 20 people buy 20 lb, or two birds of 15 lb each when leftovers push the need to 30 lb.
+
+## When to buy a turkey for Thanksgiving (https://thawday.com/when-to-buy-a-turkey-for-thanksgiving)
+
+Frozen: buy by Sunday, November 15, 2026, eleven days before dinner (kitchen practice: frozen birds sell out the weekend before Thanksgiving). Fresh: buy 1 to 2 days before cooking, so Tuesday, November 24 or Wednesday, November 25, 2026. Frozen thaw starts by weight: 12 lb on Monday, November 23; 16 lb on Sunday, November 22; 20 lb on Saturday, November 21; 24 lb on Friday, November 20.
+
+## How long do turkey leftovers last? (https://thawday.com/how-long-do-turkey-leftovers-last)
+
+Use refrigerated turkey, stuffing, and gravy within 3 to 4 days. For Thanksgiving 2026 that window ends Sunday, November 29 to Monday, November 30. Discard any turkey, stuffing, and gravy left out at room temperature longer than 2 hours; 1 hour in temperatures above 90 F. Divide leftovers into smaller portions. Refrigerate or freeze in covered shallow containers for quicker cooling. If freezing leftovers, use within 2 to 6 months for best quality.
