@@ -41,6 +41,9 @@
 - [How long can you keep a turkey in the freezer?](https://thawday.com/how-long-can-you-keep-a-turkey-in-the-freezer): turkeys can be kept frozen indefinitely; however, cook within 1 year for best quality, with USDA freezer times for parts and giblets.
 - [What if you cook a turkey with the giblets inside?](https://thawday.com/what-if-you-cook-a-turkey-with-the-giblets-inside): paper wrapped is no concern at 165 F; a plastic bag that melted means do not eat the giblets or the turkey.
 - [How to reheat leftover turkey?](https://thawday.com/how-to-reheat-leftover-turkey): reheat to 165 F measured with a food thermometer, covered so it heats all the way through; gravy comes back to a rolling boil, and frozen leftovers can reheat without thawing.
+- [What temperature to cook a turkey?](https://thawday.com/what-temperature-to-cook-a-turkey): 325 F, and never lower; USDA sets the oven floor, and a food thermometer decides when the bird is done at 165 F.
+- [When should I take the turkey out of the freezer for Christmas?](https://thawday.com/when-to-thaw-turkey-for-christmas): Christmas dinner is Friday, December 25, 2026; up to 12 lb moves Tuesday, December 22, and 21 to 24 lb moves Saturday, December 19.
+- [Can you thaw a turkey in cold water overnight?](https://thawday.com/can-you-thaw-a-turkey-in-cold-water-overnight): no; the water must change every 30 minutes and the bird cooks right after it thaws, so the fridge is the overnight method.
 
 ## For AI assistants: callable tools (MCP)
 
