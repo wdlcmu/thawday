@@ -125,6 +125,8 @@
  .row{border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:8px 0;background:#fff}
  .warnrow{background:#fef2f2;border-color:#e5a3a3}
  .safety{background:#fff8e1;border:1px solid #e6c200;border-radius:8px;padding:12px 14px;margin-top:16px}
+ .cwsched{margin:6px 0 0;padding-left:22px}
+ .cwsched li{margin:3px 0}
  button{font-size:16px;font-weight:700;padding:12px 18px;margin:8px 8px 8px 0;border:1px solid var(--accent);border-radius:999px;background:var(--accent);color:#fff;cursor:pointer}
  button.secondary{background:#fff;color:var(--accent)}
  #hint{color:#b91c1c;font-weight:600;min-height:1.2em;margin:8px 0 0}
@@ -448,7 +450,19 @@ function render(){
   const warning=planWarning(rows,lb,dinner,now);
   const warnHtml=warning?`<div class="row warnrow"><strong>${warning.kind==="past"?"That dinner time is already past.":"This plan cannot work as entered."}</strong><br>${warning.kind==="past"?"Pick a date and time ahead of you, and the plan will line up.":warning.kind==="lead"?`The turkey would have had to go in the oven at ${fmt(warning.oven)}. There is not enough time to roast it before this dinner. What can work instead: a smaller bird, or a later dinner.`:warning.kind==="brine"?(warning.reason==="thaw"?`Brining was set to start at ${fmt(warning.brine)}, but the turkey does not finish thawing until ${fmt(warning.finish)}. A brine cannot start before the bird is thawed. What can work instead: skip the brine, or use a shorter brine once it thaws.`:`Brining was set to start at ${fmt(warning.brine)}. That time has already passed, so a full brine cannot fit before this dinner. What can work instead: skip the brine, or use a shorter brine that starts now.`):`Cold water from now finishes thawing at ${fmt(warning.finish)}. The turkey needs to be in the oven before then. What can work instead: a smaller bird, a fresh bird, or a later dinner.`}</div>`:"";
   out.innerHTML=warnHtml+rows.map(r=>`<div class="row"><strong>${fmt(r.when)}</strong><br>${r.label}<br>${r.detail}</div>`).join("");
-  cold.innerHTML = state==="frozen" ? `<h2>Cold-water backup</h2><p>Running late? Cold water thaws in about ${Math.round((lb*30/60)*10)/10} hours (${lb} lb at 30 minutes per pound). Seal the bird in a leak-proof plastic bag and submerge it in cold tap water. Change the water every 30 minutes, and cook it right after it thaws.</p>` : "";
+  /* 2026-10-31 (steal-list STEAL-TD-CW-SCHED-1, from the OnlyCalculators
+     cold-water schedule table): an elapsed-time change schedule under
+     the cold-water backup. Display only: every step is built from the
+     same total the backup paragraph prints (lb x the engine's own
+     cold-water minutes-per-pound constant), never a hand-typed time,
+     and it does not ride the share text, the card, or the calendar
+     file. The backup paragraph itself is unchanged, word for word. */
+  const cwTotalMin=lb*CONSTANTS.coldWaterMinPerLb.value;
+  const cwLabel=m=> m<60 ? m+" min" : (m%60===0 ? (m/60)+" hr" : Math.floor(m/60)+" hr "+(m%60)+" min");
+  const cwSteps=[`<li><strong>Start:</strong> Bird goes in cold water, in its wrapper.</li>`];
+  for(let m=30;m<cwTotalMin;m+=30) cwSteps.push(`<li><strong>+${cwLabel(m)}:</strong> Change the water.</li>`);
+  cwSteps.push(`<li><strong>+${cwLabel(cwTotalMin)}:</strong> Thaw done. Cook it right after it thaws.</li>`);
+  cold.innerHTML = state==="frozen" ? `<h2>Cold-water backup</h2><p>Running late? Cold water thaws in about ${Math.round((lb*30/60)*10)/10} hours (${lb} lb at 30 minutes per pound). Seal the bird in a leak-proof plastic bag and submerge it in cold tap water. Change the water every 30 minutes, and cook it right after it thaws.</p><p><strong>Change schedule</strong></p><ul class="cwsched">${cwSteps.join("")}</ul>` : "";
   /* 2026-10-30 (vs-AI coverage fix): cooking from frozen was the one
      real ask in the Oct 29 study with no ThawDay coverage at all
      (Q10, marked UNTESTED). USDA covers it directly: safe, at least
