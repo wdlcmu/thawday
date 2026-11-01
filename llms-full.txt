@@ -30,7 +30,7 @@ USDA Food Safety and Inspection Service.
 
 ### Two ways to use ThawDay
 
-On this site: Use the form. Get the full dated plan and picture card. Print it. Share it.
+On this site: Tap through the quiz. Get the full dated plan and picture card. Print it. Share it.
 
 In ChatGPT or Claude (coming soon): Ask in plain words. Follow up in the same chat. Ask just the thaw, just the roast. Or ask a new weight.
 
