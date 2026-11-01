@@ -120,17 +120,47 @@ function parseAsk(raw, nowOverride){
   if(/no brine|without brine|skip (the )?brine/.test(t)){ p.brine="no"; p.brineExplicit=true; }
   else if(/\bbrine\b|\bbrining\b|salt water/.test(t)){ p.brine="yes"; p.brineExplicit=true; }
   if(/from frozen/.test(t)&&/(cook|bake|roast|oven)/.test(t)) p.intent="fromfrozen";
-  else if(/thaw/.test(t)&&/(when|how long|how many|start|begin|need)/.test(t)) p.intent="thaw";
+  else if(/(thaw|defrost)/.test(t)&&/(when|how long|how many|start|begin|need)/.test(t)) p.intent="thaw";
+  else if(/cold water/.test(t)&&/(how long|how many)/.test(t)) p.intent="thaw";
   else if(/(roast|cook|bake)/.test(t)&&/(how long|when|what time)/.test(t)) p.intent="roast";
   /* 2026-11-01 (Addendum 907-B): unsafe-premise + hold-window detection.
      These questions carry their own published answer on the site's pages;
      the premise is recorded here and answerAsk leads with that answer.
      No numbers live here: the lead sentences are the pages' own words. */
-  var holdM=t.match(/been in the fridge for (\d+) days?/);
+  var holdM=t.match(/(?:fridge|refrigerator) for (\d+) days?/);
   if(/\bcounter\b|room temperature/.test(t)) p.premise="counter";
   else if(/\bwarm water\b|\bhot water\b/.test(t)) p.premise="warmwater";
   else if(/cold water/.test(t)&&/overnight/.test(t)) p.premise="coldovernight";
-  if(holdM||(/thawed/.test(t)&&/fridge/.test(t)&&/(still ok|still good|still safe|how long|ok to|safe to)/.test(t))||/how long can a thawed/.test(t)){ p.premise="hold"; if(holdM) p.holdDays=parseInt(holdM[1],10); }
+  /* 2026-11-01 (Addendum 919): the hold read only "been in the fridge
+     for N days". It now reads the shapes people actually use ("thawed
+     3 days ago", "since Monday", "finished thawing on Wednesday",
+     "in the refrigerator for 2 days", "thawed yesterday") and counts
+     forward to the day the cook plans to cook, so a past-window bird
+     gets its warning even when the cook day is still ahead. Only
+     calendar arithmetic lives here; the food-safety number is still
+     the published 1-to-2-day rule in answerAsk. */
+  var thawedWord=/\bthawed\b|\bdefrosted\b|finished thawing/.test(t);
+  var wdNames=["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
+  var sinceM=t.match(/\bsince (sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/);
+  var thawOnM=t.match(/(?:finished thawing|thawed|defrosted) on (sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/);
+  var agoM=t.match(/(\d+) days? ago/);
+  var holdCue=holdM||/how long can a thawed/.test(t)
+    ||(thawedWord&&/(fridge|refrigerator)/.test(t)&&/(still ok|still good|still safe|how long|ok to|safe to)/.test(t))
+    ||(thawedWord&&(sinceM||thawOnM||agoM||/\byesterday\b/.test(t)||/\bsitting\b/.test(t)||/(still ok|still good|still safe|ok to cook|is it ok|good for)/.test(t)));
+  if(holdCue){ p.premise="hold";
+    var elapsed=null;
+    if(holdM) elapsed=parseInt(holdM[1],10);
+    else if(agoM) elapsed=parseInt(agoM[1],10);
+    else if(/\byesterday\b/.test(t)) elapsed=1;
+    else if(sinceM) elapsed=(today.getDay()-wdNames.indexOf(sinceM[1])+7)%7;
+    else if(thawOnM) elapsed=(today.getDay()-wdNames.indexOf(thawOnM[1])+7)%7;
+    if(elapsed!=null){ var cookOff=0;
+      if(/day after tomorrow/.test(t)) cookOff=2;
+      else if(/\btomorrow\b/.test(t)) cookOff=1;
+      else { var cookM=t.match(/(?:cook|good for|eat|serve)[^.]{0,24}?\b(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/); if(cookM) cookOff=(wdNames.indexOf(cookM[1])-today.getDay()+7)%7; }
+      p.holdDays=elapsed+cookOff; if(cookOff>0) p.holdFuture=true;
+    }
+  }
   p.coldWater=/cold water/.test(t);
   /* 2026-11-01 (Addendum 907-A): weekday scan. A weekday inside a
      current-day clause ("it's Tuesday", "it is Wednesday", "today is
@@ -205,8 +235,15 @@ function answerAsk(raw, nowOverride){
   else if(p.premise==="coldovernight") premiseHtml=`<div class="row"><strong>No. Cold water only works while you are awake to change it.</strong><br>Change the water every 30 minutes. Cook it right after it thaws. An overnight soak breaks both rules at once. The safe plan is below.</div>`;
   if(p.premise==="hold"){
     hint.textContent="";
-    var holdVerdict = p.holdDays==null ? "" : (p.holdDays>2 ? ` Yours has been in the fridge for ${p.holdDays} days. That is past the window. Do not cook it.` : ` At ${p.holdDays} day${p.holdDays===1?"":"s"}, it is still inside that window. Cook it today.`);
+    var holdVerdict = p.holdDays==null ? "" : (p.holdDays>2 ? (p.holdFuture ? ` By the day you cook it, yours will have been thawed for ${p.holdDays} days. That is past the window. Do not cook it.` : ` Yours has been in the fridge for ${p.holdDays} days. That is past the window. Do not cook it.`) : (p.holdFuture ? ` By the day you cook it, yours will have been thawed for ${p.holdDays} day${p.holdDays===1?"":"s"}. That is still inside the window.` : ` At ${p.holdDays} day${p.holdDays===1?"":"s"}, it is still inside that window. Cook it today.`));
     out.innerHTML=`<div class="row"><strong>Cook a thawed turkey within 1 to 2 days. That is the USDA rule.</strong><br>The clock starts when the turkey is fully thawed.${holdVerdict}</div>`;
+    document.getElementById("askp-calclink").innerHTML="";
+    return {rows:[],warning:null,parsed:p};
+  }
+  /* Addendum 919: an unsafe premise gets its No even when no weight
+     was given; the weight ask follows the No instead of replacing it. */
+  if(premiseHtml&&!p.lb){ hint.textContent="";
+    out.innerHTML=premiseHtml.replace(" The safe plan is below.","")+"<div class=\"row\"><strong>One thing I still need: the turkey.</strong><br>Say its weight, like \"a 14-pound turkey\". Or say how many people are eating, like \"turkey for 10 people\". Then I can build the safe plan.</div>";
     document.getElementById("askp-calclink").innerHTML="";
     return {rows:[],warning:null,parsed:p};
   }
