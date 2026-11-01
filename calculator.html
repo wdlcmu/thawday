@@ -459,7 +459,7 @@ function render(){
      file. The backup paragraph itself is unchanged, word for word. */
   const cwTotalMin=lb*CONSTANTS.coldWaterMinPerLb.value;
   const cwLabel=m=> m<60 ? m+" min" : (m%60===0 ? (m/60)+" hr" : Math.floor(m/60)+" hr "+(m%60)+" min");
-  const cwSteps=[`<li><strong>Start:</strong> Bird goes in cold water, in its wrapper.</li>`];
+  const cwSteps=[`<li><strong>Start:</strong> Bird goes in cold water, sealed in a leak-proof bag.</li>`];
   for(let m=30;m<cwTotalMin;m+=30) cwSteps.push(`<li><strong>+${cwLabel(m)}:</strong> Change the water.</li>`);
   cwSteps.push(`<li><strong>+${cwLabel(cwTotalMin)}:</strong> Thaw done. Cook it right after it thaws.</li>`);
   cold.innerHTML = state==="frozen" ? `<h2>Cold-water backup</h2><p>Running late? Cold water thaws in about ${Math.round((lb*30/60)*10)/10} hours (${lb} lb at 30 minutes per pound). Seal the bird in a leak-proof plastic bag and submerge it in cold tap water. Change the water every 30 minutes, and cook it right after it thaws.</p><p><strong>Change schedule</strong></p><ul class="cwsched">${cwSteps.join("")}</ul>` : "";
