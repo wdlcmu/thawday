@@ -16,6 +16,14 @@
 - [Ask in your own words](https://thawday.com/ask): say the turkey and the dinner in one line ("I have a 14-pound frozen turkey. Dinner is Thursday at 5."); the same USDA math answers on the page. The words run in the visitor's browser and are never sent or saved.
 - [Homepage](https://thawday.com/): thaw times at a glance, plus common questions.
 
+## Question pages (one page per question, each answers in full)
+
+- [How long to thaw a turkey](https://thawday.com/how-long-to-thaw-a-turkey): fridge and cold water times by weight, from the USDA chart.
+- [When to take the turkey out of the freezer for Thanksgiving 2026](https://thawday.com/when-to-thaw-turkey-for-thanksgiving): the exact fridge date by weight for Thursday, November 26, 2026 (up to 12 lb: Mon Nov 23; 13 to 16 lb: Sun Nov 22; 17 to 20 lb: Sat Nov 21; 21 to 24 lb: Fri Nov 20).
+- [Can you thaw a turkey in cold water?](https://thawday.com/thaw-a-turkey-in-cold-water): yes; 30 minutes per pound, change the water every 30 minutes, cook right after.
+- [Can you cook a turkey from frozen?](https://thawday.com/can-you-cook-a-frozen-turkey): yes; USDA from-frozen roast times by weight at 325 F; no oven bag; giblets out with tongs.
+- [How long can a thawed turkey stay in the fridge?](https://thawday.com/how-long-can-a-thawed-turkey-stay-in-the-fridge): cook it within 1 to 2 days of full thaw.
+
 ## For AI assistants: callable tools (MCP)
 
 - ThawDay also runs as a read-only MCP server (Streamable HTTP, no auth, no user data) at https://mcp.thawday.com/mcp

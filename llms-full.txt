@@ -1,6 +1,6 @@
 # ThawDay: full page text
 
-> Complete text of thawday.com's three pages: the homepage, the turkey timeline calculator, and the ask page.
+> Complete text of thawday.com's pages: the homepage, the turkey timeline calculator, the ask page, and the five question pages.
 > ThawDay is a free turkey timeline tool for Thanksgiving. Type in your dinner time and turkey
 > weight. You get dated buy, thaw, brine, and roast times. No ads, no accounts.
 > Thaw times come from the USDA Food Safety and Inspection Service.
@@ -122,3 +122,27 @@ Safety: When in doubt, use a meat thermometer: 165 F in the thickest part of the
 Want the picture card, print view, or calendar file? Open the calculator. It builds those from the same plan.
 
 Timings verified against USDA FSIS charts on Oct 22, 2026.
+
+## How long to thaw a turkey (https://thawday.com/how-long-to-thaw-a-turkey)
+
+In the fridge: about 24 hours for every 4 to 5 pounds. A 14 lb turkey needs 4 days. A 20 lb turkey needs 5 days. In cold water: 30 minutes per pound.
+
+Thaw times by weight (USDA): 4 to 12 lb: fridge 1 to 3 days, cold water 2 to 6 hours. 12 to 16 lb: fridge 3 to 4 days, cold water 6 to 8 hours. 16 to 20 lb: fridge 4 to 5 days, cold water 8 to 10 hours. 20 to 24 lb: fridge 5 to 6 days, cold water 10 to 12 hours.
+
+The fridge is hands-off. Cold water is faster: keep the bird in its wrapper, change the water every 30 minutes, cook it right after it thaws. Never thaw a turkey on the counter. Once thawed, a turkey keeps 1 to 2 days in the fridge before cooking.
+
+## When to take the turkey out of the freezer for Thanksgiving (https://thawday.com/when-to-thaw-turkey-for-thanksgiving)
+
+Thanksgiving dinner is Thursday, November 26, 2026. Move a frozen turkey to the fridge on these dates: up to 12 lb on Monday, November 23 (3 days); 13 to 16 lb on Sunday, November 22 (4 days); 17 to 20 lb on Saturday, November 21 (5 days); 21 to 24 lb on Friday, November 20 (6 days). These are the same dates the ThawDay calculator gives for a 5 PM Thanksgiving dinner. Already past your date? Use cold water today, or cook from frozen.
+
+## Can you thaw a turkey in cold water? (https://thawday.com/thaw-a-turkey-in-cold-water)
+
+Yes. It is one of the two USDA-safe methods. Allow 30 minutes per pound: 8 lb about 4 hours, 12 lb about 6 hours, 14 lb about 7 hours, 16 lb about 8 hours, 20 lb about 10 hours, 24 lb about 12 hours. Keep the turkey in its leak-proof wrapper, cover it with cold tap water, change the water every 30 minutes, and cook it right after it thaws. Cold water only. Never thaw on the counter.
+
+## Can you cook a turkey from frozen? (https://thawday.com/can-you-cook-a-frozen-turkey)
+
+Yes. USDA says it is safe. Roast at 325 F; it takes at least 50 percent longer than a thawed bird. Times from frozen: up to 12 lb, 4 hours 15 minutes to 4 hours 30 minutes; 13 to 14 lb, 4 hours 30 minutes to 5 hours 45 minutes; 15 to 18 lb, 5 hours 45 minutes to 6 hours 30 minutes; 19 to 20 lb, 6 hours 30 minutes to 6 hours 45 minutes; 21 to 24 lb, 6 hours 45 minutes to 7 hours 30 minutes. Do not use an oven bag. Pull the giblet packet out with tongs 20 to 30 minutes in. Done at 165 F in the thickest part.
+
+## How long can a thawed turkey stay in the fridge? (https://thawday.com/how-long-can-a-thawed-turkey-stay-in-the-fridge)
+
+Cook it within 1 to 2 days. That is the USDA rule. The clock starts when the turkey is fully thawed. A fresh turkey is on the same clock: buy it 1 to 2 days before cooking. Cooked leftovers keep 3 to 4 days in the fridge; get them in within 2 hours of the meal.
