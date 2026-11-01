@@ -229,7 +229,7 @@
 </div>
 <p>USDA says one pound per person. For leftovers, plan half a pound more each.</p>
 <p id="guestresult" aria-live="polite"></p>
-<p id="twobird" hidden>Over 16 people? Two small birds cook faster.</p>
+<p id="twobird" hidden>Two birds cook faster.</p>
 <details class="qmanual">
 <summary>Type the number instead</summary>
 <label for="guests">How many people eat?</label>
@@ -691,7 +691,21 @@ function guestWeight(){
   document.getElementById("weight").value=String(lb);
   const art=(lb===8||lb===11||lb===18)?"an":"a";
   res.textContent="For "+g+(g===1?" person":" people")+", buy "+art+" "+lb+" pound bird.";
-  two.hidden=!(need>24);
+  /* 2026-10-31 (STEAL-TD-TWOBIRD-1): when the need passes one bird,
+     name the split instead of the old generic line. The need is
+     halved and each half rounded up -- the food-safe direction, the
+     same round-up the leftovers rule uses -- so the two birds
+     together always cover the need, and each bird stays inside the
+     tool's 8 to 24 lb range (needs run 25 to 45, splits 13 to 23).
+     Display only: the sizing rule, the clamped weight, and the plan
+     are exactly as before. */
+  if(need>24){
+    const each=Math.ceil(need/2);
+    two.textContent="Two birds, "+each+" pounds each, cook faster.";
+    two.hidden=false;
+  } else {
+    two.hidden=true;
+  }
   render();
 }
 document.getElementById("guests").addEventListener("input",guestWeight);
@@ -837,8 +851,11 @@ render();
        line lives in step 1, which the auto-advance and the finish both
        hide -- on the chip path it was visible for ~300 ms and then gone
        from the summary and the timeline, so the advice never reached
-       the finished plan. Carry it into the summary when it is showing. */
-    $("qsummaryText").textContent=who+$("weight").value+" lb turkey \u00b7 "+($("state").value==="fresh"?"Fresh":"Frozen")+" \u00b7 "+($("brine").value==="yes"?"Brine":"No brine")+(($("twobird")&&!$("twobird").hidden)?" \u00b7 Two small birds cook faster":"")+(when?" \u00b7 Dinner "+when:"");
+       the finished plan. Carry it into the summary when it is showing.
+       2026-10-31 (STEAL-TD-TWOBIRD-1): the line now names the split
+       (two birds, X pounds each), so the summary carries the line's
+       own text -- one source of truth, never a second wording. */
+    $("qsummaryText").textContent=who+$("weight").value+" lb turkey \u00b7 "+($("state").value==="fresh"?"Fresh":"Frozen")+" \u00b7 "+($("brine").value==="yes"?"Brine":"No brine")+(($("twobird")&&!$("twobird").hidden)?" \u00b7 "+$("twobird").textContent.replace(/\.$/,""):"")+(when?" \u00b7 Dinner "+when:"");
     $("quiz").hidden=true; $("qsummary").hidden=false;
     requestAnimationFrame(function(){ $("out").scrollIntoView(); });
   });
