@@ -1061,5 +1061,33 @@ function fleetSessionMarks(){
 })();
 </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "7488774fc7d54208bf7ece1b8a072e01"}'></script>
+<!-- ASK PANEL START -->
+<link rel="stylesheet" href="/ask-panel.css">
+<button type="button" class="askp-open" id="askp-open">Ask in your own words</button>
+<div class="askp-overlay" id="askp-panel" hidden>
+  <div class="askp-sheet" role="dialog" aria-modal="true" aria-labelledby="askp-title">
+    <div class="askp-head"><h2 id="askp-title">Ask in your own words</h2><button type="button" class="askp-close" id="askp-close" aria-label="Close the ask panel">&times;</button></div>
+    <p class="askp-sub">Skip the form. Say your turkey and your dinner in one line.</p>
+    <p class="askp-sub">We run the same USDA math as the <a href="/calculator">calculator</a>, right on this page. Nothing you type is sent or saved.</p>
+    <label class="askp-label" for="askp-q">Your turkey, in your words</label>
+    <textarea id="askp-q" rows="3" placeholder="I have a 14-pound frozen turkey. Dinner is Thursday at 5."></textarea>
+    <button type="button" class="askp-go" id="askp-go">Get my timeline</button>
+    <p class="askp-examples">Or tap an example:</p>
+    <div class="chips" role="group" aria-label="Example questions">
+      <button type="button" class="chip" data-q="I have a 14-pound frozen turkey. Dinner is Thursday at 5.">A 14-pound frozen turkey, dinner Thursday at 5</button>
+      <button type="button" class="chip" data-q="When do I start thawing a 12 lb turkey for Thanksgiving?">When do I start thawing a 12 lb turkey?</button>
+      <button type="button" class="chip" data-q="Can I cook a 15 lb turkey from frozen?">Can I cook it from frozen?</button>
+      <button type="button" class="chip" data-q="Fresh 20 lb turkey for Christmas dinner at 6. We want to brine it.">Fresh 20 lb, Christmas, with a brine</button>
+      <button type="button" class="chip" data-q="Turkey for 10 people with leftovers, Thanksgiving at 4.">Turkey for 10 people, with leftovers</button>
+    </div>
+    <p id="askp-hint" role="alert"></p>
+    <section id="askp-answer" aria-live="polite"></section>
+    <div class="safety"><strong>Safety:</strong> When in doubt, use a meat thermometer: 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing. Never thaw a turkey on the counter.</div>
+    <p id="askp-calclink">Want the picture card, print view, or calendar file? <a href="/calculator">Open the calculator</a>. It builds those from the same plan.</p>
+    <p class="askp-full"><a href="/ask">Open the full ask page</a></p>
+  </div>
+</div>
+<script defer src="/ask-panel.js"></script>
+<!-- ASK PANEL END -->
 </body>
 </html>

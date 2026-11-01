@@ -1,0 +1,76 @@
+/* ThawDay ask panel (2026-11-01). All rules scoped .askp- so the panel
+   cannot disturb the host page. Answer styles (.row, .chip, .safety,
+   hint, lead, row animation) mirror ask.html's own styles in the site's
+   register (--accent #b45309, --line #e7d8c3, paper #fffdf8). */
+.askp-open{
+  position:fixed;right:16px;bottom:16px;z-index:9990;
+  min-height:48px;padding:12px 20px;border:1px solid #b45309;border-radius:999px;
+  background:#b45309;color:#fff;font-size:16px;font-weight:700;cursor:pointer;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  box-shadow:0 4px 16px rgba(26,26,26,.25);
+}
+.askp-open:focus-visible,.askp-close:focus-visible,.askp-go:focus-visible,
+.askp-sheet .chip:focus-visible,.askp-sheet textarea:focus-visible{
+  outline:3px solid #b45309;outline-offset:2px;
+}
+.askp-overlay{
+  position:fixed;inset:0;z-index:9991;background:rgba(26,26,26,.45);
+  display:flex;align-items:flex-end;justify-content:center;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:#1a1a1a;
+}
+.askp-overlay[hidden]{display:none}
+.askp-sheet{
+  background:#fffdf8;width:100%;max-height:88vh;overflow-y:auto;
+  border-radius:16px 16px 0 0;padding:16px 20px 24px;line-height:1.5;
+  box-shadow:0 -6px 30px rgba(26,26,26,.3);
+}
+@media (min-width:641px){
+  .askp-overlay{align-items:flex-end;justify-content:flex-end;padding:20px}
+  .askp-sheet{width:400px;border-radius:16px}
+}
+.askp-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.askp-head h2{font-size:1.25rem;margin:2px 0 6px;font-weight:800;letter-spacing:-0.01em}
+.askp-close{
+  flex:0 0 auto;min-width:44px;min-height:44px;border:1px solid #e7d8c3;border-radius:999px;
+  background:#fff;color:#1a1a1a;font-size:20px;line-height:1;cursor:pointer;
+}
+.askp-sub{margin:6px 0}
+.askp-label{display:block;margin:14px 0 4px;font-weight:600}
+.askp-sheet textarea{
+  font-size:16px;min-height:44px;padding:10px;width:100%;box-sizing:border-box;
+  border:1px solid #d6cfc4;border-radius:8px;background:#fff;color:#1a1a1a;font-family:inherit;
+}
+.askp-go{
+  font-size:16px;font-weight:700;padding:12px 18px;margin:8px 8px 8px 0;
+  border:1px solid #b45309;border-radius:999px;background:#b45309;color:#fff;cursor:pointer;
+}
+.askp-examples{margin:10px 0 0}
+.askp-sheet .chips{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 4px}
+.askp-sheet .chip{
+  min-height:48px;padding:10px 16px;margin:0;font-size:1rem;font-weight:600;
+  border:2px solid #d6cfc4;border-radius:16px;background:#fff;color:#1a1a1a;cursor:pointer;text-align:left;
+}
+.askp-sheet .chip:active{transform:scale(.98)}
+#askp-hint{color:#b91c1c;font-weight:600;min-height:1.2em;margin:8px 0 0}
+.askp-sheet .row{border:1px solid #e7d8c3;border-radius:8px;padding:12px 14px;margin:8px 0;background:#fff}
+.askp-sheet .warnrow{background:#fef2f2;border-color:#e5a3a3}
+.askp-sheet .safety{background:#fff8e1;border:1px solid #e6c200;border-radius:8px;padding:12px 14px;margin-top:16px}
+.askp-sheet .lead{font-size:1.125rem}
+.askp-sheet h2{font-size:1.25rem;margin:28px 0 8px}
+#askp-answer .row{animation:askp-qin .5s ease both}
+#askp-answer .row:nth-child(2){animation-delay:.06s}
+#askp-answer .row:nth-child(3){animation-delay:.12s}
+#askp-answer .row:nth-child(4){animation-delay:.18s}
+#askp-answer .row:nth-child(5){animation-delay:.24s}
+#askp-answer .row:nth-child(6){animation-delay:.30s}
+#askp-answer .row:nth-child(7){animation-delay:.36s}
+@keyframes askp-qin{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){
+  #askp-answer .row{animation:none}
+  .askp-sheet .chip:active{transform:none}
+}
+.askp-full{margin:14px 0 0;font-size:.9375rem}
+.askp-full a{color:#b45309;font-weight:600}
+#askp-calclink{margin:12px 0 0}
+#askp-calclink a{color:#b45309;font-weight:600}
