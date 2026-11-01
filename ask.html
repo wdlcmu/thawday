@@ -203,10 +203,16 @@ function parseAsk(raw, nowOverride){
      These questions carry their own published answer on the site's pages;
      the premise is recorded here and answerAsk leads with that answer.
      No numbers live here: the lead sentences are the pages' own words. */
-  var holdM=t.match(/(?:fridge|refrigerator) for (\d+) days?/);
-  if(/\bcounter\b|room temperature/.test(t)) p.premise="counter";
-  else if(/\bwarm water\b|\bhot water\b/.test(t)) p.premise="warmwater";
-  else if(/cold water/.test(t)&&/overnight/.test(t)) p.premise="coldovernight";
+  /* 2026-11-01 (Addendum 924): one ring wider, same gates, same order.
+     Premise patterns hear countertop / warm tap water / all night /
+     lukewarm; hold counts hear spelled numbers one-seven. No published
+     number lives here; dayNum only reads the visitor's own count. */
+  var numWord={one:1,two:2,three:3,four:4,five:5,six:6,seven:7};
+  var dayNum=function(s){ return /^\d+$/.test(s)?parseInt(s,10):numWord[s]; };
+  var holdM=t.match(/(?:fridge|refrigerator) for (\d+|one|two|three|four|five|six|seven) days?/);
+  if(/\bcounter\w*|room temperature/.test(t)) p.premise="counter";
+  else if(/lukewarm\b|\b(?:warm|hot)(?: \w+)? water\b/.test(t)) p.premise="warmwater";
+  else if(/cold water/.test(t)&&/(overnight|all night)/.test(t)) p.premise="coldovernight";
   /* 2026-11-01 (Addendum 919): the hold read only "been in the fridge
      for N days". It now reads the shapes people actually use ("thawed
      3 days ago", "since Monday", "finished thawing on Wednesday",
@@ -215,18 +221,22 @@ function parseAsk(raw, nowOverride){
      gets its warning even when the cook day is still ahead. Only
      calendar arithmetic lives here; the food-safety number is still
      the published 1-to-2-day rule in answerAsk. */
-  var thawedWord=/\bthawed\b|\bdefrosted\b|finished thawing/.test(t);
+  var thawedWord=/\bthawed\b|\bdefrosted\b|finished thawing/.test(t)||/out of the freezer/.test(t);
+  var beenThawedM=t.match(/been thawed for (\d+|one|two|three|four|five|six|seven) days?/);
   var wdNames=["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
   var sinceM=t.match(/\bsince (sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/);
-  var thawOnM=t.match(/(?:finished thawing|thawed|defrosted) on (sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/);
-  var agoM=t.match(/(\d+) days? ago/);
-  var holdCue=holdM||/how long can a thawed/.test(t)
+  var thawOnM=t.match(/(?:finished thawing(?: \w+)?|thawed|defrosted) on (sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/);
+  var agoM=t.match(/(\d+|one|two|three|four|five|six|seven) days? ago/);
+  var holdCue=holdM||beenThawedM||/how long can a thawed/.test(t)
     ||(thawedWord&&/(fridge|refrigerator)/.test(t)&&/(still ok|still good|still safe|how long|ok to|safe to)/.test(t))
-    ||(thawedWord&&(sinceM||thawOnM||agoM||/\byesterday\b/.test(t)||/\bsitting\b/.test(t)||/(still ok|still good|still safe|ok to cook|is it ok|good for)/.test(t)));
+    ||(thawedWord&&(sinceM||thawOnM||agoM||/day before yesterday/.test(t)||/\byesterday\b/.test(t)||/\bsitting\b/.test(t)||/(still ok|still good|still safe|ok to cook|is it ok|good for)/.test(t)))
+    ||(/\bsitting\b/.test(t)&&sinceM);
   if(holdCue){ p.premise="hold";
     var elapsed=null;
-    if(holdM) elapsed=parseInt(holdM[1],10);
-    else if(agoM) elapsed=parseInt(agoM[1],10);
+    if(holdM) elapsed=dayNum(holdM[1]);
+    else if(beenThawedM) elapsed=dayNum(beenThawedM[1]);
+    else if(agoM) elapsed=dayNum(agoM[1]);
+    else if(/day before yesterday/.test(t)) elapsed=2;
     else if(/\byesterday\b/.test(t)) elapsed=1;
     else if(sinceM) elapsed=(today.getDay()-wdNames.indexOf(sinceM[1])+7)%7;
     else if(thawOnM) elapsed=(today.getDay()-wdNames.indexOf(thawOnM[1])+7)%7;
@@ -339,6 +349,7 @@ function answerAsk(raw, nowOverride){
   if(!p.stateExplicit||!p.brineExplicit) summary+=` ${state==="frozen"?"Frozen":"Fresh"}, ${brine==="yes"?"with a brine":"no brine"}. Say "fresh" or "brine it" in your words to change that.`;
   var lead="";
   if(p.intent==="thaw"&&thaw){ lead=thaw.late?`Fridge thaw has already passed for this dinner. Use cold water today: about ${Math.round((lb*30/60)*10)/10} hours. The full plan is below.`:p.coldWater?`In cold water, a ${lb} lb turkey thaws in about ${Math.round((lb*30/60)*10)/10} hours (30 minutes per pound). Seal it in a leak-proof plastic bag, submerge it in cold tap water, change the water every 30 minutes, and cook it right after it thaws. The fridge plan is below.`:`A ${lb} lb turkey takes ${thawDays(lb)} days to thaw in the fridge. Start thawing ${fmt(thaw.when)}. Move the turkey to the fridge then. The full plan is below.`; }
+  else if(p.intent==="plan"&&p.coldWater&&/cold water time/i.test(raw)&&thaw){ lead=`In cold water, a ${lb} lb turkey thaws in about ${Math.round((lb*30/60)*10)/10} hours (30 minutes per pound). Seal it in a leak-proof plastic bag, submerge it in cold tap water, change the water every 30 minutes, and cook it right after it thaws. The fridge plan is below.`; }
   else if(p.intent==="roast"&&oven){ lead=`A ${lb} lb turkey roasts in about ${durText(roastMinutes(lb))} at 325 F. In the oven by ${fmt(oven.when)} for this dinner. The full plan is below.`; }
   else if(p.intent==="fromfrozen"){ var fb0=frozenRoastBand(lb); lead=`Yes. USDA says cooking a turkey from frozen is safe. For a ${lb} lb bird at 325 F, plan on ${durText(fb0[0])} to ${durText(fb0[1])}. The details are in the plan below.`; }
   var rowsHtml=rows.map(r=>`<div class="row"><strong>${fmt(r.when)}</strong><br>${r.label}<br>${r.detail}</div>`).join("");
