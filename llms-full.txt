@@ -1,6 +1,6 @@
 # ThawDay: full page text
 
-> Complete text of thawday.com's pages: the homepage, the turkey timeline calculator, the ask page, and the nine question pages.
+> Complete text of thawday.com's pages: the homepage, the turkey timeline calculator, the ask page, and the sixteen question pages.
 > ThawDay is a free turkey timeline tool for Thanksgiving. Type in your dinner time and turkey
 > weight. You get dated buy, thaw, brine, and roast times. No ads, no accounts.
 > Thaw times come from the USDA Food Safety and Inspection Service.
@@ -162,3 +162,15 @@ Yes. USDA says it is safe. Roast at 325 F; it takes at least 50 percent longer t
 ## How long can a thawed turkey stay in the fridge? (https://thawday.com/how-long-can-a-thawed-turkey-stay-in-the-fridge)
 
 Cook it within 1 to 2 days. That is the USDA rule. The clock starts when the turkey is fully thawed. A fresh turkey is on the same clock: buy it 1 to 2 days before cooking. Cooked leftovers keep 3 to 4 days in the fridge; get them in within 2 hours of the meal.
+
+## How long to cook a turkey (https://thawday.com/how-long-to-cook-a-turkey)
+
+At 325 F, unstuffed: up to 12 lb takes 2 hours 45 minutes to 3 hours. 13 to 14 lb takes 3 hours to 3 hours 45 minutes. 15 to 18 lb takes 3 hours 45 minutes to 4 hours 15 minutes. 19 to 20 lb takes 4 hours 15 minutes to 4 hours 30 minutes. 21 to 24 lb takes 4 hours 30 minutes to 5 hours. The chart aims, the thermometer decides: 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing. For a 5 PM dinner on Thursday, November 26, 2026: 12 lb in the oven by 1:47 PM, 16 lb by 12:40 PM, 20 lb by 12:17 PM, 24 lb by 11:55 AM. Rest 20 minutes before carving.
+
+## Can you thaw a turkey on the counter? (https://thawday.com/can-you-thaw-a-turkey-on-the-counter)
+
+No. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer. A turkey that sat out for more than 2 hours cannot be made safe, by cooking or by freezing. Throw it out. Safe ways: the fridge, about 24 hours for every 4 to 5 pounds at 40 F or below, or cold water at 30 minutes per pound.
+
+## Can you thaw a turkey in the microwave? (https://thawday.com/can-you-thaw-a-turkey-in-the-microwave)
+
+Yes. USDA's third safe way is the microwave: follow your oven manual for size and timing, and cook the turkey right after it thaws. ThawDay prints no microwave minutes, because the manual is the only honest source for them. Too big for the microwave: cold water at 30 minutes per pound, or the fridge at about 24 hours for every 4 to 5 pounds.

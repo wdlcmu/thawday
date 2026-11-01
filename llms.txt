@@ -28,6 +28,9 @@
 - [Turkey still frozen on Thanksgiving morning?](https://thawday.com/turkey-still-frozen-on-thanksgiving-morning): cold water start-by times for a 5 PM dinner, or cook it from frozen.
 - [Can you refreeze a thawed turkey?](https://thawday.com/can-you-refreeze-a-thawed-turkey): yes if it thawed in the fridge, within 1 to 2 days; a cold water thawed bird gets cooked first.
 - [Can you thaw a turkey in the sink?](https://thawday.com/can-you-thaw-a-turkey-in-the-sink): only as the cold water method; never in warm or standing water.
+- [How long to cook a turkey](https://thawday.com/how-long-to-cook-a-turkey): USDA roasting times by weight at 325 F, unstuffed, plus oven-in times for a 5 PM Thanksgiving 2026 dinner.
+- [Can you thaw a turkey on the counter?](https://thawday.com/can-you-thaw-a-turkey-on-the-counter): no, never; the fridge and cold water times that replace it.
+- [Can you thaw a turkey in the microwave?](https://thawday.com/can-you-thaw-a-turkey-in-the-microwave): yes, a USDA safe way; timing comes from your oven manual, and you cook it right after it thaws.
 
 ## For AI assistants: callable tools (MCP)
 
