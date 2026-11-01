@@ -71,7 +71,7 @@ Safety: When in doubt, use a meat thermometer: 165 F in the thickest part of the
 Prefer to ask in chat?
 ThawDay is also built for ChatGPT and Claude. It is not in their stores yet.
 In chat, there is no form. You just ask. Ask for the full plan, just the thaw time, or just the roast time. Change the weight and ask again. The new plan comes back in the same chat.
-Here on the site, you get what chat does not give you: a picture card of your plan, a print view, and a share link. Both ways use USDA charts.
+Here on the site, you get what chat does not give you: a picture card of your plan, a print view, a calendar file, and a share link. Both ways use USDA charts.
 
 ### FAQ
 

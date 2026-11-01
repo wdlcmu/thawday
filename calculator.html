@@ -307,12 +307,14 @@
 <h2>Share</h2>
 <button id="share" class="secondary" type="button">Share this plan</button>
 <button id="printplan" class="secondary" type="button">Print this plan</button>
+<button id="calbtn" class="secondary" type="button">Add to calendar (.ics)</button>
 <p id="sharetext"></p>
+<p id="calmsg" aria-live="polite"></p>
 
 <h2>Prefer to ask in chat?</h2>
 <p>ThawDay is also built for ChatGPT and Claude. It is not in their stores yet.</p>
 <p>In chat, there is no form. You just ask. Ask for the full plan, just the thaw time, or just the roast time. Change the weight and ask again. The new plan comes back in the same chat.</p>
-<p>Here on the site, you get what chat does not give you: a picture card of your plan, a print view, and a share link. Both ways use USDA charts.</p>
+<p>Here on the site, you get what chat does not give you: a picture card of your plan, a print view, a calendar file, and a share link. Both ways use USDA charts.</p>
 
 <h2>FAQ</h2>
 <details><summary>How much turkey per person?</summary><p>Plan one pound of whole turkey per person. For leftovers, add half a pound per person. Bone and skin make up much of the weight.</p></details>
@@ -559,6 +561,58 @@ document.getElementById("cardshare").addEventListener("click",async()=>{
   try{ await navigator.share({files:[f], title:"Your Turkey Thaw Plan"}); }catch(e){ /* sheet closed, nothing to do */ }
 });
 // TURKEY CARD END
+/* CALENDAR FILE START - 2026-10-31 (steal-list STEAL-TD-CAL-1, from the
+   PlainHelpers turkey timeline's calendar download): the .ics reads only
+   lastPlan, the same rows render() just put on screen, exactly like the
+   turkey card. It never recomputes a date: every event start is a row's
+   own `when`, plus one dinner event at plan.dinner. Each event runs 30
+   minutes. The buy and thaw events carry a one-day-before reminder,
+   because those are the two dates a cook can still act on. A plan whose
+   dinner time has already passed gets no file: there is nothing left to
+   put on a calendar. No new data leaves the device; the file is built
+   and downloaded in the browser, like the plan itself. */
+function icsEscape(s){ return String(s).replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\r?\n/g,"\\n"); }
+function icsUTC(d){ return d.toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,""); }
+function icsFold(line){ const out=[]; let s=line; while(s.length>73){ out.push(s.slice(0,73)); s=" "+s.slice(73); } out.push(s); return out.join("\r\n"); }
+function buildICS(plan){
+  const events=plan.rows.map(r=>({id:r.id,label:r.label,when:r.when,detail:r.detail}));
+  events.push({id:"dinner",label:"Dinner",when:plan.dinner,detail:"Turkey dinner. Done at 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing."});
+  const stamp=icsUTC(new Date());
+  const lines=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//ThawDay//Turkey Plan//EN","CALSCALE:GREGORIAN","METHOD:PUBLISH"];
+  for(const ev of events){
+    const end=new Date(ev.when.getTime()+30*60000);
+    lines.push("BEGIN:VEVENT");
+    lines.push("UID:thawday-"+ev.id+"-"+icsUTC(ev.when)+"@thawday.com");
+    lines.push("DTSTAMP:"+stamp);
+    lines.push("DTSTART:"+icsUTC(ev.when));
+    lines.push("DTEND:"+icsUTC(end));
+    lines.push("SUMMARY:"+icsEscape("ThawDay: "+ev.label+" ("+plan.lb+" lb turkey)"));
+    lines.push("DESCRIPTION:"+icsEscape(ev.detail+" Plan from ThawDay: https://thawday.com/calculator"));
+    if(ev.id==="buy"||ev.id==="thaw"){
+      lines.push("BEGIN:VALARM");
+      lines.push("ACTION:DISPLAY");
+      lines.push("DESCRIPTION:"+icsEscape("ThawDay tomorrow: "+ev.label));
+      lines.push("TRIGGER:-P1D");
+      lines.push("END:VALARM");
+    }
+    lines.push("END:VEVENT");
+  }
+  lines.push("END:VCALENDAR");
+  return lines.map(icsFold).join("\r\n")+"\r\n";
+}
+document.getElementById("calbtn").addEventListener("click",()=>{
+  render();
+  const msg=document.getElementById("calmsg");
+  if(!lastPlan){ msg.textContent="Set your dinner date and time first."; return; }
+  if(lastPlan.warning&&lastPlan.warning.kind==="past"){ msg.textContent="That dinner time is already past, so there is no calendar to add."; return; }
+  const blob=new Blob([buildICS(lastPlan)],{type:"text/calendar"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a"); a.href=url; a.download="thawday-plan.ics";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),4000);
+  msg.textContent="Calendar file downloaded. Open it to add your dates.";
+});
+// CALENDAR FILE END
 ["date","time","weight","state","brine"].forEach(id=>document.getElementById(id).addEventListener("input",render));
 /* 2026-10-31 (SPEC-THAW-GUESTSIZE-1): the guest helper sets the weight
    from a head count, using the USDA FSIS rule (1 lb per person, 1.5 lb
@@ -826,6 +880,8 @@ function fleetSessionMarks(){
   if (dl) dl.addEventListener("click", function(){ fleetTrack("artifact_created", {tool: "turkey-timeline", artifact: "card-download"}); });
   var pp = document.getElementById("printplan");
   if (pp) pp.addEventListener("click", function(){ fleetTrack("artifact_created", {tool: "turkey-timeline", artifact: "printed-plan"}); });
+  var cf = document.getElementById("calbtn");
+  if (cf) cf.addEventListener("click", function(){ fleetTrack("artifact_created", {tool: "turkey-timeline", artifact: "calendar-download"}); });
   var sh = document.getElementById("share");
   if (sh) sh.addEventListener("click", function(){ fleetTrack("share_intent", {tool: "turkey-timeline", channel: "clipboard"}); });
   var cs = document.getElementById("cardshare");
