@@ -107,7 +107,7 @@
   footer p { margin-bottom: 0.5rem; }
   footer a { color: var(--accent); font-weight: 600; text-decoration: none; display: inline-block; padding: 12px 6px; min-height: 44px; }
   footer a:hover { text-decoration: underline; }
-  .countdown { margin-top: 2rem; font-size: 1.0625rem; font-weight: 600; color: var(--accent); }
+  .countdown { margin-top: 2rem; font-size: 1.0625rem; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
   .askdoor { margin-top: 1rem; font-size: 1.0625rem; }
   .askdoor a { color: var(--accent); font-weight: 700; }
   .cta { margin-top: 2rem; }
@@ -264,30 +264,84 @@
 (function () {
   var el = document.getElementById("countdown");
   if (!el) return;
+  /* 2026-11-01 countdown fleet pass: live clock to Thanksgiving dinner,
+     5:00 PM Pacific (the site's own dinner hour). Ticks every second
+     (days, hours, minutes, seconds). At dinner time the line says
+     Thanksgiving is today; the next few days point at next year, then
+     the count resumes. Reduced motion: the original static day count. */
   function thanksgiving(year) {
     var nov1 = new Date(year, 10, 1);
     var offset = (4 - nov1.getDay() + 7) % 7;
     return new Date(year, 10, 1 + offset + 21);
   }
-  var now = new Date();
-  var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  var year = today.getFullYear();
-  var tg = thanksgiving(year);
-  var rolled = false;
-  if (today > tg) { tg = thanksgiving(year + 1); rolled = true; }
-  var days = Math.round((tg - today) / 86400000);
-  var dateText = tg.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
-  var text;
-  if (days === 0) {
-    text = "Thanksgiving is today, " + dateText + ".";
-  } else if (days <= 6) {
-    text = "Thanksgiving is this week, in " + days + (days === 1 ? " day" : " days") + ": " + dateText + ".";
-  } else if (rolled) {
-    text = "Thanksgiving has passed for this year. Next Thanksgiving is " + dateText + ", in " + days + " days.";
-  } else {
-    text = days + " days until Thanksgiving, " + dateText + ".";
+
+  function cdUnit(n, w) { return n + " " + w + (n === 1 ? "" : "s"); }
+  function cdTick(ms, tail) {
+    var s = Math.floor(ms / 1000);
+    var d = Math.floor(s / 86400); s -= d * 86400;
+    var h = Math.floor(s / 3600); s -= h * 3600;
+    var m = Math.floor(s / 60); var sec = s - m * 60;
+    var seg = [];
+    if (d > 0) seg.push(cdUnit(d, "day"));
+    if (d > 0 || h > 0) seg.push(cdUnit(h, "hour"));
+    seg.push(cdUnit(m, "minute"));
+    seg.push(cdUnit(sec, "second"));
+    return seg.join(", ") + " until " + tail;
   }
-  el.textContent = text;
+  function dayText(now) {
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var year = today.getFullYear();
+    var tg = thanksgiving(year);
+    var rolled = false;
+    if (today > tg) { tg = thanksgiving(year + 1); rolled = true; }
+    var days = Math.round((tg - today) / 86400000);
+    var dateText = tg.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+    if (days === 0) return "Thanksgiving is today, " + dateText + ".";
+    if (days <= 6) return "Thanksgiving is this week, in " + days + (days === 1 ? " day" : " days") + ": " + dateText + ".";
+    if (rolled) return "Thanksgiving has passed for this year. Next Thanksgiving is " + dateText + ", in " + days + " days.";
+    return days + " days until Thanksgiving, " + dateText + ".";
+  }
+  var RM = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (RM) { el.textContent = dayText(new Date()); return; }
+  var PT = "America/Los_Angeles";
+  function ptParts(ms) {
+    var parts = new Intl.DateTimeFormat("en-US", { timeZone: PT, year: "numeric", month: "numeric", day: "numeric" }).formatToParts(new Date(ms));
+    var o = {};
+    for (var i = 0; i < parts.length; i++) o[parts[i].type] = Number(parts[i].value);
+    return o;
+  }
+  function tgDom(year) { return thanksgiving(year).getDate(); }
+  function dinnerMs(year) { return Date.UTC(year, 10, tgDom(year), 25, 0, 0); }
+  function dayEndMs(year) { return Date.UTC(year, 10, tgDom(year) + 1, 8, 0, 0); }
+  function dec1Ms(year) { return Date.UTC(year, 11, 1, 8, 0, 0); }
+  function ptDateText(year) {
+    return new Date(dinnerMs(year)).toLocaleDateString("en-US", { timeZone: PT, weekday: "long", month: "long", day: "numeric", year: "numeric" });
+  }
+  var lastLabel = "";
+  function render() {
+    var now = new Date();
+    var label = dayText(now);
+    if (label !== lastLabel) { lastLabel = label; el.setAttribute("aria-label", label); }
+    var ms = now.getTime();
+    var y = ptParts(ms).year;
+    var text;
+    if (ms < dinnerMs(y)) {
+      text = cdTick(dinnerMs(y) - ms, "Thanksgiving, " + ptDateText(y) + ".");
+    } else if (ms < dayEndMs(y)) {
+      text = "Thanksgiving is today, " + ptDateText(y) + ".";
+    } else if (ms < dec1Ms(y)) {
+      var p = ptParts(ms);
+      var ptToday = Date.UTC(p.year, p.month - 1, p.day);
+      var tgN = thanksgiving(y + 1);
+      var dNext = Math.round((Date.UTC(tgN.getFullYear(), tgN.getMonth(), tgN.getDate()) - ptToday) / 86400000);
+      text = "Thanksgiving has passed for this year. Next Thanksgiving is " + ptDateText(y + 1) + ", in " + dNext + " days.";
+    } else {
+      text = cdTick(dinnerMs(y + 1) - ms, "Thanksgiving, " + ptDateText(y + 1) + ".");
+    }
+    el.textContent = text;
+  }
+  render();
+  setInterval(render, 1000);
 })();
 </script>
 <script>
