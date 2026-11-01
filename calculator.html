@@ -271,6 +271,10 @@
 </details>
 </div>
 <div id="weightBox" hidden>
+<div class="qtoggle" role="group" aria-label="Weight units">
+<button type="button" id="unitLb" aria-pressed="true">Pounds (lb)</button>
+<button type="button" id="unitKg" aria-pressed="false">Kilograms (kg)</button>
+</div>
 <div class="chips" id="weightChips" role="group" aria-label="Turkey weight in pounds">
 <button type="button" class="chip" data-w="10" aria-pressed="false">10 lb</button>
 <button type="button" class="chip" data-w="12" aria-pressed="false">12 lb</button>
@@ -282,8 +286,15 @@
 </div>
 <details class="qmanual">
 <summary>Type the weight instead</summary>
+<div id="lbField">
 <label for="weight">Turkey weight (lb, 8 to 24)</label>
 <input id="weight" type="number" min="8" max="24" step="1" value="14">
+</div>
+<div id="kgField" hidden>
+<label for="weightkg">Turkey weight (kg, 3.6 to 10.9)</label>
+<input id="weightkg" type="number" min="3.6" max="10.9" step="0.1" value="6.4">
+<p id="kgnote" aria-live="polite"></p>
+</div>
 </details>
 </div>
 <p id="qmsg1" class="qmsg" role="alert"></p>
@@ -904,6 +915,66 @@ render();
   pressByValue($("weightChips"),"data-w",$("weight").value);
   if($("guests").value!==""){ var n0=Math.ceil(Number($("guests").value)); if(Number.isFinite(n0)) pressByValue($("guestChips"),"data-guests",n0); }
   show(1,false);
+})();
+</script>
+<script>
+/* 2026-10-31 (steal-list STEAL-TD-UNITS-1, from the OnlyCalculators
+   lb/kg sibling calculator): a pounds/kilograms toggle on the
+   "I know the weight" step. The USDA charts are lb-native, so a
+   kilogram entry is converted once, here, and the engine only ever
+   sees pounds. The rule is the band-edge gate's rule, proven by
+   units1-ship-2026-10-31-evidence/band-edge-harness.mjs (8,578 kg
+   points run against the real engine extracted from this page):
+   gate on the exact weight first (only 8 to 24 lb exactly is
+   admitted), then round UP to the next whole pound. Rounding to
+   nearest understated thaw days on 695 of those points; rounding
+   up understates on zero, and because the bands are top-inclusive
+   whole pounds, the planned thaw and roast bands equal the true
+   bird's bands on every admitted point (only cold-water minutes
+   grow, by under 30). The kg entry and the rounding are disclosed
+   under the field and in the plan summary. The kg string the page
+   itself synced from a canonical pound value is never reconverted
+   (kgSync), so opening kg mode and tapping through changes no plan. */
+(function(){
+  "use strict";
+  var KG=0.45359237, unit="lb", kgSync=null, converting=false;
+  function $(id){ return document.getElementById(id); }
+  function kgName(lb){ return (Math.round(lb*KG*10)/10).toFixed(1); }
+  function syncKg(){ var lb=Number($("weight").value); if(Number.isFinite(lb)&&lb>0){ $("weightkg").value=kgName(lb); kgSync=$("weightkg").value; } }
+  function setUnit(u){
+    unit=u;
+    $("unitLb").setAttribute("aria-pressed", u==="lb"?"true":"false");
+    $("unitKg").setAttribute("aria-pressed", u==="kg"?"true":"false");
+    $("lbField").hidden=u!=="lb"; $("kgField").hidden=u!=="kg";
+    var chips=$("weightChips").querySelectorAll("button[data-w]");
+    for(var i=0;i<chips.length;i++){ var L=chips[i].getAttribute("data-w"); chips[i].textContent = u==="kg" ? kgName(Number(L))+" kg" : L+" lb"; }
+    $("weightChips").setAttribute("aria-label", u==="kg"?"Turkey weight in kilograms":"Turkey weight in pounds");
+    if(u==="kg"){ syncKg(); $("kgnote").textContent=""; }
+  }
+  function fromKg(){
+    var raw=$("weightkg").value;
+    if(raw==="") return;
+    if(kgSync!==null && raw===kgSync) return;
+    var kg=Number(raw); if(!Number.isFinite(kg)) return;
+    var exact=kg/KG, w=$("weight");
+    kgSync=null;
+    if(exact<8||exact>24){ w.value=exact<8?"7":"25"; $("kgnote").textContent="This tool covers 3.6 to 10.9 kg birds."; }
+    else { var planned=Math.ceil(exact); w.value=String(planned); $("kgnote").textContent=kg+" kg is about "+(Math.round(exact*10)/10)+" lb. The plan rounds up to "+planned+" lb. Dates err on the safe side."; }
+    converting=true; w.dispatchEvent(new Event("input",{bubbles:true})); converting=false;
+  }
+  $("weightkg").addEventListener("input", fromKg);
+  $("unitLb").addEventListener("click", function(){ setUnit("lb"); });
+  $("unitKg").addEventListener("click", function(){ setUnit("kg"); });
+  $("weight").addEventListener("input", function(){ if(unit==="kg" && !converting){ syncKg(); $("kgnote").textContent=""; } });
+  $("modeWeight").addEventListener("click", function(){ if(unit==="kg") syncKg(); });
+  $("go").addEventListener("click", function(){
+    if(unit!=="kg" || $("qsummary").hidden) return;
+    var st=$("qsummaryText"); if(!st || !st.textContent) return;
+    var planned=$("weight").value, raw=$("weightkg").value, needle=planned+" lb turkey";
+    if(st.textContent.indexOf(needle)===-1) return;
+    var repl=(kgSync!==null && raw===kgSync) ? raw+" kg ("+planned+" lb) turkey" : raw+" kg turkey, planned as "+planned+" lb";
+    st.textContent=st.textContent.replace(needle, repl);
+  });
 })();
 </script>
 <script>
