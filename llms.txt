@@ -24,6 +24,10 @@
 - [Can you thaw a turkey in cold water?](https://thawday.com/thaw-a-turkey-in-cold-water): yes; 30 minutes per pound, change the water every 30 minutes, cook right after.
 - [Can you cook a turkey from frozen?](https://thawday.com/can-you-cook-a-frozen-turkey): yes; USDA from-frozen roast times by weight at 325 F; no oven bag; giblets out with tongs.
 - [How long can a thawed turkey stay in the fridge?](https://thawday.com/how-long-can-a-thawed-turkey-stay-in-the-fridge): cook it within 1 to 2 days of full thaw.
+- [How to thaw a turkey you plan to brine](https://thawday.com/thawing-a-brined-turkey): brining does not change the thaw; the brine starts 24 hours before the oven, and the bird must be thawed by then.
+- [Turkey still frozen on Thanksgiving morning?](https://thawday.com/turkey-still-frozen-on-thanksgiving-morning): cold water start-by times for a 5 PM dinner, or cook it from frozen.
+- [Can you refreeze a thawed turkey?](https://thawday.com/can-you-refreeze-a-thawed-turkey): yes if it thawed in the fridge, within 1 to 2 days; a cold water thawed bird gets cooked first.
+- [Can you thaw a turkey in the sink?](https://thawday.com/can-you-thaw-a-turkey-in-the-sink): only as the cold water method; never in warm or standing water.
 
 ## For AI assistants: callable tools (MCP)
 
