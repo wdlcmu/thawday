@@ -63,12 +63,24 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:.
 footer p{margin:4px 0}
 footer a{color:var(--accent);font-weight:600;text-decoration:none;display:inline-block;padding:12px 6px;min-height:44px}
 footer a:hover{text-decoration:underline}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:.9375rem;line-height:1.35}
+.chip strong{color:var(--accent);font-weight:700}
+details.xpd{border:1px solid var(--line);border-radius:12px;background:#fff;margin:12px 0;padding:2px 14px 6px}
+details.xpd>summary{cursor:pointer;font-weight:700;font-size:1.0625rem;min-height:44px;display:flex;align-items:center;gap:8px;list-style:none;padding:10px 0}
+details.xpd>summary::-webkit-details-marker{display:none}
+details.xpd>summary::before{content:"\25B8";color:var(--accent);font-weight:800}
+details.xpd[open]>summary::before{content:"\25BE"}
+details.xpd h2{margin-top:8px}
 </style>
 </head>
 <body>
 <p class="brand"><a href="/">ThawDay</a></p>
 <h1>Can you thaw a turkey in cold water?</h1>
 <p class="answer"><strong>Yes.</strong> It is one of the safe methods in the USDA guide. Allow <strong>30 minutes per pound</strong>. Change the water every 30 minutes. Cook the turkey right after it thaws.</p>
+<div class="chips"><span class="chip"><strong>Rate</strong> 30 min per lb</span><span class="chip"><strong>Water</strong> change every 30 min</span></div>
+<details class="xpd"><summary>Times by weight</summary>
 <h2>How long it takes</h2>
 <table>
 <tr><th>Turkey weight</th><th>Cold water time</th></tr>
@@ -79,6 +91,8 @@ footer a:hover{text-decoration:underline}
 <tr><td>20 lb</td><td>About 10 hours</td></tr>
 <tr><td>24 lb</td><td>About 12 hours</td></tr>
 </table>
+</details>
+<details class="xpd"><summary>The steps</summary>
 <h2>The steps</h2>
 <ol>
 <li>Keep the turkey in its original wrapper. It must be leak-proof. Wrap it in a plastic bag if it might leak.</li>
@@ -86,11 +100,14 @@ footer a:hover{text-decoration:underline}
 <li>Change the water every 30 minutes. This keeps the water cold.</li>
 <li>Cook the turkey right after it thaws. Do not put it back in the fridge to cook later.</li>
 </ol>
+</details>
 <div class="safety">
 <p><strong>Use cold water only.</strong> Warm or hot water puts the outside of the bird in the danger zone. And never thaw a turkey on the counter.</p>
 </div>
+<details class="xpd"><summary>Cold water or fridge?</summary>
 <h2>Cold water or the fridge?</h2>
 <p>The fridge is hands-off and plans days ahead. Cold water saves a late start and finishes the same day. Full fridge times: <a href="/how-long-to-thaw-a-turkey">how long to thaw a turkey</a>. Cooking for Thanksgiving? Here are the <a href="/when-to-thaw-turkey-for-thanksgiving">fridge dates for 2026</a>.</p>
+</details>
 <div class="door">
 <h2>Running late? Get the whole plan</h2>
 <p>The <a href="/calculator">calculator</a> sees a late start and switches to the cold water plan on its own. Or <a href="/ask">ask in your own words</a>: "16 lb frozen turkey, dinner Thursday."</p>

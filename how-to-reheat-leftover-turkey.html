@@ -78,24 +78,43 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:.
 footer p{margin:4px 0}
 footer a{color:var(--accent);font-weight:600;text-decoration:none;display:inline-block;padding:12px 6px;min-height:44px}
 footer a:hover{text-decoration:underline}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:.9375rem;line-height:1.35}
+.chip strong{color:var(--accent);font-weight:700}
+details.xpd{border:1px solid var(--line);border-radius:12px;background:#fff;margin:12px 0;padding:2px 14px 6px}
+details.xpd>summary{cursor:pointer;font-weight:700;font-size:1.0625rem;min-height:44px;display:flex;align-items:center;gap:8px;list-style:none;padding:10px 0}
+details.xpd>summary::-webkit-details-marker{display:none}
+details.xpd>summary::before{content:"\25B8";color:var(--accent);font-weight:800}
+details.xpd[open]>summary::before{content:"\25BE"}
+details.xpd h2{margin-top:8px}
 </style>
 </head>
 <body>
 <p class="brand"><a href="/">ThawDay</a></p>
 <h1>How to reheat leftover turkey?</h1>
 <p class="answer"><strong>To 165 F, all the way through.</strong> When reheating leftovers, be sure they reach 165 F as measured with a food thermometer. Cover leftovers to reheat. This retains moisture and ensures that food will heat all the way through.</p>
+<div class="chips"><span class="chip"><strong>Reheat to</strong> 165 F</span><span class="chip"><strong>Fridge window</strong> 3–4 days</span><span class="chip"><strong>Freezer</strong> 2–6 months for best quality</span></div>
+<details class="xpd"><summary>In the oven or on the stove</summary>
 <h2>In the oven or on the stove</h2>
 <p>Heat the slices in a covered dish with a spoonful of broth or cooking juices, until a food thermometer reads 165 F in the thickest slice. Covering keeps the edges from drying while the middle heats.</p>
 <p>Reheat sauces, soups and gravies by bringing them to a rolling boil.</p>
+</details>
+<details class="xpd"><summary>In the microwave</summary>
 <h2>In the microwave</h2>
 <p>When reheating in the microwave, cover and rotate the food for even heating. Arrange food items evenly in a covered microwave safe glass or ceramic dish, and add some liquid if needed. Be sure the covering is microwave safe, and vent the lid or wrap to let the steam escape. The moist heat that is created will help destroy harmful bacteria and will ensure uniform cooking.</p>
+</details>
 <div class="safety">
 <p><strong>Also, because microwaves have cold spots, check the temperature of the food in several places with a food thermometer and allow a resting time before checking the internal temperature of the food with a food thermometer.</strong></p>
 </div>
+<details class="xpd"><summary>Straight from the freezer</summary>
 <h2>Straight from the freezer</h2>
 <p>It is safe to reheat frozen leftovers without thawing, either in a saucepan or microwave (in the case of a soup or stew) or in the oven or microwave (for example, casseroles and combination meals). Reheating will take longer than if the food is thawed first, but it is safe to do when time is short. If you do thaw them first: Thaw frozen leftovers safely in the refrigerator, cold water or the microwave oven. In cold water, keep the leftovers sealed in a leak-proof bag, and cook them before refreezing.</p>
+</details>
+<details class="xpd"><summary>How much, and how long the rest keeps</summary>
 <h2>How much to reheat, and how long the rest keeps</h2>
 <p>Take out only what you will eat, and reheat that portion once. Use refrigerated turkey, stuffing, and gravy within 3 to 4 days. For Thanksgiving 2026 leftovers, that window runs out Sunday, November 29 to Monday, November 30. Divide leftovers into smaller portions. Refrigerate or freeze in covered shallow containers for quicker cooling. If freezing leftovers, use within 2 to 6 months for best quality. The full fridge clock: <a href="/how-long-do-turkey-leftovers-last">how long do turkey leftovers last</a>.</p>
+</details>
 <div class="safety">
 <p><strong>USDA's third safe way is the microwave: follow your oven manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.</strong></p>
 </div>
@@ -103,7 +122,7 @@ footer a:hover{text-decoration:underline}
 <h2>Your exact dates, in seconds</h2>
 <p>Tell the <a href="/calculator">calculator</a> your weight and dinner time for the full plan. Or <a href="/ask">ask in your own words</a>: "16 lb turkey, dinner Thursday at 5."</p>
 </div>
-<section class="faq">
+<section class="faq"><details class="xpd"><summary>More questions</summary>
 <h2>Quick answers</h2>
 <h3>How do you reheat leftover turkey?</h3>
 <p>When reheating leftovers, be sure they reach 165 F as measured with a food thermometer. Cover leftovers to reheat. This retains moisture and ensures that food will heat all the way through.</p>
@@ -111,7 +130,8 @@ footer a:hover{text-decoration:underline}
 <p>Yes. See Straight from the freezer above for the full USDA wording.</p>
 <h3>How do you reheat gravy and stuffing?</h3>
 <p>Reheat sauces, soups and gravies by bringing them to a rolling boil. Stuffing reheats in a covered dish until a food thermometer reads 165 F in the center.</p>
-</section>
+
+</details></section>
 <section class="more">
 <h2>More turkey questions, answered</h2>
 <ul>

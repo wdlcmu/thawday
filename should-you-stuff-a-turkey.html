@@ -78,16 +78,32 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:.
 footer p{margin:4px 0}
 footer a{color:var(--accent);font-weight:600;text-decoration:none;display:inline-block;padding:12px 6px;min-height:44px}
 footer a:hover{text-decoration:underline}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:.9375rem;line-height:1.35}
+.chip strong{color:var(--accent);font-weight:700}
+details.xpd{border:1px solid var(--line);border-radius:12px;background:#fff;margin:12px 0;padding:2px 14px 6px}
+details.xpd>summary{cursor:pointer;font-weight:700;font-size:1.0625rem;min-height:44px;display:flex;align-items:center;gap:8px;list-style:none;padding:10px 0}
+details.xpd>summary::-webkit-details-marker{display:none}
+details.xpd>summary::before{content:"\25B8";color:var(--accent);font-weight:800}
+details.xpd[open]>summary::before{content:"\25BE"}
+details.xpd h2{margin-top:8px}
 </style>
 </head>
 <body>
 <p class="brand"><a href="/">ThawDay</a></p>
 <h1>Should you stuff a turkey?</h1>
 <p class="answer"><strong>No, not for safety.</strong> For optimum safety, stuffing a turkey is not recommended. For more even cooking, it is recommended you cook your stuffing outside the bird in a casserole.</p>
+<div class="chips"><span class="chip"><strong>Safer</strong> cook stuffing outside the bird</span><span class="chip"><strong>If inside</strong> center must reach 165 F</span></div>
+<details class="xpd"><summary>Why the outside wins</summary>
 <h2>Why the outside wins</h2>
 <p>Stuffing sits in the bird's center, the last place heat reaches. The meat can look done while the center is still cold. A casserole heats evenly, with no hiding place.</p>
+</details>
+<details class="xpd"><summary>The one rule if it is inside</summary>
 <h2>The one rule if it is inside</h2>
 <p>The stuffing must reach a safe minimum internal temperature of 165 F. Check the center of the stuffing with a food thermometer: 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing. If it is short of 165 F, keep cooking, no matter how the meat looks.</p>
+</details>
+<details class="xpd"><summary>What this site plans</summary>
 <h2>What this site plans</h2>
 <p>ThawDay plans unstuffed birds. These are the 325 F bands from the USDA chart the calculator uses:</p>
 <table>
@@ -99,6 +115,7 @@ footer a:hover{text-decoration:underline}
 <tr><td>21 to 24 lb</td><td>4 hours 30 minutes to 5 hours</td></tr>
 </table>
 <p>Full oven-in times for Thanksgiving 2026 are on <a href="/how-long-to-cook-a-turkey">how long to cook a turkey</a>. Stuffing outside the bird follows its own dish.</p>
+</details>
 <div class="safety">
 <p><strong>USDA's third safe way is the microwave: follow your oven manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.</strong></p>
 </div>
@@ -106,7 +123,7 @@ footer a:hover{text-decoration:underline}
 <h2>Your exact dates, in seconds</h2>
 <p>Tell the <a href="/calculator">calculator</a> your weight and dinner time for the full plan. Or <a href="/ask">ask in your own words</a>: "16 lb turkey, dinner Thursday at 5."</p>
 </div>
-<section class="faq">
+<section class="faq"><details class="xpd"><summary>More questions</summary>
 <h2>Quick answers</h2>
 <h3>Should you stuff a turkey?</h3>
 <p>For optimum safety, stuffing a turkey is not recommended. For more even cooking, it is recommended you cook your stuffing outside the bird in a casserole.</p>
@@ -114,7 +131,8 @@ footer a:hover{text-decoration:underline}
 <p>The stuffing must reach a safe minimum internal temperature of 165 F.</p>
 <h3>Does stuffing change ThawDay roast times?</h3>
 <p>This tool plans turkeys with no stuffing. Its roast times are the unstuffed 325 F bands, so a stuffed bird has no time on this page, and the thermometer decides.</p>
-</section>
+
+</details></section>
 <section class="more">
 <h2>More turkey questions, answered</h2>
 <ul>

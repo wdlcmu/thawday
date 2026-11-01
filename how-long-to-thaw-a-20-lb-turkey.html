@@ -103,6 +103,16 @@ footer a:hover{text-decoration:underline}
 .tlrow-w{font-weight:700}
 .tlrow-d{color:var(--muted);font-size:.9375rem}
 .tlrow .tl-track{padding-top:6px}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:.9375rem;line-height:1.35}
+.chip strong{color:var(--accent);font-weight:700}
+details.xpd{border:1px solid var(--line);border-radius:12px;background:#fff;margin:12px 0;padding:2px 14px 6px}
+details.xpd>summary{cursor:pointer;font-weight:700;font-size:1.0625rem;min-height:44px;display:flex;align-items:center;gap:8px;list-style:none;padding:10px 0}
+details.xpd>summary::-webkit-details-marker{display:none}
+details.xpd>summary::before{content:"\25B8";color:var(--accent);font-weight:800}
+details.xpd[open]>summary::before{content:"\25BE"}
+details.xpd h2{margin-top:8px}
 </style>
 </head>
 <body>
@@ -110,11 +120,16 @@ footer a:hover{text-decoration:underline}
 <h1>How long to thaw a 20 lb turkey</h1>
 <p class="answer"><strong>5 days in the fridge.</strong> For a 5 PM Thanksgiving dinner on Thursday, November 26, 2026, move it to the fridge on <strong>Saturday, November 21</strong>. In cold water: 10 hours.</p>
 <div class="tl"><div class="tl-node"><span class="tl-k">Move</span><strong>Sat, Nov 21</strong></div><div class="tl-track"><span class="tl-dots"><i></i><i></i><i></i><i></i><i></i></span><span class="tl-cap">5 days</span></div><div class="tl-node tl-end"><span class="tl-k">Dinner</span><strong>Thu, Nov 26</strong></div></div>
+<div class="chips"><span class="chip"><strong>Move</strong> Sat, Nov 21</span><span class="chip"><strong>Fridge</strong> 5 days</span><span class="chip"><strong>Cold water</strong> 10 hours</span></div>
+<details class="xpd"><summary>Why this date</summary>
 <h2>In the fridge</h2>
 <p>Fridge thawing takes about 24 hours for every 4 to 5 pounds. Keep the fridge at 40 F or below. Put the turkey on a tray, breast up. Leave it in its wrapper. Your band is 17 to 20 lb; every bird in it shares this date.</p>
 <p>Once thawed, cook it within <a href="/how-long-can-a-thawed-turkey-stay-in-the-fridge">1 to 2 days in the fridge</a>. Start early; a late start is the problem.</p>
+</details>
+<details class="xpd"><summary>Cold water, step by step</summary>
 <h2>In a hurry? Cold water</h2>
 <p>Cold water takes 10 hours for 20 lb. Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. Change the water every 30 minutes. Cook it right after it thaws. Full steps: <a href="/thaw-a-turkey-in-cold-water">thawing a turkey in cold water</a>.</p>
+</details>
 <div class="safety">
 <p><strong>USDA's third safe way is the microwave: follow your oven manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.</strong></p>
 </div>

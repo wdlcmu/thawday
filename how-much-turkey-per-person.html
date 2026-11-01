@@ -78,12 +78,24 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:.
 footer p{margin:4px 0}
 footer a{color:var(--accent);font-weight:600;text-decoration:none;display:inline-block;padding:12px 6px;min-height:44px}
 footer a:hover{text-decoration:underline}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:.9375rem;line-height:1.35}
+.chip strong{color:var(--accent);font-weight:700}
+details.xpd{border:1px solid var(--line);border-radius:12px;background:#fff;margin:12px 0;padding:2px 14px 6px}
+details.xpd>summary{cursor:pointer;font-weight:700;font-size:1.0625rem;min-height:44px;display:flex;align-items:center;gap:8px;list-style:none;padding:10px 0}
+details.xpd>summary::-webkit-details-marker{display:none}
+details.xpd>summary::before{content:"\25B8";color:var(--accent);font-weight:800}
+details.xpd[open]>summary::before{content:"\25BE"}
+details.xpd h2{margin-top:8px}
 </style>
 </head>
 <body>
 <p class="brand"><a href="/">ThawDay</a></p>
 <h1>How much turkey per person?</h1>
 <p class="answer"><strong>One pound of whole turkey per person.</strong> For leftovers, plan <strong>one and a half pounds per person</strong>. Bone and skin make up much of the weight, so the bird on the table is bigger than the meat on the plates.</p>
+<div class="chips"><span class="chip"><strong>Per person</strong> one pound</span><span class="chip"><strong>For leftovers</strong> one and a half pounds</span></div>
+<details class="xpd"><summary>Bird sizes by head count</summary>
 <h2>Bird sizes by head count</h2>
 <p>Sizes run 8 to 24 lb, the range in the USDA charts.</p>
 <table>
@@ -95,9 +107,12 @@ footer a:hover{text-decoration:underline}
 <tr><td>20 people</td><td>20 lb</td><td>Two birds, 15 lb each</td></tr>
 </table>
 <p>Twenty people with leftovers need 30 lb of turkey. No single chart bird holds that, so use two 15 lb birds; they cook faster.</p>
+</details>
+<details class="xpd"><summary>Small crowds, and what happens next</summary>
 <h2>Small crowds, and what happens next</h2>
 <p>Fewer than 8 people? Still one pound each, or one and a half for leftovers. ThawDay starts plans at an 8 lb bird, so the extra becomes leftovers.</p>
 <p>A 16 lb bird moves to the fridge on Sunday, November 22 for Thanksgiving 2026. The full date table is on <a href="/when-to-thaw-turkey-for-thanksgiving">when to take the turkey out of the freezer</a>, and <a href="/when-to-buy-a-turkey-for-thanksgiving">when to buy it</a> comes first. Short on time? Cold water thaws at 30 minutes per pound: Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. Change the water every 30 minutes. Cook it right after it thaws.</p>
+</details>
 <div class="safety">
 <p><strong>USDA's third safe way is the microwave: follow your oven manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.</strong></p>
 </div>

@@ -78,14 +78,28 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:.
 footer p{margin:4px 0}
 footer a{color:var(--accent);font-weight:600;text-decoration:none;display:inline-block;padding:12px 6px;min-height:44px}
 footer a:hover{text-decoration:underline}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:.9375rem;line-height:1.35}
+.chip strong{color:var(--accent);font-weight:700}
+details.xpd{border:1px solid var(--line);border-radius:12px;background:#fff;margin:12px 0;padding:2px 14px 6px}
+details.xpd>summary{cursor:pointer;font-weight:700;font-size:1.0625rem;min-height:44px;display:flex;align-items:center;gap:8px;list-style:none;padding:10px 0}
+details.xpd>summary::-webkit-details-marker{display:none}
+details.xpd>summary::before{content:"\25B8";color:var(--accent);font-weight:800}
+details.xpd[open]>summary::before{content:"\25BE"}
+details.xpd h2{margin-top:8px}
 </style>
 </head>
 <body>
 <p class="brand"><a href="/">ThawDay</a></p>
 <h1>How long can you keep a turkey in the freezer?</h1>
 <p class="answer"><strong>One year for best quality, and far longer for safety.</strong> Keep frozen until you're ready to thaw it. Turkeys can be kept frozen in the freezer indefinitely; however, cook within 1 year for best quality.</p>
+<div class="chips"><span class="chip"><strong>Best quality</strong> cook within 1 year</span><span class="chip"><strong>Safety</strong> frozen keeps indefinitely</span></div>
+<details class="xpd"><summary>Safety and quality are two clocks</summary>
 <h2>Safety and quality are two clocks</h2>
 <p>The 1 year line is about flavor and texture, not safety. A bird that stayed frozen does not turn unsafe at month thirteen; it can dry out and lose flavor. Keep the freezer at 0 F or below. A bird that thawed warm is different: <a href="/can-you-refreeze-a-thawed-turkey">can you refreeze a thawed turkey</a>.</p>
+</details>
+<details class="xpd"><summary>The full USDA guidance</summary>
 <h2>USDA freezer times, for best quality</h2>
 <table>
 <tr><th>What</th><th>In the freezer at 0 F or below</th></tr>
@@ -94,6 +108,8 @@ footer a:hover{text-decoration:underline}
 <tr><td>Giblets</td><td>3 to 4 months</td></tr>
 </table>
 <p>A turkey frozen for Thanksgiving 2025 hits its 1 year line at Thanksgiving 2026. Past it, expect a plainer bird, not a dangerous one, if it never thawed.</p>
+</details>
+<details class="xpd"><summary>When you are ready to use it</summary>
 <h2>When you are ready to use it</h2>
 <p>A frozen bird needs days, not hours, to thaw in the fridge. For Thanksgiving 2026, dinner on Thursday, November 26:</p>
 <table>
@@ -104,6 +120,7 @@ footer a:hover{text-decoration:underline}
 <tr><td>24 lb</td><td>6 days</td><td>Friday, November 20</td><td>12 hours</td></tr>
 </table>
 <p>Full steps: <a href="/how-long-to-thaw-a-turkey">how long to thaw a turkey</a>. Buying dates for a bird not yet bought: <a href="/when-to-buy-a-turkey-for-thanksgiving">when to buy a turkey for Thanksgiving</a>.</p>
+</details>
 <div class="safety">
 <p><strong>USDA's third safe way is the microwave: follow your oven manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.</strong></p>
 </div>
@@ -111,7 +128,7 @@ footer a:hover{text-decoration:underline}
 <h2>Your exact dates, in seconds</h2>
 <p>Tell the <a href="/calculator">calculator</a> your weight and dinner time for the full plan. Or <a href="/ask">ask in your own words</a>: "16 lb turkey, dinner Thursday at 5."</p>
 </div>
-<section class="faq">
+<section class="faq"><details class="xpd"><summary>More questions</summary>
 <h2>Quick answers</h2>
 <h3>How long can you keep a turkey in the freezer?</h3>
 <p>Turkeys can be kept frozen in the freezer indefinitely; however, cook within 1 year for best quality.</p>
@@ -119,7 +136,8 @@ footer a:hover{text-decoration:underline}
 <p>Yes, if it stayed frozen the whole time. The 1 year line is about quality, not safety, so cook within 1 year for best quality.</p>
 <h3>How long do turkey parts and giblets keep in the freezer?</h3>
 <p>For best quality, turkey parts keep up to 9 months in the freezer, and giblets 3 to 4 months. A whole bird keeps up to 1 year.</p>
-</section>
+
+</details></section>
 <section class="more">
 <h2>More turkey questions, answered</h2>
 <ul>

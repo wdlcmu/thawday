@@ -105,6 +105,16 @@ footer a:hover{text-decoration:underline}
 .tlrow-w{font-weight:700}
 .tlrow-d{color:var(--muted);font-size:.9375rem}
 .tlrow .tl-track{padding-top:6px}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:.9375rem;line-height:1.35}
+.chip strong{color:var(--accent);font-weight:700}
+details.xpd{border:1px solid var(--line);border-radius:12px;background:#fff;margin:12px 0;padding:2px 14px 6px}
+details.xpd>summary{cursor:pointer;font-weight:700;font-size:1.0625rem;min-height:44px;display:flex;align-items:center;gap:8px;list-style:none;padding:10px 0}
+details.xpd>summary::-webkit-details-marker{display:none}
+details.xpd>summary::before{content:"\25B8";color:var(--accent);font-weight:800}
+details.xpd[open]>summary::before{content:"\25BE"}
+details.xpd h2{margin-top:8px}
 </style>
 </head>
 <body>
@@ -113,13 +123,20 @@ footer a:hover{text-decoration:underline}
 <p class="answer"><strong>Christmas dinner is Friday, December 25, 2026.</strong> Find your weight. That is your move date.</p>
 <h2>The move dates, by weight</h2>
 <div class="tlrows"><div class="tlrow"><div class="tlrow-top"><span><span class="tlrow-w">Up to 12 lb</span> &middot; Tue, Dec 22</span><span class="tlrow-d">Fri 25</span></div><div class="tl-track"><span class="tl-dots"><i></i><i></i><i></i></span><span class="tl-cap">3 days</span></div></div><div class="tlrow"><div class="tlrow-top"><span><span class="tlrow-w">13–16 lb</span> &middot; Mon, Dec 21</span><span class="tlrow-d">Fri 25</span></div><div class="tl-track"><span class="tl-dots"><i></i><i></i><i></i><i></i></span><span class="tl-cap">4 days</span></div></div><div class="tlrow"><div class="tlrow-top"><span><span class="tlrow-w">17–20 lb</span> &middot; Sun, Dec 20</span><span class="tlrow-d">Fri 25</span></div><div class="tl-track"><span class="tl-dots"><i></i><i></i><i></i><i></i><i></i></span><span class="tl-cap">5 days</span></div></div><div class="tlrow"><div class="tlrow-top"><span><span class="tlrow-w">21–24 lb</span> &middot; Sat, Dec 19</span><span class="tlrow-d">Fri 25</span></div><div class="tl-track"><span class="tl-dots"><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="tl-cap">6 days</span></div></div></div>
+<div class="chips"><span class="chip"><strong>Fridge rule</strong> 24 hours per 4–5 lb</span><span class="chip"><strong>Dinner</strong> Fri, Dec 25</span></div>
+<details class="xpd"><summary>Why this date</summary>
 <p>Exactly: 12 lb Tuesday, December 22. 14 lb and 16 lb Monday, December 21. 18 lb and 20 lb Sunday, December 20. 22 lb and 24 lb Saturday, December 19.</p>
 <h2>Why these dates</h2>
 <p>Fridge thawing takes about 24 hours for every 4 to 5 pounds. Keep the fridge at 40 F or below. Count back from Friday and you land on the dates above. Start early: a thawed turkey keeps 1 to 2 days in the fridge. Start late, and a half-frozen bird roasts unevenly.</p>
+</details>
+<details class="xpd"><summary>A fresh bird instead</summary>
 <h2>A fresh bird instead</h2>
 <p>Fresh: buy 1 to 2 days before cooking, on Wednesday, December 23 or Thursday, December 24. Keep it in the fridge at 40 F or below, and cook it on Friday.</p>
+</details>
+<details class="xpd"><summary>If your plans change</summary>
 <h2>Already past your date?</h2>
 <p>Use cold water today. Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. It takes about 30 minutes per pound. Change the water every 30 minutes. Cook it right after it thaws. Full steps: <a href="/thaw-a-turkey-in-cold-water">thawing a turkey in cold water</a>. No time? <a href="/can-you-cook-a-frozen-turkey">Cook it from frozen</a>. USDA says it is safe, and it takes at least half again as long.</p>
+</details>
 <div class="safety">
 <p><strong>USDA's third safe way is the microwave: follow your oven manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.</strong></p>
 </div>
@@ -127,7 +144,7 @@ footer a:hover{text-decoration:underline}
 <h2>Your exact dates, in seconds</h2>
 <p>Tell the <a href="/calculator">calculator</a> your weight and dinner time for the full plan. Or <a href="/ask">ask in your own words</a>: "16 lb turkey, dinner Friday at 5."</p>
 </div>
-<section class="faq">
+<section class="faq"><details class="xpd"><summary>More questions</summary>
 <h2>Quick answers</h2>
 <h3>When should I thaw a turkey for Christmas?</h3>
 <p>For Christmas dinner on Friday, December 25, 2026: up to 12 lb moves to the fridge on Tuesday, December 22; 13 to 16 lb on Monday, December 21; 17 to 20 lb on Sunday, December 20; 21 to 24 lb on Saturday, December 19.</p>
@@ -135,7 +152,8 @@ footer a:hover{text-decoration:underline}
 <p>Fridge thawing takes about 24 hours for every 4 to 5 pounds. A 16 lb bird takes 4 days.</p>
 <h3>What if I miss the fridge date?</h3>
 <p>Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. Change the water every 30 minutes. Cook it right after it thaws.</p>
-</section>
+
+</details></section>
 <section class="more">
 <h2>More turkey questions, answered</h2>
 <ul>

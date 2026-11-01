@@ -78,18 +78,35 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:.
 footer p{margin:4px 0}
 footer a{color:var(--accent);font-weight:600;text-decoration:none;display:inline-block;padding:12px 6px;min-height:44px}
 footer a:hover{text-decoration:underline}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:.9375rem;line-height:1.35}
+.chip strong{color:var(--accent);font-weight:700}
+details.xpd{border:1px solid var(--line);border-radius:12px;background:#fff;margin:12px 0;padding:2px 14px 6px}
+details.xpd>summary{cursor:pointer;font-weight:700;font-size:1.0625rem;min-height:44px;display:flex;align-items:center;gap:8px;list-style:none;padding:10px 0}
+details.xpd>summary::-webkit-details-marker{display:none}
+details.xpd>summary::before{content:"\25B8";color:var(--accent);font-weight:800}
+details.xpd[open]>summary::before{content:"\25BE"}
+details.xpd h2{margin-top:8px}
 </style>
 </head>
 <body>
 <p class="brand"><a href="/">ThawDay</a></p>
 <h1>Should you wash a turkey before cooking?</h1>
 <p class="answer"><strong>No.</strong> Washing or rinsing any meat or poultry is not recommended, and actually increases the risk you will cross-contaminate germs to other foods you're preparing.</p>
+<div class="chips"><span class="chip"><strong>Splash</strong> bacteria travel up to 3 feet</span><span class="chip"><strong>What makes it safe</strong> cooking to 165 F</span></div>
+<details class="xpd"><summary>Washing spreads it, it does not remove it</summary>
 <h2>Washing spreads it, it does not remove it</h2>
 <p>Water can splash bacteria up to 3 feet surrounding your sink, which can lead to illnesses. We call this cross contamination. The splash reaches counters, towels, and food that will never be cooked.</p>
+</details>
+<details class="xpd"><summary>What to do instead</summary>
 <h2>What to do instead</h2>
 <p>It is best to move meat and poultry straight from package to pan, since the heat required for cooking will kill any bacteria that may be present. Then wash your hands, the sink, and anything the raw bird touched, with soap and water. Cooking to 165 F is what makes the bird safe. Full times: <a href="/how-long-to-cook-a-turkey">how long to cook a turkey</a>.</p>
+</details>
+<details class="xpd"><summary>The one exception: a brined bird</summary>
 <h2>The one exception: a brined bird</h2>
 <p>The only reason a whole turkey (or any meat or poultry for that matter) should be washed is if it was brined. Thanksgiving cooks who are purchasing a brined turkey, or brining their turkeys at home, must rinse the brine off before the turkey goes into the oven. Rinse gently, keep other food away from the sink, and clean the sink area with hot soapy water right after. Brine dates are on <a href="/thawing-a-brined-turkey">how to thaw a turkey you plan to brine</a>.</p>
+</details>
 <div class="safety">
 <p><strong>USDA's third safe way is the microwave: follow your oven manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.</strong></p>
 </div>
@@ -97,7 +114,7 @@ footer a:hover{text-decoration:underline}
 <h2>Your exact dates, in seconds</h2>
 <p>Tell the <a href="/calculator">calculator</a> your weight and dinner time for the full plan. Or <a href="/ask">ask in your own words</a>: "16 lb turkey, dinner Thursday at 5."</p>
 </div>
-<section class="faq">
+<section class="faq"><details class="xpd"><summary>More questions</summary>
 <h2>Quick answers</h2>
 <h3>Should you wash a turkey before cooking?</h3>
 <p>No. Washing or rinsing any meat or poultry is not recommended, and actually increases the risk you will cross-contaminate germs to other foods you're preparing.</p>
@@ -105,7 +122,8 @@ footer a:hover{text-decoration:underline}
 <p>The only reason a whole turkey (or any meat or poultry for that matter) should be washed is if it was brined. Thanksgiving cooks who are purchasing a brined turkey, or brining their turkeys at home, must rinse the brine off before the turkey goes into the oven.</p>
 <h3>What should you do instead of washing?</h3>
 <p>It is best to move meat and poultry straight from package to pan, since the heat required for cooking will kill any bacteria that may be present.</p>
-</section>
+
+</details></section>
 <section class="more">
 <h2>More turkey questions, answered</h2>
 <ul>

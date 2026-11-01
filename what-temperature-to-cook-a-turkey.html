@@ -72,14 +72,28 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:.
 footer p{margin:4px 0}
 footer a{color:var(--accent);font-weight:600;text-decoration:none;display:inline-block;padding:12px 6px;min-height:44px}
 footer a:hover{text-decoration:underline}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:.9375rem;line-height:1.35}
+.chip strong{color:var(--accent);font-weight:700}
+details.xpd{border:1px solid var(--line);border-radius:12px;background:#fff;margin:12px 0;padding:2px 14px 6px}
+details.xpd>summary{cursor:pointer;font-weight:700;font-size:1.0625rem;min-height:44px;display:flex;align-items:center;gap:8px;list-style:none;padding:10px 0}
+details.xpd>summary::-webkit-details-marker{display:none}
+details.xpd>summary::before{content:"\25B8";color:var(--accent);font-weight:800}
+details.xpd[open]>summary::before{content:"\25BE"}
+details.xpd h2{margin-top:8px}
 </style>
 </head>
 <body>
 <p class="brand"><a href="/">ThawDay</a></p>
 <h1>What temperature to cook a turkey?</h1>
 <p class="answer"><strong>325 F. That is the floor, not a suggestion.</strong> Set the oven temperature no lower than 325 F and be sure the turkey is completely thawed.</p>
+<div class="chips"><span class="chip"><strong>Oven floor</strong> 325 F</span><span class="chip"><strong>Done</strong> 165 F</span></div>
+<details class="xpd"><summary>The pan the bird cooks in</summary>
 <h2>The pan the bird cooks in</h2>
 <p>Place turkey breast-side up on a flat wire rack in a shallow roasting pan 2 to 2-1/2 inches deep. The rack lifts the bird out of its own juices, so the bottom cooks evenly. A deep pan traps steam and slows the bottom.</p>
+</details>
+<details class="xpd"><summary>How long at 325 F</summary>
 <h2>How long at 325 F</h2>
 <p>The calculator uses this USDA chart at 325 F, for a thawed, unstuffed turkey. Full oven-in times for Thanksgiving 2026: <a href="/how-long-to-cook-a-turkey">how long to cook a turkey</a>.</p>
 <table>
@@ -90,10 +104,15 @@ footer a:hover{text-decoration:underline}
 <tr><td>19 to 20 lb</td><td>4 hours 15 minutes to 4 hours 30 minutes</td></tr>
 <tr><td>21 to 24 lb</td><td>4 hours 30 minutes to 5 hours</td></tr>
 </table>
+</details>
+<details class="xpd"><summary>The temperature that ends the roast</summary>
 <h2>The temperature that ends the roast</h2>
 <p>A meat thermometer: 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing. Color is not a reliable signal. A pop-up timer does not replace that check: <a href="/can-you-trust-the-pop-up-timer-on-a-turkey">can you trust the pop-up timer on a turkey</a>.</p>
+</details>
+<details class="xpd"><summary>Lower and slower is not a shortcut</summary>
 <h2>Lower and slower is not a shortcut</h2>
 <p>No low overnight roast: the floor is 325 F. If timing is the problem, cook from frozen at the same 325 F. It takes at least 50 percent longer. See <a href="/can-you-cook-a-frozen-turkey">can you cook a turkey from frozen</a>.</p>
+</details>
 <div class="safety">
 <p><strong>USDA's third safe way is the microwave: follow your oven manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.</strong></p>
 </div>
@@ -101,7 +120,7 @@ footer a:hover{text-decoration:underline}
 <h2>Your exact dates, in seconds</h2>
 <p>Tell the <a href="/calculator">calculator</a> your weight and dinner time for the full plan. Or <a href="/ask">ask in your own words</a>: "16 lb turkey, dinner Thursday at 5."</p>
 </div>
-<section class="faq">
+<section class="faq"><details class="xpd"><summary>More questions</summary>
 <h2>Quick answers</h2>
 <h3>What temperature should I cook a turkey at?</h3>
 <p>Set the oven temperature no lower than 325 F and be sure the turkey is completely thawed.</p>
@@ -109,7 +128,8 @@ footer a:hover{text-decoration:underline}
 <p>No. Set the oven temperature no lower than 325 F and be sure the turkey is completely thawed. A roast set below 325 F breaks that rule, however long it runs.</p>
 <h3>What temperature is a turkey done at?</h3>
 <p>A meat thermometer: 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing. Color is not a reliable signal.</p>
-</section>
+
+</details></section>
 <section class="more">
 <h2>More turkey questions, answered</h2>
 <ul>

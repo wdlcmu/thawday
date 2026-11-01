@@ -62,18 +62,33 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:.
 footer p{margin:4px 0}
 footer a{color:var(--accent);font-weight:600;text-decoration:none;display:inline-block;padding:12px 6px;min-height:44px}
 footer a:hover{text-decoration:underline}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:.9375rem;line-height:1.35}
+.chip strong{color:var(--accent);font-weight:700}
+details.xpd{border:1px solid var(--line);border-radius:12px;background:#fff;margin:12px 0;padding:2px 14px 6px}
+details.xpd>summary{cursor:pointer;font-weight:700;font-size:1.0625rem;min-height:44px;display:flex;align-items:center;gap:8px;list-style:none;padding:10px 0}
+details.xpd>summary::-webkit-details-marker{display:none}
+details.xpd>summary::before{content:"\25B8";color:var(--accent);font-weight:800}
+details.xpd[open]>summary::before{content:"\25BE"}
+details.xpd h2{margin-top:8px}
 </style>
 </head>
 <body>
 <p class="brand"><a href="/">ThawDay</a></p>
 <h1>How long can a thawed turkey stay in the fridge?</h1>
 <p class="answer"><strong>Cook it within 1 to 2 days.</strong> That is the USDA rule. The clock starts when the turkey is fully thawed.</p>
+<div class="chips"><span class="chip"><strong>Cook it</strong> within 1–2 days</span><span class="chip"><strong>Cooked leftovers</strong> 3–4 days</span></div>
+<details class="xpd"><summary>What this means for your plan</summary>
 <h2>What this means for your plan</h2>
 <p>Thawing early is safe. A turkey that finishes thawing on Wednesday is fine for a Thursday dinner. It still has its 1 to 2 days.</p>
 <p>Thawing late is the risk. A bird that is still icy on cooking day roasts unevenly. Start from the <a href="/when-to-thaw-turkey-for-thanksgiving">Thanksgiving dates by weight</a> and you land in the safe window.</p>
 <p>A fresh turkey is the same clock. Buy it 1 to 2 days before cooking. The ThawDay calculator uses exactly that rule for fresh birds.</p>
+</details>
+<details class="xpd"><summary>After it is cooked</summary>
 <h2>After it is cooked</h2>
 <p>Cooked turkey leftovers keep 3 to 4 days in the fridge, per USDA. Get them in within 2 hours of the meal. Freeze what you will not eat in that window.</p>
+</details>
 <div class="safety">
 <p><strong>Keep the raw turkey cold the whole time.</strong> Fridge at 40 F or below, on a tray, below ready-to-eat food. Never leave it on the counter.</p>
 </div>

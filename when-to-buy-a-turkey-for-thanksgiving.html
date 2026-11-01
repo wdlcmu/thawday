@@ -78,14 +78,28 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:.
 footer p{margin:4px 0}
 footer a{color:var(--accent);font-weight:600;text-decoration:none;display:inline-block;padding:12px 6px;min-height:44px}
 footer a:hover{text-decoration:underline}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:.9375rem;line-height:1.35}
+.chip strong{color:var(--accent);font-weight:700}
+details.xpd{border:1px solid var(--line);border-radius:12px;background:#fff;margin:12px 0;padding:2px 14px 6px}
+details.xpd>summary{cursor:pointer;font-weight:700;font-size:1.0625rem;min-height:44px;display:flex;align-items:center;gap:8px;list-style:none;padding:10px 0}
+details.xpd>summary::-webkit-details-marker{display:none}
+details.xpd>summary::before{content:"\25B8";color:var(--accent);font-weight:800}
+details.xpd[open]>summary::before{content:"\25BE"}
+details.xpd h2{margin-top:8px}
 </style>
 </head>
 <body>
 <p class="brand"><a href="/">ThawDay</a></p>
 <h1>When to buy a turkey for Thanksgiving</h1>
 <p class="answer"><strong>Frozen: buy by Sunday, November 15, 2026.</strong> Fresh: buy 1 to 2 days before cooking, so <strong>Tuesday, November 24 or Wednesday, November 25</strong>. Dinner is Thursday, November 26, 2026.</p>
+<div class="chips"><span class="chip"><strong>Frozen</strong> buy by Sun, Nov 15</span><span class="chip"><strong>Fresh</strong> buy Nov 24–25</span></div>
+<details class="xpd"><summary>Frozen birds: when to buy</summary>
 <h2>Frozen birds: the buy date is about the store</h2>
 <p>The calculator stamps this date eleven days before dinner and labels it kitchen practice, not a USDA date. Frozen birds sell out the weekend before Thanksgiving; the hard dates come from the thaw.</p>
+</details>
+<details class="xpd"><summary>Then the thaw starts, by weight</summary>
 <h2>Then the thaw starts, by weight</h2>
 <p>A frozen bird bought by November 15 waits in your freezer until its fridge day:</p>
 <table>
@@ -96,9 +110,12 @@ footer a:hover{text-decoration:underline}
 <tr><td>24 lb</td><td>Friday, November 20</td></tr>
 </table>
 <p>Full dates for every weight are on <a href="/when-to-thaw-turkey-for-thanksgiving">when to take the turkey out of the freezer</a>. Not sure what weight to buy? Start with <a href="/how-much-turkey-per-person">how much turkey per person</a>: one pound each.</p>
+</details>
+<details class="xpd"><summary>Fresh birds: the short window</summary>
 <h2>Fresh birds: the short window</h2>
 <p>Fresh: buy 1 to 2 days before cooking. A fresh bird goes from the store to your fridge, at 40 F or below, and into the oven on Thursday.</p>
 <p>Late either way? A frozen bird can still thaw in cold water: Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. Change the water every 30 minutes. Cook it right after it thaws.</p>
+</details>
 <div class="safety">
 <p><strong>USDA's third safe way is the microwave: follow your oven manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.</strong></p>
 </div>

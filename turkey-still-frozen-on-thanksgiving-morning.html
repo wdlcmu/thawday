@@ -78,12 +78,24 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:.
 footer p{margin:4px 0}
 footer a{color:var(--accent);font-weight:600;text-decoration:none;display:inline-block;padding:12px 6px;min-height:44px}
 footer a:hover{text-decoration:underline}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:.9375rem;line-height:1.35}
+.chip strong{color:var(--accent);font-weight:700}
+details.xpd{border:1px solid var(--line);border-radius:12px;background:#fff;margin:12px 0;padding:2px 14px 6px}
+details.xpd>summary{cursor:pointer;font-weight:700;font-size:1.0625rem;min-height:44px;display:flex;align-items:center;gap:8px;list-style:none;padding:10px 0}
+details.xpd>summary::-webkit-details-marker{display:none}
+details.xpd>summary::before{content:"\25B8";color:var(--accent);font-weight:800}
+details.xpd[open]>summary::before{content:"\25BE"}
+details.xpd h2{margin-top:8px}
 </style>
 </head>
 <body>
 <p class="brand"><a href="/">ThawDay</a></p>
 <h1>Turkey still frozen on Thanksgiving morning?</h1>
 <p class="answer"><strong>Dinner can still happen.</strong> You have two safe paths: thaw it in cold water, at 30 minutes per pound, or cook it from frozen. Never the counter, and never warm water.</p>
+<div class="chips"><span class="chip"><strong>Cold water</strong> 30 min per lb</span><span class="chip"><strong>From frozen</strong> half again as long</span></div>
+<details class="xpd"><summary>Path 1: cold water, if the hours fit</summary>
 <h2>Path 1: cold water, if the hours fit</h2>
 <p>Cold water takes 30 minutes per pound, and the bird must be thawed by oven time. For a 5 PM dinner today, Thursday, November 26, 2026, start by:</p>
 <table>
@@ -95,6 +107,8 @@ footer a:hover{text-decoration:underline}
 </table>
 <p>Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. Change the water every 30 minutes. Cook it right after it thaws. Full steps: <a href="/thaw-a-turkey-in-cold-water">thawing a turkey in cold water</a>.</p>
 <p>Partly thawed? These hours are for a rock-frozen bird, so yours finishes sooner. At breakfast with a 20 lb bird, cold water cannot finish. Use Path 2.</p>
+</details>
+<details class="xpd"><summary>Path 2: cook it from frozen</summary>
 <h2>Path 2: cook it from frozen</h2>
 <p>Roast at 325 F. A frozen bird takes at least half again as long as a thawed one.</p>
 <table>
@@ -105,6 +119,7 @@ footer a:hover{text-decoration:underline}
 <tr><td>24 lb</td><td>6 hours 45 minutes to 7 hours 30 minutes</td></tr>
 </table>
 <p>No oven bag. Pull the giblet packet out with tongs once the outside softens. The thermometer decides: 165 F. Full steps: <a href="/can-you-cook-a-frozen-turkey">cooking a turkey from frozen</a>.</p>
+</details>
 <div class="safety">
 <p><strong>USDA's third safe way is the microwave: follow your oven manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.</strong></p>
 </div>

@@ -78,12 +78,24 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:.
 footer p{margin:4px 0}
 footer a{color:var(--accent);font-weight:600;text-decoration:none;display:inline-block;padding:12px 6px;min-height:44px}
 footer a:hover{text-decoration:underline}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:.9375rem;line-height:1.35}
+.chip strong{color:var(--accent);font-weight:700}
+details.xpd{border:1px solid var(--line);border-radius:12px;background:#fff;margin:12px 0;padding:2px 14px 6px}
+details.xpd>summary{cursor:pointer;font-weight:700;font-size:1.0625rem;min-height:44px;display:flex;align-items:center;gap:8px;list-style:none;padding:10px 0}
+details.xpd>summary::-webkit-details-marker{display:none}
+details.xpd>summary::before{content:"\25B8";color:var(--accent);font-weight:800}
+details.xpd[open]>summary::before{content:"\25BE"}
+details.xpd h2{margin-top:8px}
 </style>
 </head>
 <body>
 <p class="brand"><a href="/">ThawDay</a></p>
 <h1>How to thaw a turkey you plan to brine</h1>
 <p class="answer"><strong>Brining does not change the thaw.</strong> A frozen turkey thaws on the same days whether you brine it or not. The bird must be fully thawed when brining starts, 24 hours before the oven.</p>
+<div class="chips"><span class="chip"><strong>Brine starts</strong> 24 hours before the oven</span><span class="chip"><strong>Fully thawed</strong> before brining</span></div>
+<details class="xpd"><summary>Thaw times and move dates</summary>
 <h2>The thaw is the same</h2>
 <p>Keep the fridge at 40 F or below, on a tray, in its wrapper.</p>
 <table>
@@ -93,6 +105,8 @@ footer a:hover{text-decoration:underline}
 <tr><td>20 lb</td><td>5 days</td><td>Saturday, November 21</td><td>10 hours</td></tr>
 <tr><td>24 lb</td><td>6 days</td><td>Friday, November 20</td><td>12 hours</td></tr>
 </table>
+</details>
+<details class="xpd"><summary>When the brine starts</summary>
 <h2>When the brine starts</h2>
 <p>For a 5 PM Thanksgiving dinner on Thursday, November 26, 2026:</p>
 <table>
@@ -103,9 +117,12 @@ footer a:hover{text-decoration:underline}
 <tr><td>24 lb</td><td>Wednesday, November 25, 11:55 AM</td></tr>
 </table>
 <p>Brine in the fridge the whole time, at 40 F or below. Never longer than two days. Discard the brine after. Start once the bird is thawed.</p>
+</details>
+<details class="xpd"><summary>If the thaw runs late</summary>
 <h2>If the thaw runs late</h2>
 <p>If it is still icy at brine time, use a shorter brine once it thaws, or skip the brine. A last-day cold-water rescue leaves no room for a full 24 hour brine.</p>
 <p>Finishing a thaw in cold water: Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. Change the water every 30 minutes. Cook it right after it thaws. Full steps: <a href="/thaw-a-turkey-in-cold-water">thawing a turkey in cold water</a>.</p>
+</details>
 <div class="safety">
 <p><strong>USDA's third safe way is the microwave: follow your oven manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.</strong></p>
 </div>
