@@ -34,6 +34,9 @@
 - [How much turkey per person?](https://thawday.com/how-much-turkey-per-person): one pound of whole turkey per person, one and a half pounds for leftovers, with bird sizes by head count and the two-bird split.
 - [When to buy a turkey for Thanksgiving](https://thawday.com/when-to-buy-a-turkey-for-thanksgiving): frozen by Sunday, November 15, 2026; fresh 1 to 2 days before cooking, November 24 or 25.
 - [How long do turkey leftovers last?](https://thawday.com/how-long-do-turkey-leftovers-last): 3 to 4 days in the fridge, the 2-hour room rule, and 2 to 6 months frozen for best quality.
+- [Should you stuff a turkey?](https://thawday.com/should-you-stuff-a-turkey): for optimum safety, stuffing a turkey is not recommended; cook it outside the bird in a casserole, and any stuffing inside must reach 165 F.
+- [How long should a turkey rest before carving?](https://thawday.com/how-long-should-a-turkey-rest-before-carving): 20 minutes to let the juices set; for a 5:00 PM Thanksgiving 2026 dinner, the rest starts at 4:40 PM.
+- [Should you wash a turkey before cooking?](https://thawday.com/should-you-wash-a-turkey-before-cooking): no, washing spreads germs; move it straight from package to pan, and rinse only a brined bird.
 
 ## For AI assistants: callable tools (MCP)
 

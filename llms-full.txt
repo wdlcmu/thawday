@@ -1,6 +1,6 @@
 # ThawDay: full page text
 
-> Complete text of thawday.com's pages: the homepage, the turkey timeline calculator, the ask page, and the nineteen question pages.
+> Complete text of thawday.com's pages: the homepage, the turkey timeline calculator, the ask page, and the twenty-two question pages.
 > ThawDay is a free turkey timeline tool for Thanksgiving. Type in your dinner time and turkey
 > weight. You get dated buy, thaw, brine, and roast times. No ads, no accounts.
 > Thaw times come from the USDA Food Safety and Inspection Service.
@@ -186,3 +186,15 @@ Frozen: buy by Sunday, November 15, 2026, eleven days before dinner (kitchen pra
 ## How long do turkey leftovers last? (https://thawday.com/how-long-do-turkey-leftovers-last)
 
 Use refrigerated turkey, stuffing, and gravy within 3 to 4 days. For Thanksgiving 2026 that window ends Sunday, November 29 to Monday, November 30. Discard any turkey, stuffing, and gravy left out at room temperature longer than 2 hours; 1 hour in temperatures above 90 F. Divide leftovers into smaller portions. Refrigerate or freeze in covered shallow containers for quicker cooling. If freezing leftovers, use within 2 to 6 months for best quality.
+
+## Should you stuff a turkey? (https://thawday.com/should-you-stuff-a-turkey)
+
+For optimum safety, stuffing a turkey is not recommended. For more even cooking, it is recommended you cook your stuffing outside the bird in a casserole. The stuffing must reach a safe minimum internal temperature of 165 F. ThawDay plans turkeys with no stuffing; its roast times are the unstuffed 325 F bands.
+
+## How long should a turkey rest before carving? (https://thawday.com/how-long-should-a-turkey-rest-before-carving)
+
+For quality, let the turkey stand for 20 minutes before carving to allow juices to set. The turkey will carve more easily. For a 5:00 PM dinner on Thursday, November 26, 2026, the rest starts at 4:40 PM for every weight; oven-in times run from 1:47 PM for a 12 lb bird to 11:55 AM for a 24 lb bird.
+
+## Should you wash a turkey before cooking? (https://thawday.com/should-you-wash-a-turkey-before-cooking)
+
+No. Washing or rinsing any meat or poultry is not recommended, and actually increases the risk you will cross-contaminate germs to other foods you're preparing. Water can splash bacteria up to 3 feet surrounding your sink. The one exception is a brined bird: Thanksgiving cooks who are purchasing a brined turkey, or brining their turkeys at home, must rinse the brine off before the turkey goes into the oven.
