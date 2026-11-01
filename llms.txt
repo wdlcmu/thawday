@@ -40,6 +40,7 @@
 - [Can you trust the pop-up timer on a turkey?](https://thawday.com/can-you-trust-the-pop-up-timer-on-a-turkey): not on its own; also check with a food thermometer in the breast, thigh, and wing, and the minimum internal temperature should reach 165 F for safety.
 - [How long can you keep a turkey in the freezer?](https://thawday.com/how-long-can-you-keep-a-turkey-in-the-freezer): turkeys can be kept frozen indefinitely; however, cook within 1 year for best quality, with USDA freezer times for parts and giblets.
 - [What if you cook a turkey with the giblets inside?](https://thawday.com/what-if-you-cook-a-turkey-with-the-giblets-inside): paper wrapped is no concern at 165 F; a plastic bag that melted means do not eat the giblets or the turkey.
+- [How to reheat leftover turkey?](https://thawday.com/how-to-reheat-leftover-turkey): reheat to 165 F measured with a food thermometer, covered so it heats all the way through; gravy comes back to a rolling boil, and frozen leftovers can reheat without thawing.
 
 ## For AI assistants: callable tools (MCP)
 
