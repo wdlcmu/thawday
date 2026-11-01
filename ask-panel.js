@@ -122,11 +122,39 @@ function parseAsk(raw, nowOverride){
   if(/from frozen/.test(t)&&/(cook|bake|roast|oven)/.test(t)) p.intent="fromfrozen";
   else if(/thaw/.test(t)&&/(when|how long|how many|start|begin|need)/.test(t)) p.intent="thaw";
   else if(/(roast|cook|bake)/.test(t)&&/(how long|when|what time)/.test(t)) p.intent="roast";
+  /* 2026-11-01 (Addendum 907-B): unsafe-premise + hold-window detection.
+     These questions carry their own published answer on the site's pages;
+     the premise is recorded here and answerAsk leads with that answer.
+     No numbers live here: the lead sentences are the pages' own words. */
+  var holdM=t.match(/been in the fridge for (\d+) days?/);
+  if(/\bcounter\b|room temperature/.test(t)) p.premise="counter";
+  else if(/\bwarm water\b|\bhot water\b/.test(t)) p.premise="warmwater";
+  else if(/cold water/.test(t)&&/overnight/.test(t)) p.premise="coldovernight";
+  if(holdM||(/thawed/.test(t)&&/fridge/.test(t)&&/(still ok|still good|still safe|how long|ok to|safe to)/.test(t))||/how long can a thawed/.test(t)){ p.premise="hold"; if(holdM) p.holdDays=parseInt(holdM[1],10); }
+  p.coldWater=/cold water/.test(t);
+  /* 2026-11-01 (Addendum 907-A): weekday scan. A weekday inside a
+     current-day clause ("it's Tuesday", "it is Wednesday", "today is
+     Tuesday") names TODAY, never the dinner day. The dinner weekday is
+     the remaining token bound to the dinner ("for Thursday", "by
+     Thursday", "Thursday dinner", "dinner is Thursday"); when both
+     appear, the dinner-bound one wins. */
+  var wdayRe=/\b(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/g, wdayHit, wdayHits=[];
+  while((wdayHit=wdayRe.exec(t))!==null){ wdayHits.push({name:wdayHit[1],idx:wdayHit.index}); }
+  var dinnerWday=null, dinnerScore=-1;
+  for(var wi=0;wi<wdayHits.length;wi++){ var wh=wdayHits[wi];
+    var before=t.slice(Math.max(0,wh.idx-24),wh.idx), after=t.slice(wh.idx+wh.name.length,wh.idx+wh.name.length+10);
+    if(/(it'?s|it is|today is|today'?s)\s+$/.test(before)) continue;
+    var score=0;
+    if(/\b(for|by|on)\s+$/.test(before)) score+=2;
+    if(/^\s+(dinner|night)\b/.test(after)) score+=2;
+    if(/dinner( is| on)?\s*$/.test(before)) score+=2;
+    if(score>dinnerScore){ dinnerScore=score; dinnerWday=wh; }
+  }
   var date=null;
   if(/thanksgiving/.test(t)){ date=nextThanksgiving(today); p.dateLabel="Thanksgiving"; }
   else if(/christmas/.test(t)){ date=new Date(today.getFullYear(),11,25); if(date<today) date=new Date(today.getFullYear()+1,11,25); p.dateLabel="Christmas Day"; }
   else if(/tomorrow/.test(t)){ date=new Date(today.getFullYear(),today.getMonth(),today.getDate()+1); }
-  else if(/today|tonight/.test(t)){ date=new Date(today.getFullYear(),today.getMonth(),today.getDate()); }
+  else if(/today|tonight/.test(t)&&!dinnerWday){ date=new Date(today.getFullYear(),today.getMonth(),today.getDate()); }
   if(!date){
     var months={january:0,february:1,march:2,april:3,may:4,june:5,july:6,august:7,september:8,october:9,november:10,december:11,jan:0,feb:1,mar:2,apr:3,jun:5,jul:6,aug:7,sep:8,sept:8,oct:9,nov:10,dec:11};
     var mm=t.match(/\b(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|sept|oct|nov|dec)\s+(\d{1,2})\b/);
@@ -135,7 +163,9 @@ function parseAsk(raw, nowOverride){
   }
   if(!date){
     var wdays={sunday:0,monday:1,tuesday:2,wednesday:3,thursday:4,friday:5,saturday:6};
-    var dm=t.match(/\b(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/);
+    /* Addendum 907-A: only the dinner-bound weekday token reaches here;
+       current-day mentions were filtered out in the scan above. */
+    var dm=dinnerWday?{1:dinnerWday.name}:null;
     if(dm){ var target=wdays[dm[1]]; var tg=nextThanksgiving(today);
       /* Seasonal rule, in the site's own register: this is a Thanksgiving
          tool (the homepage counts down to it, the quiz pre-fills it). In
@@ -165,6 +195,21 @@ function answerAsk(raw, nowOverride){
   var now=nowOverride||new Date();
   var hint=document.getElementById("askp-hint"), out=document.getElementById("askp-answer");
   var p=parseAsk(raw, now);
+  /* Addendum 907-B: premise leads, in the site's own published words.
+     A hold-window question is answered by the 1-to-2-day rule alone:
+     the bird it describes is already thawed, so no frozen plan is
+     built for it, and the rule does not need a weight. */
+  var premiseHtml="";
+  if(p.premise==="counter") premiseHtml=`<div class="row"><strong>No. Never thaw a turkey on the counter.</strong><br>The outside warms up hours before the inside thaws. Bacteria grow in that warm layer. Use the fridge, at 40 F or below, or cold water. The safe plan is below.</div>`;
+  else if(p.premise==="warmwater") premiseHtml=`<div class="row"><strong>No. Warm water speeds up the wrong thing.</strong><br>The surface of the bird warms into the danger zone long before the center thaws. Cold water, changed every 30 minutes, is the fast safe method. The safe plan is below.</div>`;
+  else if(p.premise==="coldovernight") premiseHtml=`<div class="row"><strong>No. Cold water only works while you are awake to change it.</strong><br>Change the water every 30 minutes. Cook it right after it thaws. An overnight soak breaks both rules at once. The safe plan is below.</div>`;
+  if(p.premise==="hold"){
+    hint.textContent="";
+    var holdVerdict = p.holdDays==null ? "" : (p.holdDays>2 ? ` Yours has been in the fridge for ${p.holdDays} days. That is past the window. Do not cook it.` : ` At ${p.holdDays} day${p.holdDays===1?"":"s"}, it is still inside that window. Cook it today.`);
+    out.innerHTML=`<div class="row"><strong>Cook a thawed turkey within 1 to 2 days. That is the USDA rule.</strong><br>The clock starts when the turkey is fully thawed.${holdVerdict}</div>`;
+    document.getElementById("askp-calclink").innerHTML="";
+    return {rows:[],warning:null,parsed:p};
+  }
   if(!p.lb){ hint.textContent="";
     out.innerHTML=`<div class="row"><strong>One thing I still need: the turkey.</strong><br>Say its weight, like "a 14-pound turkey". Or say how many people are eating, like "turkey for 10 people". The examples above show the shape.</div>`;
     return null;
@@ -180,7 +225,7 @@ function answerAsk(raw, nowOverride){
   if(p.dateDefaulted||p.timeDefaulted) summary+=` Dinner is set to ${fmt(dinner)}. Say a different day or time in your words to change it.`;
   if(!p.stateExplicit||!p.brineExplicit) summary+=` ${state==="frozen"?"Frozen":"Fresh"}, ${brine==="yes"?"with a brine":"no brine"}. Say "fresh" or "brine it" in your words to change that.`;
   var lead="";
-  if(p.intent==="thaw"&&thaw){ lead=thaw.late?`Fridge thaw has already passed for this dinner. Use cold water today: about ${Math.round((lb*30/60)*10)/10} hours. The full plan is below.`:`Start thawing ${fmt(thaw.when)}. Move the turkey to the fridge then. The full plan is below.`; }
+  if(p.intent==="thaw"&&thaw){ lead=thaw.late?`Fridge thaw has already passed for this dinner. Use cold water today: about ${Math.round((lb*30/60)*10)/10} hours. The full plan is below.`:p.coldWater?`In cold water, a ${lb} lb turkey thaws in about ${Math.round((lb*30/60)*10)/10} hours (30 minutes per pound). Seal it in a leak-proof plastic bag, submerge it in cold tap water, change the water every 30 minutes, and cook it right after it thaws. The fridge plan is below.`:`A ${lb} lb turkey takes ${thawDays(lb)} days to thaw in the fridge. Start thawing ${fmt(thaw.when)}. Move the turkey to the fridge then. The full plan is below.`; }
   else if(p.intent==="roast"&&oven){ lead=`A ${lb} lb turkey roasts in about ${durText(roastMinutes(lb))} at 325 F. In the oven by ${fmt(oven.when)} for this dinner. The full plan is below.`; }
   else if(p.intent==="fromfrozen"){ var fb0=frozenRoastBand(lb); lead=`Yes. USDA says cooking a turkey from frozen is safe. For a ${lb} lb bird at 325 F, plan on ${durText(fb0[0])} to ${durText(fb0[1])}. The details are in the plan below.`; }
   var rowsHtml=rows.map(r=>`<div class="row"><strong>${fmt(r.when)}</strong><br>${r.label}<br>${r.detail}</div>`).join("");
@@ -194,7 +239,11 @@ function answerAsk(raw, nowOverride){
   }
   var planHtml=warnHtmlFor(warning)+rowsHtml+coldHtml;
   var bodyHtml = p.intent==="fromfrozen" ? frozenHtml+planHtml : planHtml+frozenHtml;
-  out.innerHTML=`<div class="row"><strong>${summary}</strong>${lead?`<br><span class="lead">${lead}</span>`:""}</div>`+bodyHtml;
+  /* Addendum 907-B: a late cold-water thaw that runs overnight carries
+     the awake-to-change caveat from the overnight page. */
+  if(thaw&&thaw.late){ var cwFinish=new Date(now.getTime()+lb*CONSTANTS.coldWaterMinPerLb.value*60000);
+    if(cwFinish.getDate()!==now.getDate()||cwFinish.getMonth()!==now.getMonth()) bodyHtml+=`<div class="row"><strong>That cold-water time runs overnight.</strong><br>Cold water only works while you are awake to change it, every 30 minutes. Do not leave the turkey soaking overnight.</div>`; }
+  out.innerHTML=premiseHtml+`<div class="row"><strong>${summary}</strong>${lead?`<br><span class="lead">${lead}</span>`:""}</div>`+bodyHtml;
   var dstr=dinner.getFullYear()+"-"+String(dinner.getMonth()+1).padStart(2,"0")+"-"+String(dinner.getDate()).padStart(2,"0");
   var tstr=String(dinner.getHours()).padStart(2,"0")+":"+String(dinner.getMinutes()).padStart(2,"0");
   document.getElementById("askp-calclink").innerHTML=`Want the picture card, print view, or calendar file? <a href="/calculator?via=share&w=${lb}&s=${state}&b=${brine}&d=${dstr}&t=${tstr}">Open this plan in the calculator</a>. It builds those from this same plan.`;
