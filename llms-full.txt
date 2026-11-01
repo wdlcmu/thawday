@@ -1,6 +1,6 @@
 # ThawDay: full page text
 
-> Complete text of thawday.com's two pages: the homepage and the turkey timeline calculator.
+> Complete text of thawday.com's three pages: the homepage, the turkey timeline calculator, and the ask page.
 > ThawDay is a free turkey timeline tool for Thanksgiving. Type in your dinner time and turkey
 > weight. You get dated buy, thaw, brine, and roast times. No ads, no accounts.
 > Thaw times come from the USDA Food Safety and Inspection Service.
@@ -104,5 +104,21 @@ Your plan stays on your device. The page saves it in your browser so it shows ag
 
 Our guarantees
 We never receive what you type, not your date, your dinner hour, or your turkey's weight. No account, no email, and no cost. The full plan is yours on the spot. There are no ads on this site.
+
+Timings verified against USDA FSIS charts on Oct 22, 2026.
+
+## Ask (https://thawday.com/ask)
+
+Ask in your own words
+
+Skip the form. Say your turkey and your dinner in one line.
+
+We run the same USDA math as the calculator, right on this page. Nothing you type is sent or saved.
+
+Your turkey, in your words. Examples: "I have a 14-pound frozen turkey. Dinner is Thursday at 5." "When do I start thawing a 12 lb turkey for Thanksgiving?" "Can I cook a 15 lb turkey from frozen?" "Fresh 20 lb turkey for Christmas dinner at 6. We want to brine it." "Turkey for 10 people with leftovers, Thanksgiving at 4."
+
+Safety: When in doubt, use a meat thermometer: 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing. Never thaw a turkey on the counter.
+
+Want the picture card, print view, or calendar file? Open the calculator. It builds those from the same plan.
 
 Timings verified against USDA FSIS charts on Oct 22, 2026.

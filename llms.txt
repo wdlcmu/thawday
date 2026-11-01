@@ -13,6 +13,7 @@
 ## Start here
 
 - [Turkey timeline calculator](https://thawday.com/calculator): enter the turkey weight, the thaw method, and your dinner time; get your dated buy, thaw, brine, and roast schedule.
+- [Ask in your own words](https://thawday.com/ask): say the turkey and the dinner in one line ("I have a 14-pound frozen turkey. Dinner is Thursday at 5."); the same USDA math answers on the page. The words run in the visitor's browser and are never sent or saved.
 - [Homepage](https://thawday.com/): thaw times at a glance, plus common questions.
 
 ## For AI assistants: callable tools (MCP)
