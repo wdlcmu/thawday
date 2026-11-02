@@ -73,4 +73,19 @@
 .askp-full{margin:14px 0 0;font-size:.9375rem}
 .askp-full a{color:#b45309;font-weight:600}
 #askp-calclink{margin:12px 0 0}
-#askp-calclink a{color:#b45309;font-weight:600}
+#askp-calclink a{color:#b45309;font-weight:600;display:inline-block;padding:12px 6px;min-height:44px}
+/* Phase B (Dim 9, 2026-11-01): the plan's calculator next step and the
+   full-ask link are real tap targets now (>=44px), same recipe as the
+   site's footer links. Presentation only — engine bytes untouched. */
+.askp-full a{display:inline-block;padding:12px 6px;min-height:44px}
+
+/* FLEET YIELD GUARD START (Phase B adoption, 2026-11-01 — reference v1.0;
+   spec: builds/fleet-yield-guard-2026-11-01/ADOPTION-SPEC.md, ThawDay
+   section. Rollback = remove this block + the guard block at the end of
+   ask-panel.js.) */
+.fyg-pill { transition: transform .25s ease; }
+.fyg-pill.fyg-yield { transform: translateY(calc(100% + var(--fyg-gap, 20px))); }
+@media (prefers-reduced-motion: reduce) {
+  .fyg-pill { transition: none; }
+}
+/* FLEET YIELD GUARD END */

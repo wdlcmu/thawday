@@ -493,3 +493,255 @@ function answerAsk(raw, nowOverride){
   document.addEventListener("keydown",function(ev){ if(ev.key==="Escape"&&!panel.hidden) close(); });
 })();
 })();
+
+/* ================= FLEET YIELD GUARD START =================
+   Phase B adoption (2026-11-01) of the fleet reference guard v1.0
+   (builds/fleet-yield-guard-2026-11-01/ADOPTION-SPEC.md, ThawDay
+   section): the fixed ask pill (#askp-open) yields below the fold
+   whenever a visible interactive element would intersect its RESTING
+   box (computed from untransformed CSS position + offset size, never
+   from its rendered rect — the PMC oscillation rule). A focused pill
+   and an open panel never yield. Everything above this block is the
+   pre-adoption file byte for byte; rollback = remove this block and
+   the FLEET YIELD GUARD CSS block in ask-panel.css. */
+/* Fleet Yield Guard — reference implementation v1.0 (2026-11-01)
+ *
+ * SPEC + STAGING ONLY. Not deployed to any live site by this package.
+ * Adoption ships per-site through the keeper after review — see ../ADOPTION-SPEC.md
+ *
+ * Problem it solves (D7 fleet finding, Nov 1 2026):
+ *   A fixed Ask/Chat pill sits on top of real controls. Each site's home-grown
+ *   guard watched only SOME elements (text nodes on PMC, one card on Secret
+ *   Santa, the hero <h1> on Dadiosity, nothing on ThawDay's calculator), so
+ *   at some scroll stop the pill always ate someone's tap.
+ *
+ * This guard watches ANY visible interactive element and yields the pill
+ * (slides it off the fold) whenever one would intersect the pill's RESTING box.
+ *
+ * Anti-oscillation — the whole point, learned from PMC Addendum 985:
+ *   The PMC guard read the pill's live getBoundingClientRect(). Mid-transition
+ *   that rect INCLUDES the yield transform, so the guard measured itself,
+ *   decided it was clear, un-yielded back onto the control, and oscillated.
+ *   This guard NEVER measures the pill's rendered rect after init. It computes
+ *   the resting box ONCE per layout (resize / orientation / pill size change)
+ *   from the pill's untransformed CSS position (computed bottom/right/left/top
+ *   + offsetWidth/offsetHeight, both transform-free) and caches it. Target
+ *   rects are compared against that cached box, so the pill's own transform
+ *   can never feed back into the decision. A 6px hysteresis band on the
+ *   clear-check makes the state sticky at boundary scroll positions.
+ *
+ * Proven mechanics kept from tonight's ships:
+ *   - SS Add.987: resting box from CSS constants (innerHeight - offset - size);
+ *     a focused pill never yields; an open panel never yields.
+ *   - PMC Add.985: band from untransformed position; watch interactive
+ *     elements, not text.
+ *   - Fleet: transform yield (translateY calc(100% + gap)), .25s ease,
+ *     transition:none under prefers-reduced-motion.
+ *   - Companion (page-side, in the adoption spec, not this file):
+ *     html{scroll-padding-bottom} + footer padding so anchor landings and
+ *     max-scroll targets can also clear by scrolling (ThawDay Add.979 pattern).
+ *
+ * Usage (drop-in, no dependencies, ES5-safe like the fleet's inline scripts):
+ *   <link rel="stylesheet" href="fleet-yield-guard.css">   (or inline the 3 rules)
+ *   <script src="fleet-yield-guard.js"></script>
+ *   <script>
+ *     FleetYieldGuard.init({
+ *       pill: '#askp-open',              // selector or element (required)
+ *       panel: '#askpWrap',              // optional: open panel element/selector;
+ *                                        //   pill never yields while it is open/visible
+ *       panelOpen: function(){...},     // optional alternative to `panel`
+ *       targets: null,                   // optional extra selector; default is
+ *                                        //   ANY interactive element (see SELECTOR)
+ *       exclude: '.site-header, .site-nav', // optional: never watch these
+ *       gap: 20,                         // px past the fold when yielded
+ *       className: 'fyg-yield'           // yield class (CSS ships the transform)
+ *     });
+ *   </script>
+ * Multiple pills on one page (Secret Santa has two): call init() once per pill.
+ * Each call returns a handle { refresh, destroy, isYielded }.
+ */
+(function (global) {
+  'use strict';
+
+  var SELECTOR = [
+    'a[href]', 'button', 'input', 'select', 'textarea', 'summary',
+    '[role="button"]', '[role="link"]', '[role="tab"]', '[role="menuitem"]',
+    '[tabindex]:not([tabindex="-1"])', '[data-fyg-watch]'
+  ].join(',');
+
+  var HYSTERESIS = 6; /* px: once yielded, the hit test uses the resting box
+                         EXPANDED by this much, so a target must clear the
+                         box by >6px before the pill returns */
+
+  function toEl(x) {
+    if (!x) return null;
+    if (typeof x === 'string') return document.querySelector(x);
+    return x;
+  }
+  function toList(sel, root) {
+    if (!sel) return [];
+    return Array.prototype.slice.call((root || document).querySelectorAll(sel));
+  }
+  function parsePx(v) { var n = parseFloat(v); return isNaN(n) ? null : n; }
+
+  function init(opts) {
+    opts = opts || {};
+    var pill = toEl(opts.pill);
+    if (!pill) return null;
+    var panel = toEl(opts.panel);
+    var className = opts.className || 'fyg-yield';
+    var gap = (typeof opts.gap === 'number') ? opts.gap : 20;
+    var extraTargets = opts.targets || null;
+    var excludeSel = opts.exclude || null;
+
+    pill.classList.add('fyg-pill');
+    pill.style.setProperty('--fyg-gap', gap + 'px');
+
+    var resting = null;   /* cached untransformed box {top,bottom,left,right} */
+    var yielded = false;
+    var ticking = false;
+    var destroyed = false;
+    var targets = [];
+
+    /* --- resting box: computed from CSS position + offset size ONLY.
+           offsetWidth/offsetHeight and computed bottom/right/left/top are
+           all unaffected by transforms. Never call pill.getBoundingClientRect()
+           here — that is the PMC oscillation bug. --- */
+    function computeResting() {
+      var cs = window.getComputedStyle(pill);
+      var w = pill.offsetWidth, h = pill.offsetHeight;
+      if (!w || !h) { resting = null; return; }
+      var vw = window.innerWidth, vh = window.innerHeight;
+      var left = parsePx(cs.left), right = parsePx(cs.right);
+      var top = parsePx(cs.top), bottom = parsePx(cs.bottom);
+      var box = {};
+      if (left !== null && cs.left !== 'auto') box.left = left;
+      else if (right !== null && cs.right !== 'auto') box.left = vw - right - w;
+      else box.left = vw - w; /* fallback: assume right-anchored */
+      if (top !== null && cs.top !== 'auto') box.top = top;
+      else if (bottom !== null && cs.bottom !== 'auto') box.top = vh - bottom - h;
+      else box.top = vh - h;
+      box.right = box.left + w;
+      box.bottom = box.top + h;
+      resting = box;
+    }
+
+    function collectTargets() {
+      var list = toList(SELECTOR);
+      if (extraTargets) list = list.concat(toList(extraTargets));
+      var excludes = excludeSel ? toList(excludeSel) : [];
+      targets = list.filter(function (el) {
+        if (el === pill) return false;
+        if (pill.contains(el)) return false;
+        if (panel && (el === panel || panel.contains(el))) return false;
+        for (var i = 0; i < excludes.length; i++) {
+          if (el === excludes[i] || excludes[i].contains(el)) return false;
+        }
+        return true;
+      });
+    }
+
+    function panelIsOpen() {
+      if (typeof opts.panelOpen === 'function') return !!opts.panelOpen();
+      if (!panel) return false;
+      if (panel.hidden) return false;
+      var cs = window.getComputedStyle(panel);
+      return cs.display !== 'none' && cs.visibility !== 'hidden';
+    }
+
+    function update() {
+      ticking = false;
+      if (destroyed) return;
+      /* A focused pill, or an open panel, never yields (SS 987 rule). */
+      if (panelIsOpen() || document.activeElement === pill || pill.contains(document.activeElement)) {
+        setYield(false);
+        return;
+      }
+      if (!resting) computeResting();
+      if (!resting) return;
+      var box = resting;
+      /* Hysteresis: yield on ANY overlap with the resting box; once yielded,
+         a target must clear the box EXPANDED by HYSTERESIS px before the
+         pill returns. (An early draft shrank the box for the return check instead —
+         the harness's boundary fixture caught the limit cycle that creates
+         for shallow overlaps: yield -> not-hit -> un-yield -> hit. See
+         REPORT.md, harness bug log #2.) */
+      var ex = yielded ? HYSTERESIS : 0;
+      var hit = false;
+      for (var i = 0; i < targets.length; i++) {
+        var el = targets[i];
+        /* Skip non-rendered targets cheaply before paying for a rect. */
+        if (el.offsetParent === null && window.getComputedStyle(el).position !== 'fixed' && window.getComputedStyle(el).position !== 'sticky') {
+          /* offsetParent is null for display:none and for fixed elements;
+             fixed/sticky fall through to the rect check below. */
+          if (window.getComputedStyle(el).display === 'none') continue;
+        }
+        var b = el.getBoundingClientRect();
+        if (!b.width || !b.height) continue;
+        if (b.bottom > box.top - ex && b.top < box.bottom + ex &&
+            b.right > box.left - ex && b.left < box.right + ex) { hit = true; break; }
+      }
+      setYield(hit);
+    }
+
+    function setYield(on) {
+      if (on === yielded) return;
+      yielded = on;
+      pill.classList.toggle(className, on);
+    }
+
+    function schedule() {
+      if (ticking || destroyed) return;
+      ticking = true;
+      window.requestAnimationFrame(update);
+    }
+    function scheduleRelayout() {
+      /* Layout may have changed: recompute the resting box and the target
+         list, then re-evaluate. This is the ONLY place resting is dropped. */
+      resting = null;
+      collectTargets();
+      schedule();
+    }
+
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', scheduleRelayout);
+    window.addEventListener('orientationchange', scheduleRelayout);
+    pill.addEventListener('focus', function () { setYield(false); }, true);
+    pill.addEventListener('blur', schedule, true);
+
+    var mo = null;
+    if (window.MutationObserver) {
+      /* Results, sealed links, tallies and cards appear dynamically
+         (Secret Santa payoff screen, FMB tally, PP results). Watch for
+         added/removed nodes and attribute changes that show/hide them. */
+      mo = new MutationObserver(function () { collectTargets(); schedule(); });
+      mo.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden', 'style', 'class'] });
+    }
+
+    collectTargets();
+    computeResting();
+    update();
+
+    return {
+      refresh: scheduleRelayout,
+      isYielded: function () { return yielded; },
+      destroy: function () {
+        destroyed = true;
+        window.removeEventListener('scroll', schedule);
+        window.removeEventListener('resize', scheduleRelayout);
+        window.removeEventListener('orientationchange', scheduleRelayout);
+        if (mo) mo.disconnect();
+        setYield(false);
+      }
+    };
+  }
+
+  global.FleetYieldGuard = { init: init, version: '1.0.0' };
+})(typeof window !== 'undefined' ? window : this);
+
+;(function(){
+  if (window.FleetYieldGuard) {
+    FleetYieldGuard.init({ pill: '#askp-open', panel: '#askp-panel' });
+  }
+})();
+/* ================= FLEET YIELD GUARD END ================= */
