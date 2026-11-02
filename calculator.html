@@ -1091,10 +1091,15 @@ render();
   function setVal(id,v){ var el=$(id); if(!el) return; el.value=v; el.dispatchEvent(new Event("input",{bubbles:true})); el.dispatchEvent(new Event("change",{bubbles:true})); }
   function press(groupEl,btn){ if(!groupEl) return; var bs=groupEl.querySelectorAll("button"); for(var i=0;i<bs.length;i++) bs[i].setAttribute("aria-pressed", bs[i]===btn?"true":"false"); }
   function pressByValue(groupEl,attr,val){ if(!groupEl) return; var bs=groupEl.querySelectorAll("button"); for(var i=0;i<bs.length;i++) bs[i].setAttribute("aria-pressed", bs[i].getAttribute(attr)===String(val)?"true":"false"); }
+  var maxStep=1;
   function show(n,scroll){
     for(var i=0;i<panels.length;i++){ var on=i===n-1; panels[i].hidden=!on; panels[i].classList.toggle("on",on); }
     $("qcount").textContent="Step "+n+" of 3";
     $("qfill").style.width=Math.round(n/3*100)+"%";
+    /* Phase B (2026-11-01): tool_step for the funnel — show() is the
+       quiz's single step-advance hook; fire once per NEW furthest
+       step reached (back-navigation does not re-fire). */
+    if(n>maxStep){ maxStep=n; try{ if(window.FA && FA.track) FA.track("tool_step",{tool:"turkey-timeline",surface:"calculator",step:n}); }catch(e){} }
     if(scroll) $("quiz").scrollIntoView();
   }
   function setMode(m){
@@ -1240,21 +1245,28 @@ render();
 </script>
 <script>
 "use strict";
-/* ================= Fleet analytics — PostHog rollout (2026-10-25) =================
-   ThawDay joins the fleet PostHog project (624507), rolling out the
-   pattern the Present Picker pilot proved on 2026-10-25. Every event
-   carries $host automatically; site_id is registered as the friendly
-   label. Posture: autocapture off, session recording off, no
-   identify(), anonymous only. Payloads are counts and enums only —
-   never answers, never personal data. */
-var _fleetQ = [];
+/* ================= Fleet analytics — unified on the FA loader (Phase B, 2026-11-01) =================
+   The October fleetTrack loader block (a second PostHog init with its
+   own queue) is GONE: this page now ships exactly one PostHog loader,
+   the Nov 1 FA block above. fleetTrack remains as a thin shim over
+   FA.track so the tool wiring below (tool_start / tool_complete /
+   artifact_created / share_intent), the session marks, and the ask
+   panel's engine calls keep firing through the single loader. One
+   exception, by design: ask_answered is owned on panel pages by the
+   FA answer observer (FLEET_CFG.ask) — the panel engine's legacy
+   direct ask_answered call is absorbed here so a plan answer fires
+   exactly once, never twice. The same absorb applies to tool_start
+   and tool_complete on this page: the FA config already fires both
+   for the calculator (start #go, complete #out), so the tool
+   wiring's duplicates are absorbed and FA is their single path.
+   The wiring's own events — artifact_created and share_intent —
+   are not fired by FA and keep flowing through this shim. */
 var _fleetPlanOnArrival = null;
 try { _fleetPlanOnArrival = localStorage.getItem("thawday_plan_v1"); } catch (e) {}
+var FLEET_ABSORB = { ask_answered: 1, tool_start: 1, tool_complete: 1 };
 function fleetTrack(name, props){
-  try {
-    if (window.posthog && posthog.capture) posthog.capture(name, props || {});
-    else _fleetQ.push([name, props || {}]);
-  } catch (e) {}
+  if (FLEET_ABSORB[name]) return;
+  try { if (window.FA && FA.track) FA.track(name, props || {}); } catch (e) {}
 }
 function fleetSessionMarks(){
   try {
@@ -1271,22 +1283,7 @@ function fleetSessionMarks(){
     }
   } catch (e) {}
 }
-(function(){
-  var s = document.createElement("script");
-  s.async = true;
-  s.src = "https://us.i.posthog.com/static/array.js";
-  s.onload = function(){
-    try {
-      if (window.posthog && posthog.init){
-        posthog.init("phc_t9dkHXAZR5VEjPFm3K5JDzGKFsNNxKcwSxxcEBEeLbS7", {api_host: "https://us.i.posthog.com", autocapture: false, capture_pageview: true, disable_session_recording: true});
-        posthog.register({site_id: "thawday", site_name: "ThawDay"});
-        _fleetQ.splice(0).forEach(function(e){ try { posthog.capture(e[0], e[1]); } catch (x) {} });
-        fleetSessionMarks();
-      }
-    } catch (e) {}
-  };
-  document.head.appendChild(s);
-})();
+fleetSessionMarks();
 (function(){
   var started = false, completed = false;
   var go = document.getElementById("go");
