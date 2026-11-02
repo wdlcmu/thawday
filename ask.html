@@ -210,9 +210,32 @@ function parseAsk(raw, nowOverride){
   var numWord={one:1,two:2,three:3,four:4,five:5,six:6,seven:7};
   var dayNum=function(s){ return /^\d+$/.test(s)?parseInt(s,10):numWord[s]; };
   var holdM=t.match(/(?:fridge|refrigerator) for (\d+|one|two|three|four|five|six|seven) days?/);
-  if(/\bcounter\w*|room temperature/.test(t)) p.premise="counter";
-  else if(/lukewarm\b|tepid\b|warmish\b|\b(?:warm|hot)(?: \w+)? water\b|\b(?:warm|hot) (?:bath|soak|tub)\b/.test(t)) p.premise="warmwater";
-  else if(/cold water/.test(t)&&/(overnight|all night|(?:through|for|over) the (?:whole )?night|through tonight|(?:till|until|til) (?:the |tomorrow )?morning|(?:till|until|til) (?:i|we) wake|while (?:i|we) (?:sleep|am asleep|am sleeping)|while i'?m (?:sleeping|asleep))/.test(t)) p.premise="coldovernight";
+  /* 2026-11-01 (Addendum 930): one ring wider again, same gates, same
+     order, plus SPEC-3's narrow negation guard. SPEC-1: daybreak words
+     (dawn / sunrise), waking words (get up), sleeper forms beyond first
+     person (while everyone is asleep, while we are asleep), and "from
+     midnight to morning" join the overnight family. SPEC-2: warm|hot
+     fires across a small noun window (warm sink full of water, warm
+     soaking bath); heated, hyphenated warm-ish, and "feels warm" join
+     the warm family. SPEC-3: the premise gates read pt, not t: a clause
+     whose premise word sits in a short negated span (not / never / no
+     / n't, method word within 6 tokens) is dropped, but only when a
+     safe method (cold water, fridge) is still named in what remains;
+     an unsafe alternative offered in its own clause keeps firing.
+     The hold read and every other read still use t. */
+  var pt=t;
+  { var clauses=t.split(/[.,;:!?]+/), kept=[], dropped=false;
+    var negRe=/\b(?:not|never|no)\b|\b\w+n't\b/;
+    var methRe=/^(?:warm|hot|tepid|lukewarm|heated|cold|counter|fridge|refrigerator|water|bath|soak|tub|overnight)$/;
+    for(var ci=0;ci<clauses.length;ci++){ var cl=clauses[ci], nm=cl.match(negRe), isNeg=false;
+      if(nm){ var after=cl.slice(nm.index+nm[0].length).trim().split(/\s+/).slice(0,6);
+        for(var ai=0;ai<after.length;ai++){ if(methRe.test(after[ai])){ isNeg=true; break; } } }
+      if(isNeg) dropped=true; else kept.push(cl); }
+    if(dropped){ var cand=kept.join(" "); if(/cold water|fridge|refrigerator/.test(cand)) pt=cand; }
+  }
+  if(/\bcounter\w*|room temperature/.test(pt)) p.premise="counter";
+  else if(/lukewarm\b|tepid\b|warm-?ish\b|\bheated\b|(?:feels?|felt) (?:warm|hot)\b|\b(?:warm|hot)(?: \w+){0,3}? (?:water|sink|basin|bath|soak|tub)\b/.test(pt)) p.premise="warmwater";
+  else if(/cold water/.test(pt)&&/(overnight|all night|(?:through|for|over) the (?:whole )?night|through tonight|(?:till|until|til) (?:the |tomorrow )?morning|(?:till|until|til) (?:i|we) wake|(?:till|until|til) (?:(?:i|we) (?:get|wake) up|(?:everyone|everybody) (?:gets|wakes) up)|(?:till|until|til) (?:the )?(?:dawn|sunrise|daybreak|first light)|midnight (?:to|till|until) (?:the )?(?:morning|dawn|sunrise|daybreak)|while (?:[a-z]+ ){0,3}(?:asleep|sleeping|sleeps|sleep)\b|while (?:i|we) (?:sleep|am asleep|am sleeping)|while i'?m (?:sleeping|asleep))/.test(pt)) p.premise="coldovernight";
   /* 2026-11-01 (Addendum 919): the hold read only "been in the fridge
      for N days". It now reads the shapes people actually use ("thawed
      3 days ago", "since Monday", "finished thawing on Wednesday",
