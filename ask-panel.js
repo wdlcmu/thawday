@@ -218,7 +218,21 @@ function parseAsk(raw, nowOverride){
        a defrosting timing question still keeps its plan while a
        finished defrosting with a past day verdicts like "It
        defrosted yesterday" already did. */
-    ||(/(?:\bfinish\w*|\bdone|\bcompleted) defrosting\b/.test(t)&&/(yesterday|days? ago|day before yesterday)/.test(t));
+    ||(/(?:\bfinish\w*|\bdone|\bcompleted) defrosting\b/.test(t)&&/(yesterday|days? ago|day before yesterday)/.test(t))
+    /* Addendum 1027: the passive gerund-subject family joins the
+       finish forms behind the same past-day gate ("Thawing was
+       complete three days ago", "The defrosting was done
+       yesterday", "The defrost was complete yesterday"). The
+       subject is the thawing itself and the completion word follows
+       "was", so none of the active forms above ever heard it and
+       the verdict never landed — a bird past the window got a
+       weight ask-back instead of its warning. The gate is SPEC-4's
+       own (a yesterday / N-days-ago / day-before-yesterday claim
+       must be present), so a passive shape with no past-day
+       evidence changes nothing, and a timing question ("How long
+       until defrosting is complete?", which uses "is", not "was")
+       keeps its plan. */
+    ||(/(?:\bthawing|\bdefrosting|\bdefrost) was (?:complete|completed|done|finished)\b/.test(t)&&/(yesterday|days? ago|day before yesterday)/.test(t));
   var beenThawedM=t.match(/been thawed for (\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve) days?/);
   var wdNames=["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
   var sinceM=t.match(/\bsince (sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/);
