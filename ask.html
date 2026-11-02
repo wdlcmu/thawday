@@ -82,7 +82,7 @@
 <div class="safety"><strong>Safety:</strong> When in doubt, use a meat thermometer: 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing. Never thaw a turkey on the counter.</div>
 <p id="calclink">Want the picture card, print view, or calendar file? <a href="/calculator">Open the calculator</a>. It builds those from the same plan.</p>
 
-<footer><p>Built with Muse.</p><p><a href="/privacy">Privacy</a> <a href="/terms">Terms</a></p><p>Timings verified against USDA FSIS charts on Oct 22, 2026.</p></footer>
+<footer><p>Built with Muse.</p><p><a href="/privacy">Privacy</a> <a href="/terms">Terms</a></p><p>Timings verified against USDA FSIS charts on Oct 22, 2026. Cook-from-frozen times verified against the USDA from-frozen chart on Oct 30, 2026.</p></footer>
 
 <script>
 "use strict";
@@ -866,7 +866,7 @@ function fleetSessionMarks(){
   s.onload = function(){
     try {
       if (window.posthog && posthog.init){
-        posthog.init("phc_t9dkHXAZR5VEjPFm3K5JDzGKFsNNxKcwSxxcEBEeLbS7", {api_host: "https://us.i.posthog.com", autocapture: false, capture_pageview: true, disable_session_recording: true});
+        posthog.init("phc_t9dkHXAZR5VEjPFm3K5JDzGKFsNNxKcwSxxcEBEeLbS7", {api_host: "https://us.i.posthog.com", autocapture: false, capture_pageview: true, disable_session_recording: true, sanitize_properties: function (props) { ["$current_url", "$referrer"].forEach(function (k) { if (typeof props[k] === "string") { try { var u = new URL(props[k]); props[k] = u.origin + u.pathname; } catch (e) { props[k] = ""; } } }); return props; }});
         posthog.register({site_id: "thawday", site_name: "ThawDay"});
         _fleetQ.splice(0).forEach(function(e){ try { posthog.capture(e[0], e[1]); } catch (x) {} });
         fleetSessionMarks();
