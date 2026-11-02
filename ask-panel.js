@@ -197,7 +197,35 @@ function parseAsk(raw, nowOverride){
      gets its warning even when the cook day is still ahead. Only
      calendar arithmetic lives here; the food-safety number is still
      the published 1-to-2-day rule in answerAsk. */
-  var thawedWord=/\bthawed\b|\bdefrosted\b|\bdid thaw\b|finished thawing/.test(t)||/out of the freezer/.test(t)
+  /* Addendum 1031: the finish terms of thawedWord are negation-
+     scoped. The Addendum 952 clauses heard through a negation —
+     "Defrosting was not finished yesterday" verdicted as thawed
+     from yesterday, and with a later cook day escalated to a false
+     "Do not cook it" — because they were tested on the raw text
+     while the negAt guard covered only the day-claim scans.
+     negFinAt mirrors negAt exactly (same clause split, same
+     last-negation read, same fresh-clause break), and finishHit
+     accepts a finish match only when it does not sit inside a
+     negation's scope in its own clause. A second, unnegated finish
+     match in the same text still counts, a negation in another
+     clause or after the match moves nothing, and the non-finish
+     reads (thawed / defrosted / did thaw / out of the freezer)
+     are untouched — the finish family is scoped, not blunted. */
+  var negFinAt=function(i){ var s=0,bm,bre=/[.,;:!?()]+|\s+[-\u2013\u2014]\s*|[-\u2013\u2014]\s+|[\u2013\u2014]+/g;
+    while((bm=bre.exec(t))!==null){ if(bm.index>=i) break; s=bm.index+bm[0].length; }
+    var seg=t.slice(s,i), nm=null, nx, nre=/\b(?:not|never|no)\b|\b\w+n't\b/g;
+    while((nx=nre.exec(seg))!==null) nm=nx; if(!nm) return false;
+    var mid=seg.slice(nm.index+nm[0].length);
+    return !(/\s+(?:and|but)\s+(?=(?:i|it|the|my|we|they|this|that)\b|(?:thawed|defrosted|sat|stayed|left|kept|been|was|were|has|have|had|is|are|finished|spent|want|wants)\b)|\s+so\s+(?=(?:i|it|the|my|we|they)\b)/.test(mid)||/\s+(?:and|but)\s+$/.test(mid)); };
+  var finishHit=function(re){ re.lastIndex=0; var m; while((m=re.exec(t))!==null){ if(!negFinAt(m.index)) return true;
+      /* "not ... until <past day>" is the idiom for completion AT
+         that day ("It did not finish thawing until yesterday" =
+         it finished yesterday), so a negated match whose own clause
+         continues "until yesterday / the day before yesterday /
+         N days ago" still counts. */
+      var rest=t.slice(m.index+m[0].length), be=/[.,;:!?()]+|\s+[-\u2013\u2014]\s*|[-\u2013\u2014]\s+|[\u2013\u2014]+/.exec(rest), tail=be?rest.slice(0,be.index):rest;
+      if(/^\s*(?:\w+\s+){0,4}?(?:until|till|til)\s+(?:the\s+)?(?:day before yesterday|yesterday)\b/.test(tail)||/^\s*(?:\w+\s+){0,4}?(?:until|till|til)\s+(?:the\s+)?(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+days?\s+ago\b/.test(tail)) return true; } return false; };
+  var thawedWord=/\bthawed\b|\bdefrosted\b|\bdid thaw\b/.test(t)||/out of the freezer/.test(t)||finishHit(/finished thawing/g)
     /* Addendum 952: "finish thawing" in its other forms (finish /
        finishing / finishes thawing) and a bare "finished yesterday"
        are completion evidence too — the finish forms only when the
@@ -206,19 +234,19 @@ function parseAsk(raw, nowOverride){
        keeps its plan. The emphatic past "did thaw" joins the main
        read (a past statement by shape; "did not thaw" does not
        match it). */
-    ||(/(?:\bfinish\w*|\bdone|\bcompleted) thawing\b/.test(t)&&/(yesterday|days? ago|day before yesterday)/.test(t))
+    ||(finishHit(/(?:\bfinish\w*|\bdone|\bcompleted) thawing\b/g)&&/(yesterday|days? ago|day before yesterday)/.test(t))
     /* Addendum 956: "done thawing" / "completed thawing" are
        completion evidence behind the same past-day gate, so a
        timing question ("how long until it is done thawing")
        still keeps its plan. */
-    ||/\bfinish\w* yesterday\b/.test(t)
+    ||finishHit(/\bfinish\w* yesterday\b/g)
     /* Addendum 960 SPEC-4: the defrosting finish synonyms join the
        thawing ones behind the same past-day gate ("finished
        defrosting yesterday", "done defrosting three days ago"), so
        a defrosting timing question still keeps its plan while a
        finished defrosting with a past day verdicts like "It
        defrosted yesterday" already did. */
-    ||(/(?:\bfinish\w*|\bdone|\bcompleted) defrosting\b/.test(t)&&/(yesterday|days? ago|day before yesterday)/.test(t))
+    ||(finishHit(/(?:\bfinish\w*|\bdone|\bcompleted) defrosting\b/g)&&/(yesterday|days? ago|day before yesterday)/.test(t))
     /* Addendum 1027: the passive gerund-subject family joins the
        finish forms behind the same past-day gate ("Thawing was
        complete three days ago", "The defrosting was done
@@ -232,7 +260,7 @@ function parseAsk(raw, nowOverride){
        evidence changes nothing, and a timing question ("How long
        until defrosting is complete?", which uses "is", not "was")
        keeps its plan. */
-    ||(/(?:\bthawing|\bdefrosting|\bdefrost) was (?:complete|completed|done|finished)\b/.test(t)&&/(yesterday|days? ago|day before yesterday)/.test(t));
+    ||(finishHit(/(?:\bthawing|\bdefrosting|\bdefrost) was (?:complete|completed|done|finished)\b/g)&&/(yesterday|days? ago|day before yesterday)/.test(t));
   var beenThawedM=t.match(/been thawed for (\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve) days?/);
   var wdNames=["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
   var sinceM=t.match(/\bsince (sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/);
