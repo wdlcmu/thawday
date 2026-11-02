@@ -65,7 +65,15 @@ function buildTimeline(dinner, lb, state, brine, now){
   } else { rows.push(buyRow(daysBefore(dinner,2),"Fresh: buy 1 to 2 days before cooking.")); }
   if(cookFromFrozen){ effOvenIn=new Date(dinner.getTime()-(frozenRoastMinutes(lb)+CONSTANTS.restMinutes.value)*MIN);
     rows.push({id:"thaw", frozen:true, label:"Cook the turkey from frozen", when:effOvenIn, detail:"No time left to thaw, and cold water cannot finish before the oven either. Cook it from frozen instead: the bird goes in the oven still frozen, at the oven time in this plan."+(brine==="yes"?" Skip the brine: a bird cooked from frozen cannot be brined first.":"")}); }
-  if(brine==="yes" && !cookFromFrozen) rows.push({id:"brine", label:"Start brining", when:brineStart, detail: state==="frozen" ? "Brine in the fridge the whole time, never longer than two days, discard the brine after. Start once the bird is thawed." : "Brine in the fridge the whole time, never longer than two days, discard the brine after."});
+  /* 2026-11-02 (Loop 1 review X2, the same fix as the MCP engine):
+     on the cold-water path the thaw ends exactly at oven-in, so no
+     brine can fit after it. The brine step is DROPPED there (it used
+     to print stamped before the thaw row, in the past); the thaw row
+     carries a brineDropped marker so planWarning still returns the
+     brine/thaw verdict, whose only suggestion is skipping. */
+  const thawRowNow=rows.find(r=>r.id==="thaw");
+  if(brine==="yes" && !cookFromFrozen && thawRowNow && thawRowNow.late){ thawRowNow.brineDropped=true; }
+  else if(brine==="yes" && !cookFromFrozen) rows.push({id:"brine", label:"Start brining", when:brineStart, detail: state==="frozen" ? "Brine in the fridge the whole time, never longer than two days, discard the brine after. Start once the bird is thawed." : "Brine in the fridge the whole time, never longer than two days, discard the brine after."});
   rows.push({id:"oven", label:"Turkey goes in the oven", when:effOvenIn, detail:"325 F. The chart aims, the thermometer decides: 165 F."});
   rows.push({id:"sides", label:"Start the sides", when:new Date(dinner.getTime()-CONSTANTS.sidesBeforeMinutes.value*MIN), detail:"Ninety minutes out."});
   rows.push({id:"rest", label:"Rest and carve", when:new Date(dinner.getTime()-CONSTANTS.restMinutes.value*MIN), detail:"Rest before carving. Done at 165 F in the thickest part."});
@@ -92,19 +100,23 @@ function planWarning(rows,lb,dinner,now){
      normal step. The brine is stamped 24 hours before oven-in, so a
      dinner less than a day away puts its start in the past, and on the
      late cold-water path it can be stamped before the thaw it depends
-     on even finishes. Brining is optional, so this warns (it does not
-     drop the step): the honest outs are a shorter brine or none. This
+     on even finishes. Brining is optional, so this warns. This
      check runs last, so the stronger past / late / lead verdicts above
      keep winning exactly as before. No USDA numbers live here either:
      the cold-water finish reuses the same finish the late check just
-     computed from the plan's own rows. */
+     computed from the plan's own rows. Updated 2026-11-02 (Loop 1
+     review X2): buildTimeline now DROPS the brine step on the
+     cold-water path, so the would-be brine start is recomputed from
+     the oven row when no brine row exists, and the thaw-reason
+     warning offers only the out that fits (skip the brine). */
   const brineRow=rows.find(r=>r.id==="brine");
-  if(now && brineRow){
+  if(now && (brineRow || (thaw && thaw.brineDropped))){
     if(thaw && thaw.late){
       const cwFinish=new Date(thaw.when.getTime()+lb*CONSTANTS.coldWaterMinPerLb.value*60000);
-      if(brineRow.when.getTime()<cwFinish.getTime()) return {kind:"brine", brine:brineRow.when, finish:cwFinish, reason:"thaw"};
+      const brineWhen=brineRow?brineRow.when:new Date(oven.when.getTime()-CONSTANTS.brineBeforeOvenMinutes.value*60000);
+      if(brineWhen.getTime()<cwFinish.getTime()) return {kind:"brine", brine:brineWhen, finish:cwFinish, reason:"thaw"};
     }
-    if(brineRow.when.getTime()<=now.getTime()) return {kind:"brine", brine:brineRow.when, reason:"past"};
+    if(brineRow && brineRow.when.getTime()<=now.getTime()) return {kind:"brine", brine:brineRow.when, reason:"past"};
   }
   return null;
 }
@@ -669,7 +681,7 @@ function warnHtmlFor(warning){
   if(!warning) return "";
   /* Same verdict words as the calculator's render(), from the same
      warning object planWarning() returns. */
-  return `<div class="row warnrow"><strong>${warning.kind==="past"?"That dinner time is already past.":"This plan cannot work as entered."}</strong><br>${warning.kind==="past"?"Pick a date and time ahead of you, and the plan will line up.":warning.kind==="lead"?`The turkey would have had to go in the oven at ${fmt(warning.oven)}. There is not enough time to roast it before this dinner. What can work instead: a smaller bird, or a later dinner.`:warning.kind==="brine"?(warning.reason==="thaw"?`Brining was set to start at ${fmt(warning.brine)}, but the turkey does not finish thawing until ${fmt(warning.finish)}. A brine cannot start before the bird is thawed. What can work instead: skip the brine, or use a shorter brine once it thaws.`:`Brining was set to start at ${fmt(warning.brine)}. That time has already passed, so a full brine cannot fit before this dinner. What can work instead: skip the brine, or use a shorter brine that starts now.`):`Cold water from now finishes thawing at ${fmt(warning.finish)}. The turkey needs to be in the oven before then. What can work instead: a smaller bird, a fresh bird, or a later dinner.`}</div>`;
+  return `<div class="row warnrow"><strong>${warning.kind==="past"?"That dinner time is already past.":"This plan cannot work as entered."}</strong><br>${warning.kind==="past"?"Pick a date and time ahead of you, and the plan will line up.":warning.kind==="lead"?`The turkey would have had to go in the oven at ${fmt(warning.oven)}. There is not enough time to roast it before this dinner. What can work instead: a smaller bird, or a later dinner.`:warning.kind==="brine"?(warning.reason==="thaw"?`Brining was set to start at ${fmt(warning.brine)}, but the turkey does not finish thawing until ${fmt(warning.finish)}. A brine cannot start before the bird is thawed. What can work instead: skip the brine.`:`Brining was set to start at ${fmt(warning.brine)}. That time has already passed, so a full brine cannot fit before this dinner. What can work instead: skip the brine, or use a shorter brine that starts now.`):`Cold water from now finishes thawing at ${fmt(warning.finish)}. The turkey needs to be in the oven before then. What can work instead: a smaller bird, a fresh bird, or a later dinner.`}</div>`;
 }
 function answerAsk(raw, nowOverride){
   var now=nowOverride||new Date();
