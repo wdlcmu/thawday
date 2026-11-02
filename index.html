@@ -214,6 +214,8 @@
   .bands + p { border: 1px solid #e7d8c3; border-radius: 12px; background: #fff; padding: 0.9rem 1rem 0.4rem; margin-top: 1rem; text-align: left; }
   .bands + p .ln:first-child { font-weight: 800; font-size: 1.0625rem; color: var(--ink); }
   .way span { font-size: 0.9375rem; font-weight: 600; color: var(--ink); }
+  /* 2026-11-01 D7: explicit touch handling on the homepage's tap targets. */
+  a, button { touch-action: manipulation; }
 </style>
 <script>
 window.FLEET_CFG = {

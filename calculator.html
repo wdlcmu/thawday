@@ -166,6 +166,10 @@
  details{margin:10px 0}
  summary{font-weight:700;cursor:pointer;padding:12px 0;min-height:44px}
  footer{margin-top:40px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:.9375rem;color:var(--muted);text-align:center}
+ /* 2026-11-01 D7: keep page-end content clear of the fixed ask pill
+    (48px tall, 16px above the edge) — same pattern as index.html. */
+ html{scroll-padding-bottom:84px}
+ footer{padding-bottom:84px}
  footer p{margin:4px 0}
  footer a{color:var(--accent);font-weight:600;text-decoration:none;display:inline-block;padding:12px 6px;min-height:44px}
  footer a:hover{text-decoration:underline}
@@ -250,6 +254,18 @@
  @media (prefers-reduced-motion: reduce){
   .qpanel.on,#qsummary,#out .row{animation:none}
   .qbar i,.chip{transition:none}
+ }
+ /* 2026-11-01 D7: explicit touch handling on the planner's controls, and
+    mobile spacing trims (spacing only) so step 1's Next button rests
+    clear of the fixed ask pill at 390px. */
+ button,input,select,summary{touch-action:manipulation}
+ @media (max-width:640px){
+  .qprogress{margin-top:6px}
+  .qtitle{margin-top:8px}
+  .qsub{margin-top:8px}
+  .qnav{margin-top:10px}
+  #quiz label{margin-top:6px}
+  body>p{margin-top:8px;margin-bottom:8px}
  }
 </style>
 <script>
@@ -418,7 +434,6 @@ window.FLEET_CFG = {
 <p>When do I take the turkey out of the freezer? Type in your dinner time and turkey weight. You get buy, thaw, brine, and roast dates. Brining is just soaking the bird in salt water first. It is optional.</p>
 <p>Three steps. Thirty seconds. Free.</p>
 <p class="stuffnote">This tool plans turkeys with no stuffing. For safety, the USDA does not recommend cooking stuffing inside the bird. Cook it in a casserole dish instead. Every time here is for an unstuffed turkey.</p>
-<p>Rather say it in your own words? <a href="/ask">Ask here</a> instead. One line, same math.</p>
 
 <section id="quiz" aria-label="Turkey timeline quiz">
 <div class="qprogress"><span class="qcount" id="qcount">Step 1 of 3</span><span class="qbar" aria-hidden="true"><i id="qfill"></i></span></div>
@@ -519,6 +534,7 @@ window.FLEET_CFG = {
 
 <p id="hint" role="alert"></p>
 </section>
+<p>Rather say it in your own words? <a href="/ask">Ask here</a> instead. One line, same math.</p>
 
 <div id="qsummary" hidden>
 <p class="qsumline"><strong>Your plan:</strong> <span id="qsummaryText"></span></p>
