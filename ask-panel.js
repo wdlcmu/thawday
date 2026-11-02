@@ -618,8 +618,18 @@ function answerAsk(raw, nowOverride){
       if (left !== null && cs.left !== 'auto') box.left = left;
       else if (right !== null && cs.right !== 'auto') box.left = vw - right - w;
       else box.left = vw - w; /* fallback: assume right-anchored */
-      if (top !== null && cs.top !== 'auto') box.top = top;
-      else if (bottom !== null && cs.bottom !== 'auto') box.top = vh - bottom - h;
+      /* ThawDay adoption correction (Phase B, 2026-11-01): for a
+         bottom-anchored pill, derive the top from bottom + offset
+         height FIRST. Chromium resolves computed `top` for such an
+         element to a value that can sit 8-16px above the rendered
+         box (measured live in the adoption probes: computed 764px
+         vs rendered bottom edge 820px on a 780px expectation), which
+         shifted the whole resting box up and left the pill's lower
+         band unguarded. Bottom + offset size are both transform-free
+         and exact — the same constants method as the Secret Santa
+         Addendum 987 guard this reference generalizes. */
+      if (bottom !== null && cs.bottom !== 'auto') box.top = vh - bottom - h;
+      else if (top !== null && cs.top !== 'auto') box.top = top;
       else box.top = vh - h;
       box.right = box.left + w;
       box.bottom = box.top + h;
