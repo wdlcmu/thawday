@@ -230,15 +230,24 @@
 <body>
 <p class="brand"><a href="/">ThawDay</a></p>
 <h1>ThawDay</h1>
-<p>When do I take the turkey out of the freezer? Type in your dinner time and turkey weight. You get buy, thaw, brine, and roast dates.</p>
+<p>When do I take the turkey out of the freezer? Type in your dinner time and turkey weight. You get buy, thaw, brine, and roast dates. Brining is just soaking the bird in salt water first. It is optional.</p>
 <p>Three steps. Thirty seconds. Free.</p>
-<p>This tool plans turkeys with no stuffing.</p>
+<p>This tool plans turkeys with no stuffing. For safety, the USDA does not recommend cooking stuffing inside the bird. Cook it in a casserole dish instead. Every time here is for an unstuffed turkey.</p>
 <p>Rather say it in your own words? <a href="/ask">Ask here</a> instead. One line, same math.</p>
 
 <section id="quiz" aria-label="Turkey timeline quiz">
 <div class="qprogress"><span class="qcount" id="qcount">Step 1 of 3</span><span class="qbar" aria-hidden="true"><i id="qfill"></i></span></div>
 
-<div class="qpanel on" id="qp1">
+<div class="qpanel on" id="qp3">
+<p class="qtitle">When is dinner?</p>
+<p class="qsub">Thanksgiving Day at 5:00 PM is filled in. Change it only if your dinner is different.</p>
+<label for="date">Dinner date</label>
+<input id="date" type="date" value="2026-11-26">
+<label for="time">Dinner time</label>
+<input id="time" type="time" value="17:00">
+<div class="qnav"><button type="button" class="next" id="qnext3">Next</button></div>
+</div>
+<div class="qpanel" id="qp1" hidden>
 <p class="qtitle">How many people are eating?</p>
 <div class="qtoggle" role="group" aria-label="How to size the turkey">
 <button type="button" id="modePeople" aria-pressed="true">Count people</button>
@@ -299,7 +308,7 @@
 </details>
 </div>
 <p id="qmsg1" class="qmsg" role="alert"></p>
-<div class="qnav"><button type="button" class="next" id="qnext1">Next</button></div>
+<div class="qnav"><button type="button" class="secondary" id="qback1">Back</button><button type="button" class="next" id="qnext1">Next</button></div>
 </div>
 
 <div class="qpanel" id="qp2" hidden>
@@ -320,18 +329,9 @@
 <label for="brine">Soak in salt water (brine)?</label>
 <select id="brine"><option value="no" selected>No</option><option value="yes">Yes</option></select>
 </div>
-<div class="qnav"><button type="button" class="secondary" id="qback2">Back</button><button type="button" class="next" id="qnext2">Next</button></div>
+<div class="qnav"><button type="button" class="secondary" id="qback2">Back</button><button id="go" type="button">Get my timeline</button></div>
 </div>
 
-<div class="qpanel" id="qp3" hidden>
-<p class="qtitle">When is dinner?</p>
-<p class="qsub">Thanksgiving Day at 5:00 PM is filled in. Change it only if your dinner is different.</p>
-<label for="date">Dinner date</label>
-<input id="date" type="date" value="2026-11-26">
-<label for="time">Dinner time</label>
-<input id="time" type="time" value="17:00">
-<div class="qnav"><button type="button" class="secondary" id="qback3">Back</button><button id="go" type="button">Get my timeline</button></div>
-</div>
 <p id="hint" role="alert"></p>
 </section>
 
@@ -878,7 +878,7 @@ render();
 (function(){
   "use strict";
   var $=function(id){ return document.getElementById(id); };
-  var panels=[$("qp1"),$("qp2"),$("qp3")], mode="people";
+  var panels=[$("qp3"),$("qp1"),$("qp2")], mode="people";
   function setVal(id,v){ var el=$(id); if(!el) return; el.value=v; el.dispatchEvent(new Event("input",{bubbles:true})); el.dispatchEvent(new Event("change",{bubbles:true})); }
   function press(groupEl,btn){ if(!groupEl) return; var bs=groupEl.querySelectorAll("button"); for(var i=0;i<bs.length;i++) bs[i].setAttribute("aria-pressed", bs[i]===btn?"true":"false"); }
   function pressByValue(groupEl,attr,val){ if(!groupEl) return; var bs=groupEl.querySelectorAll("button"); for(var i=0;i<bs.length;i++) bs[i].setAttribute("aria-pressed", bs[i].getAttribute(attr)===String(val)?"true":"false"); }
@@ -902,7 +902,7 @@ render();
     var b=e.target.closest("button[data-guests]"); if(!b) return;
     press($("guestChips"),b); $("qmsg1").textContent="";
     setVal("guests", b.getAttribute("data-guests"));
-    setTimeout(function(){ show(2,true); },300);
+    setTimeout(function(){ show(3,true); },300);
   });
   $("loChips").addEventListener("click",function(e){
     var b=e.target.closest("button[data-lo]"); if(!b) return;
@@ -912,7 +912,7 @@ render();
     var b=e.target.closest("button[data-w]"); if(!b) return;
     press($("weightChips"),b);
     setVal("weight", b.getAttribute("data-w"));
-    setTimeout(function(){ show(2,true); },300);
+    setTimeout(function(){ show(3,true); },300);
   });
   $("stateChips").addEventListener("click",function(e){
     var b=e.target.closest("button[data-s]"); if(!b) return;
@@ -929,11 +929,14 @@ render();
   $("weight").addEventListener("input",function(){ if(mode==="weight") pressByValue($("weightChips"),"data-w",$("weight").value); });
   $("qnext1").addEventListener("click",function(){
     if(mode==="people" && $("guests").value===""){ $("qmsg1").textContent="Tap how many people above, or type the number below."; return; }
-    $("qmsg1").textContent=""; show(2,true);
+    $("qmsg1").textContent=""; show(3,true);
   });
-  $("qback2").addEventListener("click",function(){ show(1,true); });
-  $("qnext2").addEventListener("click",function(){ show(3,true); });
-  $("qback3").addEventListener("click",function(){ show(2,true); });
+  $("qnext3").addEventListener("click",function(){
+    if($("date").value==="" || $("time").value===""){ $("hint").textContent="Pick your dinner date and time first."; return; }
+    $("hint").textContent=""; show(2,true);
+  });
+  $("qback1").addEventListener("click",function(){ show(1,true); });
+  $("qback2").addEventListener("click",function(){ show(2,true); });
   $("go").addEventListener("click",function(){
     /* render()'s listener ran first. A plan that cannot render (bad
        date, weight out of range) leaves the card area hidden and the
