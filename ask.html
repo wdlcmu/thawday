@@ -288,6 +288,28 @@ function parseAsk(raw, nowOverride){
      clause or after the match moves nothing, and the non-finish
      reads (thawed / defrosted / did thaw / out of the freezer)
      are untouched — the finish family is scoped, not blunted. */
+  /* Addendum 1046: the sentence-initial BARE correction whose
+     asserted day trails inside the finish clause — "Not yesterday
+     it finished thawing three days ago". With no comma, the
+     fronted "not" shares one clause part with the finish verb and
+     the trailing claim, so negFinAt read the finish as negated
+     and negAt read the asserted claim as negated: the verdict
+     never landed (a missing verdict, never a false one). The two
+     helpers below recognize the construction under a tight key:
+     the clause part opens with "not <day claim>", the clause
+     carries exactly two day claims in total, and between the
+     negated day and the target only subject / auxiliary tokens
+     (plus, for the day read, one finish phrase) appear. The
+     no-asserted-day control (zero trailing claims), plain
+     negated finishes (no fronted opener), the cleft (no day
+     before its "not"), and the mirror orders whose days both sit
+     before the finish verb (zero trailing claims) all fall
+     outside the key by construction. */
+  var dayPat1046="(?:the\\s+)?(?:(?:day before yesterday\\b|yesterday\\b|(?:\\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\\s+days?\\s+ago\\b))";
+  var countDay1046=function(str){ var n=0; str=str.replace(/day before yesterday\b/g,function(){ n++; return " "; }); str=str.replace(/\byesterday\b/g,function(){ n++; return " "; }); var m1046=str.match(/(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+days?\s+ago\b/g); if(m1046) n+=m1046.length; return n; };
+  var clauseOf1046=function(i){ var s=0,e=t.length,bm,bre=/[.,;:!?()]+|\s+[-\u2013\u2014]\s*|[-\u2013\u2014]\s+|[\u2013\u2014]+/g; while((bm=bre.exec(t))!==null){ if(bm.index+bm[0].length<=i) s=bm.index+bm[0].length; else if(bm.index>=i){ e=bm.index; break; } } return {s:s,e:e,txt:t.slice(s,e)}; };
+  var frontedFin1046=function(i){ var cl=clauseOf1046(i); if(countDay1046(cl.txt)!==2) return false; if(countDay1046(t.slice(i,cl.e))!==1) return false; var pre=t.slice(cl.s,i), mm=pre.match(new RegExp("^\\s*not\\s+"+dayPat1046+"\\s+")); if(!mm) return false; var rest=pre.slice(mm[0].length).trim(); if(!rest) return true; var toks=rest.split(/\s+/), ok={it:1,the:1,turkey:1,bird:1,was:1,were:1,been:1,has:1,have:1,had:1,is:1,are:1}; for(var ti=0;ti<toks.length;ti++){ if(!ok[toks[ti]]) return false; } return true; };
+  var frontedDay1046=function(i){ var cl=clauseOf1046(i); if(countDay1046(cl.txt)!==2) return false; var pre=t.slice(cl.s,i); if(countDay1046(pre)!==1) return false; var mm=pre.match(new RegExp("^\\s*not\\s+"+dayPat1046+"\\s+")); if(!mm) return false; var rest=pre.slice(mm[0].length).trim(), toks=rest?rest.split(/\s+/):[], ok={it:1,the:1,turkey:1,bird:1,was:1,were:1,been:1,has:1,have:1,had:1,is:1,are:1,thawing:1,defrosting:1,defrost:1,finished:1,finishing:1,finishes:1,finish:1,completed:1,completing:1,completes:1,complete:1,done:1}, hasFin=false, hasThaw=false; for(var ti=0;ti<toks.length;ti++){ if(!ok[toks[ti]]) return false; if(/^(?:finished|finishing|finishes|finish|completed|completing|completes|complete|done)$/.test(toks[ti])) hasFin=true; if(toks[ti]==="thawing"||toks[ti]==="defrosting"||toks[ti]==="defrost") hasThaw=true; } return hasFin&&hasThaw; };
   var negFinAt=function(i){ var s=0,bm,bre=/[.,;:!?()]+|\s+[-\u2013\u2014]\s*|[-\u2013\u2014]\s+|[\u2013\u2014]+/g;
     while((bm=bre.exec(t))!==null){ if(bm.index>=i) break; s=bm.index+bm[0].length; }
     var seg=t.slice(s,i), nm=null, nx, nre=/\b(?:not|never|no)\b|\b\w+n't\b/g;
@@ -316,7 +338,7 @@ function parseAsk(raw, nowOverride){
        The negation read here is the LAST one before the match, so
        a finish verb under its own later "not" never sees an
        earlier correction in its mid. */
-    return !(/\s+(?:and|but)\s+(?=(?:i|it|the|my|we|they|this|that)\b|(?:thawed|defrosted|sat|stayed|left|kept|been|was|were|has|have|had|is|are|finished|spent|want|wants)\b)|\s+so\s+(?=(?:i|it|the|my|we|they)\b)/.test(mid)||/\s+(?:and|but)\s+$/.test(mid)||/\s+but\s+(?:the\s+)?(?:day before yesterday\b|yesterday\b|(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+days?\s+ago\b)/.test(mid)||bareCorr1042); };
+    return !(/\s+(?:and|but)\s+(?=(?:i|it|the|my|we|they|this|that)\b|(?:thawed|defrosted|sat|stayed|left|kept|been|was|were|has|have|had|is|are|finished|spent|want|wants)\b)|\s+so\s+(?=(?:i|it|the|my|we|they)\b)/.test(mid)||/\s+(?:and|but)\s+$/.test(mid)||/\s+but\s+(?:the\s+)?(?:day before yesterday\b|yesterday\b|(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+days?\s+ago\b)/.test(mid)||bareCorr1042||frontedFin1046(i)); };
   var finishHit=function(re){ re.lastIndex=0; var m; while((m=re.exec(t))!==null){ if(!negFinAt(m.index)) return true;
       /* "not ... until <past day>" is the idiom for completion AT
          that day ("It did not finish thawing until yesterday" =
@@ -433,7 +455,7 @@ function parseAsk(raw, nowOverride){
        day — a past-window bird read "still inside". The negated
        day's own read (empty mid) and every mid carrying more
        than the one day claim are unchanged. */
-    return !(/\s+(?:and|but)\s+(?=(?:i|it|the|my|we|they|this|that)\b|(?:thawed|defrosted|sat|stayed|left|kept|been|was|were|has|have|had|is|are|finished|spent|want|wants)\b)|\s+so\s+(?=(?:i|it|the|my|we|they)\b)/.test(mid)||/\s+but\s+(?:the\s+)?$/.test(mid)||/^\s*(?:the\s+)?(?:day before yesterday\b|yesterday\b|(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+days?\s+ago\b)(?:\s+the)?\s*$/.test(mid)); };
+    return !(/\s+(?:and|but)\s+(?=(?:i|it|the|my|we|they|this|that)\b|(?:thawed|defrosted|sat|stayed|left|kept|been|was|were|has|have|had|is|are|finished|spent|want|wants)\b)|\s+so\s+(?=(?:i|it|the|my|we|they)\b)/.test(mid)||/\s+but\s+(?:the\s+)?$/.test(mid)||/^\s*(?:the\s+)?(?:day before yesterday\b|yesterday\b|(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+days?\s+ago\b)(?:\s+the)?\s*$/.test(mid)||frontedDay1046(i)); };
   /* Addendum 950: a self-correction withdraws the claims made before
      it ("It sat in the fridge for 3 days. No wait, it thawed
      yesterday..."); the corrected evidence after the marker decides.
