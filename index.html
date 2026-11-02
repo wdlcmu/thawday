@@ -277,7 +277,7 @@ window.FLEET_CFG = {
   s.onload = function(){
     try {
       if (window.posthog && posthog.init) {
-        posthog.init(KEY, {api_host: "https://us.i.posthog.com", autocapture: false, capture_pageview: true, disable_session_recording: true});
+        posthog.init(KEY, {api_host: "https://us.i.posthog.com", autocapture: false, capture_pageview: true, disable_session_recording: true, sanitize_properties: function (props) { ["$current_url", "$referrer"].forEach(function (k) { if (typeof props[k] === "string") { try { var u = new URL(props[k]); props[k] = u.origin + u.pathname; } catch (e) { props[k] = ""; } } }); return props; }});
         try { posthog.register({site: SITE, internal: isInternal()}); } catch(e){}
         try { if (isInternal() && posthog.people && posthog.people.set) posthog.people.set({fleet_internal: true}); } catch(e){}
         while (Q.length) { var e0 = Q.shift(); try { posthog.capture(e0[0], e0[1]); } catch(e){} }
@@ -391,9 +391,9 @@ window.FLEET_CFG = {
     <div class="step"><span class="dot"></span><span class="label">Roast</span></div>
   </div>
   <div class="cdx">
-    <a class="cdx-main" id="cdx-main" href="/calculator" aria-label="25 days until Thanksgiving, Thursday, November 26, 2026.">
+    <a class="cdx-main" id="cdx-main" href="/calculator" aria-label="24 days until Thanksgiving, Thursday, November 26, 2026.">
       <span class="cdx-digits" id="cdx-digits" aria-hidden="true" hidden><span class="cdx-cell cd-d"><b id="cdx-d">25</b><i id="cdx-dl">days</i></span><span class="cdx-cell"><b id="cdx-h">00</b><i>hrs</i></span><span class="cdx-cell"><b id="cdx-m">00</b><i>min</i></span><span class="cdx-cell"><b id="cdx-s">00</b><i>sec</i></span></span>
-      <span class="countdown" id="countdown">25 days until Thanksgiving, Thursday, November 26, 2026.</span>
+      <span class="countdown" id="countdown">24 days until Thanksgiving, Thursday, November 26, 2026.</span>
     </a>
     <button class="cdx-more" id="cdx-more" type="button" aria-expanded="false" aria-controls="cdx-panel" hidden>What&rsquo;s next? <span aria-hidden="true">&#9662;</span></button>
     <div class="cdx-panel" id="cdx-panel" hidden>
@@ -412,7 +412,7 @@ window.FLEET_CFG = {
         <li>17 to 20 lb: <strong>Saturday, November 21</strong></li>
         <li>21 to 24 lb: <strong>Friday, November 20</strong></li>
       </ul>
-      <p><span class="ln ex">A 14 lb bird moves <strong>Sunday, November 22</strong>.</span><span class="ln note">Your dinner hour does not change this date.</span></p>
+      <p><span class="ln ex">A 14 lb bird moves <strong>Sunday, November 22</strong>.</span><span class="ln note">Your dinner hour does not change this date. Brining moves it about a day earlier.</span></p>
     </div>
     <div class="tl"><div class="tl-node"><span class="tl-k">Move &middot; 14 lb</span><strong>Sun, Nov 22</strong></div><div class="tl-track"><span class="tl-dots"><i></i><i></i><i></i><i></i></span><span class="tl-cap">4 days</span></div><div class="tl-node tl-end"><span class="tl-k">Dinner</span><strong>Thu, Nov 26</strong></div></div>
   </section>
@@ -425,7 +425,7 @@ window.FLEET_CFG = {
   </section>
   <section class="info" aria-label="Three safe ways to thaw">
     <h2>Three safe ways to thaw</h2>
-    <div class="ways3"><div class="way"><svg width="36" height="36" viewBox="0 0 48 48" fill="none" stroke="#b45309" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><rect x="15" y="5" width="18" height="38" rx="3"/><line x1="15" y1="18" x2="33" y2="18"/><line x1="29" y1="10" x2="29" y2="14"/><line x1="29" y1="23" x2="29" y2="29"/></svg><strong>Fridge</strong><span>24 hours per 4–5 lb</span><em>Hands-off</em></div><div class="way"><svg width="36" height="36" viewBox="0 0 48 48" fill="none" stroke="#b45309" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 4c0 0-9.5 11-9.5 18a9.5 9.5 0 0 0 19 0C33.5 15 24 4 24 4Z"/><path d="M5 41c4-3.2 8-3.2 12 0s8 3.2 12 0 8-3.2 12 0"/></svg><strong>Cold water</strong><span>30 min per lb</span><em>Fastest</em></div><div class="way"><svg width="36" height="36" viewBox="0 0 48 48" fill="none" stroke="#b45309" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><rect x="5" y="12" width="38" height="24" rx="3"/><rect x="10" y="17" width="19" height="14" rx="1"/><path d="M14.5 24c1.7-2.6 3.4-2.6 5.1 0s3.4 2.6 5.1 0"/><circle cx="36.5" cy="19.5" r="1.3" fill="#b45309" stroke="none"/><circle cx="36.5" cy="25.5" r="1.3" fill="#b45309" stroke="none"/></svg><strong>Microwave</strong><span>Per your oven manual</span><em>No waiting</em></div></div>
+    <div class="ways3"><div class="way"><svg width="36" height="36" viewBox="0 0 48 48" fill="none" stroke="#b45309" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><rect x="15" y="5" width="18" height="38" rx="3"/><line x1="15" y1="18" x2="33" y2="18"/><line x1="29" y1="10" x2="29" y2="14"/><line x1="29" y1="23" x2="29" y2="29"/></svg><strong>Fridge</strong><span>24 hours per 4–5 lb</span><em>Hands-off</em></div><div class="way"><svg width="36" height="36" viewBox="0 0 48 48" fill="none" stroke="#b45309" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 4c0 0-9.5 11-9.5 18a9.5 9.5 0 0 0 19 0C33.5 15 24 4 24 4Z"/><path d="M5 41c4-3.2 8-3.2 12 0s8 3.2 12 0 8-3.2 12 0"/></svg><strong>Cold water</strong><span>30 min per lb</span><em>Fastest</em></div><div class="way"><svg width="36" height="36" viewBox="0 0 48 48" fill="none" stroke="#b45309" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><rect x="5" y="12" width="38" height="24" rx="3"/><rect x="10" y="17" width="19" height="14" rx="1"/><path d="M14.5 24c1.7-2.6 3.4-2.6 5.1 0s3.4 2.6 5.1 0"/><circle cx="36.5" cy="19.5" r="1.3" fill="#b45309" stroke="none"/><circle cx="36.5" cy="25.5" r="1.3" fill="#b45309" stroke="none"/></svg><strong>Microwave</strong><span>Per your microwave manual</span><em>No waiting</em></div></div>
   </section>
   <section class="info how" aria-label="How it works">
     <h2>How it works</h2>
@@ -484,7 +484,7 @@ window.FLEET_CFG = {
   <p>Built with Muse.</p>
   <p><a href="/privacy">Privacy</a> <a href="/terms">Terms</a></p>
   <p>More family tools: <a href="https://thepresentpicker.com">The Present Picker, gifts in five picks</a></p>
-  <p>Timings verified against USDA FSIS charts on Oct 22, 2026.</p>
+  <p>Timings verified against USDA FSIS charts on Oct 22, 2026. Cook-from-frozen times verified against the USDA from-frozen chart on Oct 30, 2026.</p>
 </footer>
 <script>
 (function () {

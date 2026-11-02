@@ -42,14 +42,31 @@ function buildTimeline(dinner, lb, state, brine, now){
      warnings and their precedence are untouched. No date moves. */
   const BUY_PAST_NOTE=" That buy date has passed. Buy it now if you can.";
   const buyRow=(when,detail)=>{ const past=!!(now && when.getTime()<=now.getTime()); const r={id:"buy", label:"Buy the turkey", when:when, detail:past?detail+BUY_PAST_NOTE:detail}; if(past) r.buyPast=true; return r; };
-  if(state==="frozen"){ rows.push(buyRow(daysBefore(dinner,11),"Buy by this date (kitchen practice). Frozen birds sell out the weekend before Thanksgiving."));
-    const thawStart=daysBefore(dinner,thawDays(lb));
-    if(now && now>thawStart){ rows.push({id:"thaw", late:true, label:"Thaw in cold water today", when:new Date(now.getTime()), detail:"Fridge thaw start has passed. Cold water takes about "+(Math.round((lb*30/60)*10)/10)+" hours (30 minutes per pound). Seal it in a leak-proof plastic bag and submerge it in cold tap water. Change the water every 30 minutes, and cook it right after it thaws."}); }
+  const ovenIn=new Date(dinner.getTime()-(roastMinutes(lb)+CONSTANTS.restMinutes.value)*MIN);
+  const brineStart=new Date(ovenIn.getTime()-CONSTANTS.brineBeforeOvenMinutes.value*MIN);
+  let cookFromFrozen=false, effOvenIn=ovenIn;
+  if(state==="frozen"){ rows.push(buyRow(daysBefore(dinner,11),"Buy by this date (kitchen practice). Frozen birds sell out the weekend before your dinner."));
+    /* 2026-11-02 (outside-review Bugs 1 and 2 — the same fix as the
+       MCP engine): the fridge move counts back from the first step
+       that needs a thawed bird, the brine start when brining and
+       dinner otherwise, so a brining bird really gets its full band
+       in the fridge before the brine. The late cold-water row is
+       anchored to oven-in minus 30 minutes per pound and reads as a
+       start-by time; it is never stamped with now. When even that
+       start has passed, the plan leads with cook-from-frozen on the
+       USDA from-frozen chart. */
+    const thawStart = brine==="yes" ? daysBefore(brineStart,thawDays(lb)) : daysBefore(dinner,thawDays(lb));
+    if(now && now>thawStart){
+      const cwStart=new Date(ovenIn.getTime()-lb*CONSTANTS.coldWaterMinPerLb.value*MIN);
+      if(cwStart.getTime()>now.getTime()){ rows.push({id:"thaw", late:true, label:"Thaw in cold water", when:cwStart, detail:"Fridge thaw start has passed. Start cold water by this time: it takes about "+(Math.round((lb*30/60)*10)/10)+" hours (30 minutes per pound), and the bird finishes thawing right as it goes in the oven. Seal it in a leak-proof plastic bag and submerge it in cold tap water. Change the water every 30 minutes, and cook it right after it thaws."}); }
+      else { cookFromFrozen=true; }
+    }
     else { rows.push({id:"thaw", label:"Move the turkey to the fridge", when:thawStart, detail:"Fridge thaw, per the USDA chart. Keep the fridge at 40 F or below."}); }
   } else { rows.push(buyRow(daysBefore(dinner,2),"Fresh: buy 1 to 2 days before cooking.")); }
-  const ovenIn=new Date(dinner.getTime()-(roastMinutes(lb)+CONSTANTS.restMinutes.value)*MIN);
-  if(brine==="yes") rows.push({id:"brine", label:"Start brining", when:new Date(ovenIn.getTime()-CONSTANTS.brineBeforeOvenMinutes.value*MIN), detail: state==="frozen" ? "Brine in the fridge the whole time, never longer than two days, discard the brine after. Start once the bird is thawed." : "Brine in the fridge the whole time, never longer than two days, discard the brine after."});
-  rows.push({id:"oven", label:"Turkey goes in the oven", when:ovenIn, detail:"325 F. The chart aims, the thermometer decides: 165 F."});
+  if(cookFromFrozen){ effOvenIn=new Date(dinner.getTime()-(frozenRoastMinutes(lb)+CONSTANTS.restMinutes.value)*MIN);
+    rows.push({id:"thaw", frozen:true, label:"Cook the turkey from frozen", when:effOvenIn, detail:"No time left to thaw, and cold water cannot finish before the oven either. Cook it from frozen instead: the bird goes in the oven still frozen, at the oven time in this plan."+(brine==="yes"?" Skip the brine: a bird cooked from frozen cannot be brined first.":"")}); }
+  if(brine==="yes" && !cookFromFrozen) rows.push({id:"brine", label:"Start brining", when:brineStart, detail: state==="frozen" ? "Brine in the fridge the whole time, never longer than two days, discard the brine after. Start once the bird is thawed." : "Brine in the fridge the whole time, never longer than two days, discard the brine after."});
+  rows.push({id:"oven", label:"Turkey goes in the oven", when:effOvenIn, detail:"325 F. The chart aims, the thermometer decides: 165 F."});
   rows.push({id:"sides", label:"Start the sides", when:new Date(dinner.getTime()-CONSTANTS.sidesBeforeMinutes.value*MIN), detail:"Ninety minutes out."});
   rows.push({id:"rest", label:"Rest and carve", when:new Date(dinner.getTime()-CONSTANTS.restMinutes.value*MIN), detail:"Rest before carving. Done at 165 F in the thickest part."});
   rows.sort((a,b)=>a.when-b.when); return rows;
@@ -94,6 +111,7 @@ function planWarning(rows,lb,dinner,now){
 // ENGINE END
 function fmt(d){ return d.toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}); }
 function fmtShort(d){ return d.toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric",hour:"numeric"}).replace(":00",""); }
+function fmtDateOnly(d){ return d.toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric",year:"numeric"}); }
 function durText(min){ const h=Math.floor(min/60), r=min%60; return (h?h+" hour"+(h===1?"":"s"):"")+(h&&r?" ":"")+(r?r+" minutes":""); }
 /* ASK PARSER START — deterministic words-to-inputs. Every date and number
    in the answer comes from the engine above; this parser only reads the
@@ -694,11 +712,11 @@ function answerAsk(raw, nowOverride){
   if(p.dateDefaulted||p.timeDefaulted) summary+=` Dinner is set to ${fmt(dinner)}. Say a different day or time in your words to change it.`;
   if(!p.stateExplicit||!p.brineExplicit) summary+=` ${state==="frozen"?"Frozen":"Fresh"}, ${brine==="yes"?"with a brine":"no brine"}. Say "fresh" or "brine it" in your words to change that.`;
   var lead="";
-  if(p.intent==="thaw"&&thaw){ lead=thaw.late?`Fridge thaw has already passed for this dinner. Use cold water today: about ${Math.round((lb*30/60)*10)/10} hours. The full plan is below.`:p.coldWater?`In cold water, a ${lb} lb turkey thaws in about ${Math.round((lb*30/60)*10)/10} hours (30 minutes per pound). Seal it in a leak-proof plastic bag, submerge it in cold tap water, change the water every 30 minutes, and cook it right after it thaws. The fridge plan is below.`:`A ${lb} lb turkey takes ${thawDays(lb)} days to thaw in the fridge. Start thawing ${fmt(thaw.when)}. Move the turkey to the fridge then. The full plan is below.`; }
+  if(p.intent==="thaw"&&thaw){ lead=thaw.frozen?`There is no time left to thaw this bird. Cook it from frozen: it goes in the oven at ${fmt(oven.when)}. The full plan is below.`:thaw.late?`Fridge thaw has already passed for this dinner. Use cold water: start by ${fmt(thaw.when)}, about ${Math.round((lb*30/60)*10)/10} hours, and it finishes thawing right as the bird goes in the oven. The full plan is below.`:p.coldWater?`In cold water, a ${lb} lb turkey thaws in about ${Math.round((lb*30/60)*10)/10} hours (30 minutes per pound). Seal it in a leak-proof plastic bag, submerge it in cold tap water, change the water every 30 minutes, and cook it right after it thaws. The fridge plan is below.`:`A ${lb} lb turkey takes ${thawDays(lb)} days to thaw in the fridge. Start thawing ${fmt(thaw.when)}. Move the turkey to the fridge then. The full plan is below.`; }
   else if(p.intent==="plan"&&p.coldWater&&/cold water time/i.test(raw)&&thaw){ lead=`In cold water, a ${lb} lb turkey thaws in about ${Math.round((lb*30/60)*10)/10} hours (30 minutes per pound). Seal it in a leak-proof plastic bag, submerge it in cold tap water, change the water every 30 minutes, and cook it right after it thaws. The fridge plan is below.`; }
   else if(p.intent==="roast"&&oven){ lead=`A ${lb} lb turkey roasts in about ${durText(roastMinutes(lb))} at 325 F. In the oven by ${fmt(oven.when)} for this dinner. The full plan is below.`; }
   else if(p.intent==="fromfrozen"){ var fb0=frozenRoastBand(lb); lead=`Yes. USDA says cooking a turkey from frozen is safe. For a ${lb} lb bird at 325 F, plan on ${durText(fb0[0])} to ${durText(fb0[1])}. The details are in the plan below.`; }
-  var rowsHtml=rows.map(r=>`<div class="row"><strong>${fmt(r.when)}</strong><br>${r.label}<br>${r.detail}</div>`).join("");
+  var rowsHtml=rows.map(r=>`<div class="row"><strong>${r.id==="buy"?fmtDateOnly(r.when):fmt(r.when)}</strong><br>${r.label}<br>${r.detail}</div>`).join("");
   var coldHtml = state==="frozen" ? `<h2>Cold-water backup</h2><p>Running late? Cold water thaws in about ${Math.round((lb*30/60)*10)/10} hours (${lb} lb at 30 minutes per pound). Seal the bird in a leak-proof plastic bag and submerge it in cold tap water. Change the water every 30 minutes, and cook it right after it thaws.</p>` : "";
   var frozenHtml="";
   if(state==="frozen"){
@@ -711,7 +729,7 @@ function answerAsk(raw, nowOverride){
   var bodyHtml = p.intent==="fromfrozen" ? frozenHtml+planHtml : planHtml+frozenHtml;
   /* Addendum 907-B: a late cold-water thaw that runs overnight carries
      the awake-to-change caveat from the overnight page. */
-  if(thaw&&thaw.late){ var cwFinish=new Date(now.getTime()+lb*CONSTANTS.coldWaterMinPerLb.value*60000);
+  if(thaw&&thaw.late){ var cwFinish=new Date(thaw.when.getTime()+lb*CONSTANTS.coldWaterMinPerLb.value*60000);
     if(cwFinish.getDate()!==now.getDate()||cwFinish.getMonth()!==now.getMonth()) bodyHtml+=`<div class="row"><strong>That cold-water time runs overnight.</strong><br>Cold water only works while you are awake to change it, every 30 minutes. Do not leave the turkey soaking overnight.</div>`; }
   out.innerHTML=premiseHtml+`<div class="row"><strong>${summary}</strong>${lead?`<br><span class="lead">${lead}</span>`:""}</div>`+bodyHtml;
   var dstr=dinner.getFullYear()+"-"+String(dinner.getMonth()+1).padStart(2,"0")+"-"+String(dinner.getDate()).padStart(2,"0");

@@ -641,14 +641,31 @@ function buildTimeline(dinner, lb, state, brine, now){
      warnings and their precedence are untouched. No date moves. */
   const BUY_PAST_NOTE=" That buy date has passed. Buy it now if you can.";
   const buyRow=(when,detail)=>{ const past=!!(now && when.getTime()<=now.getTime()); const r={id:"buy", label:"Buy the turkey", when:when, detail:past?detail+BUY_PAST_NOTE:detail}; if(past) r.buyPast=true; return r; };
-  if(state==="frozen"){ rows.push(buyRow(daysBefore(dinner,11),"Buy by this date (kitchen practice). Frozen birds sell out the weekend before Thanksgiving."));
-    const thawStart=daysBefore(dinner,thawDays(lb));
-    if(now && now>thawStart){ rows.push({id:"thaw", late:true, label:"Thaw in cold water today", when:new Date(now.getTime()), detail:"Fridge thaw start has passed. Cold water takes about "+(Math.round((lb*30/60)*10)/10)+" hours (30 minutes per pound). Seal it in a leak-proof plastic bag and submerge it in cold tap water. Change the water every 30 minutes, and cook it right after it thaws."}); }
+  const ovenIn=new Date(dinner.getTime()-(roastMinutes(lb)+CONSTANTS.restMinutes.value)*MIN);
+  const brineStart=new Date(ovenIn.getTime()-CONSTANTS.brineBeforeOvenMinutes.value*MIN);
+  let cookFromFrozen=false, effOvenIn=ovenIn;
+  if(state==="frozen"){ rows.push(buyRow(daysBefore(dinner,11),"Buy by this date (kitchen practice). Frozen birds sell out the weekend before your dinner."));
+    /* 2026-11-02 (outside-review Bugs 1 and 2 — the same fix as the
+       MCP engine): the fridge move counts back from the first step
+       that needs a thawed bird, the brine start when brining and
+       dinner otherwise, so a brining bird really gets its full band
+       in the fridge before the brine. The late cold-water row is
+       anchored to oven-in minus 30 minutes per pound and reads as a
+       start-by time; it is never stamped with now. When even that
+       start has passed, the plan leads with cook-from-frozen on the
+       USDA from-frozen chart. */
+    const thawStart = brine==="yes" ? daysBefore(brineStart,thawDays(lb)) : daysBefore(dinner,thawDays(lb));
+    if(now && now>thawStart){
+      const cwStart=new Date(ovenIn.getTime()-lb*CONSTANTS.coldWaterMinPerLb.value*MIN);
+      if(cwStart.getTime()>now.getTime()){ rows.push({id:"thaw", late:true, label:"Thaw in cold water", when:cwStart, detail:"Fridge thaw start has passed. Start cold water by this time: it takes about "+(Math.round((lb*30/60)*10)/10)+" hours (30 minutes per pound), and the bird finishes thawing right as it goes in the oven. Seal it in a leak-proof plastic bag and submerge it in cold tap water. Change the water every 30 minutes, and cook it right after it thaws."}); }
+      else { cookFromFrozen=true; }
+    }
     else { rows.push({id:"thaw", label:"Move the turkey to the fridge", when:thawStart, detail:"Fridge thaw, per the USDA chart. Keep the fridge at 40 F or below."}); }
   } else { rows.push(buyRow(daysBefore(dinner,2),"Fresh: buy 1 to 2 days before cooking.")); }
-  const ovenIn=new Date(dinner.getTime()-(roastMinutes(lb)+CONSTANTS.restMinutes.value)*MIN);
-  if(brine==="yes") rows.push({id:"brine", label:"Start brining", when:new Date(ovenIn.getTime()-CONSTANTS.brineBeforeOvenMinutes.value*MIN), detail: state==="frozen" ? "Brine in the fridge the whole time, never longer than two days, discard the brine after. Start once the bird is thawed." : "Brine in the fridge the whole time, never longer than two days, discard the brine after."});
-  rows.push({id:"oven", label:"Turkey goes in the oven", when:ovenIn, detail:"325 F. The chart aims, the thermometer decides: 165 F."});
+  if(cookFromFrozen){ effOvenIn=new Date(dinner.getTime()-(frozenRoastMinutes(lb)+CONSTANTS.restMinutes.value)*MIN);
+    rows.push({id:"thaw", frozen:true, label:"Cook the turkey from frozen", when:effOvenIn, detail:"No time left to thaw, and cold water cannot finish before the oven either. Cook it from frozen instead: the bird goes in the oven still frozen, at the oven time in this plan."+(brine==="yes"?" Skip the brine: a bird cooked from frozen cannot be brined first.":"")}); }
+  if(brine==="yes" && !cookFromFrozen) rows.push({id:"brine", label:"Start brining", when:brineStart, detail: state==="frozen" ? "Brine in the fridge the whole time, never longer than two days, discard the brine after. Start once the bird is thawed." : "Brine in the fridge the whole time, never longer than two days, discard the brine after."});
+  rows.push({id:"oven", label:"Turkey goes in the oven", when:effOvenIn, detail:"325 F. The chart aims, the thermometer decides: 165 F."});
   rows.push({id:"sides", label:"Start the sides", when:new Date(dinner.getTime()-CONSTANTS.sidesBeforeMinutes.value*MIN), detail:"Ninety minutes out."});
   rows.push({id:"rest", label:"Rest and carve", when:new Date(dinner.getTime()-CONSTANTS.restMinutes.value*MIN), detail:"Rest before carving. Done at 165 F in the thickest part."});
   rows.sort((a,b)=>a.when-b.when); return rows;
@@ -693,6 +710,10 @@ function planWarning(rows,lb,dinner,now){
 // ENGINE END
 function fmt(d){ return d.toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}); }
 function fmtShort(d){ return d.toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric",hour:"numeric"}).replace(":00",""); }
+/* Issue 5 (Nov 2, 2026): the buy row shows the date only, never a
+   clock time — it used to inherit the dinner hour. Same rule as the
+   MCP plan output. */
+function fmtDateOnly(d){ return d.toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric",year:"numeric"}); }
 function durText(min){ const h=Math.floor(min/60), r=min%60; return (h?h+" hour"+(h===1?"":"s"):"")+(h&&r?" ":"")+(r?r+" minutes":""); }
 let lastPlan=null, lastCardBlob=null;
 function render(){
@@ -714,7 +735,7 @@ function render(){
      honest outs. No USDA math changed. */
   const warning=planWarning(rows,lb,dinner,now);
   const warnHtml=warning?`<div class="row warnrow"><strong>${warning.kind==="past"?"That dinner time is already past.":"This plan cannot work as entered."}</strong><br>${warning.kind==="past"?"Pick a date and time ahead of you, and the plan will line up.":warning.kind==="lead"?`The turkey would have had to go in the oven at ${fmt(warning.oven)}. There is not enough time to roast it before this dinner. What can work instead: a smaller bird, or a later dinner.`:warning.kind==="brine"?(warning.reason==="thaw"?`Brining was set to start at ${fmt(warning.brine)}, but the turkey does not finish thawing until ${fmt(warning.finish)}. A brine cannot start before the bird is thawed. What can work instead: skip the brine, or use a shorter brine once it thaws.`:`Brining was set to start at ${fmt(warning.brine)}. That time has already passed, so a full brine cannot fit before this dinner. What can work instead: skip the brine, or use a shorter brine that starts now.`):`Cold water from now finishes thawing at ${fmt(warning.finish)}. The turkey needs to be in the oven before then. What can work instead: a smaller bird, a fresh bird, or a later dinner.`}</div>`:"";
-  out.innerHTML=warnHtml+rows.map(r=>`<div class="row"><strong>${fmt(r.when)}</strong><br>${r.label}<br>${r.detail}</div>`).join("");
+  out.innerHTML=warnHtml+rows.map(r=>`<div class="row"><strong>${r.id==="buy"?fmtDateOnly(r.when):fmt(r.when)}</strong><br>${r.label}<br>${r.detail}</div>`).join("");
   /* 2026-10-31 (steal-list STEAL-TD-MATH-1, from the OnlyCalculators and
      RichMiser step-by-step workings): one show-the-working line under the
      timeline. Display only: every number is read from the engine's own
@@ -728,11 +749,13 @@ function render(){
   const mathThawBand=CONSTANTS.fridgeThawBands.bands.find(([max])=>lb<=max)||CONSTANTS.fridgeThawBands.bands[CONSTANTS.fridgeThawBands.bands.length-1];
   const mathRoastBand=CONSTANTS.roastBandsUnstuffed.bands.find(([max])=>lb<=max)||CONSTANTS.roastBandsUnstuffed.bands[CONSTANTS.roastBandsUnstuffed.bands.length-1];
   const mathParts=[];
-  if(state==="frozen" && mathThawRow && mathThawRow.late){ mathParts.push(`Cold water runs ${CONSTANTS.coldWaterMinPerLb.value} minutes per pound.`); mathParts.push(`${lb} lb times ${CONSTANTS.coldWaterMinPerLb.value} minutes is ${lb*CONSTANTS.coldWaterMinPerLb.value} minutes.`); }
+  const mathFrozenRow = mathThawRow && mathThawRow.frozen;
+  if(mathFrozenRow){ mathParts.push(`No thaw step: this plan cooks the bird from frozen.`); }
+  else if(state==="frozen" && mathThawRow && mathThawRow.late){ mathParts.push(`Cold water runs ${CONSTANTS.coldWaterMinPerLb.value} minutes per pound.`); mathParts.push(`${lb} lb times ${CONSTANTS.coldWaterMinPerLb.value} minutes is ${lb*CONSTANTS.coldWaterMinPerLb.value} minutes.`); }
   else if(state==="frozen"){ mathParts.push(`${lb} lb fits the band up to ${mathThawBand[0]} lb.`); mathParts.push(`That band thaws in ${mathThawBand[1]} days in the fridge.`); }
   else { mathParts.push(`Fresh birds need no thaw time.`); }
-  mathParts.push(`Roast band: ${mathRoastBand[1][0]} to ${mathRoastBand[1][1]} minutes at 325 F.`);
-  mathParts.push(`The plan uses the middle: ${roastMinutes(lb)} minutes.`);
+  if(mathFrozenRow){ const mathFrozenBand=frozenRoastBand(lb); mathParts.push(`Roast band from frozen: ${mathFrozenBand[0]} to ${mathFrozenBand[1]} minutes at 325 F.`); mathParts.push(`The plan uses the middle: ${frozenRoastMinutes(lb)} minutes.`); }
+  else { mathParts.push(`Roast band: ${mathRoastBand[1][0]} to ${mathRoastBand[1][1]} minutes at 325 F.`); mathParts.push(`The plan uses the middle: ${roastMinutes(lb)} minutes.`); }
   mathParts.push(`Then add ${CONSTANTS.restMinutes.value} minutes to rest.`);
   math.innerHTML=`<p class="mathline"><strong>How we got these dates:</strong> ${mathParts.join(" ")}</p>`;
   /* 2026-10-31 (steal-list STEAL-TD-CW-SCHED-1, from the OnlyCalculators
@@ -778,8 +801,10 @@ function render(){
      brine, dinner date/time). No new data; /privacy stays true unedited. */
   const shareLink = `https://thawday.com/calculator?via=share&w=${lb}&s=${state}&b=${brine}&d=${date}&t=${time}`;
   const txt = warnTxt + (state==="frozen"
-    ? (thaw.late
-      ? `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): Fridge thaw start has passed. Cold-water thaw today, about ${Math.round((lb*30/60)*10)/10} hours.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. ${shareLink}`
+    ? (thaw.frozen
+      ? `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): No time left to thaw this bird. Cook it from frozen. Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. ${shareLink}`
+      : thaw.late
+      ? `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): Fridge thaw start has passed. Cold water starts ${fmt(thaw.when)}, about ${Math.round((lb*30/60)*10)/10} hours, done right at oven time.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. ${shareLink}`
       : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): ${buySeg} Fridge thaw starts ${fmt(thaw.when)}.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. ${shareLink}`)
     : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb fresh turkey): ${buySeg}${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. ${shareLink}`) + " Done at 165 F.";
   document.getElementById("sharetext").textContent=txt;
@@ -800,7 +825,8 @@ function cardLines(plan){
   const beats=[{label:"Turkey", value:plan.lb+" lb"}];
   let signTitle="Start thawing:", signValue="";
   if(thaw){
-    if(thaw.late){ beats.push({label:"Thaw in cold water", value:fmt(thaw.when)}); signTitle="Thaw in cold water"; signValue="today"; }
+    if(thaw.frozen){ beats.push({label:"Cook from frozen", value:fmt(thaw.when)}); signTitle="Cook from frozen:"; signValue=fmt(thaw.when); }
+    else if(thaw.late){ beats.push({label:"Thaw in cold water", value:fmt(thaw.when)}); signTitle="Thaw in cold water"; signValue=fmt(thaw.when); }
     else { beats.push({label:"Thaw start", value:fmt(thaw.when)}); signValue=fmt(thaw.when); }
   }
   if(brineRow) beats.push({label:"Brine start", value:fmt(brineRow.when)});
