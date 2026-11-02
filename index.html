@@ -195,6 +195,25 @@
   details.xpd>summary::before{content:"\25B8";color:var(--accent);font-weight:800}
   details.xpd[open]>summary::before{content:"\25BE"}
   details.xpd h2{margin-top:8px}
+
+  /* 2026-11-01 readability pass (fleet standard): one fact per card, the
+     dated plan as the hero fact. Presentation only — no copy or number
+     changes; the example date below is the same sentence, wrapped in a
+     <strong> so the hero fact can be sized like one. */
+  .tagline + .promise { font-size: 0.9375rem; font-weight: 400; color: var(--muted); }
+  .askdoor { font-size: 0.9375rem; color: var(--muted); }
+  .shortanswer > p:first-child { font-weight: 700; color: var(--ink); }
+  .shortanswer ul { margin: 0.5rem 0 0.25rem; }
+  .shortanswer li { display: flex; flex-direction: column; gap: 0.1rem; padding: 0.6rem 0; margin-bottom: 0; border-bottom: 1px solid #f0e4cf; }
+  .shortanswer li:last-child { border-bottom: 0; }
+  .shortanswer li strong { font-size: 1.35rem; line-height: 1.2; white-space: nowrap; }
+  .shortanswer .ex { margin-top: 0.85rem; padding: 0.8rem 0.9rem; background: #faf3e3; border-radius: 10px; font-size: 1.0625rem; color: var(--ink); }
+  .shortanswer .ex strong { font-size: 1.5rem; line-height: 1.15; color: var(--accent); white-space: nowrap; }
+  .shortanswer .note { color: var(--muted); font-size: 0.9375rem; margin-top: 0.5rem; }
+  .bands { border: 1px solid #e7d8c3; border-radius: 12px; background: #fff; padding: 0.6rem 1rem 0.75rem; }
+  .bands + p { border: 1px solid #e7d8c3; border-radius: 12px; background: #fff; padding: 0.9rem 1rem 0.4rem; margin-top: 1rem; text-align: left; }
+  .bands + p .ln:first-child { font-weight: 800; font-size: 1.0625rem; color: var(--ink); }
+  .way span { font-size: 0.9375rem; font-weight: 600; color: var(--ink); }
 </style>
 <script>
 window.FLEET_CFG = {
@@ -391,7 +410,7 @@ window.FLEET_CFG = {
         <li>17 to 20 lb: <strong>Saturday, November 21</strong></li>
         <li>21 to 24 lb: <strong>Friday, November 20</strong></li>
       </ul>
-      <p><span class="ln">A 14 lb bird moves Sunday, November 22.</span><span class="ln">Your dinner hour does not change this date.</span></p>
+      <p><span class="ln ex">A 14 lb bird moves <strong>Sunday, November 22</strong>.</span><span class="ln note">Your dinner hour does not change this date.</span></p>
     </div>
     <div class="tl"><div class="tl-node"><span class="tl-k">Move &middot; 14 lb</span><strong>Sun, Nov 22</strong></div><div class="tl-track"><span class="tl-dots"><i></i><i></i><i></i><i></i></span><span class="tl-cap">4 days</span></div><div class="tl-node tl-end"><span class="tl-k">Dinner</span><strong>Thu, Nov 26</strong></div></div>
   </section>

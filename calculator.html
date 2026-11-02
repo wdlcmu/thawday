@@ -184,6 +184,32 @@
  #carddl{font-weight:700;display:inline-block;padding:12px 6px;min-height:44px}
  #carddl[hidden]{display:none}
  #cardhint{color:var(--muted)}
+
+ /* 2026-11-01 readability pass (fleet standard): presentation only.
+    The timeline date is the hero of each row card; the intro wall is
+    tightened so step 1 starts higher; Share becomes two one-job cards;
+    the chat prose collapses like the homepage expander (866 pattern). */
+ body{padding-top:16px}
+ body>p{margin:10px 0}
+ h1{margin:6px 0 4px}
+ .stuffnote{border:1px solid var(--line);border-radius:8px;background:#fff;padding:10px 14px;font-size:.9375rem;color:#374151}
+ #quiz{margin-top:0}
+ .qprogress{margin:6px 0 2px}
+ .qtitle{margin:8px 0 4px}
+ label{margin-top:10px}
+ #out .row{padding:14px 16px}
+ #out .row>strong{display:block;font-size:1.375rem;line-height:1.25;color:var(--ink)}
+ #out .warnrow>strong{display:inline;font-size:1rem}
+ #cardarea{border:1px solid var(--line);border-radius:12px;background:#fff;padding:4px 16px 14px;margin-top:20px}
+ #cardarea h2{margin-top:14px}
+ .sharecard{border:1px solid var(--line);border-radius:12px;background:#fff;padding:6px 16px 12px;margin:10px 0}
+ .cardlabel{font-weight:800;font-size:1.0625rem;margin:10px 0 2px}
+ details.xpd{border:1px solid var(--line);border-radius:12px;background:#fff;margin:12px 0;padding:2px 14px 6px}
+ details.xpd>summary{cursor:pointer;font-weight:700;font-size:1.0625rem;min-height:44px;display:flex;align-items:center;gap:8px;list-style:none;padding:10px 0;margin:0}
+ details.xpd>summary::-webkit-details-marker{display:none}
+ details.xpd>summary::before{content:"\25B8";color:var(--accent);font-weight:800}
+ details.xpd[open]>summary::before{content:"\25BE"}
+ @media print{ .cardlabel{display:none!important} .sharecard{border:0;padding:0} }
  /* 2026-10-31 (quiz simplification): three tap steps replace the stacked
     form. Chips are big tap targets; steps cross-fade; the timeline rows
     build in gently. Reduced motion turns all of it off. */
@@ -391,7 +417,7 @@ window.FLEET_CFG = {
 <h1>ThawDay</h1>
 <p>When do I take the turkey out of the freezer? Type in your dinner time and turkey weight. You get buy, thaw, brine, and roast dates. Brining is just soaking the bird in salt water first. It is optional.</p>
 <p>Three steps. Thirty seconds. Free.</p>
-<p>This tool plans turkeys with no stuffing. For safety, the USDA does not recommend cooking stuffing inside the bird. Cook it in a casserole dish instead. Every time here is for an unstuffed turkey.</p>
+<p class="stuffnote">This tool plans turkeys with no stuffing. For safety, the USDA does not recommend cooking stuffing inside the bird. Cook it in a casserole dish instead. Every time here is for an unstuffed turkey.</p>
 <p>Rather say it in your own words? <a href="/ask">Ask here</a> instead. One line, same math.</p>
 
 <section id="quiz" aria-label="Turkey timeline quiz">
@@ -521,20 +547,28 @@ window.FLEET_CFG = {
 <section id="frozencook"></section>
 
 <h2>Share</h2>
+<div class="sharecard">
+<p class="cardlabel">Send it or print it</p>
 <button id="share" class="secondary" type="button">Share this plan</button>
 <button id="printplan" class="secondary" type="button">Print this plan</button>
-<button id="calbtn" class="secondary" type="button">Add to calendar (.ics)</button>
 <p id="sharetext"></p>
+</div>
+<div class="sharecard">
+<p class="cardlabel">Put it on your calendar</p>
+<button id="calbtn" class="secondary" type="button">Add to calendar (.ics)</button>
 <p id="calmsg" aria-live="polite"></p>
 <button id="movebtn" class="secondary" type="button">Add the fridge move only (.ics)</button>
 <button id="movegbtn" class="secondary" type="button">Add the fridge move in Google Calendar</button>
 <p id="movemsg" aria-live="polite"></p>
+</div>
 
+<details class="xpd"><summary>Prefer to ask in chat?</summary>
 <h2>Prefer to ask in chat?</h2>
 <p>ThawDay is also built for ChatGPT and Claude. It is not in their stores yet.</p>
 <p>On this site, <a href="/ask">Ask</a> takes your words and runs the same math on this page. Nothing you type leaves the page.</p>
 <p>In chat, there is no form. You just ask. Ask for the full plan, just the thaw time, or just the roast time. Change the weight and ask again. The new plan comes back in the same chat.</p>
 <p>Here on the site, you get what chat does not give you: a picture card of your plan, a print view, a calendar file, and a share link. Both ways use USDA charts.</p>
+</details>
 
 <h2>FAQ</h2>
 <details><summary>How much turkey per person?</summary><p>Plan one pound of whole turkey per person. For leftovers, add half a pound per person. Bone and skin make up much of the weight.</p></details>
