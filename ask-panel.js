@@ -225,6 +225,18 @@ function parseAsk(raw, nowOverride){
          N days ago" still counts. */
       var rest=t.slice(m.index+m[0].length), be=/[.,;:!?()]+|\s+[-\u2013\u2014]\s*|[-\u2013\u2014]\s+|[\u2013\u2014]+/.exec(rest), tail=be?rest.slice(0,be.index):rest;
       if(/^\s*(?:\w+\s+){0,4}?(?:until|till|til)\s+(?:the\s+)?(?:day before yesterday|yesterday)\b/.test(tail)||/^\s*(?:\w+\s+){0,4}?(?:until|till|til)\s+(?:the\s+)?(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+days?\s+ago\b/.test(tail)) return true; } return false; };
+  /* Addendum 1035 SPEC-3: the passive negated finish ("Thawing was
+     not finished until yesterday") matches no finishHit pattern —
+     the negation sits between "was" and the finish word, and the
+     finish word is not followed by "thawing" — so untilHit1035
+     hears it on its own terms: the match counts ONLY when its own
+     clause continues "until / till / til <past day>", the same
+     tail test as finishHit's idiom exception. A plain negated
+     passive with no until tail ("Thawing was not finished
+     yesterday") never fires it and keeps its ask-back. */
+  var untilHit1035=function(re){ re.lastIndex=0; var m; while((m=re.exec(t))!==null){
+      var rest=t.slice(m.index+m[0].length), be=/[.,;:!?()]+|\s+[-\u2013\u2014]\s*|[-\u2013\u2014]\s+|[\u2013\u2014]+/.exec(rest), tail=be?rest.slice(0,be.index):rest;
+      if(/^\s*(?:\w+\s+){0,4}?(?:until|till|til)\s+(?:the\s+)?(?:day before yesterday|yesterday)\b/.test(tail)||/^\s*(?:\w+\s+){0,4}?(?:until|till|til)\s+(?:the\s+)?(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+days?\s+ago\b/.test(tail)) return true; } return false; };
   var thawedWord=/\bthawed\b|\bdefrosted\b|\bdid thaw\b/.test(t)||/out of the freezer/.test(t)||finishHit(/finished thawing/g)
     /* Addendum 952: "finish thawing" in its other forms (finish /
        finishing / finishes thawing) and a bare "finished yesterday"
@@ -234,7 +246,7 @@ function parseAsk(raw, nowOverride){
        keeps its plan. The emphatic past "did thaw" joins the main
        read (a past statement by shape; "did not thaw" does not
        match it). */
-    ||(finishHit(/(?:\bfinish\w*|\bdone|\bcompleted) thawing\b/g)&&/(yesterday|days? ago|day before yesterday)/.test(t))
+    ||(finishHit(/(?:\bfinish\w*|\bdone|\bcomplete|\bcompleted) thawing\b/g)&&/(yesterday|days? ago|day before yesterday)/.test(t))
     /* Addendum 956: "done thawing" / "completed thawing" are
        completion evidence behind the same past-day gate, so a
        timing question ("how long until it is done thawing")
@@ -246,7 +258,7 @@ function parseAsk(raw, nowOverride){
        a defrosting timing question still keeps its plan while a
        finished defrosting with a past day verdicts like "It
        defrosted yesterday" already did. */
-    ||(finishHit(/(?:\bfinish\w*|\bdone|\bcompleted) defrosting\b/g)&&/(yesterday|days? ago|day before yesterday)/.test(t))
+    ||(finishHit(/(?:\bfinish\w*|\bdone|\bcomplete|\bcompleted) defrosting\b/g)&&/(yesterday|days? ago|day before yesterday)/.test(t))
     /* Addendum 1027: the passive gerund-subject family joins the
        finish forms behind the same past-day gate ("Thawing was
        complete three days ago", "The defrosting was done
@@ -260,7 +272,13 @@ function parseAsk(raw, nowOverride){
        evidence changes nothing, and a timing question ("How long
        until defrosting is complete?", which uses "is", not "was")
        keeps its plan. */
-    ||(finishHit(/(?:\bthawing|\bdefrosting|\bdefrost) was (?:complete|completed|done|finished)\b/g)&&/(yesterday|days? ago|day before yesterday)/.test(t));
+    ||(finishHit(/(?:\bthawing|\bdefrosting|\bdefrost) was (?:complete|completed|done|finished)\b/g)&&/(yesterday|days? ago|day before yesterday)/.test(t))
+    /* Addendum 1035 SPEC-3: the passive "not ... until" idiom joins
+       behind untilHit1035's own tail test ("Thawing was not
+       finished until yesterday", "Defrosting was not complete
+       until the day before yesterday") — no separate past-day gate,
+       because the until tail already names the past day. */
+    ||untilHit1035(/(?:\bthawing|\bdefrosting|\bdefrost) (?:was (?:not|never)|wasn'?t) (?:complete|completed|done|finished)\b/g);
   var beenThawedM=t.match(/been thawed for (\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve) days?/);
   var wdNames=["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
   var sinceM=t.match(/\bsince (sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/);
@@ -285,7 +303,15 @@ function parseAsk(raw, nowOverride){
     var seg=t.slice(s,i), nm=null, nx, nre=/\b(?:not|never|no)\b|\b\w+n't\b/g;
     while((nx=nre.exec(seg))!==null) nm=nx; if(!nm) return false;
     var mid=seg.slice(nm.index+nm[0].length);
-    return !/\s+(?:and|but)\s+(?=(?:i|it|the|my|we|they|this|that)\b|(?:thawed|defrosted|sat|stayed|left|kept|been|was|were|has|have|had|is|are|finished|spent|want|wants)\b)|\s+so\s+(?=(?:i|it|the|my|we|they)\b)/.test(mid); };
+    /* Addendum 1035 SPEC-1: a day claim that immediately follows
+       "but" in its clause is the asserted side of a "not <day> but
+       <day>" correction ("finished thawing not yesterday but three
+       days ago") — the fresh clause opens WITH the day claim
+       itself, the same trailing-break shape negFinAt carries for
+       the finish word — so the negation does not govern it. The
+       negated day on the other side of the "but" keeps its drop:
+       its own read still ends in the negation, not in a "but". */
+    return !(/\s+(?:and|but)\s+(?=(?:i|it|the|my|we|they|this|that)\b|(?:thawed|defrosted|sat|stayed|left|kept|been|was|were|has|have|had|is|are|finished|spent|want|wants)\b)|\s+so\s+(?=(?:i|it|the|my|we|they)\b)/.test(mid)||/\s+but\s+(?:the\s+)?$/.test(mid)); };
   /* Addendum 950: a self-correction withdraws the claims made before
      it ("It sat in the fridge for 3 days. No wait, it thawed
      yesterday..."); the corrected evidence after the marker decides.
@@ -327,7 +353,7 @@ function parseAsk(raw, nowOverride){
      about storage, not the thaw. The negation guard below still
      applies to whichever claim governs, so a correction INTO a
      worse count keeps the worse verdict. */
-  { var claims=[], govLate956=false;
+  { var claims=[], govLate956=false, govBare1035=null;
     var clOf956=function(i){ var s=0,e=t.length,bm,bre=/[.,;:!?()]+|\s+[-\u2013\u2014]\s*|[-\u2013\u2014]\s+|[\u2013\u2014]+/g;
       while((bm=bre.exec(t))!==null){ if(bm.index+bm[0].length<=i) s=bm.index+bm[0].length; else if(bm.index>=i){ e=bm.index; break; } }
       return {txt:t.slice(s,e),pre:t.slice(s,i)}; };
@@ -357,6 +383,7 @@ function parseAsk(raw, nowOverride){
       for(var di=1;di<claims.length;di++) if(claims[di].days!==claims[0].days) disagree956=true;
       if(disagree956){ var gov956=claims[claims.length-1];
         if(gov956.shape==="since"||gov956.shape==="on") govLate956=true;
+        if(gov956.shape==="bare") govBare1035=gov956.days;
         holdM=gov956.shape==="hold"?{0:gov956.text,1:gov956.cap,index:gov956.index}:null;
         beenThawedM=gov956.shape==="been"?{0:gov956.text,1:gov956.cap,index:gov956.index}:null;
         agoM=gov956.shape==="ago"?{0:gov956.text,1:gov956.cap,index:gov956.index}:null;
@@ -382,7 +409,18 @@ function parseAsk(raw, nowOverride){
       agoM=nxt960; } }
   if(holdM&&negAt(holdM.index)) holdM=null;
   if(beenThawedM&&negAt(beenThawedM.index)) beenThawedM=null;
-  if(agoM&&negAt(agoM.index)) agoM=null;
+  /* Addendum 1035 SPEC-2: an "N days ago" claim that directly
+     follows until/till/til in its own clause is the "not ...
+     until" idiom's asserted completion day ("did not finish
+     thawing until three days ago" = it finished three days ago) —
+     the same assertion finishHit's idiom exception honors for
+     thawedWord — so the negAt drop, which reads the "not" of
+     "did not", must not take it; without it the verdict rendered
+     its preamble with no count at all. */
+  var untilDay1035=function(i){ var s=0,bm,bre=/[.,;:!?()]+|\s+[-\u2013\u2014]\s*|[-\u2013\u2014]\s+|[\u2013\u2014]+/g;
+    while((bm=bre.exec(t))!==null){ if(bm.index>=i) break; s=bm.index+bm[0].length; }
+    return /(?:until|till|til)\s+(?:the\s+)?$/.test(t.slice(s,i)); };
+  if(agoM&&negAt(agoM.index)&&!untilDay1035(agoM.index)) agoM=null;
   /* Addendum 960 SPEC-2: the standalone continuous shape ("It has
      been thawing since Monday") joins the hold read on its own
      terms (the last holdCue term below). It carries no "thawed"
@@ -414,6 +452,12 @@ function parseAsk(raw, nowOverride){
     if(holdM) elapsed=dayNum(holdM[1]);
     else if(beenThawedM) elapsed=dayNum(beenThawedM[1]);
     else if(agoM) elapsed=dayNum(agoM[1]);
+    /* Addendum 1035 SPEC-1: when the governing claim is a bare day,
+       its own count decides — the raw-text fallbacks below scan in
+       fixed day-before-yesterday-before-yesterday order and can
+       land on the NEGATED phrase of a reversed correction ("not
+       the day before yesterday but yesterday"). */
+    else if(govBare1035!=null) elapsed=govBare1035;
     else if(!govLate956&&/day before yesterday/.test(t)) elapsed=2;
     else if(!govLate956&&/\byesterday\b/.test(t)) elapsed=1;
     else if(sinceM) elapsed=(today.getDay()-wdNames.indexOf(sinceM[1])+7)%7;
