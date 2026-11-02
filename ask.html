@@ -288,7 +288,14 @@ function parseAsk(raw, nowOverride){
        completion evidence behind the same past-day gate, so a
        timing question ("how long until it is done thawing")
        still keeps its plan. */
-    ||/\bfinish\w* yesterday\b/.test(t);
+    ||/\bfinish\w* yesterday\b/.test(t)
+    /* Addendum 960 SPEC-4: the defrosting finish synonyms join the
+       thawing ones behind the same past-day gate ("finished
+       defrosting yesterday", "done defrosting three days ago"), so
+       a defrosting timing question still keeps its plan while a
+       finished defrosting with a past day verdicts like "It
+       defrosted yesterday" already did. */
+    ||(/(?:\bfinish\w*|\bdone|\bcompleted) defrosting\b/.test(t)&&/(yesterday|days? ago|day before yesterday)/.test(t));
   var beenThawedM=t.match(/been thawed for (\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve) days?/);
   var wdNames=["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
   var sinceM=t.match(/\bsince (sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/);
@@ -390,13 +397,53 @@ function parseAsk(raw, nowOverride){
         agoM=gov956.shape==="ago"?{0:gov956.text,1:gov956.cap,index:gov956.index}:null;
         sinceM=gov956.shape==="since"?{0:gov956.text,1:gov956.cap,index:gov956.index}:null;
         thawOnM=gov956.shape==="on"?{0:gov956.text,1:gov956.cap,index:gov956.index}:null; } } }
+  /* Addendum 960 SPEC-1: the buy-event exclusion reaches the base
+     ago read. The 956 claim list already drops an "ago" claim in a
+     buy-event clause ("I bought the turkey five days ago" is about
+     the shopping trip, not the thaw), but the base agoM above is a
+     plain first-match read, so with a single thaw claim beside it
+     (no disagreement for the claim rule to resolve) the buy count
+     still decided the verdict — a bird thawed yesterday was
+     condemned on its buy date. When the standing agoM sits in a
+     buy-event clause, replace it with the first ago claim that is
+     not in one, or with no claim at all. A claim the 956 rule let
+     govern already passed this same test, so this moves nothing
+     there. */
+  if(agoM){ var isBuy960=function(idx){ var s=0,e=t.length,bm,bre=/[.,;:!?()]+|\s+[-\u2013\u2014]\s*|[-\u2013\u2014]\s+|[\u2013\u2014]+/g;
+      while((bm=bre.exec(t))!==null){ if(bm.index+bm[0].length<=idx) s=bm.index+bm[0].length; else if(bm.index>=idx){ e=bm.index; break; } }
+      return /\b(?:bought|purchased|picked(?: \w+)? up)\b/.test(t.slice(s,idx))&&!/thaw|defrost/.test(t.slice(s,e)); };
+    if(isBuy960(agoM.index)){ var agoRe960=/(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve) days? ago/g, am960, nxt960=null;
+      while((am960=agoRe960.exec(t))!==null){ if(!isBuy960(am960.index)){ nxt960={0:am960[0],1:am960[1],index:am960.index}; break; } }
+      agoM=nxt960; } }
   if(holdM&&negAt(holdM.index)) holdM=null;
   if(beenThawedM&&negAt(beenThawedM.index)) beenThawedM=null;
   if(agoM&&negAt(agoM.index)) agoM=null;
+  /* Addendum 960 SPEC-2: the standalone continuous shape ("It has
+     been thawing since Monday") joins the hold read on its own
+     terms (the last holdCue term below). It carries no "thawed"
+     word for thawedWord and no "sitting" for the sitting term, so
+     it never verdicted — a weight ask-back with no weight, a
+     warning-free plan with one. The since read itself already
+     counted these days correctly whenever another claim made the
+     question a hold question. */
   var holdCue=holdM||beenThawedM||/how long can a thawed/.test(t)
     ||(thawedWord&&/(fridge|refrigerator)/.test(t)&&/(still ok|still good|still safe|how long|ok to|safe to)/.test(t))
     ||(thawedWord&&(sinceM||thawOnM||agoM||/day before yesterday/.test(t)||/\byesterday\b/.test(t)||/\bsitting\b/.test(t)||/(still ok|still good|still safe|ok to cook|is it ok|good for)/.test(t)))
-    ||(/\bsitting\b/.test(t)&&sinceM);
+    ||(/\bsitting\b/.test(t)&&sinceM)
+    ||(/\bbeen thawing\b/.test(t)&&sinceM);
+  /* Addendum 960 SPEC-3: a timing question built on the fully /
+     completely-thawed adjectives ("How long until a 14 lb turkey
+     is completely thawed in the fridge?") asks for the thaw
+     duration, not a finished thaw — but the word "thawed" plus
+     "how long" plus "fridge" fired the hold read, which answered
+     with the hold rule alone and no plan. When the question
+     carries no past-day evidence at all (no ago / since /
+     on-weekday / hold / been claim and no yesterday word), it is
+     the K07 timing shape in adjective dress: let it keep its
+     plan. The same adjectives WITH past evidence ("It was
+     completely thawed yesterday") still verdict exactly as
+     before. */
+  if(holdCue&&/how long until\b/.test(t)&&/(?:completely|fully) thawed\b/.test(t)&&!agoM&&!sinceM&&!thawOnM&&!holdM&&!beenThawedM&&!/yesterday|day before yesterday/.test(t)) holdCue=false;
   if(holdCue){ p.premise="hold";
     var elapsed=null;
     if(holdM) elapsed=dayNum(holdM[1]);
