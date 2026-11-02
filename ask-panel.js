@@ -740,8 +740,14 @@ function answerAsk(raw, nowOverride){
 })(typeof window !== 'undefined' ? window : this);
 
 ;(function(){
-  if (window.FleetYieldGuard) {
-    FleetYieldGuard.init({ pill: '#askp-open', panel: '#askp-panel' });
-  }
+  if (!window.FleetYieldGuard) return;
+  var handle = FleetYieldGuard.init({ pill: '#askp-open', panel: '#askp-panel' });
+  if (!handle) return;
+  /* The resting box is cached at init; if the viewport or the pill's
+     own size settles afterwards (browser chrome, font swap), the cached
+     box goes stale and the pill's lower band stops yielding. Recompute
+     it once everything has loaded, and again when fonts land. */
+  window.addEventListener('load', function () { handle.refresh(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { handle.refresh(); });
 })();
 /* ================= FLEET YIELD GUARD END ================= */
