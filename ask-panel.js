@@ -480,7 +480,7 @@ function answerAsk(raw, nowOverride){
     if(inited) return; inited=true;
     goBtn.addEventListener("click",runAsk);
     q.addEventListener("keydown",function(ev){ if(ev.key==="Enter"&&!ev.shiftKey){ ev.preventDefault(); runAsk(); } });
-    panel.querySelectorAll(".chip").forEach(function(ch){ ch.addEventListener("click",function(){ q.value=ch.getAttribute("data-q"); runAsk(); }); });
+    panel.querySelectorAll(".chip").forEach(function(ch){ ch.addEventListener("click",function(){ q.value=ch.getAttribute("data-q"); goBtn.click(); }); });
   }
   function open(){
     init(); lastFocus=document.activeElement;
