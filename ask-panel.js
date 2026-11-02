@@ -216,6 +216,21 @@ function parseAsk(raw, nowOverride){
     var seg=t.slice(s,i), nm=null, nx, nre=/\b(?:not|never|no)\b|\b\w+n't\b/g;
     while((nx=nre.exec(seg))!==null) nm=nx; if(!nm) return false;
     var mid=seg.slice(nm.index+nm[0].length);
+    /* Addendum 1042 SPEC-2: a BARE correction that has completed
+       before the match spends the negation's scope for the finish
+       verb too, in the two shapes the "but" break cannot see:
+       (a) mid is exactly two day claims — "not yesterday three
+       days ago it finished thawing" (fronted pre-correction);
+       (b) mid is exactly one day claim, optionally opening a new
+       subject, and the clause text BEFORE the negation carries
+       its own day claim — "Three days ago not yesterday it
+       finished thawing" (fronted correction; day governance
+       already walks back to that fronted day). A plain negated
+       finish matches neither (empty mid; the day follows the
+       verb), and a cleft with no day before its "not" ("It was
+       not three days ago that it finished thawing") fails (b)'s
+       fronted-day gate and keeps its ask-back. */
+    var day1042="(?:the\\s+)?(?:(?:day before yesterday\\b|yesterday\\b|(?:\\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\\s+days?\\s+ago\\b))", bareCorr1042=new RegExp("^\\s*"+day1042+"\\s+"+day1042+"(?:\\s+(?:i|it|the|my|we|they|this|that|thawing|defrosting)\\b|\\s*$)").test(mid)||(new RegExp("(?:day before yesterday\\b|yesterday\\b|(?:\\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\\s+days?\\s+ago\\b)").test(seg.slice(0,nm.index))&&new RegExp("^\\s*"+day1042+"(?:\\s+(?:i|it|the|my|we|they|this|that|thawing|defrosting)\\b|\\s*$)").test(mid));
     /* Addendum 1039 SPEC-3: a correction that has COMPLETED before
        the match — "not yesterday but three days ago that it
        finished thawing" — spends the negation's scope: the "but
@@ -224,7 +239,7 @@ function parseAsk(raw, nowOverride){
        The negation read here is the LAST one before the match, so
        a finish verb under its own later "not" never sees an
        earlier correction in its mid. */
-    return !(/\s+(?:and|but)\s+(?=(?:i|it|the|my|we|they|this|that)\b|(?:thawed|defrosted|sat|stayed|left|kept|been|was|were|has|have|had|is|are|finished|spent|want|wants)\b)|\s+so\s+(?=(?:i|it|the|my|we|they)\b)/.test(mid)||/\s+(?:and|but)\s+$/.test(mid)||/\s+but\s+(?:the\s+)?(?:day before yesterday\b|yesterday\b|(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+days?\s+ago\b)/.test(mid)); };
+    return !(/\s+(?:and|but)\s+(?=(?:i|it|the|my|we|they|this|that)\b|(?:thawed|defrosted|sat|stayed|left|kept|been|was|were|has|have|had|is|are|finished|spent|want|wants)\b)|\s+so\s+(?=(?:i|it|the|my|we|they)\b)/.test(mid)||/\s+(?:and|but)\s+$/.test(mid)||/\s+but\s+(?:the\s+)?(?:day before yesterday\b|yesterday\b|(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+days?\s+ago\b)/.test(mid)||bareCorr1042); };
   var finishHit=function(re){ re.lastIndex=0; var m; while((m=re.exec(t))!==null){ if(!negFinAt(m.index)) return true;
       /* "not ... until <past day>" is the idiom for completion AT
          that day ("It did not finish thawing until yesterday" =
@@ -329,7 +344,19 @@ function parseAsk(raw, nowOverride){
        the finish word — so the negation does not govern it. The
        negated day on the other side of the "but" keeps its drop:
        its own read still ends in the negation, not in a "but". */
-    return !(/\s+(?:and|but)\s+(?=(?:i|it|the|my|we|they|this|that)\b|(?:thawed|defrosted|sat|stayed|left|kept|been|was|were|has|have|had|is|are|finished|spent|want|wants)\b)|\s+so\s+(?=(?:i|it|the|my|we|they)\b)/.test(mid)||/\s+but\s+(?:the\s+)?$/.test(mid)); };
+    /* Addendum 1042 SPEC-1: a bare PRE-correction — "not yesterday
+       three days ago", negation first, no "but", no comma — spends
+       the negation's scope on its own day: when the whole mid is
+       exactly one day claim (plus an optional trailing "the" that
+       opens an asserted "the day before yesterday"), the target
+       claim that follows is the correction's ASSERTED side, not
+       part of the negation's scope. Without this break the
+       asserted claim read as negated, the post-governance drop
+       nulled it, and the raw-text fallback counted the negated
+       day — a past-window bird read "still inside". The negated
+       day's own read (empty mid) and every mid carrying more
+       than the one day claim are unchanged. */
+    return !(/\s+(?:and|but)\s+(?=(?:i|it|the|my|we|they|this|that)\b|(?:thawed|defrosted|sat|stayed|left|kept|been|was|were|has|have|had|is|are|finished|spent|want|wants)\b)|\s+so\s+(?=(?:i|it|the|my|we|they)\b)/.test(mid)||/\s+but\s+(?:the\s+)?$/.test(mid)||/^\s*(?:the\s+)?(?:day before yesterday\b|yesterday\b|(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+days?\s+ago\b)(?:\s+the)?\s*$/.test(mid)); };
   /* Addendum 950: a self-correction withdraws the claims made before
      it ("It sat in the fridge for 3 days. No wait, it thawed
      yesterday..."); the corrected evidence after the marker decides.
