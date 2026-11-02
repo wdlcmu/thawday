@@ -148,6 +148,10 @@ function parseAsk(raw, nowOverride){
      and/but ends it) is dropped, but only when a method (safe or
      offered) is still named in what remains; an unsafe alternative
      offered in its own clause keeps firing.
+     Assurance fix (Addendum 1002, 2026-11-01): when the kept text
+     carries no premise pattern at all, pt adopts it even without a
+     method word — a bare negated unsafe statement ("I did NOT leave
+     it on the counter") no longer draws the safety lead.
      Every other read still uses t; the hold read drops its own
      duration claims when they sit inside the same kind of negated
      span (Addendum 932), and the clause split now hears dashes. */
@@ -180,7 +184,7 @@ function parseAsk(raw, nowOverride){
             if(nscp>=0) break;
             cj++; } } }
       if(isNeg) dropped=true; else kept.push(cl); }
-    if(dropped){ var cand=kept.join(" "); if(/cold water|fridge|refrigerator|counter\w*|room temperature|lukewarm|tepid|warm|hot/.test(cand)||(/water/.test(cand)&&/every 30 minutes/.test(cand))) pt=cand; }
+    if(dropped){ var cand=kept.join(" "); if(/cold water|fridge|refrigerator|counter\w*|room temperature|lukewarm|tepid|warm|hot/.test(cand)||(/water/.test(cand)&&/every 30 minutes/.test(cand))||!(/\bcounter\w*|room temperature|lukewarm\b|tepid\b|warm-?ish\b|\bheated\b|(?:feels?|felt) (?:warm|hot)\b|\b(?:warm|hot)(?: \w+){0,3}? (?:water|sink|basin|bath|soak|tub)\b|cold water/.test(cand))) pt=cand; }
   }
   if(/\bcounter\w*|room temperature/.test(pt)) p.premise="counter";
   else if(/lukewarm\b|tepid\b|warm-?ish\b|\bheated\b|(?:feels?|felt) (?:warm|hot)\b|\b(?:warm|hot)(?: \w+){0,3}? (?:water|sink|basin|bath|soak|tub)\b/.test(pt)) p.premise="warmwater";
