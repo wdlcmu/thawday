@@ -260,7 +260,7 @@ function parseAsk(raw, nowOverride){
   }
   if(/\bcounter\w*|room temperature/.test(pt)) p.premise="counter";
   else if(/lukewarm\b|tepid\b|warm-?ish\b|\bheated\b|(?:feels?|felt) (?:warm|hot)\b|\b(?:warm|hot)(?: \w+){0,3}? (?:water|sink|basin|bath|soak|tub)\b/.test(pt)) p.premise="warmwater";
-  else if(/cold water/.test(pt)&&/(overnight|all night|(?:through|for|over) the (?:whole )?night|through tonight|through (?:the )?(?:dawn|sunrise|daybreak)|(?:till|until|til) (?:the |tomorrow )?morning|(?:till|until|til) (?:i|we) wake|(?:till|until|til) (?:(?:i|we) (?:get|wake) up|(?:everyone|everybody) (?:gets|wakes) up)|(?:till|until|til) (?:the )?(?:dawn|sunrise|daybreak|first light|sunup|daylight|crack of (?:the )?dawn|sun (?:comes up|rises|is up|comes back up|peeks up))|midnight (?:to|till|until) (?:the )?(?:morning|dawn|sunrise|daybreak)|while (?:[a-z]+ ){0,3}(?:asleep|sleeping|sleeps|sleep)\b|while (?:i|we) (?:sleep|am asleep|am sleeping)|while i'?m (?:sleeping|asleep))/.test(pt)) p.premise="coldovernight";
+  else if(/cold water/.test(pt)&&/(overnight|all night|(?:through|for|over) the (?:whole )?night|through tonight|through (?:the )?(?:dawn|sunrise|daybreak)|(?:till|until|til) (?:the |tomorrow )?morning|(?:till|until|til) (?:i|we) wake|(?:till|until|til) (?:(?:i|we) (?:get|wake) up|(?:everyone|everybody) (?:gets|wakes) up)|(?:till|until|til) (?:the )?(?:dawn|sunrise|daybreak|first light|sunup|daylight|break of (?:the )?day|first crack of (?:light|dawn)|day breaks|crack of (?:the )?dawn|sun (?:comes up|rises|is up|comes back up|peeks up))|midnight (?:to|till|until) (?:the )?(?:morning|dawn|sunrise|daybreak)|while (?:[a-z]+ ){0,3}(?:asleep|sleeping|sleeps|sleep)\b|while (?:i|we) (?:sleep|am asleep|am sleeping)|while i'?m (?:sleeping|asleep))/.test(pt)) p.premise="coldovernight";
   /* 2026-11-01 (Addendum 919): the hold read only "been in the fridge
      for N days". It now reads the shapes people actually use ("thawed
      3 days ago", "since Monday", "finished thawing on Wednesday",
@@ -278,7 +278,11 @@ function parseAsk(raw, nowOverride){
        keeps its plan. The emphatic past "did thaw" joins the main
        read (a past statement by shape; "did not thaw" does not
        match it). */
-    ||(/\bfinish\w* thawing\b/.test(t)&&/(yesterday|days? ago|day before yesterday)/.test(t))
+    ||(/(?:\bfinish\w*|\bdone|\bcompleted) thawing\b/.test(t)&&/(yesterday|days? ago|day before yesterday)/.test(t))
+    /* Addendum 956: "done thawing" / "completed thawing" are
+       completion evidence behind the same past-day gate, so a
+       timing question ("how long until it is done thawing")
+       still keeps its plan. */
     ||/\bfinish\w* yesterday\b/.test(t);
   var beenThawedM=t.match(/been thawed for (\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve) days?/);
   var wdNames=["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
@@ -326,6 +330,61 @@ function parseAsk(raw, nowOverride){
       if(agoM&&agoM.index<corrM.index) agoM=reScan(/(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve) days? ago/);
       if(sinceM&&sinceM.index<corrM.index) sinceM=reScan(/\bsince (sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/);
       if(thawOnM&&thawOnM.index<corrM.index) thawOnM=reScan(/(?:finished thawing(?: \w+)?|thawed|defrosted) on (sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/); } }
+  /* Addendum 956: the correction act, structurally. The marker list
+     above only hears corrections spoken with a listed marker; cooks
+     also correct themselves by simply restating ("It thawed five
+     days ago. It thawed yesterday."), with an unlisted interjection
+     ("Oops,", "My bad,", "Hold on,"), or twice in a row. So collect
+     EVERY day-evidence claim about the thaw in text order — the
+     five shaped reads plus a bare yesterday / day before yesterday
+     standing in a thaw clause or standing alone — and when the
+     claims DISAGREE, the LAST one governs: a restatement is how a
+     correction is spoken, with or without a marker. When the claims
+     agree (an elaboration of the same count) nothing moves, and a
+     single claim moves nothing either. Three kinds of claim never
+     compete: one inside a conditional clause ("if it had thawed
+     five days ago") is a hypothesis, not a statement; an "ago"
+     claim in a buy-event clause ("I bought the turkey five days
+     ago") is about a different event; a "since <weekday>" whose
+     clause names no thawing ("in the freezer since Friday") is
+     about storage, not the thaw. The negation guard below still
+     applies to whichever claim governs, so a correction INTO a
+     worse count keeps the worse verdict. */
+  { var claims=[], govLate956=false;
+    var clOf956=function(i){ var s=0,e=t.length,bm,bre=/[.,;:!?()]+|\s+[-\u2013\u2014]\s*|[-\u2013\u2014]\s+|[\u2013\u2014]+/g;
+      while((bm=bre.exec(t))!==null){ if(bm.index+bm[0].length<=i) s=bm.index+bm[0].length; else if(bm.index>=i){ e=bm.index; break; } }
+      return {txt:t.slice(s,e),pre:t.slice(s,i)}; };
+    var addClaim956=function(shape,idx,txt,cap,days){ var cl=clOf956(idx);
+      if(/\b(?:if|suppose|imagine)\b/.test(cl.pre)) return;
+      if((shape==="ago"||shape==="hold"||shape==="been")&&/\b(?:bought|purchased|picked(?: \w+)? up)\b/.test(cl.pre)&&!/thaw|defrost/.test(cl.txt)) return;
+      if(shape==="since"&&!/thaw|defrost/.test(cl.txt)) return;
+      claims.push({shape:shape,index:idx,text:txt,cap:cap,days:days}); };
+    var scanC956=function(re,fn){ re.lastIndex=0; var m; while((m=re.exec(t))!==null) fn(m); };
+    scanC956(new RegExp("(?:fridge|refrigerator) for (\\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve) days?","g"),function(m){ addClaim956("hold",m.index,m[0],m[1],dayNum(m[1])); });
+    scanC956(new RegExp("been thawed for (\\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve) days?","g"),function(m){ addClaim956("been",m.index,m[0],m[1],dayNum(m[1])); });
+    scanC956(new RegExp("(\\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve) days? ago","g"),function(m){ addClaim956("ago",m.index,m[0],m[1],dayNum(m[1])); });
+    scanC956(new RegExp("\\bsince (sunday|monday|tuesday|wednesday|thursday|friday|saturday)\\b","g"),function(m){ addClaim956("since",m.index,m[0],m[1],(today.getDay()-wdNames.indexOf(m[1])+7)%7); });
+    scanC956(new RegExp("(?:finished thawing(?: \\w+)?|thawed|defrosted) on (sunday|monday|tuesday|wednesday|thursday|friday|saturday)\\b","g"),function(m){ addClaim956("on",m.index,m[0],m[1],(today.getDay()-wdNames.indexOf(m[1])+7)%7); });
+    var bareStop956={i:1,me:1,it:1,that:1,the:1,a:1,an:1,is:1,was:1,when:1,meant:1,mean:1,say:1,said:1,correction:1,no:1,wait:1,actually:1,sorry:1,oops:1,my:1,bad:1,hold:1,on:1,hang:1,well:1,oh:1,and:1,but:1,so:1};
+    var addBare956=function(idx,txt,days){ for(var si=0;si<claims.length;si++){ if(idx>=claims[si].index&&idx<claims[si].index+claims[si].text.length) return; }
+      var cl=clOf956(idx);
+      if(/\b(?:if|suppose|imagine)\b/.test(cl.pre)) return;
+      if(/thaw|defrost|out of the freezer/.test(cl.txt)){ claims.push({shape:"bare",index:idx,text:txt,cap:null,days:days}); return; }
+      var rest=cl.txt.replace(/day before yesterday|yesterday/g," ").replace(/[^a-z' ]/g," ").split(/\s+/), ok=true;
+      for(var wi=0;wi<rest.length;wi++){ if(rest[wi]&&!bareStop956[rest[wi].replace(/^'+|'+$/g,"")]){ ok=false; break; } }
+      if(ok) claims.push({shape:"bare",index:idx,text:txt,cap:null,days:days}); };
+    scanC956(/\bday before yesterday\b/g,function(m){ addBare956(m.index,m[0],2); });
+    scanC956(/\byesterday\b/g,function(m){ addBare956(m.index,m[0],1); });
+    claims.sort(function(a,b){ return a.index-b.index; });
+    if(claims.length>=2){ var disagree956=false;
+      for(var di=1;di<claims.length;di++) if(claims[di].days!==claims[0].days) disagree956=true;
+      if(disagree956){ var gov956=claims[claims.length-1];
+        if(gov956.shape==="since"||gov956.shape==="on") govLate956=true;
+        holdM=gov956.shape==="hold"?{0:gov956.text,1:gov956.cap,index:gov956.index}:null;
+        beenThawedM=gov956.shape==="been"?{0:gov956.text,1:gov956.cap,index:gov956.index}:null;
+        agoM=gov956.shape==="ago"?{0:gov956.text,1:gov956.cap,index:gov956.index}:null;
+        sinceM=gov956.shape==="since"?{0:gov956.text,1:gov956.cap,index:gov956.index}:null;
+        thawOnM=gov956.shape==="on"?{0:gov956.text,1:gov956.cap,index:gov956.index}:null; } } }
   if(holdM&&negAt(holdM.index)) holdM=null;
   if(beenThawedM&&negAt(beenThawedM.index)) beenThawedM=null;
   if(agoM&&negAt(agoM.index)) agoM=null;
@@ -338,8 +397,8 @@ function parseAsk(raw, nowOverride){
     if(holdM) elapsed=dayNum(holdM[1]);
     else if(beenThawedM) elapsed=dayNum(beenThawedM[1]);
     else if(agoM) elapsed=dayNum(agoM[1]);
-    else if(/day before yesterday/.test(t)) elapsed=2;
-    else if(/\byesterday\b/.test(t)) elapsed=1;
+    else if(!govLate956&&/day before yesterday/.test(t)) elapsed=2;
+    else if(!govLate956&&/\byesterday\b/.test(t)) elapsed=1;
     else if(sinceM) elapsed=(today.getDay()-wdNames.indexOf(sinceM[1])+7)%7;
     else if(thawOnM) elapsed=(today.getDay()-wdNames.indexOf(thawOnM[1])+7)%7;
     if(elapsed!=null){ var cookOff=0;
