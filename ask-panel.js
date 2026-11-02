@@ -751,7 +751,11 @@ function answerAsk(raw, nowOverride){
 
 ;(function(){
   if (!window.FleetYieldGuard) return;
-  var handle = FleetYieldGuard.init({ pill: '#askp-open', panel: '#askp-panel' });
+  var handle = FleetYieldGuard.init({ pill: '#askp-open', panel: '#askp-panel', gap: 28 });
+  /* gap 28 (not the reference default 20): device emulation renders
+     this pill's resting bottom inset at 24px against the CSS 16px, so
+     a 20px gap left a 4px yielded sliver inside the fold in the
+     adoption probes. 28 clears the fold in both geometries. */
   if (!handle) return;
   /* The resting box is cached at init; if the viewport or the pill's
      own size settles afterwards (browser chrome, font swap), the cached
