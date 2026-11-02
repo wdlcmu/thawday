@@ -129,11 +129,11 @@ function parseAsk(raw, nowOverride){
      No numbers live here: the lead sentences are the pages' own words. */
   /* 2026-11-01 (Addendum 924): one ring wider, same gates, same order.
      Premise patterns hear countertop / warm tap water / all night /
-     lukewarm; hold counts hear spelled numbers one-seven. No published
+     lukewarm; hold counts hear spelled numbers one-twelve. No published
      number lives here; dayNum only reads the visitor's own count. */
-  var numWord={one:1,two:2,three:3,four:4,five:5,six:6,seven:7};
+  var numWord={one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12};
   var dayNum=function(s){ return /^\d+$/.test(s)?parseInt(s,10):numWord[s]; };
-  var holdM=t.match(/(?:fridge|refrigerator) for (\d+|one|two|three|four|five|six|seven) days?/);
+  var holdM=t.match(/(?:fridge|refrigerator) for (\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve) days?/);
   /* 2026-11-01 (Addendum 930): one ring wider again, same gates, same
      order, plus SPEC-3's narrow negation guard. SPEC-1: daybreak words
      (dawn / sunrise), waking words (get up), sleeper forms beyond first
@@ -142,26 +142,31 @@ function parseAsk(raw, nowOverride){
      fires across a small noun window (warm sink full of water, warm
      soaking bath); heated, hyphenated warm-ish, and "feels warm" join
      the warm family. SPEC-3: the premise gates read pt, not t: a clause
-     whose premise word sits in a short negated span (not / never / no
-     / n't, method word within 6 tokens) is dropped, but only when a
-     safe method (cold water, fridge) is still named in what remains;
-     an unsafe alternative offered in its own clause keeps firing.
+     whose premise word sits inside a negation's scope (not / never /
+     no / n't / refuse; Addendum 950: scope runs to the end of its own
+     clause-part, not a 6-token ruler, and a fresh clause opened by
+     and/but ends it) is dropped, but only when a method (safe or
+     offered) is still named in what remains; an unsafe alternative
+     offered in its own clause keeps firing.
      Every other read still uses t; the hold read drops its own
      duration claims when they sit inside the same kind of negated
      span (Addendum 932), and the clause split now hears dashes. */
   var pt=t;
-  { var clauses=t.split(/[.,;:!?]+|\s+[-\u2013\u2014]\s*|[\u2013\u2014]+/), kept=[], dropped=false;
-    var negRe=/\b(?:not|never|no)\b|\b\w+n't\b/;
+  { var clauses=t.split(/[.,;:!?()]+|\s+[-\u2013\u2014]\s*|[-\u2013\u2014]\s+|[\u2013\u2014]+/), kept=[], dropped=false;
+    var negRe=/\b(?:not|never|no)\b|\b\w+n't\b|\brefus\w*\b/;
     var methRe=/^(?:warm|hot|tepid|lukewarm|heated|cold|counter\w*|fridge|refrigerator|water|bath|soak|tub|overnight)$/;
+    var scopeRe=/\s+(?:and|but)\s+(?=(?:i|it|the|my|we|they|this|that)\b|(?:thawed|defrosted|sat|stayed|left|kept|been|was|were|has|have|had|is|are|finished|spent|want|wants)\b)|\s+so\s+(?=(?:i|it|the|my|we|they)\b)/;
     for(var ci=0;ci<clauses.length;ci++){ var cl=clauses[ci], nm=cl.match(negRe), isNeg=false;
-      if(nm){ var after=cl.slice(nm.index+nm[0].length).trim().split(/\s+/).slice(0,6);
-        for(var ai=0;ai<after.length;ai++){ if(methRe.test(after[ai])){ isNeg=true; break; } } }
+      if(nm){ var scope=cl.slice(nm.index+nm[0].length), scp=scope.search(scopeRe); if(scp>=0) scope=scope.slice(0,scp);
+        var after=scope.trim().split(/\s+/);
+        for(var ai=0;ai<after.length&&!isNeg;ai++){ var parts=after[ai].split("-");
+          for(var pi=0;pi<parts.length;pi++){ if(methRe.test(parts[pi].replace(/^[^a-z]+|[^a-z]+$/g,""))){ isNeg=true; break; } } } }
       if(isNeg) dropped=true; else kept.push(cl); }
-    if(dropped){ var cand=kept.join(" "); if(/cold water|fridge|refrigerator/.test(cand)||(/water/.test(cand)&&/every 30 minutes/.test(cand))) pt=cand; }
+    if(dropped){ var cand=kept.join(" "); if(/cold water|fridge|refrigerator|counter\w*|room temperature|lukewarm|tepid|warm|hot/.test(cand)||(/water/.test(cand)&&/every 30 minutes/.test(cand))) pt=cand; }
   }
   if(/\bcounter\w*|room temperature/.test(pt)) p.premise="counter";
   else if(/lukewarm\b|tepid\b|warm-?ish\b|\bheated\b|(?:feels?|felt) (?:warm|hot)\b|\b(?:warm|hot)(?: \w+){0,3}? (?:water|sink|basin|bath|soak|tub)\b/.test(pt)) p.premise="warmwater";
-  else if(/cold water/.test(pt)&&/(overnight|all night|(?:through|for|over) the (?:whole )?night|through tonight|(?:till|until|til) (?:the |tomorrow )?morning|(?:till|until|til) (?:i|we) wake|(?:till|until|til) (?:(?:i|we) (?:get|wake) up|(?:everyone|everybody) (?:gets|wakes) up)|(?:till|until|til) (?:the )?(?:dawn|sunrise|daybreak|first light|sun (?:comes up|rises))|midnight (?:to|till|until) (?:the )?(?:morning|dawn|sunrise|daybreak)|while (?:[a-z]+ ){0,3}(?:asleep|sleeping|sleeps|sleep)\b|while (?:i|we) (?:sleep|am asleep|am sleeping)|while i'?m (?:sleeping|asleep))/.test(pt)) p.premise="coldovernight";
+  else if(/cold water/.test(pt)&&/(overnight|all night|(?:through|for|over) the (?:whole )?night|through tonight|through (?:the )?(?:dawn|sunrise|daybreak)|(?:till|until|til) (?:the |tomorrow )?morning|(?:till|until|til) (?:i|we) wake|(?:till|until|til) (?:(?:i|we) (?:get|wake) up|(?:everyone|everybody) (?:gets|wakes) up)|(?:till|until|til) (?:the )?(?:dawn|sunrise|daybreak|first light|sunup|sun (?:comes up|rises|is up|comes back up))|midnight (?:to|till|until) (?:the )?(?:morning|dawn|sunrise|daybreak)|while (?:[a-z]+ ){0,3}(?:asleep|sleeping|sleeps|sleep)\b|while (?:i|we) (?:sleep|am asleep|am sleeping)|while i'?m (?:sleeping|asleep))/.test(pt)) p.premise="coldovernight";
   /* 2026-11-01 (Addendum 919): the hold read only "been in the fridge
      for N days". It now reads the shapes people actually use ("thawed
      3 days ago", "since Monday", "finished thawing on Wednesday",
@@ -171,26 +176,39 @@ function parseAsk(raw, nowOverride){
      calendar arithmetic lives here; the food-safety number is still
      the published 1-to-2-day rule in answerAsk. */
   var thawedWord=/\bthawed\b|\bdefrosted\b|finished thawing/.test(t)||/out of the freezer/.test(t);
-  var beenThawedM=t.match(/been thawed for (\d+|one|two|three|four|five|six|seven) days?/);
+  var beenThawedM=t.match(/been thawed for (\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve) days?/);
   var wdNames=["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
   var sinceM=t.match(/\bsince (sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/);
   var thawOnM=t.match(/(?:finished thawing(?: \w+)?|thawed|defrosted) on (sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/);
-  var agoM=t.match(/(\d+|one|two|three|four|five|six|seven) days? ago/);
+  var agoM=t.match(/(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve) days? ago/);
   /* 2026-11-01 (Addendum 932): the SPEC-3 negation span now reaches
      the hold read's own duration claims. A "fridge for N days",
      "been thawed for N days", or "N days ago" match that sits
-     inside a short negated span in its own clause ("did not sit in
+     inside a negation's scope in its own clause ("did not sit in
      the fridge for 3 days", "hasn't been in the fridge for three
      days") is dropped, so the true thawed-when evidence ("thawed
      yesterday") decides instead. A negation elsewhere in the
      sentence ("thawed three days ago and I did not get to cook
-     it") leaves the claim standing - the warning is kept. */
-  var negAt=function(i){ var s=0,bm,bre=/[.,;:!?]+|\s+[-\u2013\u2014]\s*|[\u2013\u2014]+/g;
+     it") leaves the claim standing - the warning is kept.
+     Addendum 950: both reads now use scope, not the 6-token ruler -
+     a fresh clause opened by and/but ends a negation's reach, and
+     with no fresh clause between, the negation governs however
+     many words sit between. Spelled counts run one-twelve, and a
+     self-correction ("No wait, ...") withdraws earlier claims. */
+  var negAt=function(i){ var s=0,bm,bre=/[.,;:!?()]+|\s+[-\u2013\u2014]\s*|[-\u2013\u2014]\s+|[\u2013\u2014]+/g;
     while((bm=bre.exec(t))!==null){ if(bm.index>=i) break; s=bm.index+bm[0].length; }
     var seg=t.slice(s,i), nm=null, nx, nre=/\b(?:not|never|no)\b|\b\w+n't\b/g;
     while((nx=nre.exec(seg))!==null) nm=nx; if(!nm) return false;
-    var mid=seg.slice(nm.index+nm[0].length).trim();
-    return mid===""||mid.split(/\s+/).length<=6; };
+    var mid=seg.slice(nm.index+nm[0].length);
+    return !/\s+(?:and|but)\s+(?=(?:i|it|the|my|we|they|this|that)\b|(?:thawed|defrosted|sat|stayed|left|kept|been|was|were|has|have|had|is|are|finished|spent|want|wants)\b)|\s+so\s+(?=(?:i|it|the|my|we|they)\b)/.test(mid); };
+  /* Addendum 950: a self-correction withdraws the claims made before
+     it ("It sat in the fridge for 3 days. No wait, it thawed
+     yesterday..."); the corrected evidence after the marker decides. */
+  var corrM=t.match(/\b(?:no wait|wait,? no|i mean)\b/);
+  if(corrM&&/(?:thawed|defrosted|finished thawing)/.test(t.slice(corrM.index))){
+    if(holdM&&holdM.index<corrM.index) holdM=null;
+    if(beenThawedM&&beenThawedM.index<corrM.index) beenThawedM=null;
+    if(agoM&&agoM.index<corrM.index) agoM=null; }
   if(holdM&&negAt(holdM.index)) holdM=null;
   if(beenThawedM&&negAt(beenThawedM.index)) beenThawedM=null;
   if(agoM&&negAt(agoM.index)) agoM=null;
