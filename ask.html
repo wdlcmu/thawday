@@ -211,8 +211,8 @@ function parseAsk(raw, nowOverride){
   var dayNum=function(s){ return /^\d+$/.test(s)?parseInt(s,10):numWord[s]; };
   var holdM=t.match(/(?:fridge|refrigerator) for (\d+|one|two|three|four|five|six|seven) days?/);
   if(/\bcounter\w*|room temperature/.test(t)) p.premise="counter";
-  else if(/lukewarm\b|\b(?:warm|hot)(?: \w+)? water\b/.test(t)) p.premise="warmwater";
-  else if(/cold water/.test(t)&&/(overnight|all night)/.test(t)) p.premise="coldovernight";
+  else if(/lukewarm\b|tepid\b|warmish\b|\b(?:warm|hot)(?: \w+)? water\b|\b(?:warm|hot) (?:bath|soak|tub)\b/.test(t)) p.premise="warmwater";
+  else if(/cold water/.test(t)&&/(overnight|all night|(?:through|for|over) the (?:whole )?night|through tonight|(?:till|until|til) (?:the |tomorrow )?morning|(?:till|until|til) (?:i|we) wake|while (?:i|we) (?:sleep|am asleep|am sleeping)|while i'?m (?:sleeping|asleep))/.test(t)) p.premise="coldovernight";
   /* 2026-11-01 (Addendum 919): the hold read only "been in the fridge
      for N days". It now reads the shapes people actually use ("thawed
      3 days ago", "since Monday", "finished thawing on Wednesday",
