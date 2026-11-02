@@ -293,7 +293,15 @@ function parseAsk(raw, nowOverride){
     var seg=t.slice(s,i), nm=null, nx, nre=/\b(?:not|never|no)\b|\b\w+n't\b/g;
     while((nx=nre.exec(seg))!==null) nm=nx; if(!nm) return false;
     var mid=seg.slice(nm.index+nm[0].length);
-    return !(/\s+(?:and|but)\s+(?=(?:i|it|the|my|we|they|this|that)\b|(?:thawed|defrosted|sat|stayed|left|kept|been|was|were|has|have|had|is|are|finished|spent|want|wants)\b)|\s+so\s+(?=(?:i|it|the|my|we|they)\b)/.test(mid)||/\s+(?:and|but)\s+$/.test(mid)); };
+    /* Addendum 1039 SPEC-3: a correction that has COMPLETED before
+       the match — "not yesterday but three days ago that it
+       finished thawing" — spends the negation's scope: the "but
+       <day claim>" inside mid asserted the true day, and the
+       finish verb in the trailing clause is asserted, not negated.
+       The negation read here is the LAST one before the match, so
+       a finish verb under its own later "not" never sees an
+       earlier correction in its mid. */
+    return !(/\s+(?:and|but)\s+(?=(?:i|it|the|my|we|they|this|that)\b|(?:thawed|defrosted|sat|stayed|left|kept|been|was|were|has|have|had|is|are|finished|spent|want|wants)\b)|\s+so\s+(?=(?:i|it|the|my|we|they)\b)/.test(mid)||/\s+(?:and|but)\s+$/.test(mid)||/\s+but\s+(?:the\s+)?(?:day before yesterday\b|yesterday\b|(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+days?\s+ago\b)/.test(mid)); };
   var finishHit=function(re){ re.lastIndex=0; var m; while((m=re.exec(t))!==null){ if(!negFinAt(m.index)) return true;
       /* "not ... until <past day>" is the idiom for completion AT
          that day ("It did not finish thawing until yesterday" =
@@ -350,6 +358,16 @@ function parseAsk(raw, nowOverride){
        until defrosting is complete?", which uses "is", not "was")
        keeps its plan. */
     ||(finishHit(/(?:\bthawing|\bdefrosting|\bdefrost) was (?:complete|completed|done|finished)\b/g)&&/(yesterday|days? ago|day before yesterday)/.test(t))
+    /* Addendum 1039 SPEC-2: the gerund-subject ACTIVE finish joins
+       behind the same past-day gate ("Thawing finished three days
+       ago", "Defrosting finished the day before yesterday",
+       "Thawing completed three days ago", "The thawing finished
+       three days ago") — the finish verb follows the gerund subject
+       directly, with no "was", so neither the active forms above
+       (verb before "thawing") nor the 1027 passive (verb after
+       "was") ever heard it, and only the bare "finished yesterday"
+       shape landed. finishHit's negation scope still applies. */
+    ||(finishHit(/(?:\bthawing|\bdefrosting) (?:finish\w*|done|complete|completed)\b/g)&&/(yesterday|days? ago|day before yesterday)/.test(t))
     /* Addendum 1035 SPEC-3: the passive "not ... until" idiom joins
        behind untilHit1035's own tail test ("Thawing was not
        finished until yesterday", "Defrosting was not complete
@@ -459,6 +477,22 @@ function parseAsk(raw, nowOverride){
     if(claims.length>=2){ var disagree956=false;
       for(var di=1;di<claims.length;di++) if(claims[di].days!==claims[0].days) disagree956=true;
       if(disagree956){ var gov956=claims[claims.length-1];
+        /* Addendum 1039 SPEC-1: the governing claim may be the
+           NEGATED side of a bare afterthought correction with no
+           separator ("finished thawing three days ago not
+           yesterday") — the comma / dash forms split the negated
+           day into its own clause part, where the bare-claim scan
+           rejects it, but the bare form's clause carries the thaw
+           word, so the negated day is collected and, as the last
+           claim, governs. A day claim (ago / bare) inside a
+           negation's scope in its own clause (negAt; the until
+           idiom's ago claim exempt, as in the 1035 SPEC-2 fix)
+           cannot govern: walk back to the last day claim that is
+           not negated. If none exists, governance is unchanged. */
+        var negDay1039=function(c){ if(c.shape!=="ago"&&c.shape!=="bare") return false;
+          if(c.shape==="ago"&&/(?:until|till|til)\s+(?:the\s+)?$/.test(clOf956(c.index).pre)) return false;
+          return negAt(c.index); };
+        if(negDay1039(gov956)){ for(var gi1039=claims.length-2;gi1039>=0;gi1039--){ if(!negDay1039(claims[gi1039])){ gov956=claims[gi1039]; break; } } }
         if(gov956.shape==="since"||gov956.shape==="on") govLate956=true;
         if(gov956.shape==="bare") govBare1035=gov956.days;
         holdM=gov956.shape==="hold"?{0:gov956.text,1:gov956.cap,index:gov956.index}:null;
