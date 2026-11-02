@@ -288,17 +288,18 @@ window.FLEET_CFG = {
         });
       });
       (CFG.completes || []).forEach(function(cp){
-        var el = document.querySelector(cp.sel);
-        if (!el) return;
         var done = false;
         function check(){
           if (done) return;
-          if (vis(el) && txt(el).length >= (cp.minText || 1)) {
+          var el = document.querySelector(cp.sel);
+          if (el && vis(el) && txt(el).length >= (cp.minText || 1)) {
             done = true;
             track("tool_complete", {surface: cp.surface || "tool"});
           }
         }
-        new MutationObserver(check).observe(el, {childList: true, subtree: true, characterData: true, attributes: true});
+        /* Observe the body and re-resolve the selector on every batch:
+           some tools replace the result node instead of filling it. */
+        new MutationObserver(check).observe(document.body, {childList: true, subtree: true, characterData: true, attributes: true});
         check();
       });
       if (CFG.ask) {
@@ -309,7 +310,9 @@ window.FLEET_CFG = {
         if (ans) {
           var lastText = "", completed = false;
           var checkA = function(){
-            var t = txt(ans);
+            var el = document.querySelector(A.answerSel);
+            if (!el) return;
+            var t = txt(el);
             if (!t || t === lastText) return;
             lastText = t;
             var fb = null;
@@ -321,7 +324,7 @@ window.FLEET_CFG = {
             track("ask_answered", props);
             if (A.completeOnAnswer && !completed) { completed = true; track("tool_complete", {surface: "ask"}); }
           };
-          new MutationObserver(checkA).observe(ans, {childList: true, subtree: true, characterData: true});
+          new MutationObserver(checkA).observe(document.body, {childList: true, subtree: true, characterData: true});
         }
       }
       (CFG.specials || []).forEach(function(sp){
@@ -331,14 +334,13 @@ window.FLEET_CFG = {
               el.addEventListener("click", function(){ track(sp.name, sp.props || {}); });
             });
           } else if (sp.on === "appear") {
-            var el = document.querySelector(sp.sel);
-            if (!el) return;
             var fired = false;
             var chk = function(){
               if (fired) return;
-              if (vis(el) && txt(el).length) { fired = true; track(sp.name, sp.props || {}); }
+              var el = document.querySelector(sp.sel);
+              if (el && vis(el) && txt(el).length) { fired = true; track(sp.name, sp.props || {}); }
             };
-            new MutationObserver(chk).observe(el, {childList: true, subtree: true, characterData: true, attributes: true});
+            new MutationObserver(chk).observe(document.body, {childList: true, subtree: true, characterData: true, attributes: true});
             chk();
           } else if (sp.on === "loadmatch") {
             if (sp.re.test(location.href)) track(sp.name, sp.props || {});
