@@ -228,7 +228,23 @@ function parseAsk(raw, nowOverride){
      carries both paths, exactly as before. A negated still-frozen
      ("not still frozen") never sets it. No number lives here: the
      lead sentences in answerAsk are the site's own published words. */
-  if(!p.premise && !p.lb && /still (?:partly |half )?frozen/.test(t) && !/(?:\bnot\b|\bnever\b|n't)\s+(?:\w+\s+){0,3}still (?:partly |half )?frozen/.test(t)) p.premise="stillfrozen";
+  /* SPEC-COLDQA1103-3B (2026-11-03): one ring wider, same guards. The
+     panic statement wears plainer words than "still": frozen solid,
+     completely / totally / entirely / fully frozen, partly / half
+     frozen on its own, and frozen this (or on Thanksgiving) morning
+     are the same no-weight statement, so they take the same premise
+     and the same verbatim lead above. The pattern still names a
+     frozen STATE, never a bare frozen bird: "how long to thaw a
+     frozen turkey" and "my turkey is frozen" stay exactly as before,
+     and with a weight the premise never sets. The negation guard is
+     the shipped one widened to the new shapes: a state phrase counts
+     only when no not / never / n't / no longer / no more sits within
+     the three words before it, so a purely negated mention never
+     fires, and the hold read below still wins for a bird that
+     thawed yesterday. */
+  var fsRe3B=/\b(?:still (?:(?:partly|half)[ -])?frozen|frozen[ -]solid|solid frozen|(?:completely|totally|entirely|fully|partly|partially|half)[ -]frozen|frozen (?:this morning|(?:on |this )?thanksgiving(?: morning)?))/g, fsM3B=null, fsHit3B;
+  while((fsHit3B=fsRe3B.exec(t))!==null){ if(!/(?:\bnot\b|\bnever\b|n't|\bno longer\b|\bno more\b)(?:\s+\w+){0,3}\s*$/.test(t.slice(0,fsHit3B.index))){ fsM3B=fsHit3B; break; } }
+  if(!p.premise && !p.lb && fsM3B) p.premise="stillfrozen";
   /* 2026-11-01 (Addendum 919): the hold read only "been in the fridge
      for N days". It now reads the shapes people actually use ("thawed
      3 days ago", "since Monday", "finished thawing on Wednesday",
