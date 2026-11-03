@@ -267,6 +267,19 @@
   #quiz label{margin-top:6px}
   body>p{margin-top:8px;margin-bottom:8px}
  }
+ /* 2026-11-02 calc first-screen fix (SPEC-calc-firstscreen-pill-and-askhere,
+    spacing/geometry only — no copy, no plan content, no USDA numbers):
+    (B) the "Ask here" inline link gets a 44px-tall hit area, the homepage
+    askdoor pattern (inline-block + padding + min-height) so the line grows
+    in flow instead of overlapping its neighbours;
+    (A) at phone widths the "Your timeline" heading (#qsummary + h2) gets
+    92px of top margin (28px base + 64px), the homepage 1118 pattern, so at
+    scroll 0 it starts fully below the fixed ask pill's band and below the
+    fold instead of peeking in under the pill. Desktop is untouched. */
+ .askhere{display:inline-block;padding:10px 3px;min-height:44px}
+ @media (max-width:640px){
+  #qsummary+h2{margin-top:92px}
+ }
 </style>
 <script>
 window.FLEET_CFG = {
@@ -537,7 +550,7 @@ window.FLEET_CFG = {
 
 <p id="hint" role="alert"></p>
 </section>
-<p>Rather say it in your own words? <a href="/ask">Ask here</a> instead. One line, same math.</p>
+<p>Rather say it in your own words? <a class="askhere" href="/ask">Ask here</a> instead. One line, same math.</p>
 
 <div id="qsummary" hidden>
 <p class="qsumline"><strong>Your plan:</strong> <span id="qsummaryText"></span></p>
