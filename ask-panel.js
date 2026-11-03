@@ -219,6 +219,16 @@ function parseAsk(raw, nowOverride){
   if(/\bcounter\w*|room temperature/.test(pt)) p.premise="counter";
   else if(/lukewarm\b|tepid\b|warm-?ish\b|\bheated\b|(?:feels?|felt) (?:warm|hot)\b|\b(?:warm|hot)(?: \w+){0,3}? (?:water|sink|basin|bath|soak|tub)\b/.test(pt)) p.premise="warmwater";
   else if(/cold water/.test(pt)&&/(overnight|all night|(?:through|for|over) the (?:whole )?night|through tonight|through (?:the )?(?:dawn|sunrise|daybreak)|(?:till|until|til) (?:the |tomorrow )?morning|(?:till|until|til) (?:i|we) wake|(?:till|until|til) (?:(?:i|we) (?:get|wake) up|(?:everyone|everybody) (?:gets|wakes) up)|(?:till|until|til) (?:the )?(?:dawn|sunrise|daybreak|first light|sunup|daylight|break of (?:the )?day|first crack of (?:light|dawn)|day breaks|crack of (?:the )?dawn|sun (?:comes up|rises|is up|comes back up|peeks up))|midnight (?:to|till|until) (?:the )?(?:morning|dawn|sunrise|daybreak)|while (?:[a-z]+ ){0,3}(?:asleep|sleeping|sleeps|sleep)\b|while (?:i|we) (?:sleep|am asleep|am sleeping)|while i'?m (?:sleeping|asleep))/.test(pt)) p.premise="coldovernight";
+  /* SPEC-COLDQA1103-3 (2026-11-03): the still-frozen scenario. The two
+     rescue paths are weight-free facts the site already publishes (the
+     still-frozen page leads with them), so a bird named still frozen
+     with no weight yet gets them first, as a premise, and the weight
+     ask follows — the same verdict-first shape as the safety premises
+     above. With a weight the premise never sets: the plan already
+     carries both paths, exactly as before. A negated still-frozen
+     ("not still frozen") never sets it. No number lives here: the
+     lead sentences in answerAsk are the site's own published words. */
+  if(!p.premise && !p.lb && /still (?:partly |half )?frozen/.test(t) && !/(?:\bnot\b|\bnever\b|n't)\s+(?:\w+\s+){0,3}still (?:partly |half )?frozen/.test(t)) p.premise="stillfrozen";
   /* 2026-11-01 (Addendum 919): the hold read only "been in the fridge
      for N days". It now reads the shapes people actually use ("thawed
      3 days ago", "since Monday", "finished thawing on Wednesday",
@@ -695,6 +705,7 @@ function answerAsk(raw, nowOverride){
   if(p.premise==="counter") premiseHtml=`<div class="row"><strong>No. Never thaw a turkey on the counter.</strong><br>The outside warms up hours before the inside thaws. Bacteria grow in that warm layer. Use the fridge, at 40 F or below, or cold water. The safe plan is below.</div>`;
   else if(p.premise==="warmwater") premiseHtml=`<div class="row"><strong>No. Warm water speeds up the wrong thing.</strong><br>The surface of the bird warms into the danger zone long before the center thaws. Cold water, changed every 30 minutes, is the fast safe method. The safe plan is below.</div>`;
   else if(p.premise==="coldovernight") premiseHtml=`<div class="row"><strong>No. Cold water only works while you are awake to change it.</strong><br>Change the water every 30 minutes. Cook it right after it thaws. An overnight soak breaks both rules at once. The safe plan is below.</div>`;
+  else if(p.premise==="stillfrozen") premiseHtml=`<div class="row"><strong>Dinner can still happen.</strong><br>Two safe paths. Cold water: seal the bird in a leak-proof plastic bag and submerge it in cold tap water, at 30 minutes per pound. Change the water every 30 minutes, and cook it right after it thaws. Or cook it from frozen: USDA says cooking a turkey from frozen is safe, and it takes at least 50 percent longer than a thawed bird. Never thaw on the counter. The safe plan is below.</div>`;
   if(p.premise==="hold"){
     hint.textContent="";
     var holdVerdict = p.holdDays==null ? "" : (p.holdDays>2 ? (p.holdFuture ? ` By the day you cook it, yours will have been thawed for ${p.holdDays} days. That is past the window. Do not cook it.` : ` Yours has been in the fridge for ${p.holdDays} days. That is past the window. Do not cook it.`) : (p.holdFuture ? ` By the day you cook it, yours will have been thawed for ${p.holdDays} day${p.holdDays===1?"":"s"}. That is still inside the window.` : ` At ${p.holdDays} day${p.holdDays===1?"":"s"}, it is still inside that window. Cook it today.`));
