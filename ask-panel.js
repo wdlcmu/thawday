@@ -785,10 +785,71 @@ function answerAsk(raw, nowOverride){
       goBtn=document.getElementById("askp-go"), lastFocus=null, inited=false;
   if(!openBtn||!panel) return;
   function lock(on){ document.documentElement.style.overflow=on?"hidden":""; document.body.style.overflow=on?"hidden":""; }
+  /* Ask rebuild, homepage door (2026-11-03): the panel now talks to
+     the same thawday-chat worker as the /ask page (POST /api/chat),
+     so a conversation here carries the same session memory (the bird,
+     the dinner, the brine) and the same non-plan answers. The panel
+     holds the worker's session facts in memory only, exactly like
+     the /ask page: nothing is stored, and closing the page ends the
+     session. Plan and safety text is the worker's deterministic
+     engine output, served verbatim below as text — this panel never
+     composes numbers or safety wording of its own. If the worker is
+     unreachable, the in-page engine above (answerAsk) answers as the
+     grounded fallback, the same degrade the /ask page aims for: a
+     grounded reply, never a dead end. */
+  var panelFacts=null, panelBusy=false;
+  function renderWorkerReply(reply){
+    var out=document.getElementById("askp-answer");
+    out.innerHTML="";
+    var row=document.createElement("div"); row.className="row";
+    String(reply||"").split(/\n+/).forEach(function(seg,i){
+      if(i>0) row.appendChild(document.createElement("br"));
+      row.appendChild(document.createTextNode(seg));
+    });
+    out.appendChild(row);
+  }
+  function panelCalcLink(facts){
+    if(!facts||!facts.lb||!facts.dinnerParts) return;
+    var dp=facts.dinnerParts;
+    var dstr=dp.y+"-"+String(dp.mo+1).padStart(2,"0")+"-"+String(dp.d).padStart(2,"0");
+    var tstr=String(dp.h).padStart(2,"0")+":"+String(dp.mi).padStart(2,"0");
+    document.getElementById("askp-calclink").innerHTML="Want the picture card, print view, or calendar file? <a href=\"/calculator?via=share&w="+facts.lb+"&s="+(facts.state||"frozen")+"&b="+(facts.brine||"no")+"&d="+dstr+"&t="+tstr+"\">Open this plan in the calculator</a>. It builds those from this same plan.";
+  }
   function runAsk(){
-    answerAsk(q.value);
+    if(panelBusy) return;
+    var msg=(q.value||"").trim();
+    if(!msg) return;
     var hint=document.getElementById("askp-hint");
-    if(hint && hint.scrollIntoView){ try{ hint.scrollIntoView({block:"start"}); }catch(e){} }
+    panelBusy=true; goBtn.disabled=true;
+    if(hint) hint.textContent="ThawDay is thinking\u2026";
+    function done(){
+      panelBusy=false; goBtn.disabled=false;
+      if(hint){ hint.textContent=""; if(hint.scrollIntoView){ try{ hint.scrollIntoView({block:"start"}); }catch(e){} } }
+    }
+    function fallback(){
+      try{ fleetTrack("ask_fallback",{tool:"turkey-timeline-ask",surface:"panel",route:"transport-fallback"}); }catch(e){}
+      answerAsk(msg);
+      done();
+    }
+    var payload={message:msg}; if(panelFacts) payload.facts=panelFacts;
+    /* One silent retry before the fallback, the /ask page's own
+       pattern: a transport blip degrades to a grounded reply, not
+       a wrong one. */
+    function attempt(triesLeft){
+      fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)})
+        .then(function(r){ if(!r.ok) throw new Error("chat http "+r.status); return r.json(); })
+        .then(function(j){
+          if(!j||typeof j.reply!=="string"||!j.reply) throw new Error("chat bad reply");
+          if(j.facts) panelFacts=j.facts;
+          renderWorkerReply(j.reply);
+          var route=(j.meta&&j.meta.route)||"unknown";
+          if(route==="plan") panelCalcLink(panelFacts);
+          try{ fleetTrack("ask_answered",{tool:"turkey-timeline-ask",surface:"panel",route:route}); }catch(e){}
+          done();
+        })
+        .catch(function(){ if(triesLeft>0) attempt(triesLeft-1); else fallback(); });
+    }
+    attempt(1);
   }
   function init(){
     if(inited) return; inited=true;
