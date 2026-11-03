@@ -1065,7 +1065,12 @@ document.getElementById("weight").addEventListener("input",()=>{
     guestSetLb=null;
   }
 });
-document.getElementById("go").addEventListener("click",()=>{render(); document.getElementById("out").scrollIntoView();});
+/* 2026-11-02 (calc25 fix): a failed render (weight out of range, bad date)
+   leaves #out empty and puts the reason in #hint, up in the quiz. Scrolling
+   to the empty #out anyway jumped the user past that message to a blank
+   timeline. Scroll to the plan only when one rendered; otherwise bring the
+   hint itself into view so the reason is what the user lands on. */
+document.getElementById("go").addEventListener("click",()=>{render(); const o=document.getElementById("out"); if(o.innerHTML){ o.scrollIntoView(); } else { const h=document.getElementById("hint"); if(h&&h.textContent){ h.scrollIntoView({block:"center"}); } }});
 document.getElementById("share").addEventListener("click",async()=>{ const t=render(); try{ await navigator.clipboard.writeText(t); document.getElementById("sharetext").textContent=t+" (copied)"; }catch(e){ /* long-press fallback: text stays visible */ } });
 document.getElementById("printplan").addEventListener("click",()=>{ window.print(); });
 /* 2026-10-30 (Dim 12 Spec A): a shared link's plan parameters set the
