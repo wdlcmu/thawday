@@ -150,7 +150,7 @@ function buildTimeline(dinner, lb, state, brine, now){
      brine/thaw verdict, whose only suggestion is skipping. */
   const thawRowNow=rows.find(r=>r.id==="thaw");
   if(brine==="yes" && !cookFromFrozen && thawRowNow && thawRowNow.late){ thawRowNow.brineDropped=true; }
-  else if(brine==="yes" && !cookFromFrozen) rows.push({id:"brine", label:"Start brining", when:brineStart, detail: state==="frozen" ? "Brine in the fridge the whole time, never longer than two days, discard the brine after. Start once the bird is thawed." : "Brine in the fridge the whole time, never longer than two days, discard the brine after."});
+  else if(brine==="yes" && !cookFromFrozen) rows.push({id:"brine", label:"Start brining", when:brineStart, detail: state==="frozen" ? "Brine in the fridge the whole time, never longer than two days, discard the brine after. The bird finishes thawing by this time on this plan." : "Brine in the fridge the whole time, never longer than two days, discard the brine after."});
   rows.push({id:"oven", label:"Turkey goes in the oven", when:effOvenIn, detail:"325 F. The chart aims, the thermometer decides: 165 F."});
   rows.push({id:"sides", label:"Start the sides", when:new Date(dinner.getTime()-CONSTANTS.sidesBeforeMinutes.value*MIN), detail:"Ninety minutes out."});
   rows.push({id:"rest", label:"Rest and carve", when:new Date(dinner.getTime()-CONSTANTS.restMinutes.value*MIN), detail:"Rest before carving. Done at 165 F in the thickest part."});
