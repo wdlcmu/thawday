@@ -455,8 +455,11 @@ window.FLEET_CFG = {
         <li>17 to 20 lb: <strong>Saturday, November 21</strong></li>
         <li>21 to 24 lb: <strong>Friday, November 20</strong></li>
       </ul>
-      <p class="brine-note">Brining? Move it about a day earlier.</p>
+      <!-- 2026-11-03 SPEC-COLDQA1103-2: the example box is the no-brine
+           date, so it completes the list above; the brine note is the
+           card's last line and can no longer read as its caption. -->
       <p><span class="ln ex">A 14 lb bird moves <strong>Sunday, November 22</strong>.</span><span class="ln note">Your dinner hour does not change this date.</span></p>
+      <p class="brine-note">Brining? Move it about a day earlier.</p>
     </div>
     <div class="tl"><div class="tl-node"><span class="tl-k">Move &middot; 14 lb</span><strong>Sun, Nov 22</strong></div><div class="tl-track"><span class="tl-dots"><i></i><i></i><i></i><i></i></span><span class="tl-cap">4 days</span></div><div class="tl-node tl-end"><span class="tl-k">Dinner</span><strong>Thu, Nov 26</strong></div></div>
   </section>
@@ -535,7 +538,10 @@ window.FLEET_CFG = {
   var el = document.getElementById("countdown");
   if (!el) return;
   /* 2026-11-01 countdown fleet pass: live clock to Thanksgiving dinner,
-     5:00 PM Pacific (the site's own dinner hour). Ticks every second
+     5:00 PM in the visitor's own timezone (2026-11-03 SPEC-COLDQA1103-1
+     fix: the target is built from the visitor's local calendar, the
+     fleet standard; it was one fixed Pacific instant for everyone).
+     Ticks every second
      (days, hours, minutes, seconds). At dinner time the line says
      Thanksgiving is today; the next few days point at next year, then
      the count resumes. Reduced motion: the original static day count. */
@@ -573,19 +579,16 @@ window.FLEET_CFG = {
   }
   var RM = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   /* Reduced motion is handled by the render tail below (one render a minute). */
-  var PT = "America/Los_Angeles";
-  function ptParts(ms) {
-    var parts = new Intl.DateTimeFormat("en-US", { timeZone: PT, year: "numeric", month: "numeric", day: "numeric" }).formatToParts(new Date(ms));
-    var o = {};
-    for (var i = 0; i < parts.length; i++) o[parts[i].type] = Number(parts[i].value);
-    return o;
-  }
   function tgDom(year) { return thanksgiving(year).getDate(); }
-  function dinnerMs(year) { return Date.UTC(year, 10, tgDom(year), 25, 0, 0); }
-  function dayEndMs(year) { return Date.UTC(year, 10, tgDom(year) + 1, 8, 0, 0); }
-  function dec1Ms(year) { return Date.UTC(year, 11, 1, 8, 0, 0); }
-  function ptDateText(year) {
-    return new Date(dinnerMs(year)).toLocaleDateString("en-US", { timeZone: PT, weekday: "long", month: "long", day: "numeric", year: "numeric" });
+  /* Visitor-local targets (fleet standard): 5:00 PM on Thanksgiving Day
+     in the visitor's own timezone, the local midnight ending that day,
+     and local midnight on Dec 1 — the same local-calendar construction
+     the sibling fleet countdowns use. */
+  function dinnerMs(year) { return new Date(year, 10, tgDom(year), 17, 0, 0).getTime(); }
+  function dayEndMs(year) { return new Date(year, 10, tgDom(year) + 1, 0, 0, 0).getTime(); }
+  function dec1Ms(year) { return new Date(year, 11, 1, 0, 0, 0).getTime(); }
+  function tgDateText(year) {
+    return new Date(year, 10, tgDom(year)).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
   }
   /* 2026-11-01 interactive upgrade: the clock is the hero unit now.
      Digit blocks (days/hrs/min/sec, tabular numerals), the whole unit is
@@ -653,22 +656,21 @@ window.FLEET_CFG = {
     var now = new Date();
     var tickMs = null, tail = "", sentence = "";
     var ms = now.getTime();
-    var y = ptParts(ms).year;
+    var y = now.getFullYear();
     var mileYear = y;
     if (ms < dinnerMs(y)) {
-      tickMs = dinnerMs(y) - ms; tail = "Thanksgiving, " + ptDateText(y) + ".";
+      tickMs = dinnerMs(y) - ms; tail = "Thanksgiving, " + tgDateText(y) + ".";
     } else if (ms < dayEndMs(y)) {
-      sentence = "Thanksgiving is today, " + ptDateText(y) + ".";
+      sentence = "Thanksgiving is today, " + tgDateText(y) + ".";
       mileYear = y + 1;
     } else if (ms < dec1Ms(y)) {
-      var pp = ptParts(ms);
-      var ptToday = Date.UTC(pp.year, pp.month - 1, pp.day);
+      var localToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       var tgN = thanksgiving(y + 1);
-      var dNext = Math.round((Date.UTC(tgN.getFullYear(), tgN.getMonth(), tgN.getDate()) - ptToday) / 86400000);
-      sentence = "Thanksgiving has passed for this year. Next Thanksgiving is " + ptDateText(y + 1) + ", in " + dNext + " days.";
+      var dNext = Math.round((tgN - localToday) / 86400000);
+      sentence = "Thanksgiving has passed for this year. Next Thanksgiving is " + tgDateText(y + 1) + ", in " + dNext + " days.";
       mileYear = y + 1;
     } else {
-      tickMs = dinnerMs(y + 1) - ms; tail = "Thanksgiving, " + ptDateText(y + 1) + ".";
+      tickMs = dinnerMs(y + 1) - ms; tail = "Thanksgiving, " + tgDateText(y + 1) + ".";
       mileYear = y + 1;
     }
     if (mileEl && lastMileYear !== mileYear) {
