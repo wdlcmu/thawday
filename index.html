@@ -250,6 +250,14 @@
     .shortanswer .ex { margin-top: 0.3rem; padding: 0.45rem 0.65rem; }
     .shortanswer .ex strong { font-size: 1.12rem; }
     .shortanswer .note { margin-top: 0.25rem; }
+    /* 2026-11-02 SPEC-VERIFY1117-1 fix: the timeline strip (.tl) below the
+       card started at y~790 on a 390x844 phone, inside the fixed ask pill's
+       band (780-828), so the pill covered its Dinner node and 4-days
+       caption. Every date on the strip is already readable in the card
+       above it, so on phones the strip starts below the fold instead:
+       extra top margin pushes its top edge past the 844px viewport.
+       Spacing only — no copy, date, or USDA number changes. */
+    .tl { margin-top: 4.5rem; }
   }
 </style>
 <script>
