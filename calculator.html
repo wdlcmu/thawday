@@ -446,9 +446,11 @@ window.FLEET_CFG = {
 </head>
 <body>
 <p class="brand"><a href="/">ThawDay</a></p>
-<h1>ThawDay</h1>
-<p>When do I take the turkey out of the freezer? Type in your dinner time and turkey weight. You get buy, thaw, brine, and roast dates. Brining is just soaking the bird in salt water first. It is optional.</p>
+<h1>When do I take the turkey out of the freezer?</h1>
+<div id="calcintro">
+<p>Type in your dinner time and turkey weight. You get buy, thaw, brine, and roast dates. Brining is just soaking the bird in salt water first. It is optional.</p>
 <p>Three steps. Thirty seconds.</p>
+</div>
 <p class="stuffnote">This tool plans turkeys with no stuffing. For safety, the USDA does not recommend cooking stuffing inside the bird. Cook it in a casserole dish instead. Every time here is for an unstuffed turkey.</p>
 
 <section id="quiz" aria-label="Turkey timeline quiz">
@@ -782,7 +784,7 @@ function render(){
   if(mathFrozenRow){ const mathFrozenBand=frozenRoastBand(lb); mathParts.push(`Roast band from frozen: ${mathFrozenBand[0]} to ${mathFrozenBand[1]} minutes at 325 F.`); mathParts.push(`The plan uses the middle: ${frozenRoastMinutes(lb)} minutes.`); }
   else { mathParts.push(`Roast band: ${mathRoastBand[1][0]} to ${mathRoastBand[1][1]} minutes at 325 F.`); mathParts.push(`The plan uses the middle: ${roastMinutes(lb)} minutes.`); }
   mathParts.push(`Then add ${CONSTANTS.restMinutes.value} minutes to rest.`);
-  math.innerHTML=`<p class="mathline"><strong>How we got these dates:</strong> ${mathParts.join(" ")}</p>`;
+  math.innerHTML=`<p class="mathline"><strong>How we got these dates:</strong><br>${mathParts.join("<br>")}</p>`;
   /* 2026-10-31 (steal-list STEAL-TD-CW-SCHED-1, from the OnlyCalculators
      cold-water schedule table): an elapsed-time change schedule under
      the cold-water backup. Display only: every step is built from the
@@ -807,7 +809,7 @@ function render(){
     const fb=frozenRoastBand(lb), fmid=frozenRoastMinutes(lb);
     const fOven=new Date(dinner.getTime()-(fmid+CONSTANTS.restMinutes.value)*60000);
     const fPast = fOven.getTime()<=now.getTime();
-    frozencook.innerHTML = `<h2>Cook it from frozen</h2><p>No time to thaw at all? USDA says cooking a turkey from frozen is safe. It takes at least 50 percent longer than a thawed bird. For a ${lb} lb bird at 325 F, plan on ${durText(fb[0])} to ${durText(fb[1])}. A plan uses the middle, ${durText(fmid)}: in the oven by ${fmt(fOven)} for this dinner, then rest 20 minutes.${fPast?" That oven time has already passed, so this path cannot finish for this dinner either. A smaller bird, or a later dinner, can work.":""}</p><p>Do not use an oven bag. Pull the giblet packet out with tongs once the bird has baked 20 to 30 minutes. Done is still 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing.</p><p>From-frozen times from the USDA chart, checked Oct 30, 2026.</p>`;
+    frozencook.innerHTML = `<h2>Cook it from frozen</h2><p>No time to thaw at all? USDA says cooking a turkey from frozen is safe. It takes at least 50 percent longer than a thawed bird. For a ${lb} lb bird at 325 F, plan on ${durText(fb[0])} to ${durText(fb[1])}. The plan uses the middle: ${durText(fmid)}. In the oven by ${fmt(fOven)} for this dinner, then rest 20 minutes.${fPast?" That oven time has already passed, so this path cannot finish for this dinner either. A smaller bird, or a later dinner, can work.":""}</p><p>Do not use an oven bag. Pull the giblet packet out with tongs once the bird has baked 20 to 30 minutes. Done is still 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing.</p><p>From-frozen times from the USDA chart, checked Oct 30, 2026.</p>`;
   } else { frozencook.innerHTML=""; }
   const thaw=rows.find(r=>r.id==="thaw"), oven=rows.find(r=>r.id==="oven"), buy=rows.find(r=>r.id==="buy"), brineRow=rows.find(r=>r.id==="brine");
   const buyShort=buy.when.toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric"});
@@ -1229,10 +1231,13 @@ render();
        own text -- one source of truth, never a second wording. */
     $("qsummaryText").textContent=who+$("weight").value+" lb turkey \u00b7 "+($("state").value==="fresh"?"Fresh":"Frozen")+" \u00b7 "+($("brine").value==="yes"?"Brine":"No brine")+(($("twobird")&&!$("twobird").hidden)?" \u00b7 "+$("twobird").textContent.replace(/\.$/,""):"")+(when?" \u00b7 Dinner "+when:"");
     $("quiz").hidden=true; $("qsummary").hidden=false;
-    requestAnimationFrame(function(){ $("out").scrollIntoView(); });
+    var ci=$("calcintro"); if(ci) ci.hidden=true;
+    requestAnimationFrame(function(){ $("qsummary").scrollIntoView(); });
   });
   $("qchange").addEventListener("click",function(){
-    $("qsummary").hidden=true; $("quiz").hidden=false; show(1,true);
+    $("qsummary").hidden=true; $("quiz").hidden=false;
+    var ci=$("calcintro"); if(ci) ci.hidden=false;
+    show(1,true);
   });
   pressByValue($("loChips"),"data-lo",$("leftovers").value);
   pressByValue($("stateChips"),"data-s",$("state").value);
