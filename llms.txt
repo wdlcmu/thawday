@@ -19,6 +19,8 @@
 ## Question pages (one page per question, each answers in full)
 
 - [How long to thaw a turkey](https://thawday.com/how-long-to-thaw-a-turkey): fridge and cold water times by weight, from the USDA chart.
+- [How long to thaw a turkey breast](https://thawday.com/how-long-to-thaw-a-turkey-breast): about 24 hours per 4 to 5 pounds in the fridge (a 6 lb breast: about 1.5 days; move Tue Nov 24 for Thanksgiving 2026), or 30 minutes per pound in cold water.
+- [How long to thaw a ham](https://thawday.com/how-long-to-thaw-a-ham): about 4 to 5 hours per pound in the fridge (a 10 lb ham: about 2 days; move Tue Nov 24 for Thanksgiving 2026), or 30 minutes per pound in cold water.
 - By exact weight: [12 lb](https://thawday.com/how-long-to-thaw-a-12-lb-turkey) (3 days in the fridge; move Mon Nov 23 for Thanksgiving 2026; 6 hours in cold water), [16 lb](https://thawday.com/how-long-to-thaw-a-16-lb-turkey) (4 days; Sun Nov 22; 8 hours), [20 lb](https://thawday.com/how-long-to-thaw-a-20-lb-turkey) (5 days; Sat Nov 21; 10 hours), [24 lb](https://thawday.com/how-long-to-thaw-a-24-lb-turkey) (6 days; Fri Nov 20; 12 hours).
 - [When to take the turkey out of the freezer for Thanksgiving 2026](https://thawday.com/when-to-thaw-turkey-for-thanksgiving): the exact fridge date by weight for Thursday, November 26, 2026 (up to 12 lb: Mon Nov 23; 13 to 16 lb: Sun Nov 22; 17 to 20 lb: Sat Nov 21; 21 to 24 lb: Fri Nov 20).
 - [Can you thaw a turkey in cold water?](https://thawday.com/thaw-a-turkey-in-cold-water): yes; 30 minutes per pound, change the water every 30 minutes, cook right after.
