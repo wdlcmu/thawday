@@ -70,7 +70,7 @@ Every question, answered in full: How long to thaw a turkey. When to take the tu
 
 ### Made by a dad, on the side
 
-I'm Billy, a dad in Redmond, Washington. I build these tools on the side, with AI — one idea, one website, no company behind it. ThawDay is my turkey tool: one question, one right answer, timed to your dinner.
+I'm Billy, a dad in Redmond, Washington. I build these tools on the side, with AI: one idea, one website, no company behind it. ThawDay is my turkey tool: one question, one right answer, timed to your dinner.
 
 Timings verified against USDA FSIS charts on Oct 22, 2026.
 
