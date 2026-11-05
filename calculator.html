@@ -129,7 +129,7 @@
       "name": "What if my turkey is over 24 pounds?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "This tool covers 8 to 24 lb birds, the range in the USDA charts it uses. For a bigger bird, call the USDA Meat and Poultry Hotline at 1-888-674-6854. Real food safety experts answer on weekdays."
+        "text": "This tool covers 4 to 24 lb birds, the range in the USDA charts it uses. For a bigger bird, call the USDA Meat and Poultry Hotline at 1-888-674-6854. Real food safety experts answer on weekdays."
       }
     },
     {
@@ -506,6 +506,9 @@ window.FLEET_CFG = {
 <button type="button" id="unitKg" aria-pressed="false">Kilograms (kg)</button>
 </div>
 <div class="chips" id="weightChips" role="group" aria-label="Turkey weight in pounds">
+<button type="button" class="chip" data-w="4" aria-pressed="false">4 lb</button>
+<button type="button" class="chip" data-w="6" aria-pressed="false">6 lb</button>
+<button type="button" class="chip" data-w="8" aria-pressed="false">8 lb</button>
 <button type="button" class="chip" data-w="10" aria-pressed="false">10 lb</button>
 <button type="button" class="chip" data-w="12" aria-pressed="false">12 lb</button>
 <button type="button" class="chip" data-w="14" aria-pressed="false">14 lb</button>
@@ -518,12 +521,12 @@ window.FLEET_CFG = {
 <details class="qmanual">
 <summary>Type the weight instead</summary>
 <div id="lbField">
-<label for="weight">Turkey weight (lb, 8 to 24)</label>
-<input id="weight" type="number" min="8" max="24" step="1" value="14">
+<label for="weight">Turkey weight (lb, 4 to 24)</label>
+<input id="weight" type="number" min="4" max="24" step="1" value="14">
 </div>
 <div id="kgField" hidden>
-<label for="weightkg">Turkey weight (kg, 3.6 to 10.9)</label>
-<input id="weightkg" type="number" min="3.6" max="10.9" step="0.1" value="6.4">
+<label for="weightkg">Turkey weight (kg, 1.8 to 10.9)</label>
+<input id="weightkg" type="number" min="1.8" max="10.9" step="0.1" value="6.4">
 <p id="kgnote" aria-live="polite"></p>
 </div>
 </details>
@@ -618,7 +621,7 @@ window.FLEET_CFG = {
 <details><summary>How long do leftovers keep?</summary><p>Use refrigerated turkey, stuffing, and gravy within 3 to 4 days. Discard any turkey, stuffing, and gravy left out at room temperature longer than 2 hours; 1 hour in temperatures above 90 F. Divide leftovers into smaller portions. Refrigerate or freeze in covered shallow containers for quicker cooling. If freezing leftovers, use within 2 to 6 months for best quality.</p></details>
 <details><summary>Does this work for Christmas dinner?</summary><p>The math is the same. Change the dinner date to Friday, December 25, or see the <a href="/when-to-thaw-turkey-for-christmas">Christmas move dates</a>.</p></details>
 <details><summary>What we don't do</summary><p>Your plan stays on your device. The timeline math runs in your browser, and we don't send your dinner details anywhere.</p></details>
-<details><summary>What if my turkey is over 24 pounds?</summary><p>This tool covers 8 to 24 lb birds, the range in the USDA charts it uses. For a bigger bird, call the USDA Meat and Poultry Hotline at 1-888-674-6854. Real food safety experts answer on weekdays.</p></details>
+<details><summary>What if my turkey is over 24 pounds?</summary><p>This tool covers 4 to 24 lb birds, the range in the USDA charts it uses. For a bigger bird, call the USDA Meat and Poultry Hotline at 1-888-674-6854. Real food safety experts answer on weekdays.</p></details>
 <!-- SPEC-TD-EVE-05 (2026-11-04): the "Our guarantees" details block
      was a trust-brag stack (no account / no email / no cost / no ads)
      duplicating the privacy answer above; removed, per the fleet
@@ -766,7 +769,13 @@ function render(){
   /* Item 98 L2: an empty weight field mid-typing is not an out-of-range
      bird: show no hint and keep the last plan on screen. */
   if(document.getElementById("weight").value===""){ hint.textContent=""; return; }
-  if(!(lb>=8&&lb<=24)){ hint.textContent="This tool covers 8 to 24 lb birds, the range in the USDA charts it uses. It cannot give a timeline outside that range."; out.innerHTML=""; cold.innerHTML=""; frozencook.innerHTML=""; math.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; clearShare(); return; }
+  /* 2026-11-05 (SPEC-TD-COLDQA1104-03): the range now starts at 4 lb.
+     The USDA bands this page already publishes start at 4 lb (the fridge
+     band up to 12 lb thaws in 3 days); the 8 lb floor was a UI gate only
+     and dead-ended 4 to 7 lb birds the homepage chart promises. The
+     guest helper's 8 lb sizing clamp is a separate, deliberate rule and
+     is unchanged. */
+  if(!(lb>=4&&lb<=24)){ hint.textContent="This tool covers 4 to 24 lb birds, the range in the USDA charts it uses. It cannot give a timeline outside that range."; out.innerHTML=""; cold.innerHTML=""; frozencook.innerHTML=""; math.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; clearShare(); return; }
   hint.textContent=""; const dinner=new Date(date+"T"+time);
   const now=new Date();
   const rows=buildTimeline(dinner,lb,state,brine,now);
@@ -1126,7 +1135,7 @@ document.getElementById("printplan").addEventListener("click",()=>{ window.print
        "14 ", "14."); the browser blanks those, and the empty weight
        then suppresses the whole plan with no hint — a validated link
        landing on no plan at all. String(n) always holds. */
-    if(w!==null&&w.trim()!==""){ const n=Number(w); if(Number.isFinite(n)&&n>=8&&n<=24) document.getElementById("weight").value=String(n); }
+    if(w!==null&&w.trim()!==""){ const n=Number(w); if(Number.isFinite(n)&&n>=4&&n<=24) document.getElementById("weight").value=String(n); }
     const s=p.get("s");
     if(s==="frozen"||s==="fresh") document.getElementById("state").value=s;
     const b=p.get("b");
@@ -1140,7 +1149,7 @@ document.getElementById("printplan").addEventListener("click",()=>{ window.print
         const saved=JSON.parse(localStorage.getItem("thawday_plan_inputs_v1")||"null");
         if(saved&&typeof saved==="object"){
           const sw=saved.w;
-          if(sw!==null&&sw!==undefined&&String(sw).trim()!==""){ const n=Number(sw); if(Number.isFinite(n)&&n>=8&&n<=24) document.getElementById("weight").value=String(n); }
+          if(sw!==null&&sw!==undefined&&String(sw).trim()!==""){ const n=Number(sw); if(Number.isFinite(n)&&n>=4&&n<=24) document.getElementById("weight").value=String(n); }
           if(saved.s==="frozen"||saved.s==="fresh") document.getElementById("state").value=saved.s;
           if(saved.b==="yes"||saved.b==="no") document.getElementById("brine").value=saved.b;
           const sd=saved.d;
@@ -1285,7 +1294,7 @@ render();
    sees pounds. The rule is the band-edge gate's rule, proven by
    units1-ship-2026-10-31-evidence/band-edge-harness.mjs (8,578 kg
    points run against the real engine extracted from this page):
-   gate on the exact weight first (only 8 to 24 lb exactly is
+   gate on the exact weight first (only 4 to 24 lb exactly is
    admitted), then round UP to the next whole pound. Rounding to
    nearest understated thaw days on 695 of those points; rounding
    up understates on zero, and because the bands are top-inclusive
