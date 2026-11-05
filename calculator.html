@@ -672,7 +672,8 @@ function buildTimeline(dinner, lb, state, brine, now){
        start-by time; it is never stamped with now. When even that
        start has passed, the plan leads with cook-from-frozen on the
        USDA from-frozen chart. */
-    const thawStart = brine==="yes" ? daysBefore(brineStart,thawDays(lb)) : daysBefore(dinner,thawDays(lb));
+    /* 2026-11-04 cold-QA HIGH-1 fix: non-brine anchor is ovenIn, not dinner. Dinner anchoring stamped a move time whose thaw finished 3.2-5.1 h AFTER oven-in (roast window double-counted). The bird must be fully thawed at oven-in — the invariant the cold-water path below already states. Move dates unchanged for every weight; only the stamped time moves earlier, to the oven-in clock time. */
+    const thawStart = brine==="yes" ? daysBefore(brineStart,thawDays(lb)) : daysBefore(ovenIn,thawDays(lb));
     if(now && now>thawStart){
       const cwStart=new Date(ovenIn.getTime()-lb*CONSTANTS.coldWaterMinPerLb.value*MIN);
       if(cwStart.getTime()>now.getTime()){ rows.push({id:"thaw", late:true, label:"Thaw in cold water", when:cwStart, detail:"Fridge thaw start has passed. Start cold water by this time: it takes about "+(Math.round((lb*30/60)*10)/10)+" hours (30 minutes per pound), and the bird finishes thawing right as it goes in the oven. Seal it in a leak-proof plastic bag and submerge it in cold tap water. Change the water every 30 minutes, and cook it right after it thaws."}); }
