@@ -132,7 +132,15 @@ function buildTimeline(dinner, lb, state, brine, now){
        start-by time; it is never stamped with now. When even that
        start has passed, the plan leads with cook-from-frozen on the
        USDA from-frozen chart. */
-    const thawStart = brine==="yes" ? daysBefore(brineStart,thawDays(lb)) : daysBefore(dinner,thawDays(lb));
+    /* 2026-11-04 (SPEC-TD-COLDQA1104N-01 — the same HIGH-1 anchor fix
+       the calculator shipped): non-brine anchor is ovenIn, not dinner.
+       Dinner anchoring stamped a move time whose thaw finished
+       3.2-5.1 h AFTER oven-in (roast window double-counted). The bird
+       must be fully thawed at oven-in — the invariant the cold-water
+       path below already states. Move dates unchanged for every
+       weight; only the stamped time moves earlier, to the oven-in
+       clock time. */
+    const thawStart = brine==="yes" ? daysBefore(brineStart,thawDays(lb)) : daysBefore(ovenIn,thawDays(lb));
     if(now && now>thawStart){
       const cwStart=new Date(ovenIn.getTime()-lb*CONSTANTS.coldWaterMinPerLb.value*MIN);
       if(cwStart.getTime()>now.getTime()){ rows.push({id:"thaw", late:true, label:"Thaw in cold water", when:cwStart, detail:"Fridge thaw start has passed. Start cold water by this time: it takes about "+(Math.round((lb*30/60)*10)/10)+" hours (30 minutes per pound), and the bird finishes thawing right as it goes in the oven. Seal it in a leak-proof plastic bag and submerge it in cold tap water. Change the water every 30 minutes, and cook it right after it thaws."}); }
@@ -840,7 +848,11 @@ function answerAsk(raw, nowOverride){
     out.innerHTML=`<div class="row"><strong>One thing I still need: the turkey.</strong><br>Say its weight, like "a 14-pound turkey". Or say how many people are eating, like "turkey for 10 people". The examples above show the shape.</div>`;
     return null;
   }
-  if(!(p.lb>=8&&p.lb<=24)){ hint.textContent="This tool covers 8 to 24 lb birds, the range in the USDA charts it uses. It cannot give a timeline outside that range."; out.innerHTML=""; return null; }
+  /* 2026-11-04 (SPEC-TD-COLDQA1104N-02): the range refusal names the
+     next step instead of dead-ending — a breast or smaller bird to
+     the breast page and the chart, a bird over 24 lb to the USDA
+     hotline (the calculator page's own over-24 words). */
+  if(!(p.lb>=8&&p.lb<=24)){ hint.textContent="This tool covers 8 to 24 lb birds, the range in the USDA charts it uses. It cannot give a timeline outside that range."+(p.lb<8?" For a breast or a smaller bird, the turkey breast page has the times: /how-long-to-thaw-a-turkey-breast. The thawing chart covers every size: /turkey-thawing-chart.":" For a bigger bird, call the USDA Meat and Poultry Hotline at 1-888-674-6854. Real food safety experts answer on weekdays."); out.innerHTML=""; return null; }
   hint.textContent="";
   var dinner=p.dinner, lb=p.lb, state=p.state, brine=p.brine;
   var rows=buildTimeline(dinner,lb,state,brine,now);
