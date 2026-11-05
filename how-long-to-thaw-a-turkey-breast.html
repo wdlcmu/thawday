@@ -78,6 +78,9 @@ footer a:hover{text-decoration:underline}
 <p class="ident">ThawDay gives plain thaw times for holiday food.</p>
 <h1>How long to thaw a turkey breast</h1>
 <p class="answer"><strong>A 6 lb breast needs about 1&#189; days in the fridge.</strong> Move it on <strong>Tuesday, November 24</strong>. Dinner is Thursday, November 26. In cold water, it needs 3 hours.</p>
+<button type="button" id="svbtn" style="display:inline-flex;align-items:center;min-height:44px;padding:10px 18px;margin:12px 0;font:inherit;font-weight:700;border-radius:999px;border:2px solid #b45309;background:#b45309;color:#fff;cursor:pointer">Copy this plan</button>
+<script>(function(){var b=document.getElementById("svbtn");if(!b)return;var t="How long to thaw a turkey breast\nA 6 lb breast needs about 1\u00bd days in the fridge. Move it on Tuesday, November 24 . Dinner is Thursday, November 26. In cold water, it needs 3 hours.\nBreast weight \u2014 In the fridge \u2014 In cold water\n4 lb \u2014 About 1 day \u2014 2 hours\n6 lb \u2014 About 1\u00bd days \u2014 3 hours\n8 lb \u2014 About 2 days \u2014 4 hours\nFrom https://thawday.com/how-long-to-thaw-a-turkey-breast";var L="Copy this plan";function done(){b.textContent="Copied";setTimeout(function(){b.textContent=L;},3000);}function failed(){b.textContent="Select + copy manually";setTimeout(function(){b.textContent=L;},4000);}function fb(){var ta=document.createElement("textarea");ta.value=t;ta.setAttribute("readonly","");ta.style.position="absolute";ta.style.left="-9999px";document.body.appendChild(ta);ta.select();var ok=false;try{ok=document.execCommand("copy");}catch(e){ok=false;}document.body.removeChild(ta);if(ok){done();}else{failed();}}b.addEventListener("click",function(){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fb);}else{fb();}});})();</script>
+
 <a class="cta" href="/calculator">Get my full turkey plan</a>
 <h2>Times by weight</h2>
 <table>
