@@ -85,6 +85,7 @@
    ask-panel.js.) */
 .fyg-pill { transition: transform .25s ease; }
 .fyg-pill.fyg-yield { transform: translateY(calc(100% + var(--fyg-gap, 20px))); }
+.fyg-pill.fyg-hidden{display:none}
 @media (prefers-reduced-motion: reduce) {
   .fyg-pill { transition: none; }
 }

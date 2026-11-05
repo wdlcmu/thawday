@@ -1020,7 +1020,7 @@ function answerAsk(raw, nowOverride){
     function computeResting() {
       var cs = window.getComputedStyle(pill);
       var w = pill.offsetWidth, h = pill.offsetHeight;
-      if (!w || !h) { resting = null; return; }
+      if (!w || !h) { return; } /* SPEC-05: pill may be display:none while yielded; keep the last known box */
       var vw = window.innerWidth, vh = window.innerHeight;
       var left = parsePx(cs.left), right = parsePx(cs.right);
       var top = parsePx(cs.top), bottom = parsePx(cs.bottom);
@@ -1104,10 +1104,28 @@ function answerAsk(raw, nowOverride){
       setYield(hit);
     }
 
+    var hideTimer = null;
     function setYield(on) {
       if (on === yielded) return;
       yielded = on;
-      pill.classList.toggle(className, on);
+      if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+      if (on) {
+        pill.classList.add(className);
+        /* SPEC-05 (Nov 4, 2026): after the slide-out finishes, remove the
+           pill from layout. Parked below the fold it still had a rect that
+           overlapped tap targets scrolling near the bottom edge (the
+           cold-QA settled sweep caught chips and footer links under that
+           parked rect). With display:none the rect is zero and the settled
+           pill can cover nothing, at any scroll depth. */
+        hideTimer = setTimeout(function () {
+          hideTimer = null;
+          if (yielded) pill.classList.add('fyg-hidden');
+        }, 300);
+      } else {
+        pill.classList.remove('fyg-hidden');
+        void pill.offsetWidth; /* reflow so the slide back in still animates */
+        pill.classList.remove(className);
+      }
     }
 
     function schedule() {
@@ -1117,8 +1135,10 @@ function answerAsk(raw, nowOverride){
     }
     function scheduleRelayout() {
       /* Layout may have changed: recompute the resting box and the target
-         list, then re-evaluate. This is the ONLY place resting is dropped. */
-      resting = null;
+         list, then re-evaluate. This is the ONLY place resting is dropped.
+         SPEC-05: while the pill is display:none (yielded) it has no size;
+         keep the last known box rather than dropping it. */
+      if (pill.offsetWidth) resting = null;
       collectTargets();
       schedule();
     }
