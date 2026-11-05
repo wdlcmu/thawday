@@ -215,6 +215,18 @@
   .bands + p { border: 1px solid #e7d8c3; border-radius: 12px; background: #fff; padding: 0.9rem 1rem 0.4rem; margin-top: 1rem; text-align: left; }
   .bands + p .ln:first-child { font-weight: 800; font-size: 1.0625rem; color: var(--ink); }
   .way span { font-size: 0.9375rem; font-weight: 600; color: var(--ink); }
+  /* SPEC-TD-EVE-01/02 (2026-11-04): the hero example sits directly
+     under the identity line. The strip keeps its normal gap here —
+     the phone rule that pushed the strip below the fold applied to
+     its old spot under the Short Answer card, where its dates
+     duplicated the card; in the hero it IS the example, so it stays
+     on screen one at every width. The countdown unit is display
+     only now (SPEC-TD-EVE-02): no pointer cursor. */
+  .heroex-wrap { width: 100%; max-width: 34rem; margin-bottom: 0.75rem; }
+  .heroex-wrap .tl { margin-top: 0.75rem; }
+  .heroex p { margin-bottom: 0; }
+  .cdx-main { cursor: default; }
+  .cdx-main:hover { background: none; }
   /* 2026-11-01 D7: explicit touch handling on the homepage's tap targets. */
   a, button { touch-action: manipulation; }
   /* 2026-11-02 SPEC-VERIFY-1/2 fix (Addendum 1117): on a phone the whole
@@ -422,11 +434,21 @@ window.FLEET_CFG = {
 </head>
 <body>
 <main>
+  <!-- SPEC-TD-EVE-01 (2026-11-04): identity first, then the concrete
+       example directly under it, then the brand lockup, then the CTA.
+       The example block (the 14 lb worked example + its timeline
+       strip) moved up from the Short Answer card with its wording
+       and dates unchanged; it now lives only here. -->
+  <p class="tagline">Type in your dinner time. Get buy, thaw, brine, and roast dates.</p>
+  <div class="heroex-wrap">
+    <div class="shortanswer heroex">
+      <p><span class="ln ex">A 14 lb bird moves <strong>Sunday, November 22</strong>.</span><span class="ln note">Your dinner hour does not change this date.</span></p>
+    </div>
+    <div class="tl"><div class="tl-node"><span class="tl-k">Move &middot; 14 lb</span><strong>Sun, Nov 22</strong></div><div class="tl-track"><span class="tl-dots"><i></i><i></i><i></i><i></i></span><span class="tl-cap">4 days</span></div><div class="tl-node tl-end"><span class="tl-k">Dinner</span><strong>Thu, Nov 26</strong></div></div>
+  </div>
   <span class="kicker">For Thanksgiving 2026</span>
   <h1>ThawDay</h1>
-  <p class="tagline">Type in your dinner time. Get buy, thaw, brine, and roast dates.</p>
   <p class="cta"><a href="/calculator">Get my turkey timeline</a></p>
-  <p class="askdoor">Rather say it in your own words? <a href="/ask">Ask here</a>.</p>
   <div class="steps" aria-hidden="true">
     <div class="step"><span class="dot"></span><span class="label">Buy</span></div>
     <div class="step"><span class="dot"></span><span class="label">Thaw</span></div>
@@ -434,10 +456,13 @@ window.FLEET_CFG = {
     <div class="step"><span class="dot"></span><span class="label">Roast</span></div>
   </div>
   <div class="cdx">
-    <a class="cdx-main" id="cdx-main" href="/calculator" aria-label="Counting down to Thanksgiving, Thursday, November 26, 2026.">
+    <!-- SPEC-TD-EVE-02 (2026-11-04): the countdown is display only —
+         the hero CTA above is screen one's one door to /calculator.
+         The unit's text, digits, and ticking are unchanged. -->
+    <div class="cdx-main" id="cdx-main" role="img" aria-label="Counting down to Thanksgiving, Thursday, November 26, 2026.">
       <span class="cdx-digits" id="cdx-digits" aria-hidden="true" hidden><span class="cdx-cell cd-d"><b id="cdx-d"></b><i id="cdx-dl">days</i></span><span class="cdx-cell"><b id="cdx-h">00</b><i>hrs</i></span><span class="cdx-cell"><b id="cdx-m">00</b><i>min</i></span><span class="cdx-cell"><b id="cdx-s">00</b><i>sec</i></span></span>
       <span class="countdown" id="countdown">Counting down to Thanksgiving, Thursday, November 26, 2026.</span>
-    </a>
+    </div>
     <button class="cdx-more" id="cdx-more" type="button" aria-expanded="false" aria-controls="cdx-panel" hidden>What&rsquo;s next? <span aria-hidden="true">&#9662;</span></button>
     <div class="cdx-panel" id="cdx-panel" hidden>
       <p class="cdx-break" id="cdx-break"></p>
@@ -457,11 +482,12 @@ window.FLEET_CFG = {
       </ul>
       <!-- 2026-11-03 SPEC-COLDQA1103-2: the example box is the no-brine
            date, so it completes the list above; the brine note is the
-           card's last line and can no longer read as its caption. -->
-      <p><span class="ln ex">A 14 lb bird moves <strong>Sunday, November 22</strong>.</span><span class="ln note">Your dinner hour does not change this date.</span></p>
+           card's last line and can no longer read as its caption.
+           2026-11-04 SPEC-TD-EVE-01: the worked-example line and the
+           timeline strip moved to the hero, directly under the
+           identity line; they live only there now. -->
       <p class="brine-note">Brining? Move it about a day earlier.</p>
     </div>
-    <div class="tl"><div class="tl-node"><span class="tl-k">Move &middot; 14 lb</span><strong>Sun, Nov 22</strong></div><div class="tl-track"><span class="tl-dots"><i></i><i></i><i></i><i></i></span><span class="tl-cap">4 days</span></div><div class="tl-node tl-end"><span class="tl-k">Dinner</span><strong>Thu, Nov 26</strong></div></div>
   </section>
   <section class="info" aria-label="Thaw times at a glance">
     <h2>Thaw times at a glance</h2>
@@ -502,7 +528,7 @@ window.FLEET_CFG = {
     <details class="xpd"><summary>More questions</summary>
     <div class="qa">
       <h3>When do I start thawing?</h3>
-      <p><span class="ln">Allow 24 hours for every 4 to 5 pounds.</span><span class="ln">12 to 16 pounds needs 3 to 4 days.</span><span class="ln">Start 4 days before you cook.</span><span class="ln">It keeps 1 to 2 days once thawed.</span><span class="ln">Keep it in the fridge.</span></p>
+      <p><span class="ln">Allow 24 hours for every 4 to 5 pounds.</span><span class="ln">12 to 16 pounds needs 3 to 4 days.</span><span class="ln">It keeps 1 to 2 days once thawed.</span><span class="ln">Keep it in the fridge.</span></p>
     </div>
     <div class="qa">
       <h3>Is fridge thawing or cold water thawing better?</h3>
@@ -511,10 +537,6 @@ window.FLEET_CFG = {
     <div class="qa">
       <h3>Can I cook a turkey from frozen?</h3>
       <p><span class="ln">Yes. USDA says it is safe.</span><span class="ln">It takes at least half longer.</span><span class="ln">Than a thawed bird.</span><span class="ln">For a 15 lb bird at 325 F.</span><span class="ln">5 hours 45 minutes at least.</span><span class="ln">Up to 6 hours 30 minutes.</span><span class="ln">Do not use an oven bag.</span><span class="ln">Pull the giblet packet out with tongs.</span><span class="ln">Do it 20 to 30 minutes in.</span><span class="ln">The calculator gives the time for your bird.</span></p>
-    </div>
-    <div class="qa">
-      <h3>How does the timeline tool work?</h3>
-      <p><span class="ln">Tell it dinner time and turkey size.</span><span class="ln">Get every date: buy, thaw, brine, roast.</span></p>
     </div>
     </details>
     <div class="qa">

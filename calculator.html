@@ -446,10 +446,13 @@ window.FLEET_CFG = {
 </head>
 <body>
 <p class="brand"><a href="/">ThawDay</a></p>
-<h1>When do I take the turkey out of the freezer?</h1>
+<!-- SPEC-TD-EVE-05 (2026-11-04): hero back inside Template v2 —
+     headline 6 words (was 10), subline 11 words (was 17), one job.
+     The brine explainer keeps its own line below the subline. -->
+<h1>When should the turkey come out?</h1>
 <div id="calcintro">
-<p>Type in your dinner time and turkey weight. You get buy, thaw, brine, and roast dates. Brining is just soaking the bird in salt water first. It is optional.</p>
-<p>Three steps. Thirty seconds.</p>
+<p>Your dinner time and weight. Get buy, thaw, brine, roast dates.</p>
+<p>Brining is just soaking the bird in salt water first. It is optional.</p>
 </div>
 <p class="stuffnote">This tool plans turkeys with no stuffing. For safety, the USDA does not recommend cooking stuffing inside the bird. Cook it in a casserole dish instead. Every time here is for an unstuffed turkey.</p>
 
@@ -598,10 +601,8 @@ window.FLEET_CFG = {
 
 <details class="xpd"><summary>Prefer to ask in chat?</summary>
 <h2>Prefer to ask in chat?</h2>
-<p>ThawDay is also built for ChatGPT and Claude. It is not in their stores yet.</p>
 <p>On this site, <a href="/ask">Ask</a> takes your words and runs the same USDA math. Nothing you type is saved.</p>
-<p>In chat, there is no form. You just ask. Ask for the full plan, just the thaw time, or just the roast time. Change the weight and ask again. The new plan comes back in the same chat.</p>
-<p>Here on the site, you get what chat does not give you: a picture card of your plan, a print view, a calendar file, and a share link. Both ways use USDA charts.</p>
+<p>Here you also get a picture card of your plan, a print view, a calendar file, and a share link.</p>
 </details>
 
 <h2>FAQ</h2>
@@ -616,10 +617,12 @@ window.FLEET_CFG = {
 <details><summary>Should I wash the turkey before cooking?</summary><p>No. Washing or rinsing any meat or poultry is not recommended, and actually increases the risk you will cross-contaminate germs to other foods you're preparing.</p></details>
 <details><summary>How long do leftovers keep?</summary><p>Use refrigerated turkey, stuffing, and gravy within 3 to 4 days. Discard any turkey, stuffing, and gravy left out at room temperature longer than 2 hours; 1 hour in temperatures above 90 F. Divide leftovers into smaller portions. Refrigerate or freeze in covered shallow containers for quicker cooling. If freezing leftovers, use within 2 to 6 months for best quality.</p></details>
 <details><summary>Does this work for Christmas dinner?</summary><p>The math is the same. Change the dinner date to Friday, December 25, or see the <a href="/when-to-thaw-turkey-for-christmas">Christmas move dates</a>.</p></details>
-<details><summary>What we don't do</summary><p>Your plan stays on your device. The page saves it in your browser so it shows again when you return.</p><p>We don't send your dinner details anywhere. The timeline math runs in your browser.</p><p>We don't sell turkeys, groceries, or anything else.</p></details>
+<details><summary>What we don't do</summary><p>Your plan stays on your device. The timeline math runs in your browser, and we don't send your dinner details anywhere.</p></details>
 <details><summary>What if my turkey is over 24 pounds?</summary><p>This tool covers 8 to 24 lb birds, the range in the USDA charts it uses. For a bigger bird, call the USDA Meat and Poultry Hotline at 1-888-674-6854. Real food safety experts answer on weekdays.</p></details>
-<details><summary>Our guarantees</summary><p>In the calculator, we never receive what you type, not your date, your dinner hour, or your turkey's weight.</p><p>No account, no email, and no cost. The full plan is yours on the spot.</p><p>There are no ads on this site.</p></details>
-
+<!-- SPEC-TD-EVE-05 (2026-11-04): the "Our guarantees" details block
+     was a trust-brag stack (no account / no email / no cost / no ads)
+     duplicating the privacy answer above; removed, per the fleet
+     every-phrase-earns-its-place rule. -->
 <footer><p>Built with Muse.</p><p><a href="/privacy">Privacy</a> <a href="/terms">Terms</a></p><p>Timings verified against USDA FSIS charts on Oct 22, 2026. Cook-from-frozen times verified against the USDA from-frozen chart on Oct 30, 2026.</p><p>Bird over 24 lb, or a food safety question this page cannot answer? Call the USDA Meat and Poultry Hotline: <a href="tel:+18886746854">1-888-674-6854</a>.</p></footer>
 
 <script>
