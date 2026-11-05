@@ -565,7 +565,7 @@ window.FLEET_CFG = {
 <button type="button" class="secondary" id="qchange">Change answers</button>
 </div>
 
-<h2>Your timeline</h2>
+<h2 id="timelinehead">Your timeline</h2>
 <section id="out" aria-live="polite"></section>
 <section id="math" aria-live="polite"></section>
 
@@ -765,7 +765,7 @@ function render(){
   const shareBlocks=["sharehead","shareblock","calblock"].map(id=>document.getElementById(id));
   const clearShare=()=>{ document.getElementById("sharetext").textContent=""; document.getElementById("calmsg").textContent=""; document.getElementById("movemsg").textContent=""; shareBlocks.forEach(el=>{ if(el) el.hidden=true; }); };
   const showShare=()=>{ shareBlocks.forEach(el=>{ if(el) el.hidden=false; }); };
-  if(!date||!time){ hint.textContent="Check the date and time."; out.innerHTML=""; cold.innerHTML=""; frozencook.innerHTML=""; math.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; clearShare(); return; }
+  if(!date||!time){ hint.textContent="Check the date and time."; out.innerHTML=""; cold.innerHTML=""; frozencook.innerHTML=""; math.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; document.getElementById("timelinehead").hidden=true; clearShare(); return; }
   /* Item 98 L2: an empty weight field mid-typing is not an out-of-range
      bird: show no hint and keep the last plan on screen. */
   if(document.getElementById("weight").value===""){ hint.textContent=""; return; }
@@ -774,8 +774,13 @@ function render(){
      band up to 12 lb thaws in 3 days); the 8 lb floor was a UI gate only
      and dead-ended 4 to 7 lb birds the homepage chart promises. The
      guest helper's 8 lb sizing clamp is a separate, deliberate rule and
-     is unchanged. */
-  if(!(lb>=4&&lb<=24)){ hint.textContent="This tool covers 4 to 24 lb birds, the range in the USDA charts it uses. It cannot give a timeline outside that range."; out.innerHTML=""; cold.innerHTML=""; frozencook.innerHTML=""; math.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; clearShare(); return; }
+     is unchanged.
+     2026-11-05 (SPEC-COLDQA1105-03): a no-plan render (this range exit
+     or the bad-date exit above) also hides the "Your timeline" heading,
+     so an honest refusal never leaves an empty heading over nothing;
+     the success path below unhides it with the plan. No timeline
+     content is invented for out-of-range birds. */
+  if(!(lb>=4&&lb<=24)){ hint.textContent="This tool covers 4 to 24 lb birds, the range in the USDA charts it uses. It cannot give a timeline outside that range."; out.innerHTML=""; cold.innerHTML=""; frozencook.innerHTML=""; math.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; document.getElementById("timelinehead").hidden=true; clearShare(); return; }
   hint.textContent=""; const dinner=new Date(date+"T"+time);
   const now=new Date();
   const rows=buildTimeline(dinner,lb,state,brine,now);
@@ -861,6 +866,7 @@ function render(){
   document.getElementById("sharetext").textContent=txt;
   lastPlan={rows:rows,lb:lb,state:state,dinner:dinner,warning:warning};
   document.getElementById("cardarea").hidden=false;
+  document.getElementById("timelinehead").hidden=false;
   showShare();
   /* 2026-10-30 (Dim 12 return-restore): a made plan is saved on this
      device only, so a return visit can restore it below. The values are
