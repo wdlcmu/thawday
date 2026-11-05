@@ -659,10 +659,33 @@ function parseAsk(raw, nowOverride){
   var wdayRe=/\b(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/g, wdayHit, wdayHits=[];
   while((wdayHit=wdayRe.exec(t))!==null){ wdayHits.push({name:wdayHit[1],idx:wdayHit.index}); }
   var dinnerWday=null, dinnerScore=-1;
+  /* SPEC-TD-EVE-03 (2026-11-04): a weekday may only fill the dinner
+     slot from a dinner clause, never from a state clause. The old
+     proximity score let "still frozen solid on Tuesday" (state, +2
+     for "on") beat "make a Thursday 6pm dinner" (no proximity cue),
+     so the plan was built for the frozen day. Now: segment the text
+     into clauses; a weekday whose clause prefix names the bird's
+     state (frozen / bought / in the freezer / since) and whose clause
+     carries no dinner word is excluded outright; a weekday inside a
+     clause that carries a dinner word (dinner / eat / serve / meal /
+     a holiday) outranks any bare proximity cue; a negated weekday
+     ("not Thursday") never fills the slot. Weekdays in neither kind
+     of clause keep the old proximity scoring, so plain shapes like
+     "turkey for Thursday" parse exactly as before. */
+  var segOfEve=function(i){ var s=0,e=t.length,bm,bre=/[.,;:!?()]+|\s+[-\u2013\u2014]\s*|[-\u2013\u2014]\s+|[\u2013\u2014]+/g;
+    while((bm=bre.exec(t))!==null){ if(bm.index+bm[0].length<=i) s=bm.index+bm[0].length; else if(bm.index>=i){ e=bm.index; break; } }
+    return {txt:t.slice(s,e),pre:t.slice(s,i)}; };
   for(var wi=0;wi<wdayHits.length;wi++){ var wh=wdayHits[wi];
     var before=t.slice(Math.max(0,wh.idx-24),wh.idx), after=t.slice(wh.idx+wh.name.length,wh.idx+wh.name.length+10);
     if(/(it'?s|it is|today is|today'?s)\s+$/.test(before)) continue;
+    if(/\bnot\s+$/.test(before)) continue;
+    var segEve=segOfEve(wh.idx);
+    var segDinnerEve=/\b(dinner|supper|eat|eats|eating|ate|serve|serves|serving|served|meal|thanksgiving|christmas)\b/.test(segEve.txt);
+    var segStateEve=/(frozen|rock[ -]hard|solid|bought|purchased|picked up|freezer|still hard|hasn'?t thawed|not thawed)/.test(segEve.pre)
+      ||/(?:^|\s)since\s+$/.test(segEve.pre);
+    if(segStateEve&&!segDinnerEve) continue;
     var score=0;
+    if(segDinnerEve) score+=3;
     if(/\b(for|by|on)\s+$/.test(before)) score+=2;
     if(/^\s+(dinner|night)\b/.test(after)) score+=2;
     if(/dinner( is| on)?\s*$/.test(before)) score+=2;
@@ -751,12 +774,20 @@ function answerAsk(raw, nowOverride){
   if(p.dateDefaulted||p.timeDefaulted) summary+=` Dinner is set to ${fmt(dinner)}. Say a different day or time in your words to change it.`;
   if(!p.stateExplicit||!p.brineExplicit) summary+=` ${state==="frozen"?"Frozen":"Fresh"}, ${brine==="yes"?"with a brine":"no brine"}. Say "fresh" or "brine it" in your words to change that.`;
   var lead="";
-  if(p.intent==="thaw"&&thaw){ lead=thaw.frozen?`There is no time left to thaw this bird. Cook it from frozen: it goes in the oven at ${fmt(oven.when)}. The full plan is below.`:thaw.late?`Fridge thaw has already passed for this dinner. Use cold water: start by ${fmt(thaw.when)}, about ${Math.round((lb*30/60)*10)/10} hours, and it finishes thawing right as the bird goes in the oven. The full plan is below.`:p.coldWater?`In cold water, a ${lb} lb turkey thaws in about ${Math.round((lb*30/60)*10)/10} hours (30 minutes per pound). Seal it in a leak-proof plastic bag, submerge it in cold tap water, change the water every 30 minutes, and cook it right after it thaws. The fridge plan is below.`:`A ${lb} lb turkey takes ${thawDays(lb)} days to thaw in the fridge. Start thawing ${fmt(thaw.when)}. Move the turkey to the fridge then. The full plan is below.`; }
-  else if(p.intent==="plan"&&p.coldWater&&/cold water time/i.test(raw)&&thaw){ lead=`In cold water, a ${lb} lb turkey thaws in about ${Math.round((lb*30/60)*10)/10} hours (30 minutes per pound). Seal it in a leak-proof plastic bag, submerge it in cold tap water, change the water every 30 minutes, and cook it right after it thaws. The fridge plan is below.`; }
+  /* SPEC-TD-EVE-03 (2026-11-04), second half: when cold water is the
+     method the visitor asked for, its plan leads — with the exact
+     start clock (oven time minus 30 minutes per pound, the same
+     start the late-thaw row already prints) — before any fridge
+     plan. Before, only the literal words "cold water time" earned
+     that lead on a plan turn, so an asked-for rescue method arrived
+     as a duration-only "backup" paragraph with no start time. */
+  var cwStartEve = (oven&&state==="frozen") ? new Date(oven.when.getTime()-lb*30*60000) : null;
+  if(p.intent==="thaw"&&thaw){ lead=thaw.frozen?`There is no time left to thaw this bird. Cook it from frozen: it goes in the oven at ${fmt(oven.when)}. The full plan is below.`:thaw.late?`Fridge thaw has already passed for this dinner. Use cold water: start by ${fmt(thaw.when)}, about ${Math.round((lb*30/60)*10)/10} hours, and it finishes thawing right as the bird goes in the oven. The full plan is below.`:p.coldWater?`In cold water, a ${lb} lb turkey thaws in about ${Math.round((lb*30/60)*10)/10} hours (30 minutes per pound). Start by ${fmt(cwStartEve)} so it finishes thawing as it goes in the oven. Seal it in a leak-proof plastic bag, submerge it in cold tap water, change the water every 30 minutes, and cook it right after it thaws. The fridge plan is below.`:`A ${lb} lb turkey takes ${thawDays(lb)} days to thaw in the fridge. Start thawing ${fmt(thaw.when)}. Move the turkey to the fridge then. The full plan is below.`; }
+  else if(p.intent==="plan"&&p.coldWater&&thaw&&!thaw.frozen&&cwStartEve){ lead=`Cold water, as you asked: start by ${fmt(cwStartEve)}, about ${Math.round((lb*30/60)*10)/10} hours (30 minutes per pound), and it finishes thawing as the bird goes in the oven. Seal the bird in a leak-proof plastic bag and submerge it in cold tap water. Change the water every 30 minutes, and cook it right after it thaws. The fridge plan is below.`; }
   else if(p.intent==="roast"&&oven){ lead=`A ${lb} lb turkey roasts in about ${durText(roastMinutes(lb))} at 325 F. In the oven by ${fmt(oven.when)} for this dinner. The full plan is below.`; }
   else if(p.intent==="fromfrozen"){ var fb0=frozenRoastBand(lb); lead=`Yes. USDA says cooking a turkey from frozen is safe. For a ${lb} lb bird at 325 F, plan on ${durText(fb0[0])} to ${durText(fb0[1])}. The details are in the plan below.`; }
   var rowsHtml=rows.map(r=>`<div class="row"><strong>${r.id==="buy"?fmtDateOnly(r.when):fmt(r.when)}</strong><br>${r.label}<br>${r.detail}</div>`).join("");
-  var coldHtml = state==="frozen" ? `<h2>Cold-water backup</h2><p>Running late? Cold water thaws in about ${Math.round((lb*30/60)*10)/10} hours (${lb} lb at 30 minutes per pound). Seal the bird in a leak-proof plastic bag and submerge it in cold tap water. Change the water every 30 minutes, and cook it right after it thaws.</p>` : "";
+  var coldHtml = state==="frozen" ? `<h2>Cold-water backup</h2><p>Running late? Cold water thaws in about ${Math.round((lb*30/60)*10)/10} hours (${lb} lb at 30 minutes per pound).${p.coldWater&&cwStartEve?` For this dinner, start by ${fmt(cwStartEve)}.`:""} Seal the bird in a leak-proof plastic bag and submerge it in cold tap water. Change the water every 30 minutes, and cook it right after it thaws.</p>` : "";
   var frozenHtml="";
   if(state==="frozen"){
     var fb=frozenRoastBand(lb), fmid=frozenRoastMinutes(lb);
