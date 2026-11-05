@@ -851,8 +851,12 @@ function answerAsk(raw, nowOverride){
   /* 2026-11-04 (SPEC-TD-COLDQA1104N-02): the range refusal names the
      next step instead of dead-ending — a breast or smaller bird to
      the breast page and the chart, a bird over 24 lb to the USDA
-     hotline (the calculator page's own over-24 words). */
-  if(!(p.lb>=8&&p.lb<=24)){ hint.textContent="This tool covers 8 to 24 lb birds, the range in the USDA charts it uses. It cannot give a timeline outside that range."+(p.lb<8?" For a breast or a smaller bird, the turkey breast page has the times: /how-long-to-thaw-a-turkey-breast. The thawing chart covers every size: /turkey-thawing-chart.":" For a bigger bird, call the USDA Meat and Poultry Hotline at 1-888-674-6854. Real food safety experts answer on weekdays."); out.innerHTML=""; return null; }
+     hotline (the calculator page's own over-24 words).
+     2026-11-05 (Addendum 1525 follow-on): the floor is 4 lb now —
+     the calculator widened to 4 to 24 lb, so this range line, the
+     lookup gate, and the chat layer's verbatim guard all say 4 to
+     24; under 4 lb takes the breast/chart branch. */
+  if(!(p.lb>=4&&p.lb<=24)){ hint.textContent="This tool covers 4 to 24 lb birds, the range in the USDA charts it uses. It cannot give a timeline outside that range."+(p.lb<4?" For a breast or a smaller bird, the turkey breast page has the times: /how-long-to-thaw-a-turkey-breast. The thawing chart covers every size: /turkey-thawing-chart.":" For a bigger bird, call the USDA Meat and Poultry Hotline at 1-888-674-6854. Real food safety experts answer on weekdays."); out.innerHTML=""; return null; }
   hint.textContent="";
   var dinner=p.dinner, lb=p.lb, state=p.state, brine=p.brine;
   var rows=buildTimeline(dinner,lb,state,brine,now);
