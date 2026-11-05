@@ -76,26 +76,6 @@
     display: flex; flex-direction: column; justify-content: flex-start; align-items: center;
     text-align: center; padding: 1rem 1.5rem 3.5rem; max-width: 42rem; margin: 0 auto; width: 100%;
   }
-  .steps {
-    display: flex; align-items: flex-start; justify-content: center; gap: 0;
-    margin-top: 0.25rem; width: 100%; max-width: 30rem;
-  }
-  .step { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; }
-  .step::before {
-    content: ""; position: absolute; top: 0.45rem; left: -50%; width: 100%;
-    border-top: 2px solid #e7d8c3;
-  }
-  .step:first-child::before { display: none; }
-  .step .dot {
-    width: 0.9rem; height: 0.9rem; border-radius: 50%; background: var(--accent);
-    position: relative; z-index: 1; margin-bottom: 0.5rem;
-  }
-  .step .label { font-size: 0.9375rem; font-weight: 600; color: #374151; }
-  .kicker {
-    display: inline-block; font-size: 0.875rem; font-weight: 600; letter-spacing: 0.08em;
-    text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem;
-    border: 1px solid var(--accent); border-radius: 999px; padding: 0.35rem 1rem;
-  }
   h1 { font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.25rem; }
   .tagline { font-size: clamp(1.125rem, 4vw, 1.5rem); color: #374151; max-width: 32rem; margin-bottom: 0.5rem; }
   .promise { font-size: 1rem; font-weight: 600; color: var(--ink); }
@@ -107,27 +87,6 @@
   footer p { margin-bottom: 0.5rem; }
   footer a { color: var(--accent); font-weight: 600; text-decoration: none; display: inline-block; padding: 12px 6px; min-height: 44px; }
   footer a:hover { text-decoration: underline; }
-  .countdown { margin-top: 2rem; font-size: 1.0625rem; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
-  /* 2026-11-01 interactive countdown unit: digits, one tap target, What's-next panel */
-  .cdx { margin-top: 0.25rem; }
-  .cdx [hidden] { display: none !important; }
-  .cdx-main { display: block; text-decoration: none; color: inherit; text-align: center; padding: .35rem .9rem; border-radius: 14px; cursor: pointer; }
-  .cdx-main:hover { background: rgba(180, 83, 9, .06); }
-  .cdx-main:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-  .cdx-digits { display: flex; gap: .9rem; justify-content: center; align-items: flex-start; margin-bottom: .15rem; }
-.cdx-cell { display: flex; flex-direction: column; align-items: center; min-width: 2.7ch; }
-  .cdx-cell.cd-d { min-width: 3.7ch; }
-  .cdx-cell b { font-size: clamp(1.85rem, 8.5vw, 2.5rem); line-height: 1; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--accent); }
-  .cdx-cell i { font-style: normal; font-size: .62rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-top: .32rem; }
-  .cdx .countdown { display: block; margin: 0; }
-  .cdx-cta { display: block; margin-top: .25rem; font-weight: 700; color: var(--accent); }
-  .cdx-more { display: block; margin: 0 auto; background: none; border: 0; font: inherit; font-size: .92rem; font-weight: 600; color: var(--muted); cursor: pointer; padding: .3rem .8rem; min-height: 44px; }
-  .cdx-more:hover { color: var(--accent); }
-  .cdx-more:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
-  .cdx-panel { border: 1px solid #e5e7eb; border-radius: 12px; padding: .75rem .95rem; margin-top: .4rem; text-align: left; background: #fff; }
-  .cdx-break { font-weight: 700; margin: 0 0 .3rem; }
-  .cdx-break:empty { display: none; }
-  .cdx-mile { margin: 0; }
   .askdoor { margin-top: 0.5rem; font-size: 1.0625rem; }
   .askdoor a { color: var(--accent); font-weight: 700; }
   .cta { margin-top: 0.5rem; }
@@ -137,11 +96,6 @@
   }
   /* SPEC-TD-COLDQA1104-01 (2026-11-05): the hero step-1 form. Inputs and
      the button keep 48px tap targets; the button mirrors .cta a. */
-  .hcalc { display: flex; flex-wrap: wrap; gap: 0.5rem 0.75rem; align-items: end; justify-content: center; margin: 0.75rem auto 0; max-width: 34rem; }
-  .hcalc .hf { display: flex; flex-direction: column; gap: 0.25rem; text-align: left; }
-  .hcalc label { font-size: 0.875rem; font-weight: 600; }
-  .hcalc input { min-height: 48px; font-size: 1rem; padding: 0.4rem 0.6rem; border: 1px solid #b6c2cc; border-radius: 0.6rem; background: #fff; color: inherit; }
-  .hcalc button { min-height: 48px; background: var(--accent); color: #fff; font-weight: 700; font-size: 1.0625rem; padding: 0.8rem 1.6rem; border: 0; border-radius: 999px; cursor: pointer; }
   .info { text-align: left; margin-top: 3rem; width: 100%; max-width: 34rem; }
   /* 2026-11-01 first-screen fix: pull the Short answer card into the first
      screen (spacing only — no copy or number changes), and keep page-end
@@ -171,16 +125,6 @@
   .how-steps li::before { content: counter(step); display: inline-block; font-weight: 800; color: var(--accent); margin-right: 0.5rem; }
   .how-steps .ln { margin-left: 1.6rem; color: #374151; }
 
-  .tl { display: flex; align-items: flex-start; gap: 0.625rem; margin-top: 1rem; text-align: left; }
-  .tl-node { display: flex; flex-direction: column; min-width: 4.75rem; }
-  .tl-node strong { font-size: 1rem; line-height: 1.3; color: var(--ink); }
-  .tl-end { text-align: right; }
-  .tl-k { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent); }
-  .tl-track { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.3rem; padding-top: 0.5rem; min-width: 3.5rem; }
-  .tl-dots { position: relative; display: flex; justify-content: center; gap: 0.45rem; width: 100%; }
-  .tl-dots::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 2px solid #e7d8c3; }
-  .tl-dots i { width: 0.7rem; height: 0.7rem; border-radius: 50%; background: var(--accent); position: relative; flex: none; }
-  .tl-cap { font-size: 0.875rem; font-weight: 600; color: var(--muted); }
   .bands { margin: 0.5rem 0 1rem; text-align: left; }
   .band { display: grid; grid-template-columns: 4.9rem 1fr 4.4rem 6.4rem; align-items: center; gap: 0.625rem; padding: 0.45rem 0; border-bottom: 1px solid #e7d8c3; }
   .bands .band:last-child { border-bottom: 0; }
@@ -215,25 +159,10 @@
   .shortanswer li { display: flex; flex-direction: column; gap: 0.1rem; padding: 0.35rem 0; margin-bottom: 0; border-bottom: 1px solid #f0e4cf; }
   .shortanswer li:last-child { border-bottom: 0; }
   .shortanswer li strong { font-size: 1.35rem; line-height: 1.2; white-space: nowrap; }
-  .shortanswer .ex { margin-top: 0.85rem; padding: 0.8rem 0.9rem; background: #faf3e3; border-radius: 10px; font-size: 1.0625rem; color: var(--ink); }
-  .shortanswer .ex strong { font-size: 1.5rem; line-height: 1.15; color: var(--accent); white-space: nowrap; }
-  .shortanswer .note { color: var(--muted); font-size: 0.9375rem; margin-top: 0.5rem; }
   .bands { border: 1px solid #e7d8c3; border-radius: 12px; background: #fff; padding: 0.6rem 1rem 0.75rem; }
   .bands + p { border: 1px solid #e7d8c3; border-radius: 12px; background: #fff; padding: 0.9rem 1rem 0.4rem; margin-top: 1rem; text-align: left; }
   .bands + p .ln:first-child { font-weight: 800; font-size: 1.0625rem; color: var(--ink); }
   .way span { font-size: 0.9375rem; font-weight: 600; color: var(--ink); }
-  /* SPEC-TD-EVE-01/02 (2026-11-04): the hero example sits directly
-     under the identity line. The strip keeps its normal gap here —
-     the phone rule that pushed the strip below the fold applied to
-     its old spot under the Short Answer card, where its dates
-     duplicated the card; in the hero it IS the example, so it stays
-     on screen one at every width. The countdown unit is display
-     only now (SPEC-TD-EVE-02): no pointer cursor. */
-  .heroex-wrap { width: 100%; max-width: 34rem; margin-bottom: 0.75rem; }
-  .heroex-wrap .tl { margin-top: 0.75rem; }
-  .heroex p { margin-bottom: 0; }
-  .cdx-main { cursor: default; }
-  .cdx-main:hover { background: none; }
   /* 2026-11-01 D7: explicit touch handling on the homepage's tap targets. */
   a, button { touch-action: manipulation; }
   /* 2026-11-02 SPEC-VERIFY-1/2 fix (Addendum 1117): on a phone the whole
@@ -245,20 +174,11 @@
   .askdoor a { display: inline-block; padding: 10px 3px; min-height: 44px; }
   @media (max-width: 640px) {
     main { padding-top: 0.35rem; }
-    .kicker { font-size: 0.8rem; margin-bottom: 0.3rem; padding: 0.18rem 0.7rem; }
     h1 { font-size: 2.1rem; line-height: 1.1; margin-bottom: 0.15rem; }
     .tagline { font-size: 1rem; line-height: 1.28; margin-bottom: 0.25rem; }
     .cta { margin-top: 0.1rem; }
     .cta a { padding: 0.58rem 1.6rem; }
     .askdoor { margin-top: 0.15rem; }
-    .steps { margin-top: 0; }
-    .step .dot { width: 0.7rem; height: 0.7rem; margin-bottom: 0.25rem; }
-    .step .label { font-size: 0.85rem; line-height: 1.25; }
-    .cdx { margin-top: 0; }
-    .cdx-main { padding: 0.25rem 0.9rem; }
-    .cdx-cell b { font-size: 1.4rem; }
-    .cdx-cell i { margin-top: 0.2rem; }
-    .cdx .countdown { font-size: 0.95rem; line-height: 1.3; }
     main > section.info:first-of-type { margin-top: 0.3rem; }
     main > section.info:first-of-type h2 { font-size: 1.05rem; line-height: 1.25; margin-bottom: 0.05rem; white-space: nowrap; }
     .shortanswer { padding: 0.45rem 0.9rem; }
@@ -266,17 +186,83 @@
     .shortanswer ul { margin: 0.2rem 0 0.1rem; }
     .shortanswer li { padding: 0.18rem 0; gap: 0; line-height: 1.25; }
     .shortanswer li strong { font-size: 1.1rem; line-height: 1.12; }
-    .shortanswer .ex { margin-top: 0.3rem; padding: 0.45rem 0.65rem; }
-    .shortanswer .ex strong { font-size: 1.12rem; }
-    .shortanswer .note { margin-top: 0.25rem; }
-    /* 2026-11-02 SPEC-VERIFY1117-1 fix: the timeline strip (.tl) below the
-       card started at y~790 on a 390x844 phone, inside the fixed ask pill's
-       band (780-828), so the pill covered its Dinner node and 4-days
-       caption. Every date on the strip is already readable in the card
-       above it, so on phones the strip starts below the fold instead:
-       extra top margin pushes its top edge past the 844px viewport.
-       Spacing only — no copy, date, or USDA number changes. */
-    .tl { margin-top: 4.5rem; }
+  }
+  /* 2026-11-05 journey unit: screen one is ONE interactive unit — the
+     worked example and the tool at once. It replaces the stacked
+     example card, brand block, hero form, dots row, and countdown
+     block that used to repeat the same facts four ways. The math
+     mirrors the calculator engine (USDA bands, verified 2026-10-22);
+     day steps are calendar days in the visitor's own timezone. */
+  .ju { width: 100%; max-width: 34rem; margin-top: 0.25rem; border: 2px solid var(--accent); border-radius: 14px; background: #fff; padding: 1rem 1.1rem 1.1rem; text-align: left; }
+  .ju [hidden] { display: none !important; }
+  .ju-head { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; }
+  .ju-head h1 { font-size: 1.8rem; line-height: 1.1; margin: 0; }
+  .ju-chip { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 0.3rem 0.8rem; white-space: nowrap; }
+  .ju-hero { background: #faf3e3; border-radius: 10px; padding: 0.75rem 0.9rem; margin-top: 0.75rem; }
+  .ju-ex { display: block; font-size: 1.1rem; color: var(--ink); }
+  .ju-ex strong { font-size: 1.5rem; line-height: 1.15; color: var(--accent); white-space: nowrap; }
+  .ju-note { display: block; color: var(--muted); font-size: 0.95rem; margin-top: 0.35rem; }
+  .ju-inputs { margin-top: 0.95rem; display: flex; flex-direction: column; gap: 0.85rem; }
+  .ju-flabel { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.35rem; }
+  .ju-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .ju-chipbtn { min-height: 44px; padding: 0.45rem 0.95rem; border-radius: 999px; border: 1px solid #b6c2cc; background: #fff; color: var(--ink); font: inherit; font-weight: 600; cursor: pointer; }
+  .ju-chipbtn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .ju-chipbtn:focus-visible, .ju-full:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .ju-other { display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 0.55rem; font-weight: 600; font-size: 0.95rem; }
+  .ju-other input { width: 5.25rem; min-height: 48px; font-size: 1rem; padding: 0.4rem 0.6rem; border: 1px solid #b6c2cc; border-radius: 0.6rem; background: #fff; color: inherit; }
+  .ju-warn { margin-top: 0.5rem; font-size: 0.92rem; font-weight: 600; color: #9a3412; }
+  .ju-dinner { display: flex; flex-wrap: wrap; gap: 0.5rem 0.75rem; }
+  .ju-dinner .hf { display: flex; flex-direction: column; gap: 0.25rem; }
+  .ju-dinner label { font-size: 0.875rem; font-weight: 600; }
+  .ju-dinner input { min-height: 48px; font-size: 1rem; padding: 0.4rem 0.6rem; border: 1px solid #b6c2cc; border-radius: 0.6rem; background: #fff; color: inherit; }
+  .ju-steps { list-style: none; display: flex; align-items: flex-start; margin-top: 1.1rem; padding: 0; }
+  .ju-step { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; padding: 0 0.15rem; }
+  .ju-step::before { content: ""; position: absolute; top: 0.45rem; left: -50%; width: 100%; border-top: 2px solid #e7d8c3; }
+  .ju-step:first-child::before { display: none; }
+  .ju-dot { width: 0.9rem; height: 0.9rem; border-radius: 50%; background: var(--accent); position: relative; z-index: 1; margin-bottom: 0.45rem; }
+  .ju-step.ju-here-step .ju-dot { box-shadow: 0 0 0 3px #fff, 0 0 0 5.5px var(--accent); }
+  .ju-slabel { font-size: 0.95rem; font-weight: 700; color: #374151; }
+  .ju-sdate { font-size: 1.02rem; font-weight: 800; color: var(--ink); white-space: nowrap; margin-top: 0.1rem; }
+  .ju-scap { font-size: 0.8rem; color: var(--muted); margin-top: 0.15rem; line-height: 1.3; }
+  .ju-here { margin-top: 0.4rem; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; background: var(--accent); color: #fff; border-radius: 999px; padding: 0.18rem 0.55rem; white-space: nowrap; }
+  .ju-step.ju-off .ju-dot { background: #d8c9ae; }
+  .ju-step.ju-off .ju-sdate { color: var(--muted); }
+  .ju-status { margin-top: 0.9rem; font-size: 0.98rem; font-weight: 600; color: var(--ink); }
+  .ju-cd { margin-top: 0.9rem; border-top: 1px solid #f0e4cf; padding-top: 0.85rem; text-align: center; }
+  .ju-cd-digits { display: flex; gap: 0.9rem; justify-content: center; align-items: flex-start; margin-bottom: 0.15rem; }
+  .ju-cd-cell { display: flex; flex-direction: column; align-items: center; min-width: 2.7ch; }
+  .ju-cd-cell.ju-cd-d { min-width: 3.7ch; }
+  .ju-cd-cell b { font-size: clamp(1.85rem, 8.5vw, 2.5rem); line-height: 1; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--accent); }
+  .ju-cd-cell i { font-style: normal; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-top: 0.32rem; }
+  .ju-cd-label { font-size: 1.05rem; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .ju-cd-sub { color: var(--muted); font-size: 0.92rem; margin-top: 0.2rem; }
+  .ju-full { display: inline-flex; align-items: center; min-height: 44px; margin-top: 0.85rem; color: var(--accent); font-weight: 700; text-decoration: none; }
+  .ju-full:hover { text-decoration: underline; }
+  @media (max-width: 640px) {
+    /* Phone compression: the whole journey visual must clear the
+       first screen (and the fixed ask pill's band at the bottom)
+       at 390x844 — head on one row, dinner fields side by side,
+       the brine toggle on one line, tighter steps. */
+    .ju { padding: 0.85rem 0.9rem 1rem; }
+    .ju-head { flex-wrap: nowrap; }
+    .ju-head h1 { font-size: 1.4rem; }
+    .ju-chip { font-size: 0.7rem; padding: 0.25rem 0.6rem; }
+    .ju-hero { padding: 0.6rem 0.8rem; margin-top: 0.6rem; }
+    .ju-ex { font-size: 1.05rem; }
+    .ju-ex strong { white-space: normal; font-size: 1.3rem; }
+    .ju-inputs { gap: 0.6rem; margin-top: 0.75rem; }
+    .ju-other { margin-top: 0.4rem; }
+    .ju-dinner { flex-wrap: nowrap; }
+    .ju-dinner .hf { flex: 1 1 0; min-width: 0; }
+    .ju-dinner input { width: 100%; }
+    .ju-brinef { display: flex; align-items: center; gap: 0.6rem; }
+    .ju-brinef .ju-flabel { margin-bottom: 0; white-space: nowrap; }
+    .ju-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem 0.5rem; margin-top: 0.8rem; }
+    .ju-step::before { display: none; }
+    .ju-dot { margin-bottom: 0.3rem; }
+    .ju-here { display: none; }
+    .ju-step.ju-here-step .ju-slabel { color: var(--accent); }
+    .ju-cd-cell b { font-size: 1.55rem; }
   }
 </style>
 <script>
@@ -441,54 +427,61 @@ window.FLEET_CFG = {
 </head>
 <body>
 <main>
-  <!-- SPEC-TD-EVE-01 (2026-11-04): identity first, then the concrete
-       example directly under it, then the brand lockup, then the CTA.
-       The example block (the 14 lb worked example + its timeline
-       strip) moved up from the Short Answer card with its wording
-       and dates unchanged; it now lives only here. -->
-  <!-- SPEC-TD-COLDQA1104-02 (2026-11-05): the first line is now a true
-       identity line — it says "turkey" and what the site does. The old
-       line never named the bird at all. -->
+  <!-- 2026-11-05 journey unit: identity first, then ONE unit that is
+       the worked example and the tool at once. Screen one used to
+       repeat the same facts four ways (example card, brand block,
+       hero form, dots row, countdown block); they now live in this
+       unit only. Inputs sit inside it and every date updates live —
+       no submit, no separate result step. The Short Answer card
+       below is unchanged and still serves search arrivals. -->
   <p class="tagline">ThawDay tells you when to thaw your turkey.</p>
-  <div class="heroex-wrap">
-    <div class="shortanswer heroex">
-      <p><span class="ln ex">A 14 lb bird moves <strong>Sunday, November 22</strong>.</span><span class="ln note">Your dinner hour does not change this date.</span></p>
+  <section class="ju" aria-label="Your turkey timeline">
+    <div class="ju-head">
+      <h1>ThawDay</h1>
+      <span class="ju-chip" id="ju-chip">For Thanksgiving 2026</span>
     </div>
-    <div class="tl"><div class="tl-node"><span class="tl-k">Move &middot; 14 lb</span><strong>Sun, Nov 22</strong></div><div class="tl-track"><span class="tl-dots"><i></i><i></i><i></i><i></i></span><span class="tl-cap">4 days</span></div><div class="tl-node tl-end"><span class="tl-k">Dinner</span><strong>Thu, Nov 26</strong></div></div>
-  </div>
-  <span class="kicker">For Thanksgiving 2026</span>
-  <h1>ThawDay</h1>
-  <!-- SPEC-TD-COLDQA1104-01 (2026-11-05): step 1 of the calculator starts
-       on this page — dinner date and time are entered here and carried to
-       /calculator as its own d/t plan parameters (the same parameters
-       share links use, so the plan opens with them filled in). The form
-       is still screen one's one door to the calculator, and the button
-       keeps the old CTA's words. Works with no JavaScript (plain GET). -->
-  <form class="hcalc" method="get" action="/calculator">
-    <span class="hf"><label for="hdate">Dinner date</label><input id="hdate" name="d" type="date" value="2026-11-26" required></span>
-    <span class="hf"><label for="htime">Dinner time</label><input id="htime" name="t" type="time" value="17:00" required></span>
-    <button type="submit">Get my turkey timeline</button>
-  </form>
-  <div class="steps" aria-hidden="true">
-    <div class="step"><span class="dot"></span><span class="label">Buy</span></div>
-    <div class="step"><span class="dot"></span><span class="label">Thaw</span></div>
-    <div class="step"><span class="dot"></span><span class="label">Brine</span></div>
-    <div class="step"><span class="dot"></span><span class="label">Roast</span></div>
-  </div>
-  <div class="cdx">
-    <!-- SPEC-TD-EVE-02 (2026-11-04): the countdown is display only —
-         the hero CTA above is screen one's one door to /calculator.
-         The unit's text, digits, and ticking are unchanged. -->
-    <div class="cdx-main" id="cdx-main" role="img" aria-label="Counting down to Thanksgiving, Thursday, November 26, 2026.">
-      <span class="cdx-digits" id="cdx-digits" aria-hidden="true" hidden><span class="cdx-cell cd-d"><b id="cdx-d"></b><i id="cdx-dl">days</i></span><span class="cdx-cell"><b id="cdx-h">00</b><i>hrs</i></span><span class="cdx-cell"><b id="cdx-m">00</b><i>min</i></span><span class="cdx-cell"><b id="cdx-s">00</b><i>sec</i></span></span>
-      <span class="countdown" id="countdown">Counting down to Thanksgiving, Thursday, November 26, 2026.</span>
+    <p class="ju-hero"><span class="ju-ex" id="ju-hero-main">A 14 lb bird moves <strong>Sunday, November 22</strong>.</span><span class="ju-note" id="ju-hero-note">Your dinner hour does not change this date.</span></p>
+    <div class="ju-inputs">
+      <div>
+        <span class="ju-flabel" id="ju-wlabel">Turkey weight</span>
+        <div class="ju-chips" role="group" aria-labelledby="ju-wlabel">
+          <button type="button" class="ju-chipbtn" data-w="10" aria-pressed="false">10 lb</button>
+          <button type="button" class="ju-chipbtn" data-w="12" aria-pressed="false">12 lb</button>
+          <button type="button" class="ju-chipbtn" data-w="14" aria-pressed="true">14 lb</button>
+          <button type="button" class="ju-chipbtn" data-w="16" aria-pressed="false">16 lb</button>
+          <button type="button" class="ju-chipbtn" data-w="18" aria-pressed="false">18 lb</button>
+          <button type="button" class="ju-chipbtn" data-w="20" aria-pressed="false">20 lb</button>
+          <button type="button" class="ju-chipbtn" data-w="24" aria-pressed="false">24 lb</button>
+        </div>
+        <span class="ju-other"><label for="ju-weight">Other weight</label><input id="ju-weight" type="number" min="4" max="24" step="1" value="14" inputmode="numeric"><span aria-hidden="true">lb</span></span>
+        <p class="ju-warn" id="ju-warn" hidden>ThawDay covers 4 to 24 lb birds, the range in the USDA charts. For a bigger bird, call the USDA hotline: 1-888-674-6854.</p>
+      </div>
+      <div class="ju-dinner">
+        <span class="hf"><label for="ju-date">Dinner date</label><input id="ju-date" type="date" value="2026-11-26"></span>
+        <span class="hf"><label for="ju-time">Dinner time</label><input id="ju-time" type="time" value="17:00"></span>
+      </div>
+      <div class="ju-brinef">
+        <span class="ju-flabel" id="ju-blabel">Brine?</span>
+        <div class="ju-chips" role="group" aria-labelledby="ju-blabel">
+          <button type="button" class="ju-chipbtn" id="ju-brine-no" aria-pressed="true">No brine</button>
+          <button type="button" class="ju-chipbtn" id="ju-brine-yes" aria-pressed="false">I&rsquo;m brining</button>
+        </div>
+      </div>
     </div>
-    <button class="cdx-more" id="cdx-more" type="button" aria-expanded="false" aria-controls="cdx-panel" hidden>What&rsquo;s next? <span aria-hidden="true">&#9662;</span></button>
-    <div class="cdx-panel" id="cdx-panel" hidden>
-      <p class="cdx-break" id="cdx-break"></p>
-      <p class="cdx-mile" id="cdx-mile">Next do-by: buy a frozen turkey by <strong>Sunday, November 15, 2026</strong>. Biggest birds (21&ndash;24 lb) move to the fridge <strong>Friday, November 20, 2026</strong>.</p>
+    <ol class="ju-steps">
+      <li class="ju-step" id="ju-step-buy"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Buy</span><strong class="ju-sdate" id="ju-buy-date">Sun, Nov 15</strong><span class="ju-scap" id="ju-buy-cap">Buy by this date</span><span class="ju-here" id="ju-here-buy" hidden>You are here</span></li>
+      <li class="ju-step" id="ju-step-thaw"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Thaw</span><strong class="ju-sdate" id="ju-thaw-date">Sun, Nov 22</strong><span class="ju-scap" id="ju-thaw-cap">Move it to the fridge</span><span class="ju-here" id="ju-here-thaw" hidden>You are here</span></li>
+      <li class="ju-step ju-off" id="ju-step-brine"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Brine</span><strong class="ju-sdate" id="ju-brine-date">Wed, Nov 25</strong><span class="ju-scap" id="ju-brine-cap">If you brine</span><span class="ju-here" id="ju-here-brine" hidden>You are here</span></li>
+      <li class="ju-step" id="ju-step-roast"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Roast</span><strong class="ju-sdate" id="ju-roast-date">Thu, Nov 26</strong><span class="ju-scap" id="ju-roast-cap">In the oven by 1:17 PM</span><span class="ju-here" id="ju-here-roast" hidden>You are here</span></li>
+    </ol>
+    <p class="ju-status" id="ju-status">First step: buy a frozen turkey by Sunday, November 15.</p>
+    <div class="ju-cd" id="ju-cd" role="img" aria-label="Counting down to move day, Sunday, November 22.">
+      <div class="ju-cd-digits" id="ju-cd-digits" aria-hidden="true" hidden><span class="ju-cd-cell ju-cd-d"><b id="ju-cd-d"></b><i id="ju-cd-dl">days</i></span><span class="ju-cd-cell"><b id="ju-cd-h">00</b><i>hrs</i></span><span class="ju-cd-cell"><b id="ju-cd-m">00</b><i>min</i></span><span class="ju-cd-cell"><b id="ju-cd-s">00</b><i>sec</i></span></div>
+      <p class="ju-cd-label" id="ju-cd-label">Counting down to move day, Sunday, November 22.</p>
+      <p class="ju-cd-sub" id="ju-cd-sub">Dinner is Thursday, November 26, 2026.</p>
     </div>
-  </div>
+    <a class="ju-full" id="ju-full" href="/calculator?w=14&amp;s=frozen&amp;b=no&amp;d=2026-11-26&amp;t=17:00">See the full day-by-day plan</a>
+  </section>
   <section class="info" aria-label="Short answer for Thanksgiving 2026">
     <h2>Short answer for Thanksgiving 2026</h2>
     <div class="shortanswer">
@@ -608,80 +601,159 @@ window.FLEET_CFG = {
 </footer>
 <script>
 (function () {
-  var el = document.getElementById("countdown");
-  if (!el) return;
-  /* 2026-11-01 countdown fleet pass: live clock to Thanksgiving dinner,
-     5:00 PM in the visitor's own timezone (2026-11-03 SPEC-COLDQA1103-1
-     fix: the target is built from the visitor's local calendar, the
-     fleet standard; it was one fixed Pacific instant for everyone).
-     Ticks every second
-     (days, hours, minutes, seconds). At dinner time the line says
-     Thanksgiving is today; the next few days point at next year, then
-     the count resumes. Reduced motion: the original static day count. */
-  function thanksgiving(year) {
-    var nov1 = new Date(year, 10, 1);
-    var offset = (4 - nov1.getDay() + 7) % 7;
-    return new Date(year, 10, 1 + offset + 21);
+  "use strict";
+  /* 2026-11-05 journey unit engine + wiring. The plan math mirrors the
+     calculator engine (same page family, /calculator): USDA fridge
+     bands [[12,3],[16,4],[20,5],[24,6]], roast midpoints at 325 F,
+     20-minute rest, brine 24 hours before oven-in, buy 11 calendar
+     days before dinner for a frozen bird. Day steps use setDate
+     arithmetic so they keep the dinner's wall-clock time across a
+     daylight-saving change (the calculator's ADV-3 rule); minute
+     steps are real durations. Everything is computed in the visitor's
+     own timezone from the visitor's clock. */
+  /* JU-ENGINE START */
+  var THAW_BANDS = [[12, 3], [16, 4], [20, 5], [24, 6]];
+  var ROAST_BANDS = [[12, [165, 180]], [14, [180, 225]], [18, [225, 255]], [20, [255, 270]], [24, [270, 300]]];
+  var FROZEN_BANDS = [[12, [255, 270]], [14, [270, 345]], [18, [345, 390]], [20, [390, 405]], [24, [405, 450]]];
+  var REST_MIN = 20, BRINE_BEFORE_OVEN_MIN = 1440, CW_MIN_PER_LB = 30;
+  function juThawDays(lb) { for (var i = 0; i < THAW_BANDS.length; i++) { if (lb <= THAW_BANDS[i][0]) return THAW_BANDS[i][1]; } return 6; }
+  function juBandMid(bands, lb, fallback) { for (var i = 0; i < bands.length; i++) { if (lb <= bands[i][0]) { var b = bands[i][1]; return Math.round((b[0] + b[1]) / 2); } } return fallback; }
+  function juRoastMinutes(lb) { return juBandMid(ROAST_BANDS, lb, 285); }
+  function juFrozenRoastMinutes(lb) { return juBandMid(FROZEN_BANDS, lb, 428); }
+  function juDaysBefore(d, n) { var x = new Date(d.getTime()); x.setDate(x.getDate() - n); return x; }
+  function juThanksgiving(year) { var nov1 = new Date(year, 10, 1); var off = (4 - nov1.getDay() + 7) % 7; return new Date(year, 10, 1 + off + 21); }
+  function juStartOfDay(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  function juCompute(dinner, lb, brine, now) {
+    var MIN = 60000;
+    var ovenIn = new Date(dinner.getTime() - (juRoastMinutes(lb) + REST_MIN) * MIN);
+    var brineStart = new Date(ovenIn.getTime() - BRINE_BEFORE_OVEN_MIN * MIN);
+    var buy = juDaysBefore(dinner, 11);
+    var thawStart = brine ? juDaysBefore(brineStart, juThawDays(lb)) : juDaysBefore(ovenIn, juThawDays(lb));
+    var mode = "fridge", cwStart = null, effOvenIn = ovenIn;
+    if (dinner.getTime() <= now.getTime()) { mode = "past"; }
+    else if (now.getTime() > thawStart.getTime()) {
+      cwStart = new Date(ovenIn.getTime() - lb * CW_MIN_PER_LB * MIN);
+      if (cwStart.getTime() > now.getTime()) { mode = "coldwater"; }
+      else { mode = "frozen"; effOvenIn = new Date(dinner.getTime() - (juFrozenRoastMinutes(lb) + REST_MIN) * MIN); }
+    }
+    return { mode: mode, buy: buy, thawStart: thawStart, brineStart: brineStart, ovenIn: ovenIn, effOvenIn: effOvenIn, cwStart: cwStart, dinner: dinner };
+  }
+  /* JU-ENGINE END */
+
+  function $(id) { return document.getElementById(id); }
+  var chipEl = $("ju-chip"), heroMain = $("ju-hero-main"), heroNote = $("ju-hero-note");
+  var dateEl = $("ju-date"), timeEl = $("ju-time"), weightEl = $("ju-weight"), warnEl = $("ju-warn");
+  var buyDateEl = $("ju-buy-date"), buyCapEl = $("ju-buy-cap");
+  var thawDateEl = $("ju-thaw-date"), thawCapEl = $("ju-thaw-cap");
+  var brineStepEl = $("ju-step-brine"), brineDateEl = $("ju-brine-date"), brineCapEl = $("ju-brine-cap");
+  var roastDateEl = $("ju-roast-date"), roastCapEl = $("ju-roast-cap");
+  var statusEl = $("ju-status"), fullEl = $("ju-full");
+  var cdEl = $("ju-cd"), cdDigits = $("ju-cd-digits"), cdD = $("ju-cd-d"), cdH = $("ju-cd-h"),
+      cdM = $("ju-cd-m"), cdS = $("ju-cd-s"), cdDl = $("ju-cd-dl"),
+      cdLabel = $("ju-cd-label"), cdSub = $("ju-cd-sub");
+  if (!dateEl || !timeEl || !weightEl) return;
+
+  var FMT_LONG = { weekday: "long", month: "long", day: "numeric" };
+  var FMT_LONG_Y = { weekday: "long", month: "long", day: "numeric", year: "numeric" };
+  var FMT_SHORT = { weekday: "short", month: "short", day: "numeric" };
+  function fmtLong(d) { return d.toLocaleDateString("en-US", FMT_LONG); }
+  function fmtLongY(d) { return d.toLocaleDateString("en-US", FMT_LONG_Y); }
+  function fmtShort(d) { return d.toLocaleDateString("en-US", FMT_SHORT); }
+  function fmtTime(d) { return d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }); }
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+  function isoDate(d) { return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); }
+
+  var state = { lb: 14, brine: false };
+  var cur = { dinner: null, plan: null };
+
+  function readDinner() {
+    var dv = dateEl.value, tv = timeEl.value || "17:00";
+    var dm = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dv || "");
+    if (!dm) return null;
+    var tm = /^(\d{2}):(\d{2})/.exec(tv);
+    var hh = tm ? Number(tm[1]) : 17, mm = tm ? Number(tm[2]) : 0;
+    return new Date(Number(dm[1]), Number(dm[2]) - 1, Number(dm[3]), hh, mm);
+  }
+
+  function syncChips() {
+    var chips = document.querySelectorAll(".ju-chipbtn[data-w]");
+    for (var i = 0; i < chips.length; i++) {
+      chips[i].setAttribute("aria-pressed", Number(chips[i].getAttribute("data-w")) === state.lb ? "true" : "false");
+    }
+    $("ju-brine-no").setAttribute("aria-pressed", state.brine ? "false" : "true");
+    $("ju-brine-yes").setAttribute("aria-pressed", state.brine ? "true" : "false");
+  }
+
+  function setHere(step) {
+    var ids = ["buy", "thaw", "brine", "roast"];
+    for (var i = 0; i < ids.length; i++) {
+      var tag = $("ju-here-" + ids[i]), node = $("ju-step-" + ids[i]);
+      var on = ids[i] === step;
+      if (tag) tag.hidden = !on;
+      if (node) node.classList.toggle("ju-here-step", on);
+    }
+  }
+
+  function renderPlan() {
+    var dinner = readDinner();
+    if (!dinner) return;
+    var now = new Date();
+    var plan = juCompute(dinner, state.lb, state.brine, now);
+    cur.dinner = dinner; cur.plan = plan;
+    var lb = state.lb;
+
+    var tg = juThanksgiving(dinner.getFullYear());
+    var isTG = dinner.getFullYear() === tg.getFullYear() && dinner.getMonth() === tg.getMonth() && dinner.getDate() === tg.getDate();
+    chipEl.textContent = isTG ? "For Thanksgiving " + dinner.getFullYear() : "For " + fmtLong(dinner);
+
+    if (plan.mode === "fridge") {
+      heroMain.innerHTML = "A " + lb + " lb bird moves <strong>" + fmtLong(plan.thawStart) + "</strong>.";
+      heroNote.textContent = state.brine ? "Brining is counted in: the brine day pulls the move a day earlier." : "Your dinner hour does not change this date.";
+    } else if (plan.mode === "coldwater") {
+      heroMain.innerHTML = "Fridge day has passed for a " + lb + " lb bird.";
+      heroNote.textContent = "Cold water still works: start by " + fmtTime(plan.cwStart) + " on " + fmtLong(plan.cwStart) + ".";
+    } else if (plan.mode === "frozen") {
+      heroMain.innerHTML = "No thaw time left for a " + lb + " lb bird.";
+      heroNote.textContent = "Cook it from frozen: in the oven by " + fmtTime(plan.effOvenIn) + " on " + fmtLong(plan.effOvenIn) + ".";
+    } else {
+      heroMain.innerHTML = "That dinner time is past.";
+      heroNote.textContent = "Pick a date ahead of you, and the plan lines up.";
+    }
+
+    buyDateEl.textContent = fmtShort(plan.buy);
+    if (plan.mode === "fridge") {
+      thawDateEl.textContent = fmtShort(plan.thawStart);
+      thawCapEl.textContent = "Move it to the fridge";
+      brineStepEl.classList.toggle("ju-off", !state.brine);
+      brineDateEl.textContent = fmtShort(plan.brineStart);
+      brineCapEl.textContent = state.brine ? "24 hours in the fridge" : "If you brine";
+    } else if (plan.mode === "coldwater") {
+      thawDateEl.textContent = fmtShort(plan.cwStart);
+      thawCapEl.textContent = "Cold water: start by " + fmtTime(plan.cwStart);
+      brineStepEl.classList.add("ju-off");
+      brineDateEl.textContent = "Skip";
+      brineCapEl.textContent = "No brine on this path";
+    } else if (plan.mode === "frozen") {
+      thawDateEl.textContent = fmtShort(plan.effOvenIn);
+      thawCapEl.textContent = "Cook from frozen";
+      brineStepEl.classList.add("ju-off");
+      brineDateEl.textContent = "Skip";
+      brineCapEl.textContent = "This bird cannot be brined";
+    } else {
+      thawDateEl.textContent = fmtShort(plan.thawStart);
+      thawCapEl.textContent = "Move it to the fridge";
+      brineStepEl.classList.toggle("ju-off", !state.brine);
+      brineDateEl.textContent = fmtShort(plan.brineStart);
+      brineCapEl.textContent = state.brine ? "24 hours in the fridge" : "If you brine";
+    }
+    roastDateEl.textContent = fmtShort(dinner);
+    roastCapEl.textContent = "In the oven by " + fmtTime(plan.mode === "frozen" ? plan.effOvenIn : plan.ovenIn);
+
+    fullEl.setAttribute("href", "/calculator?w=" + lb + "&s=frozen&b=" + (state.brine ? "yes" : "no") + "&d=" + isoDate(dinner) + "&t=" + pad2(dinner.getHours()) + ":" + pad2(dinner.getMinutes()));
+    renderLive();
   }
 
   function cdUnit(n, w) { return n + " " + w + (n === 1 ? "" : "s"); }
-  function cdTick(ms, tail) {
-    var s = Math.floor(ms / 1000);
-    var d = Math.floor(s / 86400); s -= d * 86400;
-    var h = Math.floor(s / 3600); s -= h * 3600;
-    var m = Math.floor(s / 60); var sec = s - m * 60;
-    var seg = [];
-    if (d > 0) seg.push(cdUnit(d, "day"));
-    if (d > 0 || h > 0) seg.push(cdUnit(h, "hour"));
-    seg.push(cdUnit(m, "minute"));
-    seg.push(cdUnit(sec, "second"));
-    return seg.join(", ") + " until " + tail;
-  }
-  function dayText(now) {
-    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    var year = today.getFullYear();
-    var tg = thanksgiving(year);
-    var rolled = false;
-    if (today > tg) { tg = thanksgiving(year + 1); rolled = true; }
-    var days = Math.round((tg - today) / 86400000);
-    var dateText = tg.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
-    if (days === 0) return "Thanksgiving is today, " + dateText + ".";
-    if (days <= 6) return "Thanksgiving is this week, in " + days + (days === 1 ? " day" : " days") + ": " + dateText + ".";
-    if (rolled) return "Thanksgiving has passed for this year. Next Thanksgiving is " + dateText + ", in " + days + " days.";
-    return days + " days until Thanksgiving, " + dateText + ".";
-  }
-  var RM = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  /* Reduced motion is handled by the render tail below (one render a minute). */
-  function tgDom(year) { return thanksgiving(year).getDate(); }
-  /* Visitor-local targets (fleet standard): 5:00 PM on Thanksgiving Day
-     in the visitor's own timezone, the local midnight ending that day,
-     and local midnight on Dec 1 — the same local-calendar construction
-     the sibling fleet countdowns use. */
-  function dinnerMs(year) { return new Date(year, 10, tgDom(year), 17, 0, 0).getTime(); }
-  function dayEndMs(year) { return new Date(year, 10, tgDom(year) + 1, 0, 0, 0).getTime(); }
-  function dec1Ms(year) { return new Date(year, 11, 1, 0, 0, 0).getTime(); }
-  function tgDateText(year) {
-    return new Date(year, 10, tgDom(year)).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
-  }
-  /* 2026-11-01 interactive upgrade: the clock is the hero unit now.
-     Digit blocks (days/hrs/min/sec, tabular numerals), the whole unit is
-     one tap target to the site's core action, and a "What's next?" toggle
-     opens a panel with the time left broken down plus the next do-by
-     milestone from this site's own pages. Reduced motion: the same
-     render once a minute instead of every second. The rollover math
-     above is unchanged from this morning's ship. */
-  var main = document.getElementById("cdx-main");
-  var digitsEl = document.getElementById("cdx-digits");
-  var dEl = document.getElementById("cdx-d"), hEl = document.getElementById("cdx-h"),
-      mEl = document.getElementById("cdx-m"), sEl = document.getElementById("cdx-s");
-  var dLab = document.getElementById("cdx-dl");
-  var moreBtn = document.getElementById("cdx-more");
-  var panel = document.getElementById("cdx-panel");
-  var breakEl = document.getElementById("cdx-break");
-  var mileEl = document.getElementById("cdx-mile");
-  var lastMileYear = 0;
-
-  function pad(n) { return (n < 10 ? "0" : "") + n; }
   function cdParts(ms) {
     var s = Math.max(0, Math.floor(ms / 1000));
     var d = Math.floor(s / 86400); s -= d * 86400;
@@ -689,77 +761,134 @@ window.FLEET_CFG = {
     var m = Math.floor(s / 60);
     return { d: d, h: h, m: m, s: s - m * 60 };
   }
-  var lastMs = null, panelOpen = false, lastBreakMin = -1, lastAriaMin = -1;
-  function updateBreak(now) {
-    if (!breakEl) return;
-    var min = Math.floor(now.getTime() / 60000);
-    if (min === lastBreakMin) return;
-    lastBreakMin = min;
-    if (lastMs === null) { breakEl.textContent = ""; return; }
-    var p = cdParts(lastMs), w = Math.floor(p.d / 7), rd = p.d - w * 7, seg = [];
-    if (w > 0) seg.push(cdUnit(w, "week"));
-    if (rd > 0) seg.push(cdUnit(rd, "day"));
-    seg.push(cdUnit(p.h, "hour"));
-    breakEl.textContent = "Time left: " + seg.join(", ") + ".";
-  }
-  if (moreBtn && panel) {
-    moreBtn.hidden = false;
-    moreBtn.addEventListener("click", function () {
-      panelOpen = !panelOpen;
-      panel.hidden = !panelOpen;
-      moreBtn.setAttribute("aria-expanded", panelOpen ? "true" : "false");
-      if (panelOpen) { lastBreakMin = -1; updateBreak(new Date()); }
-    });
-  }
-
+  var lastAriaMin = -1;
   function setAria(text, now) {
     var min = Math.floor(now.getTime() / 60000);
-    if (min !== lastAriaMin) { lastAriaMin = min; if (main) main.setAttribute("aria-label", text); }
+    if (min !== lastAriaMin) { lastAriaMin = min; cdEl.setAttribute("aria-label", text); }
   }
-  function showDigits(ms, tail) {
-    var p = cdParts(ms);
-    dEl.textContent = p.d; hEl.textContent = pad(p.h); mEl.textContent = pad(p.m); sEl.textContent = pad(p.s);
-    if (dLab) dLab.textContent = p.d === 1 ? "day" : "days";
-    digitsEl.hidden = false;
-    el.textContent = "until " + tail;
+  function cdSentence(ms, tail) {
+    var p = cdParts(ms), seg = [];
+    if (p.d > 0) seg.push(cdUnit(p.d, "day"));
+    if (p.d > 0 || p.h > 0) seg.push(cdUnit(p.h, "hour"));
+    seg.push(cdUnit(p.m, "minute"));
+    seg.push(cdUnit(p.s, "second"));
+    return seg.join(", ") + " " + tail;
   }
-  function showSentence(t) { digitsEl.hidden = true; el.textContent = t; }
-  if (el.getAttribute("aria-live")) el.removeAttribute("aria-live");
-  function render() {
+
+  function renderLive() {
+    if (!cur.dinner || !cur.plan) return;
     var now = new Date();
-    var tickMs = null, tail = "", sentence = "";
-    var ms = now.getTime();
-    var y = now.getFullYear();
-    var mileYear = y;
-    if (ms < dinnerMs(y)) {
-      tickMs = dinnerMs(y) - ms; tail = "Thanksgiving, " + tgDateText(y) + ".";
-    } else if (ms < dayEndMs(y)) {
-      sentence = "Thanksgiving is today, " + tgDateText(y) + ".";
-      mileYear = y + 1;
-    } else if (ms < dec1Ms(y)) {
-      var localToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      var tgN = thanksgiving(y + 1);
-      var dNext = Math.round((tgN - localToday) / 86400000);
-      sentence = "Thanksgiving has passed for this year. Next Thanksgiving is " + tgDateText(y + 1) + ", in " + dNext + " days.";
-      mileYear = y + 1;
+    var dinner = cur.dinner;
+    /* Recompute against the live clock so the mode (fridge / cold
+       water / from frozen / past) and the you-are-here state stay
+       true while the page sits open. */
+    var plan = juCompute(dinner, state.lb, state.brine, now);
+    if (plan.mode !== cur.plan.mode) { cur.plan = plan; renderPlan(); return; }
+    cur.plan = plan;
+
+    buyCapEl.textContent = (plan.mode === "fridge" && juStartOfDay(now).getTime() > juStartOfDay(plan.buy).getTime()) ? "Date passed — buy it now" : "Buy by this date";
+
+    var step = null, st = "";
+    if (plan.mode === "fridge") {
+      var today = juStartOfDay(now).getTime(), buyD = juStartOfDay(plan.buy).getTime(),
+          thawD = juStartOfDay(plan.thawStart).getTime(), dinD = juStartOfDay(dinner).getTime();
+      if (today < buyD) { step = "buy"; st = "You are here: before buy day. Buy a frozen turkey by " + fmtLong(plan.buy) + "."; }
+      else if (today === buyD) { step = "buy"; st = "You are here: buy day is today."; }
+      else if (today < thawD) { step = "thaw"; st = "You are here: the fridge move is next, on " + fmtLong(plan.thawStart) + "."; }
+      else if (today === thawD) { step = "thaw"; st = "You are here: move day is today. The bird goes to the fridge."; }
+      else if (today < dinD) { step = state.brine ? "brine" : "roast"; st = "You are here: the bird is thawing. Dinner is " + fmtLong(dinner) + "."; }
+      else { step = "roast"; st = "You are here: dinner is today."; }
+    } else if (plan.mode === "coldwater") {
+      step = "thaw"; st = "You are here: fridge day has passed. Cold water is the way now.";
+    } else if (plan.mode === "frozen") {
+      step = "thaw"; st = "You are here: no thaw time left. This bird cooks from frozen.";
     } else {
-      tickMs = dinnerMs(y + 1) - ms; tail = "Thanksgiving, " + tgDateText(y + 1) + ".";
-      mileYear = y + 1;
+      st = "That dinner time is past. Pick a date ahead of you, and the plan lines up.";
     }
-    if (mileEl && lastMileYear !== mileYear) {
-      lastMileYear = mileYear;
-      var tg = thanksgiving(mileYear);
-      var buy = new Date(tg.getFullYear(), tg.getMonth(), tg.getDate() - 11);
-      var big = new Date(tg.getFullYear(), tg.getMonth(), tg.getDate() - 6);
-      var dfmt = { weekday: "long", month: "long", day: "numeric", year: "numeric" };
-      mileEl.innerHTML = "Next do-by: buy a frozen turkey by <strong>" + buy.toLocaleDateString("en-US", dfmt) + "</strong>. Biggest birds (21&ndash;24 lb) move to the fridge <strong>" + big.toLocaleDateString("en-US", dfmt) + "</strong>.";
+    statusEl.textContent = st;
+    setHere(step);
+
+    var target = null, tail = "";
+    if (plan.mode === "past") {
+      cdDigits.hidden = true;
+      cdLabel.textContent = "That dinner time is past.";
+      var y = now.getFullYear(), ntg = juThanksgiving(y);
+      if (juStartOfDay(now).getTime() > juStartOfDay(ntg).getTime()) ntg = juThanksgiving(y + 1);
+      var dN = Math.round((juStartOfDay(ntg).getTime() - juStartOfDay(now).getTime()) / 86400000);
+      cdSub.textContent = dN === 0 ? "Thanksgiving is today, " + fmtLongY(ntg) + "." : "Next Thanksgiving is " + fmtLongY(ntg) + ", in " + dN + (dN === 1 ? " day" : " days") + ".";
+      setAria(cdLabel.textContent + " " + cdSub.textContent, now);
+      return;
     }
-    if (tickMs !== null) { lastMs = tickMs; showDigits(tickMs, tail); setAria(cdTick(tickMs, tail), now); }
-    else { lastMs = null; showSentence(sentence); setAria(sentence, now); }
-    if (panelOpen) updateBreak(now);
+    if (plan.mode === "fridge") {
+      var moveStart = juStartOfDay(plan.thawStart);
+      if (now.getTime() < moveStart.getTime()) { target = moveStart; tail = "until move day, " + fmtLong(plan.thawStart) + "."; }
+      else if (now.getTime() < plan.ovenIn.getTime()) { target = plan.ovenIn; tail = "until the oven, " + fmtLong(plan.ovenIn) + "."; }
+      else { target = dinner; tail = "until dinner."; }
+    } else if (plan.mode === "coldwater") {
+      if (now.getTime() < plan.cwStart.getTime()) { target = plan.cwStart; tail = "until cold water starts, " + fmtLong(plan.cwStart) + "."; }
+      else if (now.getTime() < plan.ovenIn.getTime()) { target = plan.ovenIn; tail = "until the oven, " + fmtLong(plan.ovenIn) + "."; }
+      else { target = dinner; tail = "until dinner."; }
+    } else {
+      if (now.getTime() < plan.effOvenIn.getTime()) { target = plan.effOvenIn; tail = "until the oven, " + fmtLong(plan.effOvenIn) + "."; }
+      else { target = dinner; tail = "until dinner."; }
+    }
+    var ms = target.getTime() - now.getTime();
+    var p = cdParts(ms);
+    cdD.textContent = p.d; cdH.textContent = pad2(p.h); cdM.textContent = pad2(p.m); cdS.textContent = pad2(p.s);
+    if (cdDl) cdDl.textContent = p.d === 1 ? "day" : "days";
+    cdDigits.hidden = false;
+    cdLabel.textContent = tail;
+    var daysAway = Math.round((juStartOfDay(dinner).getTime() - juStartOfDay(now).getTime()) / 86400000);
+    cdSub.textContent = daysAway === 0 ? "Dinner is today, " + fmtLongY(dinner) + "." : "Dinner is " + fmtLongY(dinner) + ", " + daysAway + (daysAway === 1 ? " day" : " days") + " away.";
+    setAria(cdSentence(ms, tail), now);
   }
-  render();
-  setInterval(render, RM ? 60000 : 1000);
+
+  /* Init: the baked preset is Thanksgiving 2026. If that dinner is
+     already past when the page loads, roll the preset to the next
+     Thanksgiving still ahead (the old countdown's rollover rule). */
+  (function init() {
+    var now = new Date();
+    var d0 = readDinner();
+    if (d0 && d0.getTime() <= now.getTime()) {
+      var y = now.getFullYear();
+      var tg = juThanksgiving(y);
+      var cand = new Date(tg.getFullYear(), tg.getMonth(), tg.getDate(), 17, 0);
+      if (cand.getTime() <= now.getTime()) { tg = juThanksgiving(y + 1); cand = new Date(tg.getFullYear(), tg.getMonth(), tg.getDate(), 17, 0); }
+      dateEl.value = isoDate(cand);
+      timeEl.value = "17:00";
+    }
+  })();
+
+  var chips = document.querySelectorAll(".ju-chipbtn[data-w]");
+  for (var i = 0; i < chips.length; i++) {
+    chips[i].addEventListener("click", function () {
+      state.lb = Number(this.getAttribute("data-w"));
+      weightEl.value = state.lb;
+      warnEl.hidden = true;
+      syncChips();
+      renderPlan();
+    });
+  }
+  weightEl.addEventListener("input", function () {
+    if (weightEl.value === "") { warnEl.hidden = true; return; }
+    var v = Number(weightEl.value);
+    if (!(v >= 4 && v <= 24)) { warnEl.hidden = false; return; }
+    warnEl.hidden = true;
+    state.lb = v;
+    syncChips();
+    renderPlan();
+  });
+  $("ju-brine-no").addEventListener("click", function () { if (state.brine) { state.brine = false; syncChips(); renderPlan(); } });
+  $("ju-brine-yes").addEventListener("click", function () { if (!state.brine) { state.brine = true; syncChips(); renderPlan(); } });
+  dateEl.addEventListener("input", renderPlan);
+  dateEl.addEventListener("change", renderPlan);
+  timeEl.addEventListener("input", renderPlan);
+  timeEl.addEventListener("change", renderPlan);
+
+  syncChips();
+  renderPlan();
+  var RM = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  setInterval(renderLive, RM ? 60000 : 1000);
 })();
 </script>
 <script>
