@@ -583,14 +583,14 @@ window.FLEET_CFG = {
 
 <section id="frozencook"></section>
 
-<h2>Share</h2>
-<div class="sharecard">
+<h2 id="sharehead">Share</h2>
+<div class="sharecard" id="shareblock">
 <p class="cardlabel">Send it or print it</p>
 <button id="share" class="secondary" type="button">Share this plan</button>
 <button id="printplan" class="secondary" type="button">Print this plan</button>
 <p id="sharetext"></p>
 </div>
-<div class="sharecard">
+<div class="sharecard" id="calblock">
 <p class="cardlabel">Put it on your calendar</p>
 <button id="calbtn" class="secondary" type="button">Add to calendar (.ics)</button>
 <p id="calmsg" aria-live="polite"></p>
@@ -751,11 +751,22 @@ function render(){
   const date=document.getElementById("date").value, time=document.getElementById("time").value;
   const lb=Number(document.getElementById("weight").value), state=document.getElementById("state").value, brine=document.getElementById("brine").value;
   const hint=document.getElementById("hint"), out=document.getElementById("out"), cold=document.getElementById("cold"), frozencook=document.getElementById("frozencook"), math=document.getElementById("math");
-  if(!date||!time){ hint.textContent="Check the date and time."; out.innerHTML=""; cold.innerHTML=""; frozencook.innerHTML=""; math.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; return; }
+  /* 2026-11-04 (SPEC-TD-EVE-07): the Share / Print / calendar blocks are
+     static HTML below the timeline. A no-plan render (bad date, weight
+     out of range) used to clear only the timeline and the card area, so
+     the blocks stayed live holding the previous plan's share text --
+     after a refusal, a visitor could still copy, print, or calendar a
+     full plan for the default 14 lb bird they never entered. Every
+     no-plan exit now also clears the share text and hides all three
+     blocks; the success path at the bottom unhides them. */
+  const shareBlocks=["sharehead","shareblock","calblock"].map(id=>document.getElementById(id));
+  const clearShare=()=>{ document.getElementById("sharetext").textContent=""; document.getElementById("calmsg").textContent=""; document.getElementById("movemsg").textContent=""; shareBlocks.forEach(el=>{ if(el) el.hidden=true; }); };
+  const showShare=()=>{ shareBlocks.forEach(el=>{ if(el) el.hidden=false; }); };
+  if(!date||!time){ hint.textContent="Check the date and time."; out.innerHTML=""; cold.innerHTML=""; frozencook.innerHTML=""; math.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; clearShare(); return; }
   /* Item 98 L2: an empty weight field mid-typing is not an out-of-range
      bird: show no hint and keep the last plan on screen. */
   if(document.getElementById("weight").value===""){ hint.textContent=""; return; }
-  if(!(lb>=8&&lb<=24)){ hint.textContent="This tool covers 8 to 24 lb birds, the range in the USDA charts it uses. It cannot give a timeline outside that range."; out.innerHTML=""; cold.innerHTML=""; frozencook.innerHTML=""; math.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; return; }
+  if(!(lb>=8&&lb<=24)){ hint.textContent="This tool covers 8 to 24 lb birds, the range in the USDA charts it uses. It cannot give a timeline outside that range."; out.innerHTML=""; cold.innerHTML=""; frozencook.innerHTML=""; math.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; clearShare(); return; }
   hint.textContent=""; const dinner=new Date(date+"T"+time);
   const now=new Date();
   const rows=buildTimeline(dinner,lb,state,brine,now);
@@ -841,6 +852,7 @@ function render(){
   document.getElementById("sharetext").textContent=txt;
   lastPlan={rows:rows,lb:lb,state:state,dinner:dinner,warning:warning};
   document.getElementById("cardarea").hidden=false;
+  showShare();
   /* 2026-10-30 (Dim 12 return-restore): a made plan is saved on this
      device only, so a return visit can restore it below. The values are
      the same ones the share link carries (weight, state, brine, dinner
@@ -1090,7 +1102,7 @@ document.getElementById("weight").addEventListener("input",()=>{
    timeline. Scroll to the plan only when one rendered; otherwise bring the
    hint itself into view so the reason is what the user lands on. */
 document.getElementById("go").addEventListener("click",()=>{render(); const o=document.getElementById("out"); if(o.innerHTML){ o.scrollIntoView(); } else { const h=document.getElementById("hint"); if(h&&h.textContent){ h.scrollIntoView({block:"center"}); } }});
-document.getElementById("share").addEventListener("click",async()=>{ const t=render(); try{ await navigator.clipboard.writeText(t); document.getElementById("sharetext").textContent=t+" (copied)"; }catch(e){ /* long-press fallback: text stays visible */ } });
+document.getElementById("share").addEventListener("click",async()=>{ const t=render(); if(!t){ document.getElementById("sharetext").textContent=""; return; } try{ await navigator.clipboard.writeText(t); document.getElementById("sharetext").textContent=t+" (copied)"; }catch(e){ /* long-press fallback: text stays visible */ } });
 document.getElementById("printplan").addEventListener("click",()=>{ window.print(); });
 /* 2026-10-30 (Dim 12 Spec A): a shared link's plan parameters set the
    matching inputs before the first render. Each value is checked against
@@ -1177,15 +1189,29 @@ render();
   }
   $("modePeople").addEventListener("click",function(){ setMode("people"); });
   $("modeWeight").addEventListener("click",function(){ setMode("weight"); });
+  /* 2026-11-04 (SPEC-TD-EVE-08): step 2's people mode holds TWO answers
+     -- how many people AND the leftovers choice. The guest chips used to
+     auto-advance to step 3 on tap, so a visitor who tapped the number
+     first (the headline question) never saw the leftovers half again,
+     and the plan silently sized 1 lb per person. Now step 2 advances
+     only when both halves are settled: whichever chip is tapped SECOND
+     advances, and a number-only visitor stays on step 2 with the
+     leftovers chips and the visible Next button in front of them. The
+     weight-mode chips keep their auto-advance -- that step has no
+     second half. Sizing math is untouched (1 lb/person, +0.5 with
+     leftovers, 8 lb floor, all in guestWeight()). */
+  var loPicked=false;
   $("guestChips").addEventListener("click",function(e){
     var b=e.target.closest("button[data-guests]"); if(!b) return;
     press($("guestChips"),b); $("qmsg1").textContent="";
     setVal("guests", b.getAttribute("data-guests"));
-    setTimeout(function(){ show(3,true); },300);
+    if(loPicked) setTimeout(function(){ show(3,true); },300);
   });
   $("loChips").addEventListener("click",function(e){
     var b=e.target.closest("button[data-lo]"); if(!b) return;
     press($("loChips"),b); setVal("leftovers", b.getAttribute("data-lo"));
+    loPicked=true;
+    if(mode==="people" && $("guests").value!=="") setTimeout(function(){ show(3,true); },300);
   });
   $("weightChips").addEventListener("click",function(e){
     var b=e.target.closest("button[data-w]"); if(!b) return;
@@ -1204,7 +1230,7 @@ render();
   /* Keep the chips honest when the fields change another way: a typed
      guest count, or a share link / saved plan setting the fields. */
   $("guests").addEventListener("input",function(){ var n=Math.ceil(Number($("guests").value)); pressByValue($("guestChips"),"data-guests",Number.isFinite(n)?n:""); });
-  $("leftovers").addEventListener("change",function(){ pressByValue($("loChips"),"data-lo",$("leftovers").value); });
+  $("leftovers").addEventListener("change",function(){ pressByValue($("loChips"),"data-lo",$("leftovers").value); loPicked=true; });
   $("weight").addEventListener("input",function(){ if(mode==="weight") pressByValue($("weightChips"),"data-w",$("weight").value); });
   $("qnext1").addEventListener("click",function(){
     if(mode==="people" && $("guests").value===""){ $("qmsg1").textContent="Tap how many people above, or type the number below."; return; }
