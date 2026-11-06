@@ -1,10 +1,10 @@
 # ThawDay: full page text
 
-> Complete text of thawday.com's pages: the homepage, the turkey timeline calculator, the ask page, privacy, terms, and the fifty-one question and guide pages.
+> Complete text of thawday.com's pages: the homepage, the turkey timeline calculator, the ask page, privacy, terms, and the fifty-three question and guide pages.
 > ThawDay is a free turkey timeline tool for Thanksgiving. Type in your dinner time and turkey
 > weight. You get dated buy, thaw, brine, and roast times. No ads, no accounts.
 > Thaw times come from the USDA Food Safety and Inspection Service.
-> Text captured from the live pages, 2026-11-01; twenty-six page sections added from the live pages on 2026-11-06 — all fifty-six sitemap pages now have a section.
+> Text captured from the live pages, 2026-11-01; twenty-eight page sections added from the live pages on 2026-11-06 — all fifty-eight sitemap pages now have a section.
 
 ## Homepage (https://thawday.com/)
 
@@ -1492,6 +1492,139 @@ Turkey still frozen on Christmas morning?
 Can you thaw a turkey in cold water?
 Can you cook a turkey from frozen?
 How long can a thawed turkey stay in the fridge?
+Built with Muse.
+Privacy Terms
+Timings verified against USDA FSIS charts on Oct 22, 2026.
+
+## Page: https://thawday.com/when-to-thaw-turkey-for-friendsgiving
+
+ThawDay
+When should I take the turkey out of the freezer for Friendsgiving?
+Friendsgiving dinner is Saturday, November 21, 2026 . Find your weight. That is your move date.
+Up to 12 lb · Wed, Nov 18 Sat 21
+3 days
+Add to calendar (.ics) Google Calendar
+13–16 lb · Tue, Nov 17 Sat 21
+4 days
+Add to calendar (.ics) Google Calendar
+17–20 lb · Mon, Nov 16 Sat 21
+5 days
+Add to calendar (.ics) Google Calendar
+21–24 lb · Sun, Nov 15 Sat 21
+6 days
+Add to calendar (.ics) Google Calendar
+Fridge rule 24 hours per 4–5 lb Thawed keeps 1–2 days
+Friendsgiving after Thanksgiving instead, on Saturday, November 28 ? Move dates: up to 12 lb on Wednesday, November 25; 13 to 16 lb on Tuesday, November 24; 17 to 20 lb on Monday, November 23; 21 to 24 lb on Sunday, November 22.
+Cooking on Thanksgiving Day, Thursday, November 26, instead? Use the Thanksgiving move dates .
+Why this date
+Common sizes: 12 lb on Wednesday, November 18; 14 lb and 16 lb on Tuesday, November 17; 18 lb and 20 lb on Monday, November 16; 22 lb and 24 lb on Sunday, November 15. These dates are for a 5 PM Friendsgiving dinner.
+Why these dates
+Fridge thawing takes about 24 hours for every 4 to 5 pounds. Keep the fridge at 40 F or below. Count back from Saturday and you land on the dates above.
+Start early: a thawed turkey keeps 1 to 2 days in the fridge. Start late, and a half-frozen bird roasts unevenly.
+If your plans change
+Already past your date?
+Use cold water today. Seal the turkey in a leak-proof plastic bag and submerge it in cold tap water. It takes about 30 minutes per pound. Change the water every 30 minutes, and cook the turkey right after it thaws. Full steps: thawing a turkey in cold water .
+No time? Cook it from frozen . USDA says it is safe, and it takes at least half again as long.
+Never thaw a turkey on the counter. Use the fridge or cold water. Microwave thawing is USDA-safe too: follow your microwave manual, and cook the turkey right after it thaws.
+Your full plan, not just the thaw
+The calculator adds the buy date, the brine start, and the oven time. It makes a calendar file for your phone. Or ask in your own words and get the whole plan on one page.
+More turkey questions, answered
+How long to thaw a 12 lb turkey
+How long to thaw a 16 lb turkey
+How long to thaw a 20 lb turkey
+How long to thaw a 24 lb turkey
+How long to thaw a turkey
+Can you thaw a turkey in cold water?
+Can you cook a turkey from frozen?
+How long can a thawed turkey stay in the fridge?
+How to thaw a turkey you plan to brine
+Turkey still frozen on Thanksgiving morning?
+Can you refreeze a thawed turkey?
+Can you thaw a turkey in the sink?
+How long to cook a turkey
+Can you thaw a turkey on the counter?
+Can you thaw a turkey in the microwave?
+How much turkey per person?
+When to buy a turkey for Thanksgiving
+How long do turkey leftovers last?
+Should you stuff a turkey?
+How long should a turkey rest before carving?
+Should you wash a turkey before cooking?
+Can you trust the pop-up timer on a turkey?
+How long can you keep a turkey in the freezer?
+What if you cook a turkey with the giblets inside?
+How to reheat leftover turkey?
+What temperature to cook a turkey?
+When should I take the turkey out of the freezer for Thanksgiving?
+When should I take the turkey out of the freezer for Thanksgiving Eve?
+When should I take the turkey out of the freezer for Christmas?
+Can you thaw a turkey in cold water overnight?
+Built with Muse.
+Privacy Terms
+Timings verified against USDA FSIS charts on Oct 22, 2026.
+
+## Page: https://thawday.com/when-to-thaw-turkey-for-thanksgiving-eve
+
+ThawDay
+When should I take the turkey out of the freezer for Thanksgiving Eve?
+Thanksgiving Eve dinner is Wednesday, November 25, 2026 . Find your weight. That is your move date.
+Up to 12 lb · Sun, Nov 22 Wed 25
+3 days
+Add to calendar (.ics) Google Calendar
+13–16 lb · Sat, Nov 21 Wed 25
+4 days
+Add to calendar (.ics) Google Calendar
+17–20 lb · Fri, Nov 20 Wed 25
+5 days
+Add to calendar (.ics) Google Calendar
+21–24 lb · Thu, Nov 19 Wed 25
+6 days
+Add to calendar (.ics) Google Calendar
+Fridge rule 24 hours per 4–5 lb Thawed keeps 1–2 days
+Cooking on Thanksgiving Day instead? Every date moves one day later: when to take the turkey out of the freezer for Thanksgiving .
+Why this date
+Common sizes: 12 lb on Sunday, November 22; 14 lb and 16 lb on Saturday, November 21; 18 lb and 20 lb on Friday, November 20; 22 lb and 24 lb on Thursday, November 19. These dates are for a 5 PM Thanksgiving Eve dinner.
+Why these dates
+Fridge thawing takes about 24 hours for every 4 to 5 pounds. Keep the fridge at 40 F or below. Count back from Wednesday and you land on the dates above.
+Start early: a thawed turkey keeps 1 to 2 days in the fridge. Start late, and a half-frozen bird roasts unevenly.
+If your plans change
+Already past your date?
+Use cold water today. Seal the turkey in a leak-proof plastic bag and submerge it in cold tap water. It takes about 30 minutes per pound. Change the water every 30 minutes, and cook the turkey right after it thaws. Full steps: thawing a turkey in cold water .
+No time? Cook it from frozen . USDA says it is safe, and it takes at least half again as long.
+Never thaw a turkey on the counter. Use the fridge or cold water. Microwave thawing is USDA-safe too: follow your microwave manual, and cook the turkey right after it thaws.
+Your full plan, not just the thaw
+The calculator adds the buy date, the brine start, and the oven time. It makes a calendar file for your phone. Or ask in your own words and get the whole plan on one page.
+More turkey questions, answered
+How long to thaw a 12 lb turkey
+How long to thaw a 16 lb turkey
+How long to thaw a 20 lb turkey
+How long to thaw a 24 lb turkey
+How long to thaw a turkey
+Can you thaw a turkey in cold water?
+Can you cook a turkey from frozen?
+How long can a thawed turkey stay in the fridge?
+How to thaw a turkey you plan to brine
+Turkey still frozen on Thanksgiving morning?
+Can you refreeze a thawed turkey?
+Can you thaw a turkey in the sink?
+How long to cook a turkey
+Can you thaw a turkey on the counter?
+Can you thaw a turkey in the microwave?
+How much turkey per person?
+When to buy a turkey for Thanksgiving
+How long do turkey leftovers last?
+Should you stuff a turkey?
+How long should a turkey rest before carving?
+Should you wash a turkey before cooking?
+Can you trust the pop-up timer on a turkey?
+How long can you keep a turkey in the freezer?
+What if you cook a turkey with the giblets inside?
+How to reheat leftover turkey?
+What temperature to cook a turkey?
+When should I take the turkey out of the freezer for Thanksgiving?
+When should I take the turkey out of the freezer for Friendsgiving?
+When should I take the turkey out of the freezer for Christmas?
+Can you thaw a turkey in cold water overnight?
 Built with Muse.
 Privacy Terms
 Timings verified against USDA FSIS charts on Oct 22, 2026.
