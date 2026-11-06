@@ -1,10 +1,10 @@
 # ThawDay: full page text
 
-> Complete text of thawday.com's pages: the homepage, the turkey timeline calculator, the ask page, and the thirty-one question pages.
+> Complete text of thawday.com's pages: the homepage, the turkey timeline calculator, the ask page, privacy, terms, and the fifty-one question and guide pages.
 > ThawDay is a free turkey timeline tool for Thanksgiving. Type in your dinner time and turkey
 > weight. You get dated buy, thaw, brine, and roast times. No ads, no accounts.
 > Thaw times come from the USDA Food Safety and Inspection Service.
-> Text captured from the live pages, 2026-11-01.
+> Text captured from the live pages, 2026-11-01; twenty-six page sections added from the live pages on 2026-11-06 — all fifty-six sitemap pages now have a section.
 
 ## Homepage (https://thawday.com/)
 
@@ -254,3 +254,1244 @@ ThawDay gives plain thaw times for holiday food. A 6 lb breast needs about 1.5 d
 ## How long to thaw a ham (https://thawday.com/how-long-to-thaw-a-ham)
 
 ThawDay gives plain thaw times for holiday food. A 10 lb ham needs about 2 days in the fridge. Move it on Tuesday, November 24. Dinner is Thursday, November 26. In cold water, it needs 5 hours. Times by weight: 5 lb, about 1 day in the fridge, 2.5 hours in cold water; 10 lb, about 2 days, 5 hours; 15 lb, about 3 days, 7.5 hours. In the fridge: keep the fridge at 40 F or below. Leave the ham in its wrap, on a tray. USDA rate: 4 to 5 hours per pound. In cold water: seal the ham in a leak-proof bag. Sink it in cold tap water. Change the water each 30 minutes. Cook it right after it thaws. Never thaw a ham on the counter. Never use hot water to speed it up. Warm spots grow germs while the core stays frozen. Cook a thawed ham in 3 to 5 days.
+
+## Page text (added 2026-11-06)
+
+## Page: https://thawday.com/privacy
+
+Privacy
+Privacy
+The short version: The calculator keeps your details in your browser. Ask sends your question to ThawDay's chat service, and nothing you type there is saved. Cloudflare and PostHog count visits to this site. There are no accounts or sign-ups.
+What the calculator does
+You pick the date, time, and turkey weight.
+You say frozen or fresh, and brine or not.
+The timeline math runs in your browser.
+Nothing you type is sent to us.
+It saves your plan on your device.
+The plan stays in your browser.
+It shows again when you return.
+It also saves a small flag.
+The flag says a plan was made.
+What Ask does
+Ask is the chat on this site.
+It is on the home page, the calculator, and the Ask page.
+You type a question in your own words.
+Your question is sent to ThawDay's own chat service.
+The service works out the answer and sends it back.
+Nothing you type is saved.
+Your follow-ups are held in the open page's memory only.
+Closing the page ends the session.
+If the chat service cannot be reached, the panel answers on the page itself.
+Sharing your plan
+The share button copies your plan text.
+You choose where to paste it.
+The turkey card is drawn in your browser.
+Card sharing uses your device share sheet.
+Nothing is shared unless you tap Share.
+Site counts
+This page also loads Cloudflare Web Analytics.
+It sends page and performance counts to Cloudflare.
+Cloudflare says its beacon uses no cookies.
+Cloudflare says its beacon does not read local storage.
+The home page and calculator run PostHog.
+PostHog counts page views and tool starts.
+It counts plan finishes, shares, and downloads.
+Your typed answers are never sent to it.
+Page addresses are cut to the page path before counting.
+A shared plan link carries plan details in its address.
+Those details are cut too, never counted.
+It does not record your screen.
+Our code reads the flag for return visits.
+ThawDay inside an AI assistant
+The promise above covers this website.
+ThawDay also works inside AI assistants.
+There, the assistant sends your answers to our connector.
+It sends the date, time, weight, and choices.
+The connector works out the timeline and sends it back.
+It keeps nothing from the call.
+Contact
+Questions about privacy: [email protected] .
+Changes
+Changes will appear on this page.
+Built with Muse.
+Home Terms
+
+## Page: https://thawday.com/terms
+
+Terms
+Terms
+The short version: ThawDay gives planning estimates for free. A thermometer check decides food safety.
+What ThawDay is
+These terms cover this website only.
+ThawDay is a free turkey planning tool.
+Tell it when dinner is.
+It plans buy, thaw, brine, roast times.
+This version plans unstuffed birds only.
+It covers turkeys from 8 to 24 pounds.
+There are no ads on this site.
+There are no accounts or sign-ups.
+Where times come from
+Thaw times come from USDA charts.
+Roasts use the USDA 325 F chart.
+Some steps use kitchen practice instead.
+All times are planning estimates only.
+Your turkey may need more time.
+Your turkey may need less time.
+Food safety
+Never thaw a turkey on the counter.
+Use a meat thermometer when in doubt.
+The bird must reach 165 F.
+Check the thickest part of the breast.
+Check the innermost thigh and wing.
+Color is not a reliable signal.
+Change cold water every 30 minutes.
+Cook right after cold water thawing.
+Follow official guidance if sources disagree.
+You are responsible for safe food handling.
+Accounts and data
+The calculator runs in your browser.
+Nothing you type is sent to us.
+It saves your plan on your device only.
+Ask, the chat on this site, works differently.
+Your question is sent to ThawDay's own chat service.
+It works out the answer and sends it back.
+Nothing you type in Ask is saved.
+PostHog counts page views and tool use.
+Cloudflare Web Analytics counts visits here.
+See the Privacy page for full details.
+No guarantees
+This site is provided as is.
+We give no warranty of any kind.
+We cannot guarantee any meal outcome.
+We are not liable for any loss.
+Fair use
+Use this site only for lawful planning.
+Do not try to break this site.
+We may change or stop this site.
+Contact
+Questions about terms: [email protected] .
+Changes
+Changes will appear on this page.
+Built with Muse.
+Home Privacy
+
+## Page: https://thawday.com/thawing-a-brined-turkey
+
+ThawDay
+How to thaw a turkey you plan to brine
+Brining does not change the thaw. A frozen turkey thaws on the same days whether you brine it or not. The bird must be fully thawed when brining starts, 24 hours before the oven.
+Brine starts 24 hours before the oven Fully thawed before brining
+Thaw times and move dates
+The thaw is the same
+Keep the fridge at 40 F or below, on a tray, in its wrapper.
+Weight In the fridge Move it for Thanksgiving 2026 In cold water
+12 lb 3 days Monday, November 23 6 hours
+16 lb 4 days Sunday, November 22 8 hours
+20 lb 5 days Saturday, November 21 10 hours
+24 lb 6 days Friday, November 20 12 hours
+When the brine starts
+When the brine starts
+For a 5 PM Thanksgiving dinner on Thursday, November 26, 2026:
+Weight Start brining
+12 lb Wednesday, November 25, 1:47 PM
+16 lb Wednesday, November 25, 12:40 PM
+20 lb Wednesday, November 25, 12:17 PM
+24 lb Wednesday, November 25, 11:55 AM
+Brine in the fridge the whole time, at 40 F or below. Never longer than two days. Discard the brine after. Start once the bird is thawed.
+If the thaw runs late
+If the thaw runs late
+If it is still icy at brine time, use a shorter brine once it thaws, or skip the brine. A last-day cold-water rescue leaves no room for a full 24 hour brine.
+Finishing a thaw in cold water: Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. Change the water every 30 minutes. Cook it right after it thaws. Full steps: thawing a turkey in cold water .
+USDA's third safe way is the microwave: follow your microwave manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.
+Your exact dates, in seconds
+Tell the calculator your weight and dinner time, and say yes to the brine. It stamps both dates. Or ask in your own words : "16 lb frozen turkey, brine it, dinner Thursday."
+More turkey questions, answered
+Turkey still frozen on Thanksgiving morning?
+Can you refreeze a thawed turkey?
+Can you thaw a turkey in the sink?
+How long to thaw a 12 lb turkey
+How long to thaw a 16 lb turkey
+How long to thaw a 20 lb turkey
+How long to thaw a 24 lb turkey
+How long to thaw a turkey
+When should I take the turkey out of the freezer for Thanksgiving?
+Can you thaw a turkey in cold water?
+Can you cook a turkey from frozen?
+How long can a thawed turkey stay in the fridge?
+How long to cook a turkey
+Can you thaw a turkey on the counter?
+Can you thaw a turkey in the microwave?
+How much turkey per person?
+When to buy a turkey for Thanksgiving
+How long do turkey leftovers last?
+Should you stuff a turkey?
+How long should a turkey rest before carving?
+Should you wash a turkey before cooking?
+Can you trust the pop-up timer on a turkey?
+How long can you keep a turkey in the freezer?
+What if you cook a turkey with the giblets inside?
+How to reheat leftover turkey?
+What temperature to cook a turkey?
+When should I take the turkey out of the freezer for Christmas?
+Can you thaw a turkey in cold water overnight?
+Built with Muse.
+Privacy Terms
+Timings verified against USDA FSIS charts on Oct 22, 2026.
+
+## Page: https://thawday.com/turkey-still-frozen-on-thanksgiving-morning
+
+ThawDay
+Turkey still frozen on Thanksgiving morning?
+Dinner can still happen. You have two safe paths: thaw it in cold water, at 30 minutes per pound, or cook it from frozen. Never the counter, and never warm water.
+Copy this plan
+Cold water 30 min per lb From frozen half again as long
+Path 1: cold water, if the hours fit
+Path 1: cold water, if the hours fit
+Cold water takes 30 minutes per pound, and the bird must be thawed by oven time. For a 5 PM dinner today, Thursday, November 26, 2026, start by:
+Weight Cold water time Start by
+12 lb 6 hours Thu, Nov 26, 7:47 AM
+16 lb 8 hours Thu, Nov 26, 4:40 AM
+20 lb 10 hours Thu, Nov 26, 2:17 AM
+24 lb 12 hours Wed, Nov 25, 11:55 PM
+Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. Change the water every 30 minutes. Cook it right after it thaws. Full steps: thawing a turkey in cold water .
+Partly thawed? These hours are for a rock-frozen bird, so yours finishes sooner. At breakfast with a 20 lb bird, cold water cannot finish. Use Path 2.
+Path 2: cook it from frozen
+Path 2: cook it from frozen
+Roast at 325 F. A frozen bird takes at least half again as long as a thawed one.
+Weight Time from frozen, at 325 F
+12 lb 4 hours 15 minutes to 4 hours 30 minutes
+16 lb 5 hours 45 minutes to 6 hours 30 minutes
+20 lb 6 hours 30 minutes to 6 hours 45 minutes
+24 lb 6 hours 45 minutes to 7 hours 30 minutes
+No oven bag. Pull the giblet packet out with tongs once the outside softens. The thermometer decides: 165 F. Full steps: cooking a turkey from frozen .
+USDA's third safe way is the microwave: follow your microwave manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.
+Your exact times, in seconds
+The calculator stamps your oven time for either path. Or ask in your own words : "Frozen 16 lb turkey, dinner at 5 today."
+More turkey questions, answered
+How to thaw a turkey you plan to brine
+Can you refreeze a thawed turkey?
+Can you thaw a turkey in the sink?
+How long to thaw a 12 lb turkey
+How long to thaw a 16 lb turkey
+How long to thaw a 20 lb turkey
+How long to thaw a 24 lb turkey
+How long to thaw a turkey
+When should I take the turkey out of the freezer for Thanksgiving?
+Can you thaw a turkey in cold water?
+Can you cook a turkey from frozen?
+How long can a thawed turkey stay in the fridge?
+How long to cook a turkey
+Can you thaw a turkey on the counter?
+Can you thaw a turkey in the microwave?
+How much turkey per person?
+When to buy a turkey for Thanksgiving
+How long do turkey leftovers last?
+Should you stuff a turkey?
+How long should a turkey rest before carving?
+Should you wash a turkey before cooking?
+Can you trust the pop-up timer on a turkey?
+How long can you keep a turkey in the freezer?
+What if you cook a turkey with the giblets inside?
+How to reheat leftover turkey?
+What temperature to cook a turkey?
+When should I take the turkey out of the freezer for Christmas?
+Can you thaw a turkey in cold water overnight?
+Built with Muse.
+Privacy Terms
+Timings verified against USDA FSIS charts on Oct 22, 2026.
+
+## Page: https://thawday.com/can-you-refreeze-a-thawed-turkey
+
+ThawDay
+Can you refreeze a thawed turkey?
+Yes, if it thawed in the fridge. USDA says a fridge-thawed turkey can be refrozen without cooking first. Do it within 1 to 2 days, the same window you had to cook it. Details: how long a thawed turkey keeps .
+Fridge-thawed refreeze raw within 1–2 days Cold-water thawed cook it first
+The rule depends on the thaw
+The rule depends on the thaw
+Fridge thaw: refreeze it raw, within 1 to 2 days of the full thaw. Keep it at 40 F or below the whole time, on a tray, in its wrapper.
+Cold water or microwave thaw: cook it first. Those methods end with "cook right after it thaws," and that rule still holds. Freeze the cooked turkey instead. Cooked turkey keeps 3 to 4 days in the fridge.
+Left on the counter: never. A turkey that sat out for more than 2 hours cannot be made safe, by cooking or by freezing. Throw it out.
+The honest tradeoff
+The honest tradeoff
+Refreezing is safe, but quality drops. Thawing drains moisture, so the bird roasts drier the second time. It works better for soup, stock, and sandwiches than as the holiday centerpiece.
+When you thaw it again
+When you thaw it again
+Thaw it in the fridge, on the normal days for its weight , and cook it within 1 to 2 days. Or thaw it in cold water: Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. Change the water every 30 minutes. Cook it right after it thaws. Or run the dates through the calculator .
+USDA's third safe way is the microwave: follow your microwave manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.
+New plan? New dates
+Tell the calculator the new dinner and the weight. Get fresh buy, thaw, brine, and roast dates. Or ask in your own words : "14 lb frozen turkey, dinner Saturday."
+More turkey questions, answered
+How to thaw a turkey you plan to brine
+Turkey still frozen on Thanksgiving morning?
+Can you thaw a turkey in the sink?
+How long to thaw a 12 lb turkey
+How long to thaw a 16 lb turkey
+How long to thaw a 20 lb turkey
+How long to thaw a 24 lb turkey
+How long to thaw a turkey
+When should I take the turkey out of the freezer for Thanksgiving?
+Can you thaw a turkey in cold water?
+Can you cook a turkey from frozen?
+How long can a thawed turkey stay in the fridge?
+How long to cook a turkey
+Can you thaw a turkey on the counter?
+Can you thaw a turkey in the microwave?
+How much turkey per person?
+When to buy a turkey for Thanksgiving
+How long do turkey leftovers last?
+Should you stuff a turkey?
+How long should a turkey rest before carving?
+Should you wash a turkey before cooking?
+Can you trust the pop-up timer on a turkey?
+How long can you keep a turkey in the freezer?
+What if you cook a turkey with the giblets inside?
+How to reheat leftover turkey?
+What temperature to cook a turkey?
+When should I take the turkey out of the freezer for Christmas?
+Can you thaw a turkey in cold water overnight?
+Built with Muse.
+Privacy Terms
+Timings verified against USDA FSIS charts on Oct 22, 2026.
+
+## Page: https://thawday.com/can-you-thaw-a-turkey-in-the-sink
+
+ThawDay
+Can you thaw a turkey in the sink?
+Not the way most people mean it. A turkey sitting in a sink of warm or standing water is not safe. The sink is fine as a tub for cold water thawing, done by the rules below.
+Water cold only Change it every 30 min
+What goes wrong
+What goes wrong
+Standing water warms to room temperature. The outside sits warm for hours while the inside stays frozen, and bacteria grow in that warm layer. Warm or hot water makes it worse.
+The safe sink method
+The safe sink method
+The sink is just the tub for the USDA cold water method: 30 minutes per pound. Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. Change the water every 30 minutes. Cook it right after it thaws. Cover the bird fully; each change keeps it cold while it thaws.
+Weight Cold water time
+12 lb 6 hours
+16 lb 8 hours
+20 lb 10 hours
+24 lb 12 hours
+Full steps: thawing a turkey in cold water . When it is done, wash the sink and anything the raw turkey touched with hot, soapy water.
+The hands-off way: the fridge
+The hands off way
+No time to change water every 30 minutes? Use the fridge: days, but no watching. Dates by weight: how long to thaw a turkey .
+USDA's third safe way is the microwave: follow your microwave manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.
+Your exact date, in seconds
+Use the calculator for your buy, thaw, brine, and roast dates. Or ask in your own words : "14 lb frozen turkey, dinner Thursday."
+More turkey questions, answered
+How to thaw a turkey you plan to brine
+Turkey still frozen on Thanksgiving morning?
+Can you refreeze a thawed turkey?
+How long to thaw a 12 lb turkey
+How long to thaw a 16 lb turkey
+How long to thaw a 20 lb turkey
+How long to thaw a 24 lb turkey
+How long to thaw a turkey
+When should I take the turkey out of the freezer for Thanksgiving?
+Can you thaw a turkey in cold water?
+Can you cook a turkey from frozen?
+How long can a thawed turkey stay in the fridge?
+How long to cook a turkey
+Can you thaw a turkey on the counter?
+Can you thaw a turkey in the microwave?
+How much turkey per person?
+When to buy a turkey for Thanksgiving
+How long do turkey leftovers last?
+Should you stuff a turkey?
+How long should a turkey rest before carving?
+Should you wash a turkey before cooking?
+Can you trust the pop-up timer on a turkey?
+How long can you keep a turkey in the freezer?
+What if you cook a turkey with the giblets inside?
+How to reheat leftover turkey?
+What temperature to cook a turkey?
+When should I take the turkey out of the freezer for Christmas?
+Can you thaw a turkey in cold water overnight?
+Built with Muse.
+Privacy Terms
+Timings verified against USDA FSIS charts on Oct 22, 2026.
+
+## Page: https://thawday.com/how-long-to-thaw-a-10-lb-turkey
+
+ThawDay
+How long to thaw a 10 lb turkey
+3 days in the fridge. For a 5 PM Thanksgiving dinner on Thursday, November 26, 2026, move it to the fridge on Monday, November 23 . In cold water: 5 hours.
+Move Mon, Nov 23
+3 days
+Dinner Thu, Nov 26
+Move Mon, Nov 23 Fridge 3 days Cold water 5 hours
+Add the fridge move to calendar (.ics) Add it in Google Calendar
+Why this date
+In the fridge
+Fridge thawing takes about 24 hours for every 4 to 5 pounds. Keep the fridge at 40 F or below. Put the turkey on a tray, breast up. Leave it in its wrapper. Your band is 8 to 12 lb; every bird in it shares this date.
+Once thawed, cook it within 1 to 2 days in the fridge . Start early; a late start is the problem.
+Cold water, step by step
+In a hurry? Cold water
+Cold water takes 5 hours for 10 lb. Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. Change the water every 30 minutes. Cook it right after it thaws. Full steps: thawing a turkey in cold water .
+USDA's third safe way is the microwave: follow your microwave manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.
+Your exact date, in seconds
+Use the calculator for your buy, thaw, brine, and roast dates. Or ask in your own words .
+More turkey questions, answered
+How long to thaw a 9 lb turkey
+How long to thaw an 11 lb turkey
+How long to thaw a 12 lb turkey
+How long to thaw a 14 lb turkey
+How long to thaw a 16 lb turkey
+How long to thaw an 18 lb turkey
+How long to thaw a 20 lb turkey
+How long to thaw a 24 lb turkey
+How long to thaw a turkey
+Turkey thawing chart
+How long to brine a turkey
+When should I take the turkey out of the freezer for Thanksgiving?
+Can you thaw a turkey in cold water?
+Can you cook a turkey from frozen?
+How long can a thawed turkey stay in the fridge?
+How to thaw a turkey you plan to brine
+Turkey still frozen on Thanksgiving morning?
+Can you refreeze a thawed turkey?
+Can you thaw a turkey in the sink?
+How long to cook a turkey
+Can you thaw a turkey on the counter?
+Can you thaw a turkey in the microwave?
+How much turkey per person?
+When to buy a turkey for Thanksgiving
+How long do turkey leftovers last?
+Should you stuff a turkey?
+How long should a turkey rest before carving?
+Should you wash a turkey before cooking?
+Can you trust the pop-up timer on a turkey?
+How long can you keep a turkey in the freezer?
+What if you cook a turkey with the giblets inside?
+How to reheat leftover turkey?
+What temperature to cook a turkey?
+When should I take the turkey out of the freezer for Christmas?
+Can you thaw a turkey in cold water overnight?
+Built with Muse.
+Privacy Terms
+Timings verified against USDA FSIS charts on Oct 22, 2026.
+
+## Page: https://thawday.com/how-long-to-thaw-a-14-lb-turkey
+
+ThawDay
+How long to thaw a 14 lb turkey
+4 days in the fridge. For a 5 PM Thanksgiving dinner on Thursday, November 26, 2026, move it to the fridge on Sunday, November 22 . In cold water: 7 hours.
+Move Sun, Nov 22
+4 days
+Dinner Thu, Nov 26
+Move Sun, Nov 22 Fridge 4 days Cold water 7 hours
+Add the fridge move to calendar (.ics) Add it in Google Calendar
+Why this date
+In the fridge
+Fridge thawing takes about 24 hours for every 4 to 5 pounds. Keep the fridge at 40 F or below. Put the turkey on a tray, breast up. Leave it in its wrapper. Your band is 13 to 16 lb; every bird in it shares this date.
+Once thawed, cook it within 1 to 2 days in the fridge . Start early; a late start is the problem.
+Cold water, step by step
+In a hurry? Cold water
+Cold water takes 7 hours for 14 lb. Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. Change the water every 30 minutes. Cook it right after it thaws. Full steps: thawing a turkey in cold water .
+USDA's third safe way is the microwave: follow your microwave manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.
+Your exact date, in seconds
+Use the calculator for your buy, thaw, brine, and roast dates. Or ask in your own words .
+More turkey questions, answered
+How long to thaw a 13 lb turkey
+How long to thaw a 15 lb turkey
+How long to thaw a 10 lb turkey
+How long to thaw a 12 lb turkey
+How long to thaw a 16 lb turkey
+How long to thaw an 18 lb turkey
+How long to thaw a 20 lb turkey
+How long to thaw a 24 lb turkey
+How long to thaw a turkey
+Turkey thawing chart
+How long to brine a turkey
+When should I take the turkey out of the freezer for Thanksgiving?
+Can you thaw a turkey in cold water?
+Can you cook a turkey from frozen?
+How long can a thawed turkey stay in the fridge?
+How to thaw a turkey you plan to brine
+Turkey still frozen on Thanksgiving morning?
+Can you refreeze a thawed turkey?
+Can you thaw a turkey in the sink?
+How long to cook a turkey
+Can you thaw a turkey on the counter?
+Can you thaw a turkey in the microwave?
+How much turkey per person?
+When to buy a turkey for Thanksgiving
+How long do turkey leftovers last?
+Should you stuff a turkey?
+How long should a turkey rest before carving?
+Should you wash a turkey before cooking?
+Can you trust the pop-up timer on a turkey?
+How long can you keep a turkey in the freezer?
+What if you cook a turkey with the giblets inside?
+How to reheat leftover turkey?
+What temperature to cook a turkey?
+When should I take the turkey out of the freezer for Christmas?
+Can you thaw a turkey in cold water overnight?
+Built with Muse.
+Privacy Terms
+Timings verified against USDA FSIS charts on Oct 22, 2026.
+
+## Page: https://thawday.com/how-long-to-thaw-a-18-lb-turkey
+
+ThawDay
+How long to thaw an 18 lb turkey
+5 days in the fridge. For a 5 PM Thanksgiving dinner on Thursday, November 26, 2026, move it to the fridge on Saturday, November 21 . In cold water: 9 hours.
+Move Sat, Nov 21
+5 days
+Dinner Thu, Nov 26
+Move Sat, Nov 21 Fridge 5 days Cold water 9 hours
+Add the fridge move to calendar (.ics) Add it in Google Calendar
+Why this date
+In the fridge
+Fridge thawing takes about 24 hours for every 4 to 5 pounds. Keep the fridge at 40 F or below. Put the turkey on a tray, breast up. Leave it in its wrapper. Your band is 17 to 20 lb; every bird in it shares this date.
+Once thawed, cook it within 1 to 2 days in the fridge . Start early; a late start is the problem.
+Cold water, step by step
+In a hurry? Cold water
+Cold water takes 9 hours for 18 lb. Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. Change the water every 30 minutes. Cook it right after it thaws. Full steps: thawing a turkey in cold water .
+USDA's third safe way is the microwave: follow your microwave manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.
+Your exact date, in seconds
+Use the calculator for your buy, thaw, brine, and roast dates. Or ask in your own words .
+More turkey questions, answered
+How long to thaw a 17 lb turkey
+How long to thaw a 19 lb turkey
+How long to thaw a 10 lb turkey
+How long to thaw a 12 lb turkey
+How long to thaw a 14 lb turkey
+How long to thaw a 16 lb turkey
+How long to thaw a 20 lb turkey
+How long to thaw a 24 lb turkey
+How long to thaw a turkey
+Turkey thawing chart
+How long to brine a turkey
+When should I take the turkey out of the freezer for Thanksgiving?
+Can you thaw a turkey in cold water?
+Can you cook a turkey from frozen?
+How long can a thawed turkey stay in the fridge?
+How to thaw a turkey you plan to brine
+Turkey still frozen on Thanksgiving morning?
+Can you refreeze a thawed turkey?
+Can you thaw a turkey in the sink?
+How long to cook a turkey
+Can you thaw a turkey on the counter?
+Can you thaw a turkey in the microwave?
+How much turkey per person?
+When to buy a turkey for Thanksgiving
+How long do turkey leftovers last?
+Should you stuff a turkey?
+How long should a turkey rest before carving?
+Should you wash a turkey before cooking?
+Can you trust the pop-up timer on a turkey?
+How long can you keep a turkey in the freezer?
+What if you cook a turkey with the giblets inside?
+How to reheat leftover turkey?
+What temperature to cook a turkey?
+When should I take the turkey out of the freezer for Christmas?
+Can you thaw a turkey in cold water overnight?
+Built with Muse.
+Privacy Terms
+Timings verified against USDA FSIS charts on Oct 22, 2026.
+
+## Page: https://thawday.com/turkey-thawing-chart
+
+ThawDay
+Turkey thawing chart
+In the fridge: about 24 hours for every 4 to 5 pounds. Keep the fridge at 40 F or below. A 14 lb turkey needs 4 days. A 20 lb turkey needs 5 days. In cold water: 30 minutes per pound.
+Thaw times by weight
+Weight Fridge Cold water
+4–12 lb 1–3 days 2–6 hrs
+12–16 lb 3–4 days 6–8 hrs
+16–20 lb 4–5 days 8–10 hrs
+20–24 lb 5–6 days 10–12 hrs
+Every weight, with its Thanksgiving 2026 date
+For a 5 PM Thanksgiving dinner on Thursday, November 26, 2026. Fridge times plan on the full days in the chart above.
+Weight In the fridge In cold water Move it to the fridge
+8 lb 3 days 4 hours Monday, November 23
+9 lb 3 days 4 hours 30 minutes Monday, November 23
+10 lb 3 days 5 hours Monday, November 23
+11 lb 3 days 5 hours 30 minutes Monday, November 23
+12 lb 3 days 6 hours Monday, November 23
+13 lb 4 days 6 hours 30 minutes Sunday, November 22
+14 lb 4 days 7 hours Sunday, November 22
+15 lb 4 days 7 hours 30 minutes Sunday, November 22
+16 lb 4 days 8 hours Sunday, November 22
+17 lb 5 days 8 hours 30 minutes Saturday, November 21
+18 lb 5 days 9 hours Saturday, November 21
+19 lb 5 days 9 hours 30 minutes Saturday, November 21
+20 lb 5 days 10 hours Saturday, November 21
+21 lb 6 days 10 hours 30 minutes Friday, November 20
+22 lb 6 days 11 hours Friday, November 20
+23 lb 6 days 11 hours 30 minutes Friday, November 20
+24 lb 6 days 12 hours Friday, November 20
+Fridge 24 hours per 4–5 lb Cold water 30 min per lb
+How the safe ways work
+Source: USDA Food Safety and Inspection Service.
+The safe ways
+The fridge is hands-off. Put the turkey on a tray, breast up. Leave it in its wrapper. Give it the full time in the table.
+Cold water is faster. Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. Change the water every 30 minutes. Cook it right after it thaws. Full steps: thawing a turkey in cold water .
+Fridge 24 hours per 4–5 lb Hands-off
+Cold water 30 min per lb Fastest
+Microwave Per your microwave manual No waiting
+USDA's third safe way is the microwave: follow your microwave manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.
+After the thaw
+Cooking on Thanksgiving, Thursday, November 26? See the exact fridge move dates , by weight.
+Once the turkey is thawed, it keeps 1 to 2 days in the fridge before you cook it.
+Your exact date, in seconds
+Tell the calculator your weight and dinner time. Get your buy, thaw, brine, and roast dates. Or ask in your own words : "14 lb frozen turkey, dinner Thursday."
+More turkey questions, answered
+How long to thaw a 10 lb turkey
+How long to thaw a 14 lb turkey
+How long to thaw an 18 lb turkey
+How long to brine a turkey
+How long to thaw a 12 lb turkey
+How long to thaw a 16 lb turkey
+How long to thaw a 20 lb turkey
+How long to thaw a 24 lb turkey
+When should I take the turkey out of the freezer for Thanksgiving?
+Can you thaw a turkey in cold water?
+Can you cook a turkey from frozen?
+How long can a thawed turkey stay in the fridge?
+How to thaw a turkey you plan to brine
+Turkey still frozen on Thanksgiving morning?
+Can you refreeze a thawed turkey?
+Can you thaw a turkey in the sink?
+How long to cook a turkey
+Can you thaw a turkey on the counter?
+Can you thaw a turkey in the microwave?
+How much turkey per person?
+When to buy a turkey for Thanksgiving
+How long do turkey leftovers last?
+Should you stuff a turkey?
+How long should a turkey rest before carving?
+Should you wash a turkey before cooking?
+Can you trust the pop-up timer on a turkey?
+How long can you keep a turkey in the freezer?
+What if you cook a turkey with the giblets inside?
+How to reheat leftover turkey?
+What temperature to cook a turkey?
+When should I take the turkey out of the freezer for Christmas?
+Can you thaw a turkey in cold water overnight?
+Built with Muse.
+Privacy Terms
+Timings verified against USDA FSIS charts on Oct 22, 2026.
+
+## Page: https://thawday.com/how-long-to-brine-a-turkey
+
+ThawDay
+How long to brine a turkey
+24 hours. Start the brine 24 hours before the turkey goes in the oven. Never longer than two days. Worked example: a 16 lb turkey for a 5 PM Thanksgiving dinner on Thursday, November 26, 2026 starts brining on Wednesday, November 25, at 12:40 PM .
+Copy this plan
+Brine 24 hours Start Wed, Nov 25 Never longer than 2 days Fully thawed before brining
+When the brine starts
+When the brine starts
+For a 5 PM Thanksgiving dinner on Thursday, November 26, 2026:
+Weight Start brining
+12 lb Wednesday, November 25, 1:47 PM
+16 lb Wednesday, November 25, 12:40 PM
+20 lb Wednesday, November 25, 12:17 PM
+24 lb Wednesday, November 25, 11:55 AM
+Brine in the fridge the whole time, at 40 F or below. Never longer than two days. Discard the brine after. Start once the bird is thawed.
+Thaw first: times and move dates
+The thaw is the same
+Keep the fridge at 40 F or below, on a tray, in its wrapper.
+Weight In the fridge Move it for Thanksgiving 2026 In cold water
+12 lb 3 days Monday, November 23 6 hours
+16 lb 4 days Sunday, November 22 8 hours
+20 lb 5 days Saturday, November 21 10 hours
+24 lb 6 days Friday, November 20 12 hours
+If the thaw runs late
+If the thaw runs late
+If it is still icy at brine time, use a shorter brine once it thaws, or skip the brine. A last-day cold-water rescue leaves no room for a full 24 hour brine.
+Finishing a thaw in cold water: Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. Change the water every 30 minutes. Cook it right after it thaws. Full steps: thawing a turkey in cold water .
+USDA's third safe way is the microwave: follow your microwave manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.
+Your exact dates, in seconds
+Tell the calculator your weight and dinner time, and say yes to the brine. It stamps both dates. Or ask in your own words : "16 lb frozen turkey, brine it, dinner Thursday."
+More turkey questions, answered
+Turkey still frozen on Thanksgiving morning?
+Can you refreeze a thawed turkey?
+Can you thaw a turkey in the sink?
+How long to thaw a 10 lb turkey
+How long to thaw a 14 lb turkey
+How long to thaw an 18 lb turkey
+Turkey thawing chart
+How long to thaw a 12 lb turkey
+How long to thaw a 16 lb turkey
+How long to thaw a 20 lb turkey
+How long to thaw a 24 lb turkey
+How long to thaw a turkey
+When should I take the turkey out of the freezer for Thanksgiving?
+Can you thaw a turkey in cold water?
+Can you cook a turkey from frozen?
+How long can a thawed turkey stay in the fridge?
+How long to cook a turkey
+Can you thaw a turkey on the counter?
+Can you thaw a turkey in the microwave?
+How much turkey per person?
+When to buy a turkey for Thanksgiving
+How long do turkey leftovers last?
+Should you stuff a turkey?
+How long should a turkey rest before carving?
+Should you wash a turkey before cooking?
+Can you trust the pop-up timer on a turkey?
+How long can you keep a turkey in the freezer?
+What if you cook a turkey with the giblets inside?
+How to reheat leftover turkey?
+What temperature to cook a turkey?
+When should I take the turkey out of the freezer for Christmas?
+Can you thaw a turkey in cold water overnight?
+Built with Muse.
+Privacy Terms
+Timings verified against USDA FSIS charts on Oct 22, 2026.
+
+## Page: https://thawday.com/thaw-a-turkey-fast
+
+ThawDay
+ThawDay gives plain thaw times for holiday food.
+Thaw a turkey fast
+Cold water is the fast, safe way. It thaws 1 lb in 30 minutes. Found a frozen 14 lb bird on Wednesday, November 25 ? Start the water that day. It thaws in 7 hours, in time for Thursday.
+Get my full turkey plan
+Fast times by weight
+Turkey weight In cold water
+10 lb 5 hours
+14 lb 7 hours
+18 lb 9 hours
+22 lb 11 hours
+Cold water, step by step
+Seal the bird in a leak-proof bag. Sink it in cold tap water. Change the water each 30 minutes. Cook it right after it thaws.
+No time at all?
+You can cook a frozen bird. USDA says it is safe. It takes about half as long again to roast. See cooking a turkey from frozen .
+Never use hot water. Never thaw on the counter. The skin warms while the core stays frozen. Germs grow fast in that warm zone.
+Still frozen this morning?
+Read the Thanksgiving morning rescue plan . Or ask in your own words .
+More turkey questions, answered
+Thaw a turkey in cold water
+Turkey thaw time per pound
+How long to thaw a turkey
+Can you cook a frozen turkey?
+Turkey thawing chart
+Built with Muse.
+Privacy Terms
+Timings from USDA FSIS guides, checked Nov 4, 2026.
+
+## Page: https://thawday.com/turkey-thaw-time-per-pound
+
+ThawDay
+ThawDay gives plain thaw times for holiday food.
+Turkey thaw time per pound
+Fridge: 1 day per 4 to 5 lb. Cold water: 30 minutes per pound. Buy a 14 lb bird on Friday, November 20. Put it in the fridge by Sunday, November 22 .
+Get my full turkey plan
+The math, by weight
+Turkey weight In the fridge In cold water
+8 lb 3 days 4 hours
+12 lb 3 days 6 hours
+16 lb 4 days 8 hours
+20 lb 5 days 10 hours
+24 lb 6 days 12 hours
+The fridge rule
+USDA rate: 24 hours per 4 to 5 pounds. Keep the fridge at 40 F or below. Leave the bird in its wrap, on a tray.
+The water rule
+USDA rate: 30 minutes per pound. Seal the bird in a leak-proof bag. Change the water each 30 minutes. Cook it right after it thaws.
+Never thaw a turkey on the counter. The skin warms while the core stays frozen. Germs grow fast in that warm zone. Cook a thawed bird in 1 to 2 days.
+Your bird, your date
+The calculator turns your weight into buy, thaw, and roast dates. Or ask in your own words .
+More turkey questions, answered
+Turkey thawing chart
+How long to thaw a turkey
+Thaw a turkey fast
+How long to thaw a 14 lb turkey
+When to thaw a turkey for Thanksgiving
+Built with Muse.
+Privacy Terms
+Timings from USDA FSIS guides, checked Nov 4, 2026.
+
+## Page: https://thawday.com/how-long-to-thaw-an-8-lb-turkey
+
+ThawDay
+ThawDay gives plain thaw times for holiday food.
+How long to thaw an 8 lb turkey
+An 8 lb turkey needs about 3 days in the fridge. Move it on Monday, November 23 . Dinner is Thursday, November 26. In cold water, it needs 4 hours.
+Get my full turkey plan
+Times near this size
+Turkey weight In the fridge In cold water
+6 lb About 1½ days 3 hours
+8 lb About 3 days 4 hours
+10 lb About 3 days 5 hours
+In the fridge
+Keep the fridge at 40 F or below. Leave the bird in its wrap, on a tray. USDA rate: 24 hours per 4 to 5 pounds.
+In cold water
+Seal the bird in a leak-proof bag. Sink it in cold tap water. Change the water each 30 minutes. Cook it right after it thaws.
+Never thaw a turkey on the counter. The skin warms while the core stays frozen. Germs grow fast in that warm zone. Cook a thawed bird in 1 to 2 days.
+A bigger bird instead?
+The calculator plans buy, thaw, and roast dates. Or ask in your own words .
+More turkey questions, answered
+How long to thaw a 9 lb turkey
+How long to thaw a 10 lb turkey
+Turkey thaw time per pound
+How long to thaw a turkey breast
+Turkey thawing chart
+Thaw a turkey fast
+Built with Muse.
+Privacy Terms
+Timings from USDA FSIS guides, checked Nov 4, 2026.
+
+## Page: https://thawday.com/how-long-to-thaw-a-22-lb-turkey
+
+ThawDay
+ThawDay gives plain thaw times for holiday food.
+How long to thaw a 22 lb turkey
+A 22 lb turkey needs about 6 days in the fridge. Move it on Friday, November 20 . Dinner is Thursday, November 26. In cold water, it needs 11 hours.
+Get my full turkey plan
+Times near this size
+Turkey weight In the fridge In cold water
+20 lb About 5 days 10 hours
+22 lb About 6 days 11 hours
+24 lb About 6 days 12 hours
+In the fridge
+Keep the fridge at 40 F or below. Leave the bird in its wrap, on a tray. USDA rate: 24 hours per 4 to 5 pounds. Start a big bird a full week out.
+In cold water
+Seal the bird in a leak-proof bag. Sink it in cold tap water. Change the water each 30 minutes. Cook it right after it thaws.
+Never thaw a turkey on the counter. The skin warms while the core stays frozen. Germs grow fast in that warm zone. Cook a thawed bird in 1 to 2 days.
+Running late with a big bird?
+Read how to thaw a turkey fast . The calculator plans the full week. Or ask in your own words .
+More turkey questions, answered
+How long to thaw a 21 lb turkey
+How long to thaw a 23 lb turkey
+How long to thaw a 20 lb turkey
+How long to thaw a 24 lb turkey
+Turkey thaw time per pound
+Turkey thawing chart
+How long to thaw a turkey
+Built with Muse.
+Privacy Terms
+Timings from USDA FSIS guides, checked Nov 4, 2026.
+
+## Page: https://thawday.com/how-long-to-thaw-a-9-lb-turkey
+
+ThawDay
+ThawDay gives plain thaw times for holiday food.
+How long to thaw a 9 lb turkey
+A 9 lb turkey needs about 3 days in the fridge. Move it on Monday, November 23 . Dinner is Thursday, November 26. In cold water, it needs 4 hours 30 minutes.
+Get my full turkey plan
+Times near this size
+Turkey weight In the fridge In cold water
+7 lb About 3 days 3 hours 30 minutes
+9 lb About 3 days 4 hours 30 minutes
+11 lb About 3 days 5 hours 30 minutes
+In the fridge
+Keep the fridge at 40 F or below. Leave the bird in its wrap, on a tray. USDA rate: 24 hours per 4 to 5 pounds.
+In cold water
+Seal the bird in a leak-proof bag. Sink it in cold tap water. Change the water each 30 minutes. Cook it right after it thaws.
+Never thaw a turkey on the counter. The skin warms while the core stays frozen. Germs grow fast in that warm zone. Cook a thawed bird in 1 to 2 days.
+A bigger bird instead?
+The calculator plans buy, thaw, and roast dates. Or ask in your own words .
+More turkey questions, answered
+How long to thaw an 8 lb turkey
+How long to thaw a 10 lb turkey
+Turkey thaw time per pound
+Turkey thawing chart
+Thaw a turkey fast
+Built with Muse.
+Privacy Terms
+Timings from USDA FSIS guides, checked Nov 5, 2026.
+
+## Page: https://thawday.com/how-long-to-thaw-an-11-lb-turkey
+
+ThawDay
+ThawDay gives plain thaw times for holiday food.
+How long to thaw an 11 lb turkey
+An 11 lb turkey needs about 3 days in the fridge. Move it on Monday, November 23 . Dinner is Thursday, November 26. In cold water, it needs 5 hours 30 minutes.
+Get my full turkey plan
+Times near this size
+Turkey weight In the fridge In cold water
+9 lb About 3 days 4 hours 30 minutes
+11 lb About 3 days 5 hours 30 minutes
+13 lb About 4 days 6 hours 30 minutes
+In the fridge
+Keep the fridge at 40 F or below. Leave the bird in its wrap, on a tray. USDA rate: 24 hours per 4 to 5 pounds.
+In cold water
+Seal the bird in a leak-proof bag. Sink it in cold tap water. Change the water each 30 minutes. Cook it right after it thaws.
+Never thaw a turkey on the counter. The skin warms while the core stays frozen. Germs grow fast in that warm zone. Cook a thawed bird in 1 to 2 days.
+A bigger bird instead?
+The calculator plans buy, thaw, and roast dates. Or ask in your own words .
+More turkey questions, answered
+How long to thaw a 10 lb turkey
+How long to thaw a 12 lb turkey
+Turkey thaw time per pound
+Turkey thawing chart
+Thaw a turkey fast
+Built with Muse.
+Privacy Terms
+Timings from USDA FSIS guides, checked Nov 5, 2026.
+
+## Page: https://thawday.com/how-long-to-thaw-a-13-lb-turkey
+
+ThawDay
+ThawDay gives plain thaw times for holiday food.
+How long to thaw a 13 lb turkey
+A 13 lb turkey needs about 4 days in the fridge. Move it on Sunday, November 22 . Dinner is Thursday, November 26. In cold water, it needs 6 hours 30 minutes.
+Get my full turkey plan
+Times near this size
+Turkey weight In the fridge In cold water
+11 lb About 3 days 5 hours 30 minutes
+13 lb About 4 days 6 hours 30 minutes
+15 lb About 4 days 7 hours 30 minutes
+In the fridge
+Keep the fridge at 40 F or below. Leave the bird in its wrap, on a tray. USDA rate: 24 hours per 4 to 5 pounds.
+In cold water
+Seal the bird in a leak-proof bag. Sink it in cold tap water. Change the water each 30 minutes. Cook it right after it thaws.
+Never thaw a turkey on the counter. The skin warms while the core stays frozen. Germs grow fast in that warm zone. Cook a thawed bird in 1 to 2 days.
+Running late?
+Read how to thaw a turkey fast . The calculator plans the full week. Or ask in your own words .
+More turkey questions, answered
+How long to thaw a 12 lb turkey
+How long to thaw a 14 lb turkey
+Turkey thaw time per pound
+Turkey thawing chart
+Thaw a turkey fast
+Built with Muse.
+Privacy Terms
+Timings from USDA FSIS guides, checked Nov 5, 2026.
+
+## Page: https://thawday.com/how-long-to-thaw-a-15-lb-turkey
+
+ThawDay
+ThawDay gives plain thaw times for holiday food.
+How long to thaw a 15 lb turkey
+A 15 lb turkey needs about 4 days in the fridge. Move it on Sunday, November 22 . Dinner is Thursday, November 26. In cold water, it needs 7 hours 30 minutes.
+Get my full turkey plan
+Times near this size
+Turkey weight In the fridge In cold water
+13 lb About 4 days 6 hours 30 minutes
+15 lb About 4 days 7 hours 30 minutes
+17 lb About 5 days 8 hours 30 minutes
+In the fridge
+Keep the fridge at 40 F or below. Leave the bird in its wrap, on a tray. USDA rate: 24 hours per 4 to 5 pounds.
+In cold water
+Seal the bird in a leak-proof bag. Sink it in cold tap water. Change the water each 30 minutes. Cook it right after it thaws.
+Never thaw a turkey on the counter. The skin warms while the core stays frozen. Germs grow fast in that warm zone. Cook a thawed bird in 1 to 2 days.
+Running late?
+Read how to thaw a turkey fast . The calculator plans the full week. Or ask in your own words .
+More turkey questions, answered
+How long to thaw a 14 lb turkey
+How long to thaw a 16 lb turkey
+Turkey thaw time per pound
+Turkey thawing chart
+Thaw a turkey fast
+Built with Muse.
+Privacy Terms
+Timings from USDA FSIS guides, checked Nov 5, 2026.
+
+## Page: https://thawday.com/how-long-to-thaw-a-17-lb-turkey
+
+ThawDay
+ThawDay gives plain thaw times for holiday food.
+How long to thaw a 17 lb turkey
+A 17 lb turkey needs about 5 days in the fridge. Move it on Saturday, November 21 . Dinner is Thursday, November 26. In cold water, it needs 8 hours 30 minutes.
+Get my full turkey plan
+Times near this size
+Turkey weight In the fridge In cold water
+15 lb About 4 days 7 hours 30 minutes
+17 lb About 5 days 8 hours 30 minutes
+19 lb About 5 days 9 hours 30 minutes
+In the fridge
+Keep the fridge at 40 F or below. Leave the bird in its wrap, on a tray. USDA rate: 24 hours per 4 to 5 pounds.
+In cold water
+Seal the bird in a leak-proof bag. Sink it in cold tap water. Change the water each 30 minutes. Cook it right after it thaws.
+Never thaw a turkey on the counter. The skin warms while the core stays frozen. Germs grow fast in that warm zone. Cook a thawed bird in 1 to 2 days.
+Running late?
+Read how to thaw a turkey fast . The calculator plans the full week. Or ask in your own words .
+More turkey questions, answered
+How long to thaw a 16 lb turkey
+How long to thaw a 18 lb turkey
+Turkey thaw time per pound
+Turkey thawing chart
+Thaw a turkey fast
+Built with Muse.
+Privacy Terms
+Timings from USDA FSIS guides, checked Nov 5, 2026.
+
+## Page: https://thawday.com/how-long-to-thaw-a-19-lb-turkey
+
+ThawDay
+ThawDay gives plain thaw times for holiday food.
+How long to thaw a 19 lb turkey
+A 19 lb turkey needs about 5 days in the fridge. Move it on Saturday, November 21 . Dinner is Thursday, November 26. In cold water, it needs 9 hours 30 minutes.
+Get my full turkey plan
+Times near this size
+Turkey weight In the fridge In cold water
+17 lb About 5 days 8 hours 30 minutes
+19 lb About 5 days 9 hours 30 minutes
+21 lb About 6 days 10 hours 30 minutes
+In the fridge
+Keep the fridge at 40 F or below. Leave the bird in its wrap, on a tray. USDA rate: 24 hours per 4 to 5 pounds.
+In cold water
+Seal the bird in a leak-proof bag. Sink it in cold tap water. Change the water each 30 minutes. Cook it right after it thaws.
+Never thaw a turkey on the counter. The skin warms while the core stays frozen. Germs grow fast in that warm zone. Cook a thawed bird in 1 to 2 days.
+Running late?
+Read how to thaw a turkey fast . The calculator plans the full week. Or ask in your own words .
+More turkey questions, answered
+How long to thaw a 18 lb turkey
+How long to thaw a 20 lb turkey
+Turkey thaw time per pound
+Turkey thawing chart
+Thaw a turkey fast
+Built with Muse.
+Privacy Terms
+Timings from USDA FSIS guides, checked Nov 5, 2026.
+
+## Page: https://thawday.com/how-long-to-thaw-a-21-lb-turkey
+
+ThawDay
+ThawDay gives plain thaw times for holiday food.
+How long to thaw a 21 lb turkey
+A 21 lb turkey needs about 6 days in the fridge. Move it on Friday, November 20 . Dinner is Thursday, November 26. In cold water, it needs 10 hours 30 minutes.
+Get my full turkey plan
+Times near this size
+Turkey weight In the fridge In cold water
+19 lb About 5 days 9 hours 30 minutes
+21 lb About 6 days 10 hours 30 minutes
+23 lb About 6 days 11 hours 30 minutes
+In the fridge
+Keep the fridge at 40 F or below. Leave the bird in its wrap, on a tray. USDA rate: 24 hours per 4 to 5 pounds. Start a big bird a full week out.
+In cold water
+Seal the bird in a leak-proof bag. Sink it in cold tap water. Change the water each 30 minutes. Cook it right after it thaws.
+Never thaw a turkey on the counter. The skin warms while the core stays frozen. Germs grow fast in that warm zone. Cook a thawed bird in 1 to 2 days.
+Running late with a big bird?
+Read how to thaw a turkey fast . The calculator plans the full week. Or ask in your own words .
+More turkey questions, answered
+How long to thaw a 20 lb turkey
+How long to thaw a 22 lb turkey
+Turkey thaw time per pound
+Turkey thawing chart
+How long to thaw a turkey
+Built with Muse.
+Privacy Terms
+Timings from USDA FSIS guides, checked Nov 5, 2026.
+
+## Page: https://thawday.com/how-long-to-thaw-a-23-lb-turkey
+
+ThawDay
+ThawDay gives plain thaw times for holiday food.
+How long to thaw a 23 lb turkey
+A 23 lb turkey needs about 6 days in the fridge. Move it on Friday, November 20 . Dinner is Thursday, November 26. In cold water, it needs 11 hours 30 minutes.
+Get my full turkey plan
+Times near this size
+Turkey weight In the fridge In cold water
+21 lb About 6 days 10 hours 30 minutes
+23 lb About 6 days 11 hours 30 minutes
+25 lb About 6 days 12 hours 30 minutes
+In the fridge
+Keep the fridge at 40 F or below. Leave the bird in its wrap, on a tray. USDA rate: 24 hours per 4 to 5 pounds. Start a big bird a full week out.
+In cold water
+Seal the bird in a leak-proof bag. Sink it in cold tap water. Change the water each 30 minutes. Cook it right after it thaws.
+Never thaw a turkey on the counter. The skin warms while the core stays frozen. Germs grow fast in that warm zone. Cook a thawed bird in 1 to 2 days.
+Running late with a big bird?
+Read how to thaw a turkey fast . The calculator plans the full week. Or ask in your own words .
+More turkey questions, answered
+How long to thaw a 22 lb turkey
+How long to thaw a 24 lb turkey
+Turkey thaw time per pound
+Turkey thawing chart
+How long to thaw a turkey
+Built with Muse.
+Privacy Terms
+Timings from USDA FSIS guides, checked Nov 5, 2026.
+
+## Page: https://thawday.com/when-to-buy-a-turkey-for-christmas
+
+ThawDay
+When to buy a turkey for Christmas
+Frozen: buy by Monday, December 14, 2026. Fresh: buy 1 to 2 days before cooking, so Wednesday, December 23 or Thursday, December 24 . Dinner is Friday, December 25, 2026.
+Frozen buy by Mon, Dec 14 Fresh buy Dec 23–24
+Frozen birds: when to buy
+Frozen birds: the buy date is about the store
+The calculator stamps this date eleven days before dinner and labels it kitchen practice, not a USDA date. Frozen birds sell out the weekend before Christmas; the hard dates come from the thaw.
+Then the thaw starts, by weight
+Then the thaw starts, by weight
+A frozen bird bought by December 14 waits in your freezer until its fridge day:
+Weight Move to the fridge
+12 lb Tuesday, December 22
+16 lb Monday, December 21
+20 lb Sunday, December 20
+24 lb Saturday, December 19
+Full dates for every weight are on when to take the turkey out of the freezer . Not sure what weight to buy? Start with how much turkey per person : one pound each.
+Fresh birds: the short window
+Fresh birds: the short window
+Fresh: buy 1 to 2 days before cooking. A fresh bird goes from the store to your fridge, at 40 F or below, and into the oven on Friday.
+Late either way? A frozen bird can still thaw in cold water: Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. Change the water every 30 minutes. Cook it right after it thaws.
+USDA's third safe way is the microwave: follow your microwave manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.
+Your exact dates, in seconds
+Tell the calculator your weight and dinner time for the full plan. Or ask in your own words : "16 lb turkey, dinner Friday at 5."
+More turkey questions, answered
+How much turkey per person?
+How long do turkey leftovers last?
+How long to cook a turkey
+Can you thaw a turkey on the counter?
+Can you thaw a turkey in the microwave?
+How to thaw a turkey you plan to brine
+Turkey still frozen on Thanksgiving morning?
+Can you refreeze a thawed turkey?
+Can you thaw a turkey in the sink?
+How long to thaw a 12 lb turkey
+How long to thaw a 16 lb turkey
+How long to thaw a 20 lb turkey
+How long to thaw a 24 lb turkey
+How long to thaw a turkey
+When should I take the turkey out of the freezer for Thanksgiving?
+Can you thaw a turkey in cold water?
+Can you cook a turkey from frozen?
+How long can a thawed turkey stay in the fridge?
+Should you stuff a turkey?
+How long should a turkey rest before carving?
+Should you wash a turkey before cooking?
+Can you trust the pop-up timer on a turkey?
+How long can you keep a turkey in the freezer?
+What if you cook a turkey with the giblets inside?
+How to reheat leftover turkey?
+What temperature to cook a turkey?
+When to buy a turkey for Thanksgiving
+Turkey still frozen on Christmas morning?
+When should I take the turkey out of the freezer for Christmas Eve?
+When should I take the turkey out of the freezer for Christmas?
+Can you thaw a turkey in cold water overnight?
+Built with Muse.
+Privacy Terms
+Timings verified against USDA FSIS charts on Oct 22, 2026.
+
+## Page: https://thawday.com/turkey-still-frozen-on-christmas-morning
+
+ThawDay
+Turkey still frozen on Christmas morning?
+Dinner can still happen. You have two safe paths: thaw it in cold water, at 30 minutes per pound, or cook it from frozen. Never the counter, and never warm water.
+Cold water 30 min per lb From frozen half again as long
+Path 1: cold water, if the hours fit
+Path 1: cold water, if the hours fit
+Cold water takes 30 minutes per pound, and the bird must be thawed by oven time. For a 5 PM dinner today, Friday, December 25, 2026, start by:
+Weight Cold water time Start by
+12 lb 6 hours Fri, Dec 25, 7:47 AM
+16 lb 8 hours Fri, Dec 25, 4:40 AM
+20 lb 10 hours Fri, Dec 25, 2:17 AM
+24 lb 12 hours Thu, Dec 24, 11:55 PM
+Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. Change the water every 30 minutes. Cook it right after it thaws. Full steps: thawing a turkey in cold water .
+Partly thawed? These hours are for a rock-frozen bird, so yours finishes sooner. At breakfast with a 20 lb bird, cold water cannot finish. Use Path 2.
+Path 2: cook it from frozen
+Path 2: cook it from frozen
+Roast at 325 F. A frozen bird takes at least half again as long as a thawed one.
+Weight Time from frozen, at 325 F
+12 lb 4 hours 15 minutes to 4 hours 30 minutes
+16 lb 5 hours 45 minutes to 6 hours 30 minutes
+20 lb 6 hours 30 minutes to 6 hours 45 minutes
+24 lb 6 hours 45 minutes to 7 hours 30 minutes
+No oven bag. Pull the giblet packet out with tongs once the outside softens. The thermometer decides: 165 F. Full steps: cooking a turkey from frozen .
+USDA's third safe way is the microwave: follow your microwave manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.
+Your exact times, in seconds
+The calculator stamps your oven time for either path. Or ask in your own words : "Frozen 16 lb turkey, dinner at 5 today."
+More turkey questions, answered
+How to thaw a turkey you plan to brine
+Can you refreeze a thawed turkey?
+Can you thaw a turkey in the sink?
+How long to thaw a 12 lb turkey
+How long to thaw a 16 lb turkey
+How long to thaw a 20 lb turkey
+How long to thaw a 24 lb turkey
+How long to thaw a turkey
+When should I take the turkey out of the freezer for Thanksgiving?
+Can you thaw a turkey in cold water?
+Can you cook a turkey from frozen?
+How long can a thawed turkey stay in the fridge?
+How long to cook a turkey
+Can you thaw a turkey on the counter?
+Can you thaw a turkey in the microwave?
+How much turkey per person?
+When to buy a turkey for Thanksgiving
+How long do turkey leftovers last?
+Should you stuff a turkey?
+How long should a turkey rest before carving?
+Should you wash a turkey before cooking?
+Can you trust the pop-up timer on a turkey?
+How long can you keep a turkey in the freezer?
+What if you cook a turkey with the giblets inside?
+How to reheat leftover turkey?
+What temperature to cook a turkey?
+When to buy a turkey for Christmas
+When should I take the turkey out of the freezer for Christmas Eve?
+When should I take the turkey out of the freezer for Christmas?
+Can you thaw a turkey in cold water overnight?
+Built with Muse.
+Privacy Terms
+Timings verified against USDA FSIS charts on Oct 22, 2026.
+
+## Page: https://thawday.com/when-to-thaw-turkey-for-christmas-eve
+
+ThawDay
+When should I take the turkey out of the freezer for Christmas Eve?
+Christmas Eve dinner is Thursday, December 24, 2026. Find your weight. That is your move date.
+The move dates, by weight
+Up to 12 lb · Mon, Dec 21 Thu 24
+3 days
+Add to calendar (.ics) Google Calendar
+13–16 lb · Sun, Dec 20 Thu 24
+4 days
+Add to calendar (.ics) Google Calendar
+17–20 lb · Sat, Dec 19 Thu 24
+5 days
+Add to calendar (.ics) Google Calendar
+21–24 lb · Fri, Dec 18 Thu 24
+6 days
+Add to calendar (.ics) Google Calendar
+Fridge rule 24 hours per 4–5 lb Dinner Thu, Dec 24
+Cooking on Christmas Day instead? Every date moves one day later: when to take the turkey out of the freezer for Christmas .
+Why this date
+Exactly: 12 lb Monday, December 21. 14 lb and 16 lb Sunday, December 20. 18 lb and 20 lb Saturday, December 19. 22 lb and 24 lb Friday, December 18.
+Why these dates
+Fridge thawing takes about 24 hours for every 4 to 5 pounds. Keep the fridge at 40 F or below. Count back from Thursday and you land on the dates above. Start early: a thawed turkey keeps 1 to 2 days in the fridge. Start late, and a half-frozen bird roasts unevenly.
+A fresh bird instead
+A fresh bird instead
+Fresh: buy 1 to 2 days before cooking, on Tuesday, December 22 or Wednesday, December 23. Keep it in the fridge at 40 F or below, and cook it on Thursday.
+If your plans change
+Already past your date?
+Use cold water today. Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. It takes about 30 minutes per pound. Change the water every 30 minutes. Cook it right after it thaws. Full steps: thawing a turkey in cold water . No time? Cook it from frozen . USDA says it is safe, and it takes at least half again as long.
+USDA's third safe way is the microwave: follow your microwave manual for size and timing, and cook the turkey right after it thaws. Never thaw a turkey on the counter. The outside warms up hours before the inside thaws. Bacteria grow in that warm layer.
+Your exact dates, in seconds
+Tell the calculator your weight and dinner time for the full plan. Or ask in your own words : "16 lb turkey, dinner Thursday at 5."
+More questions
+Quick answers
+When should I thaw a turkey for Christmas Eve?
+For Christmas Eve dinner on Thursday, December 24, 2026: up to 12 lb moves to the fridge on Monday, December 21; 13 to 16 lb on Sunday, December 20; 17 to 20 lb on Saturday, December 19; 21 to 24 lb on Friday, December 18.
+How long does a turkey take to thaw in the fridge?
+Fridge thawing takes about 24 hours for every 4 to 5 pounds. A 16 lb bird takes 4 days.
+What if I miss the fridge date?
+Seal the bird in a leak-proof plastic bag. Submerge it in cold tap water. Change the water every 30 minutes. Cook it right after it thaws.
+More turkey questions, answered
+What temperature to cook a turkey?
+Can you thaw a turkey in cold water overnight?
+How to reheat leftover turkey?
+Can you trust the pop-up timer on a turkey?
+How long can you keep a turkey in the freezer?
+What if you cook a turkey with the giblets inside?
+Should you stuff a turkey?
+How long should a turkey rest before carving?
+Should you wash a turkey before cooking?
+How much turkey per person?
+When to buy a turkey for Thanksgiving
+How long do turkey leftovers last?
+How long to cook a turkey
+Can you thaw a turkey on the counter?
+Can you thaw a turkey in the microwave?
+How to thaw a turkey you plan to brine
+Turkey still frozen on Thanksgiving morning?
+Can you refreeze a thawed turkey?
+Can you thaw a turkey in the sink?
+How long to thaw a 12 lb turkey
+How long to thaw a 16 lb turkey
+How long to thaw a 20 lb turkey
+How long to thaw a 24 lb turkey
+How long to thaw a turkey
+When should I take the turkey out of the freezer for Thanksgiving?
+When should I take the turkey out of the freezer for Christmas?
+When to buy a turkey for Christmas
+Turkey still frozen on Christmas morning?
+Can you thaw a turkey in cold water?
+Can you cook a turkey from frozen?
+How long can a thawed turkey stay in the fridge?
+Built with Muse.
+Privacy Terms
+Timings verified against USDA FSIS charts on Oct 22, 2026.
