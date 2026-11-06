@@ -30,6 +30,7 @@
 - [How long can a thawed turkey stay in the fridge?](https://thawday.com/how-long-can-a-thawed-turkey-stay-in-the-fridge): cook it within 1 to 2 days of full thaw.
 - [How to thaw a turkey you plan to brine](https://thawday.com/thawing-a-brined-turkey): brining does not change the thaw; the brine starts 24 hours before the oven, and the bird must be thawed by then.
 - [Turkey still frozen on Thanksgiving morning?](https://thawday.com/turkey-still-frozen-on-thanksgiving-morning): cold water start-by times for a 5 PM dinner, or cook it from frozen.
+- [Turkey still frozen on Christmas morning?](https://thawday.com/turkey-still-frozen-on-christmas-morning): cold water start-by times for a 5 PM Christmas dinner, or cook it from frozen.
 - [Can you refreeze a thawed turkey?](https://thawday.com/can-you-refreeze-a-thawed-turkey): yes if it thawed in the fridge, within 1 to 2 days; a cold water thawed bird gets cooked first.
 - [Can you thaw a turkey in the sink?](https://thawday.com/can-you-thaw-a-turkey-in-the-sink): only as the cold water method; never in warm or standing water.
 - [How long to cook a turkey](https://thawday.com/how-long-to-cook-a-turkey): USDA roasting times by weight at 325 F, unstuffed, plus oven-in times for a 5 PM Thanksgiving 2026 dinner.
@@ -37,6 +38,7 @@
 - [Can you thaw a turkey in the microwave?](https://thawday.com/can-you-thaw-a-turkey-in-the-microwave): yes, a USDA safe way; timing comes from your oven manual, and you cook it right after it thaws.
 - [How much turkey per person?](https://thawday.com/how-much-turkey-per-person): one pound of whole turkey per person, one and a half pounds for leftovers, with bird sizes by head count and the two-bird split.
 - [When to buy a turkey for Thanksgiving](https://thawday.com/when-to-buy-a-turkey-for-thanksgiving): frozen by Sunday, November 15, 2026; fresh 1 to 2 days before cooking, November 24 or 25.
+- [When to buy a turkey for Christmas](https://thawday.com/when-to-buy-a-turkey-for-christmas): frozen by Monday, December 14, 2026; fresh 1 to 2 days before cooking, December 23 or 24.
 - [How long do turkey leftovers last?](https://thawday.com/how-long-do-turkey-leftovers-last): 3 to 4 days in the fridge, the 2-hour room rule, and 2 to 6 months frozen for best quality.
 - [Should you stuff a turkey?](https://thawday.com/should-you-stuff-a-turkey): for optimum safety, stuffing a turkey is not recommended; cook it outside the bird in a casserole, and any stuffing inside must reach 165 F.
 - [How long should a turkey rest before carving?](https://thawday.com/how-long-should-a-turkey-rest-before-carving): 20 minutes to let the juices set; for a 5:00 PM Thanksgiving 2026 dinner, the rest starts at 4:40 PM.
@@ -47,6 +49,7 @@
 - [How to reheat leftover turkey?](https://thawday.com/how-to-reheat-leftover-turkey): reheat to 165 F measured with a food thermometer, covered so it heats all the way through; gravy comes back to a rolling boil, and frozen leftovers can reheat without thawing.
 - [What temperature to cook a turkey?](https://thawday.com/what-temperature-to-cook-a-turkey): 325 F, and never lower; USDA sets the oven floor, and a food thermometer decides when the bird is done at 165 F.
 - [When should I take the turkey out of the freezer for Christmas?](https://thawday.com/when-to-thaw-turkey-for-christmas): Christmas dinner is Friday, December 25, 2026; up to 12 lb moves Tuesday, December 22, and 21 to 24 lb moves Saturday, December 19.
+- [When should I take the turkey out of the freezer for Christmas Eve?](https://thawday.com/when-to-thaw-turkey-for-christmas-eve): Christmas Eve dinner is Thursday, December 24, 2026; up to 12 lb moves Monday, December 21, and 21 to 24 lb moves Friday, December 18.
 - [Can you thaw a turkey in cold water overnight?](https://thawday.com/can-you-thaw-a-turkey-in-cold-water-overnight): no; the water must change every 30 minutes and the bird cooks right after it thaws, so the fridge is the overnight method.
 
 ## For AI assistants: callable tools (MCP)
