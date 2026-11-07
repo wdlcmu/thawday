@@ -1069,7 +1069,8 @@ window.FLEET_CFG = {
       lines.push("DTSTART:" + icsUTC(ev.when));
       lines.push("DTEND:" + icsUTC(end));
       lines.push("SUMMARY:" + icsEscape("ThawDay: " + ev.label + " (" + state.lb + " lb turkey)"));
-      lines.push("DESCRIPTION:" + icsEscape(ev.detail + " Plan from ThawDay: https://thawday.com/calculator"));
+      lines.push("DESCRIPTION:" + icsEscape(ev.detail + " Plan from ThawDay: https://thawday.com/calculator" + " Dates from ThawDay. Planning your own bird? thawday.com — every weight, every date."));
+      lines.push("URL:https://thawday.com/calculator?via=share");
       if (ev.id === "buy" || ev.id === "thaw") {
         lines.push("BEGIN:VALARM");
         lines.push("ACTION:DISPLAY");

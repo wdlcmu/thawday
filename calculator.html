@@ -990,7 +990,8 @@ function buildICS(plan){
     lines.push("DTSTART:"+icsUTC(ev.when));
     lines.push("DTEND:"+icsUTC(end));
     lines.push("SUMMARY:"+icsEscape("ThawDay: "+ev.label+" ("+plan.lb+" lb turkey)"));
-    lines.push("DESCRIPTION:"+icsEscape(ev.detail+" Plan from ThawDay: https://thawday.com/calculator"));
+    lines.push("DESCRIPTION:"+icsEscape(ev.detail+" Plan from ThawDay: https://thawday.com/calculator"+" Dates from ThawDay. Planning your own bird? thawday.com — every weight, every date."));
+    lines.push("URL:https://thawday.com/calculator?via=share");
     if(ev.id==="buy"||ev.id==="thaw"){
       lines.push("BEGIN:VALARM");
       lines.push("ACTION:DISPLAY");
@@ -1023,13 +1024,13 @@ document.getElementById("calbtn").addEventListener("click",()=>{
 function moveParts(plan){
   const thaw=plan.rows.find(r=>r.id==="thaw");
   return {when:thaw.when, title:"Move the "+plan.lb+" lb turkey to the fridge",
-    detail:thaw.detail+" Dinner: "+fmt(plan.dinner)+". Never thaw a turkey on the counter. Plan from ThawDay: https://thawday.com/calculator"};
+    detail:thaw.detail+" Dinner: "+fmt(plan.dinner)+". Never thaw a turkey on the counter. Plan from ThawDay: https://thawday.com/calculator"+" Dates from ThawDay. Planning your own bird? thawday.com — every weight, every date."};
 }
 function buildMoveICS(plan){
   const mp=moveParts(plan), stamp=icsUTC(new Date()), end=new Date(mp.when.getTime()+30*60000);
   const lines=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//ThawDay//Turkey Plan//EN","CALSCALE:GREGORIAN","METHOD:PUBLISH",
     "BEGIN:VEVENT","UID:thawday-move-"+plan.lb+"lb-"+icsUTC(mp.when)+"@thawday.com","DTSTAMP:"+stamp,
-    "DTSTART:"+icsUTC(mp.when),"DTEND:"+icsUTC(end),"SUMMARY:"+icsEscape(mp.title),"DESCRIPTION:"+icsEscape(mp.detail),
+    "DTSTART:"+icsUTC(mp.when),"DTEND:"+icsUTC(end),"SUMMARY:"+icsEscape(mp.title),"DESCRIPTION:"+icsEscape(mp.detail),"URL:https://thawday.com/calculator?via=share",
     "BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+icsEscape(mp.title),"TRIGGER:-P1D","END:VALARM","END:VEVENT","END:VCALENDAR"];
   return lines.map(icsFold).join("\r\n")+"\r\n";
 }
@@ -1391,6 +1392,11 @@ function fleetSessionMarks(){
     var params = new URLSearchParams(window.location.search);
     if (params.get("via") === "share" && !sessionStorage.getItem("td_arr")){
       sessionStorage.setItem("td_arr", "1");
+      /* Via-word attribution (Nov 7, 2026): a plan-share arrival's
+         first tool_start on this page carries entry "plan-share"
+         (the fleet taxonomy's name for it), so plan-shares that
+         produce new planners are countable end to end. */
+      try { sessionStorage.setItem("td_entry", "plan-share"); } catch (e) {}
       fleetTrack("share_arrival", {tool: "turkey-timeline", via: "share-link"});
     }
     if (!sessionStorage.getItem("td_ret")){
@@ -1406,7 +1412,7 @@ fleetSessionMarks();
   var started = false, completed = false;
   var go = document.getElementById("go");
   if (go) go.addEventListener("click", function(){
-    if (!started){ started = true; fleetTrack("tool_start", {tool: "turkey-timeline", entry: "calculator"}); }
+    if (!started){ started = true; var _entry = "calculator"; try { _entry = sessionStorage.getItem("td_entry") || "calculator"; } catch (e) {} fleetTrack("tool_start", {tool: "turkey-timeline", entry: _entry}); }
   });
   var cardarea = document.getElementById("cardarea");
   if (cardarea && window.MutationObserver){
