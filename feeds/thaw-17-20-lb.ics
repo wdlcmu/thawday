@@ -1,0 +1,56 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Built with Muse//Fleet Calendar Feeds//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:ThawDay — 17-20 lb turkey thaw dates
+REFRESH-INTERVAL;VALUE=DURATION:PT24H
+X-PUBLISHED-TTL:PT24H
+BEGIN:VEVENT
+UID:thawday-tg-move-17-20-lb@thawday.com
+DTSTAMP:20261107T195033Z
+DTSTART;VALUE=DATE:20261121
+DTEND;VALUE=DATE:20261122
+SUMMARY:Move the turkey to the fridge today — 17-20 lb (Thanksgiving)
+DESCRIPTION:Fridge thawing takes about 24 hours for every 4 to 5 pounds\, a
+ nd a thawed turkey keeps 1 to 2 days in the fridge. This is ThawDay's move
+  date for a 17-20 lb bird for Thanksgiving dinner\, Thursday\, November 26
+ \, 2026. Full chart: https://thawday.com/when-to-thaw-turkey-for-thanksgiv
+ ing
+URL:https://thawday.com/when-to-thaw-turkey-for-thanksgiving
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:thawday-thanksgiving-2026@thawday.com
+DTSTAMP:20261107T195033Z
+DTSTART;VALUE=DATE:20261126
+DTEND;VALUE=DATE:20261127
+SUMMARY:Thanksgiving Day
+DESCRIPTION:Thanksgiving Day\, Thursday\, November 26\, 2026. Cook day.
+URL:https://thawday.com/
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:thawday-xmas-move-17-20-lb@thawday.com
+DTSTAMP:20261107T195033Z
+DTSTART;VALUE=DATE:20261220
+DTEND;VALUE=DATE:20261221
+SUMMARY:Move the turkey to the fridge today — 17-20 lb (Christmas)
+DESCRIPTION:Fridge thawing takes about 24 hours for every 4 to 5 pounds\, a
+ nd a thawed turkey keeps 1 to 2 days in the fridge. This is ThawDay's move
+  date for a 17-20 lb bird for Christmas dinner\, Friday\, December 25\, 20
+ 26. Full chart: https://thawday.com/when-to-thaw-turkey-for-christmas
+URL:https://thawday.com/when-to-thaw-turkey-for-christmas
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:thawday-christmas-2026@thawday.com
+DTSTAMP:20261107T195033Z
+DTSTART;VALUE=DATE:20261225
+DTEND;VALUE=DATE:20261226
+SUMMARY:Christmas Day
+DESCRIPTION:Christmas Day\, Friday\, December 25\, 2026. Cook day.
+URL:https://thawday.com/
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR
