@@ -154,6 +154,28 @@
      <strong> so the hero fact can be sized like one. */
   .tagline + .promise { font-size: 0.9375rem; font-weight: 400; color: var(--muted); }
   .askdoor { font-size: 0.9375rem; color: var(--muted); }
+  /* 2026-11-07 live thaw strip (novel find, Jennie-O strip): today's
+     exact move dates by weight for the next big dinner, computed live
+     from the same THAW_BANDS as the journey unit and the Short Answer
+     card below. Static rows are the Thanksgiving 2026 dates; the
+     script at the end of the body recomputes for the visitor's date. */
+  .livestrip { width: 100%; max-width: 34rem; margin-top: 1.25rem; text-align: left;
+    border: 2px solid var(--accent); border-radius: 12px; background: #faf3e3; padding: 0.75rem 1.25rem; }
+  .livestrip .ls-head { font-weight: 700; color: var(--ink); margin-bottom: 0.35rem; }
+  .ls-rows { list-style: none; }
+  .ls-rows li { display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+    padding: 0.35rem 0; border-bottom: 1px solid #ecd9b8; color: #374151; }
+  .ls-rows li:last-child { border-bottom: 0; }
+  .ls-rows .ls-w { font-weight: 600; white-space: nowrap; }
+  .ls-rows .ls-d { text-align: right; }
+  .ls-rows .ls-d strong { color: var(--ink); white-space: nowrap; }
+  .ls-rows .ls-st { display: block; font-size: 0.875rem; color: var(--muted); white-space: nowrap; }
+  .ls-rows li.ls-now { background: #fff; border-radius: 8px; padding-left: 0.5rem; padding-right: 0.5rem; }
+  .ls-rows li.ls-now .ls-st { color: var(--accent); font-weight: 700; }
+  .livestrip .ls-note { margin-top: 0.5rem; color: #374151; }
+  .livestrip .ls-more { display: inline-flex; align-items: center; min-height: 44px;
+    color: var(--accent); font-weight: 700; text-decoration: none; }
+  .livestrip .ls-more:hover { text-decoration: underline; }
   .shortanswer > p:first-child { font-weight: 700; color: var(--ink); }
   .shortanswer ul { margin: 0.5rem 0 0.25rem; }
   .shortanswer li { display: flex; flex-direction: column; gap: 0.1rem; padding: 0.35rem 0; margin-bottom: 0; border-bottom: 1px solid #f0e4cf; }
@@ -515,6 +537,22 @@ window.FLEET_CFG = {
       <p class="ju-cd-sub" id="ju-cd-sub">Dinner is Thursday, November 26, 2026.</p>
     </div>
     <a class="ju-full" id="ju-full" href="/calculator?w=14&amp;s=frozen&amp;b=no&amp;d=2026-11-26&amp;t=17:00">See the full day-by-day plan</a>
+  </section>
+  <!-- 2026-11-07 live thaw strip: today's exact move dates by weight
+       for the next big dinner. The static rows are the Thanksgiving
+       2026 dates, identical to the Short Answer card below; the script
+       at the end of the body recomputes them live from the visitor's
+       date with the journey unit's own THAW_BANDS. -->
+  <section class="livestrip" aria-label="Move dates by weight, updated for today">
+    <p class="ls-head" id="ls-head">Thanksgiving move dates by weight</p>
+    <ul class="ls-rows" id="ls-rows">
+      <li><span class="ls-w">21 to 24 lb</span><span class="ls-d"><strong>Friday, November 20</strong></span></li>
+      <li><span class="ls-w">17 to 20 lb</span><span class="ls-d"><strong>Saturday, November 21</strong></span></li>
+      <li><span class="ls-w">13 to 16 lb</span><span class="ls-d"><strong>Sunday, November 22</strong></span></li>
+      <li><span class="ls-w">Up to 12 lb</span><span class="ls-d"><strong>Monday, November 23</strong></span></li>
+    </ul>
+    <p class="ls-note" id="ls-note">Dinner is Thursday, November 26, 2026. Brining? Move it about a day earlier.</p>
+    <a class="ls-more" id="ls-more" href="/when-to-thaw-turkey-for-thanksgiving">See the full Thanksgiving plan</a>
   </section>
   <section class="info" aria-label="Short answer for Thanksgiving 2026">
     <h2>Short answer for Thanksgiving 2026</h2>
@@ -1077,6 +1115,80 @@ window.FLEET_CFG = {
   renderPlan();
   var RM = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   setInterval(renderLive, RM ? 60000 : 1000);
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  /* 2026-11-07 live thaw strip engine. Move dates use the journey
+     unit's own USDA bands (THAW_BANDS above: up to 12 lb = 3 days,
+     13-16 = 4, 17-20 = 5, 21-24 = 6), so the strip can never disagree
+     with the Short Answer card or the calculator: move date = dinner
+     minus the band's fridge days. Targets the next Thanksgiving or
+     Christmas on the visitor's own clock; once every fridge move date
+     has passed it points at cold-water thawing instead of stale dates. */
+  var head = document.getElementById("ls-head"), rows = document.getElementById("ls-rows"),
+      note = document.getElementById("ls-note"), more = document.getElementById("ls-more");
+  if (!head || !rows || !note || !more) return;
+  var BANDS = [
+    { label: "21 to 24 lb", days: 6 },
+    { label: "17 to 20 lb", days: 5 },
+    { label: "13 to 16 lb", days: 4 },
+    { label: "Up to 12 lb", days: 3 }
+  ];
+  var DAY = 86400000;
+  function sod(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  function addDays(d, n) { var x = new Date(d.getTime()); x.setDate(x.getDate() + n); return x; }
+  function thanksgiving(y) { var nov1 = new Date(y, 10, 1); var off = (4 - nov1.getDay() + 7) % 7; return new Date(y, 10, 1 + off + 21); }
+  var FMT = { weekday: "long", month: "long", day: "numeric" };
+  var FMTY = { weekday: "long", month: "long", day: "numeric", year: "numeric" };
+  function fmt(d, o) { return d.toLocaleDateString("en-US", o || FMT); }
+  var today = sod(new Date()), year = today.getFullYear();
+  var events = [
+    { name: "Thanksgiving", date: thanksgiving(year), href: "/when-to-thaw-turkey-for-thanksgiving" },
+    { name: "Christmas", date: new Date(year, 11, 25), href: "/when-to-thaw-turkey-for-christmas" },
+    { name: "Thanksgiving", date: thanksgiving(year + 1), href: "/when-to-thaw-turkey-for-thanksgiving" },
+    { name: "Christmas", date: new Date(year + 1, 11, 25), href: "/when-to-thaw-turkey-for-christmas" }
+  ];
+  var ev = null;
+  for (var i = 0; i < events.length; i++) { if (today.getTime() <= events[i].date.getTime()) { ev = events[i]; break; } }
+  if (!ev) return;
+  var moves = [];
+  for (var b = 0; b < BANDS.length; b++) moves.push({ label: BANDS[b].label, date: addDays(ev.date, -BANDS[b].days) });
+  function diffDays(d) { return Math.round((d.getTime() - today.getTime()) / DAY); }
+  var nextMove = null;
+  for (var j = 0; j < moves.length; j++) { if (diffDays(moves[j].date) >= 0) { nextMove = moves[j]; break; } }
+  var isDinnerDay = today.getTime() === ev.date.getTime();
+  if (isDinnerDay) {
+    head.textContent = ev.name + " is today, " + fmt(ev.date) + ".";
+  } else if (!nextMove) {
+    head.textContent = "Every fridge move date for " + ev.name + " has passed.";
+  } else if (diffDays(nextMove.date) === 0) {
+    head.textContent = "Today, " + fmt(today) + ": " + nextMove.label + " birds move to the fridge.";
+  } else {
+    head.textContent = ev.name + " move dates \u2014 first up: " + nextMove.label + ", " + fmt(nextMove.date) +
+      " (" + (diffDays(nextMove.date) === 1 ? "tomorrow" : "in " + diffDays(nextMove.date) + " days") + ").";
+  }
+  var html = "";
+  for (var k = 0; k < moves.length; k++) {
+    var dd = diffDays(moves[k].date), st = "", cls = "";
+    if (dd === 0) { st = "Move it today"; cls = " class=\"ls-now\""; }
+    else if (dd === 1) { st = "Tomorrow"; }
+    else if (dd > 1) { st = "In " + dd + " days"; }
+    else { st = "Move day passed"; }
+    html += "<li" + cls + "><span class=\"ls-w\">" + moves[k].label + "</span><span class=\"ls-d\"><strong>" +
+      fmt(moves[k].date) + "</strong><span class=\"ls-st\">" + st + "</span></span></li>";
+  }
+  rows.innerHTML = html;
+  if (isDinnerDay || !nextMove) {
+    note.textContent = "Bird still frozen? Cold water: 30 minutes per pound, then cook right after.";
+    more.setAttribute("href", "/thaw-a-turkey-in-cold-water");
+    more.textContent = "How to thaw in cold water";
+  } else {
+    note.textContent = "Dinner is " + fmt(ev.date, FMTY) + ". Brining? Move it about a day earlier.";
+    more.setAttribute("href", ev.href);
+    more.textContent = "See the full " + ev.name + " plan";
+  }
 })();
 </script>
 <script>
