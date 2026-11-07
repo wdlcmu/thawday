@@ -238,6 +238,17 @@
   .ju-cd-sub { color: var(--muted); font-size: 0.92rem; margin-top: 0.2rem; }
   .ju-full { display: inline-flex; align-items: center; min-height: 44px; margin-top: 0.85rem; color: var(--accent); font-weight: 700; text-decoration: none; }
   .ju-full:hover { text-decoration: underline; }
+  /* SPEC-SHARE-THAW-1 (2026-11-06): the share + calendar actions sit
+     directly under the rendered plan, inside the journey unit. */
+  .ju-share { margin-top: 0.9rem; border-top: 1px solid #f0e4cf; padding-top: 0.85rem; }
+  .ju-share-btns { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .ju-action { min-height: 48px; padding: 0.6rem 1.1rem; border-radius: 999px; border: 1px solid var(--accent); background: var(--accent); color: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+  .ju-action-alt { background: #fff; color: var(--accent); }
+  .ju-action:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .ju-sharetext { margin-top: 0.6rem; font-size: 0.92rem; color: #374151; overflow-wrap: anywhere; }
+  .ju-sharetext:empty { display: none; }
+  .ju-calmsg { margin-top: 0.5rem; font-size: 0.92rem; font-weight: 600; color: var(--ink); }
+  .ju-calmsg:empty { display: none; }
   @media (max-width: 640px) {
     /* Phone compression: the whole journey visual must clear the
        first screen (and the fixed ask pill's band at the bottom)
@@ -490,6 +501,14 @@ window.FLEET_CFG = {
       <li class="ju-step" id="ju-step-roast"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Roast</span><strong class="ju-sdate" id="ju-roast-date">Thu, Nov 26</strong><span class="ju-scap" id="ju-roast-cap">In the oven by 1:17 PM</span><span class="ju-here" id="ju-here-roast" hidden>You are here</span></li>
     </ol>
     <p class="ju-status" id="ju-status">First step: buy a frozen turkey by Sunday, November 15.</p>
+    <div class="ju-share">
+      <div class="ju-share-btns">
+        <button type="button" class="ju-action" id="ju-share-btn">Share my plan</button>
+        <button type="button" class="ju-action ju-action-alt" id="ju-cal-btn">Add to calendar (.ics)</button>
+      </div>
+      <p class="ju-sharetext" id="ju-sharetext" aria-live="polite"></p>
+      <p class="ju-calmsg" id="ju-calmsg" aria-live="polite"></p>
+    </div>
     <div class="ju-cd" id="ju-cd" role="img" aria-label="Counting down to move day, Sunday, November 22.">
       <div class="ju-cd-digits" id="ju-cd-digits" aria-hidden="true" hidden><span class="ju-cd-cell ju-cd-d"><b id="ju-cd-d"></b><i id="ju-cd-dl">days</i></span><span class="ju-cd-cell"><b id="ju-cd-h">00</b><i>hrs</i></span><span class="ju-cd-cell"><b id="ju-cd-m">00</b><i>min</i></span><span class="ju-cd-cell"><b id="ju-cd-s">00</b><i>sec</i></span></div>
       <p class="ju-cd-label" id="ju-cd-label">Counting down to move day, Sunday, November 22.</p>
@@ -765,6 +784,13 @@ window.FLEET_CFG = {
     roastCapEl.textContent = "In the oven by " + fmtTime(plan.mode === "frozen" ? plan.effOvenIn : plan.ovenIn);
 
     fullEl.setAttribute("href", "/calculator?w=" + lb + "&s=frozen&b=" + (state.brine ? "yes" : "no") + "&d=" + isoDate(dinner) + "&t=" + pad2(dinner.getHours()) + ":" + pad2(dinner.getMinutes()));
+    /* SPEC-SHARE-THAW-1: a re-rendered plan retires the previous
+       plan's share text and calendar note, so a stale plan is never
+       left sitting under a changed one (the calculator's clearShare
+       rule, applied to the homepage block). */
+    var stx = $("ju-sharetext"), cmx = $("ju-calmsg");
+    if (stx) stx.textContent = "";
+    if (cmx) cmx.textContent = "";
     renderLive();
   }
 
@@ -899,6 +925,153 @@ window.FLEET_CFG = {
   dateEl.addEventListener("change", renderPlan);
   timeEl.addEventListener("input", renderPlan);
   timeEl.addEventListener("change", renderPlan);
+
+  /* SPEC-SHARE-THAW-1 (2026-11-06, Addendum 1847): the calculator's
+     share + calendar loop, surfaced under the homepage plan. The
+     payloads are the calculator's own: the share text and the
+     ?via=share link are built sentence-for-sentence the way
+     calculator render() builds them (frozen paths only — the
+     homepage plans frozen birds), and the .ics runs the calculator's
+     buildICS assembly (same events, 30 minutes each, one-day-before
+     alarms on buy and thaw) over this page's own rendered plan. No
+     thaw math changes: every date comes from juCompute, the homepage
+     mirror of the calculator engine. The picture card and print view
+     stay in the calculator, one tap away on the full-plan link above:
+     the card is drawn there from these same plan values. Events fire
+     through fleetTrack with the calculator's exact names and props. */
+  function fmtDT(d) { return d.toLocaleString("en-US", { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }); }
+  function fmtHour(d) { return d.toLocaleString("en-US", { weekday: "short", month: "short", day: "numeric", hour: "numeric" }).replace(":00", ""); }
+  function fmtDay(d) { return d.toLocaleString("en-US", { weekday: "short", month: "short", day: "numeric" }); }
+  /* The calculator's planWarning, mirrored on the homepage plan
+     fields, for the share text only (the page display is unchanged):
+     past, then cold-water-late, then oven-passed (lead), then the
+     brine verdicts, in the calculator's own precedence. The oven
+     time on the frozen and past paths is the from-frozen oven time,
+     exactly as the calculator's oven row stamps it (its engine has
+     no past short-circuit, so a past dinner still reads as a
+     cook-from-frozen plan). */
+  function juFrozenOven(dinner) { return new Date(dinner.getTime() - (juFrozenRoastMinutes(state.lb) + REST_MIN) * 60000); }
+  function juWarning(plan, dinner, now) {
+    if (dinner.getTime() <= now.getTime()) return { kind: "past" };
+    var ovenWhen = (plan.mode === "frozen" || plan.mode === "past") ? juFrozenOven(dinner) : plan.ovenIn;
+    if (plan.mode === "coldwater") {
+      var finish = new Date(plan.cwStart.getTime() + state.lb * CW_MIN_PER_LB * 60000);
+      if (finish.getTime() > ovenWhen.getTime()) return { kind: "late", finish: finish };
+    }
+    if (ovenWhen.getTime() <= now.getTime()) return { kind: "lead", oven: ovenWhen };
+    var brineRow = state.brine && plan.mode === "fridge";
+    var brineDropped = state.brine && plan.mode === "coldwater";
+    if (brineRow || brineDropped) {
+      if (plan.mode === "coldwater") {
+        var cwFinish = new Date(plan.cwStart.getTime() + state.lb * CW_MIN_PER_LB * 60000);
+        var brineWhen = new Date(ovenWhen.getTime() - BRINE_BEFORE_OVEN_MIN * 60000);
+        if (brineWhen.getTime() < cwFinish.getTime()) return { kind: "brine", brine: brineWhen, finish: cwFinish, reason: "thaw" };
+      }
+      if (brineRow && plan.brineStart.getTime() <= now.getTime()) return { kind: "brine", brine: plan.brineStart, reason: "past" };
+    }
+    return null;
+  }
+  function juShareText(plan, dinner, now) {
+    var lb = state.lb;
+    var link = "https://thawday.com/calculator?via=share&w=" + lb + "&s=frozen&b=" + (state.brine ? "yes" : "no") + "&d=" + isoDate(dinner) + "&t=" + pad2(dinner.getHours()) + ":" + pad2(dinner.getMinutes());
+    var sides = new Date(dinner.getTime() - 90 * 60000);
+    var brineTxt = (state.brine && plan.mode === "fridge") ? " Brine starts " + fmtDT(plan.brineStart) + "." : "";
+    var buySeg = plan.buy.getTime() <= now.getTime() ? "Buy date " + fmtDay(plan.buy) + " has passed. Buy it now." : "Buy by " + fmtDay(plan.buy) + ".";
+    var warning = juWarning(plan, dinner, now);
+    var warnTxt = !warning ? "" : warning.kind === "late" ? "Warning: cold water cannot finish in time for this dinner. Thaw ends " + fmtDT(warning.finish) + ". "
+      : warning.kind === "lead" ? "Warning: there is not enough time to roast this turkey before this dinner. Oven time was " + fmtDT(warning.oven) + ". "
+      : warning.kind === "brine" ? (warning.reason === "thaw" ? "Warning: brining is set to start before the turkey finishes thawing. Thaw ends " + fmtDT(warning.finish) + ". Skip the brine. " : "Warning: the brine start time has passed. Brine was set to start " + fmtDT(warning.brine) + ". Skip the brine, or use a shorter brine that starts now. ")
+      : "Note: that dinner time is already past. ";
+    var head = "ThawDay plan for " + fmtHour(dinner) + " (" + lb + " lb frozen turkey): ";
+    var body;
+    if (plan.mode === "coldwater") {
+      body = "Fridge thaw start has passed. Cold water starts " + fmtDT(plan.cwStart) + ", about " + (Math.round((lb * 30 / 60) * 10) / 10) + " hours, done right at oven time." + brineTxt + " Oven in " + fmtDT(plan.ovenIn) + ". Sides " + fmtDT(sides) + ". " + link;
+    } else if (plan.mode === "frozen" || plan.mode === "past") {
+      body = "No time left to thaw this bird. Cook it from frozen. Oven in " + fmtDT(juFrozenOven(dinner)) + ". Sides " + fmtDT(sides) + ". " + link;
+    } else {
+      body = buySeg + " Fridge thaw starts " + fmtDT(plan.thawStart) + "." + brineTxt + " Oven in " + fmtDT(plan.ovenIn) + ". Sides " + fmtDT(sides) + ". " + link;
+    }
+    return warnTxt + head + body + " Done at 165 F.";
+  }
+  function icsEscape(s) { return String(s).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n"); }
+  function icsUTC(d) { return d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, ""); }
+  function icsFold(line) { var out = []; var s = line; while (s.length > 73) { out.push(s.slice(0, 73)); s = " " + s.slice(73); } out.push(s); return out.join("\r\n"); }
+  function juEvents(plan, dinner, now) {
+    var lb = state.lb, evs = [];
+    var buyDetail = "Buy by this date (kitchen practice). Frozen birds sell out the weekend before your dinner.";
+    if (plan.buy.getTime() <= now.getTime()) buyDetail += " That buy date has passed. Buy it now if you can.";
+    evs.push({ id: "buy", label: "Buy the turkey", when: plan.buy, detail: buyDetail });
+    if (plan.mode === "coldwater") {
+      evs.push({ id: "thaw", label: "Thaw in cold water", when: plan.cwStart, detail: "Fridge thaw start has passed. Start cold water by this time: it takes about " + (Math.round((lb * 30 / 60) * 10) / 10) + " hours (30 minutes per pound), and the bird finishes thawing right as it goes in the oven. Seal it in a leak-proof plastic bag and submerge it in cold tap water. Change the water every 30 minutes, and cook it right after it thaws." });
+    } else if (plan.mode === "frozen" || plan.mode === "past") {
+      evs.push({ id: "thaw", label: "Cook the turkey from frozen", when: juFrozenOven(dinner), detail: "No time left to thaw, and cold water cannot finish before the oven either. Cook it from frozen instead: the bird goes in the oven still frozen, at the oven time in this plan." + (state.brine ? " Skip the brine: a bird cooked from frozen cannot be brined first." : "") });
+    } else {
+      evs.push({ id: "thaw", label: "Move the turkey to the fridge", when: plan.thawStart, detail: "Fridge thaw, per the USDA chart. Keep the fridge at 40 F or below." });
+    }
+    if (state.brine && plan.mode === "fridge") {
+      evs.push({ id: "brine", label: "Start brining", when: plan.brineStart, detail: "Brine in the fridge the whole time, never longer than two days, discard the brine after. The bird finishes thawing by this time on this plan." });
+    }
+    evs.push({ id: "oven", label: "Turkey goes in the oven", when: (plan.mode === "frozen" || plan.mode === "past") ? juFrozenOven(dinner) : plan.ovenIn, detail: "325 F. The chart aims, the thermometer decides: 165 F." });
+    evs.push({ id: "sides", label: "Start the sides", when: new Date(dinner.getTime() - 90 * 60000), detail: "Ninety minutes out." });
+    evs.push({ id: "rest", label: "Rest and carve", when: new Date(dinner.getTime() - 20 * 60000), detail: "Rest before carving. Done at 165 F in the thickest part." });
+    evs.sort(function (a, b) { return a.when - b.when; });
+    return evs;
+  }
+  function juBuildICS(plan, dinner, now) {
+    var events = juEvents(plan, dinner, now);
+    events.push({ id: "dinner", label: "Dinner", when: dinner, detail: "Turkey dinner. Done at 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing." });
+    var stamp = icsUTC(new Date());
+    var lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//ThawDay//Turkey Plan//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH"];
+    for (var i = 0; i < events.length; i++) {
+      var ev = events[i];
+      var end = new Date(ev.when.getTime() + 30 * 60000);
+      lines.push("BEGIN:VEVENT");
+      lines.push("UID:thawday-" + ev.id + "-" + icsUTC(ev.when) + "@thawday.com");
+      lines.push("DTSTAMP:" + stamp);
+      lines.push("DTSTART:" + icsUTC(ev.when));
+      lines.push("DTEND:" + icsUTC(end));
+      lines.push("SUMMARY:" + icsEscape("ThawDay: " + ev.label + " (" + state.lb + " lb turkey)"));
+      lines.push("DESCRIPTION:" + icsEscape(ev.detail + " Plan from ThawDay: https://thawday.com/calculator"));
+      if (ev.id === "buy" || ev.id === "thaw") {
+        lines.push("BEGIN:VALARM");
+        lines.push("ACTION:DISPLAY");
+        lines.push("DESCRIPTION:" + icsEscape("ThawDay tomorrow: " + ev.label));
+        lines.push("TRIGGER:-P1D");
+        lines.push("END:VALARM");
+      }
+      lines.push("END:VEVENT");
+    }
+    lines.push("END:VCALENDAR");
+    return lines.map(icsFold).join("\r\n") + "\r\n";
+  }
+  var shareBtn = $("ju-share-btn"), calBtn = $("ju-cal-btn"), shareTextEl2 = $("ju-sharetext"), calMsgEl2 = $("ju-calmsg");
+  if (shareBtn) shareBtn.addEventListener("click", async function () {
+    if (!cur.dinner) return;
+    var now = new Date();
+    var plan = juCompute(cur.dinner, state.lb, state.brine, now);
+    var txt = juShareText(plan, cur.dinner, now);
+    var native = !!(navigator.share);
+    try { fleetTrack("share_intent", { tool: "turkey-timeline", channel: native ? "native" : "clipboard" }); } catch (e) {}
+    if (shareTextEl2) shareTextEl2.textContent = txt;
+    if (native) {
+      try { await navigator.share({ title: "Your Turkey Thaw Plan", text: txt }); } catch (e) { /* sheet closed, text stays visible */ }
+    } else {
+      try { await navigator.clipboard.writeText(txt); if (shareTextEl2) shareTextEl2.textContent = txt + " (copied)"; } catch (e) { /* long-press fallback: text stays visible */ }
+    }
+  });
+  if (calBtn) calBtn.addEventListener("click", function () {
+    try { fleetTrack("artifact_created", { tool: "turkey-timeline", artifact: "calendar-download" }); } catch (e) {}
+    if (!cur.dinner) { if (calMsgEl2) calMsgEl2.textContent = "Set your dinner date and time first."; return; }
+    var now = new Date();
+    var plan = juCompute(cur.dinner, state.lb, state.brine, now);
+    if (plan.mode === "past") { if (calMsgEl2) calMsgEl2.textContent = "That dinner time is already past, so there is no calendar to add."; return; }
+    var blob = new Blob([juBuildICS(plan, cur.dinner, now)], { type: "text/calendar" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a"); a.href = url; a.download = "thawday-plan.ics";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+    if (calMsgEl2) calMsgEl2.textContent = "Calendar file downloaded. Open it to add your dates.";
+  });
 
   syncChips();
   renderPlan();
