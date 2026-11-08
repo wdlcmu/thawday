@@ -752,7 +752,12 @@ function planWarning(rows,lb,dinner,now){
 }
 // ENGINE END
 function fmt(d){ return d.toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}); }
-function fmtShort(d){ return d.toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric",hour:"numeric"}).replace(":00",""); }
+/* 2026-11-07 (SPEC-TD-VERIFY2068-01): fmtShort used to format with
+   hour only, dropping minutes -- a 6:30 PM dinner rendered as
+   "6 PM" in the share-summary line. Derive from fmt() and strip
+   only a literal ":00", so minutes survive and on-the-hour times
+   keep the clean "6 PM" style. */
+function fmtShort(d){ return fmt(d).replace(":00 "," "); }
 /* Issue 5 (Nov 2, 2026): the buy row shows the date only, never a
    clock time — it used to inherit the dinner hour. Same rule as the
    MCP plan output. */
