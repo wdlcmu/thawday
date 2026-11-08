@@ -470,7 +470,7 @@ window.FLEET_CFG = {
 
 <div class="qpanel on" id="qp3">
 <p class="qtitle">When is dinner?</p>
-<p class="qsub">Thanksgiving Day at 5:00 PM is filled in. Change it only if your dinner is different.</p>
+<p class="qsub" id="dinnerHint">Thanksgiving Day at 5:00 PM is filled in. Change it only if your dinner is different.</p>
 <label for="date">Dinner date</label>
 <input id="date" type="date" value="2026-11-26">
 <label for="time">Dinner time</label>
@@ -1160,6 +1160,31 @@ document.getElementById("printplan").addEventListener("click",()=>{ window.print
     if(d&&/^\d{4}-\d{2}-\d{2}$/.test(d)){ const dt=new Date(d+"T00:00:00"); if(!isNaN(dt)&&dt.getFullYear()===Number(d.slice(0,4))&&(dt.getMonth()+1)===Number(d.slice(5,7))&&dt.getDate()===Number(d.slice(8,10))) document.getElementById("date").value=d; }
     const t=p.get("t");
     if(t&&/^([01]\d|2[0-3]):[0-5]\d$/.test(t)) document.getElementById("time").value=t;
+    /* 2026-11-07 (SPEC-TD-RECIPIENT-01): a shared plan can carry any
+       dinner date/time, but the Step-1 hint above was hardcoded HTML
+       ("Thanksgiving Day at 5:00 PM"), so a recipient opening a 6:30 PM
+       plan was told 5:00 PM in words while the fields and the timeline
+       said 6:30 PM. On a shared arrival only, rewrite the hint from the
+       actual date/time field values (the same values render() uses),
+       and keep it true if the recipient changes those fields. A visit
+       with no plan parameters never enters this block: its hint and
+       behaviour are exactly as before. */
+    if(hasPlanParams){
+      const hintEl=document.getElementById("dinnerHint");
+      const updateHint=()=>{
+        const dv=document.getElementById("date").value, tv=document.getElementById("time").value;
+        if(!hintEl||!/^\d{4}-\d{2}-\d{2}$/.test(dv)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(tv)) return;
+        const dt=new Date(dv+"T"+tv); if(isNaN(dt)) return;
+        const dateTxt=dt.toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric"});
+        const timeTxt=dt.toLocaleString("en-US",{hour:"numeric",minute:"2-digit"});
+        hintEl.textContent=dateTxt+" at "+timeTxt+" is filled in. Change it only if your dinner is different.";
+      };
+      updateHint();
+      document.getElementById("date").addEventListener("change",updateHint);
+      document.getElementById("time").addEventListener("change",updateHint);
+      document.getElementById("date").addEventListener("input",updateHint);
+      document.getElementById("time").addEventListener("input",updateHint);
+    }
     if(!hasPlanParams){
       try{
         const saved=JSON.parse(localStorage.getItem("thawday_plan_inputs_v1")||"null");
