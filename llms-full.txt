@@ -4,7 +4,7 @@
 > ThawDay is a free turkey timeline tool for Thanksgiving. Type in your dinner time and turkey
 > weight. You get dated buy, thaw, brine, and roast times. No ads, no accounts.
 > Thaw times come from the USDA Food Safety and Inspection Service.
-> Text captured from the live pages, 2026-11-01; twenty-eight page sections added from the live pages on 2026-11-06 — all fifty-eight sitemap pages now have a section.
+> Text captured from the live pages, 2026-11-01; twenty-eight page sections added from the live pages on 2026-11-06: all fifty-eight sitemap pages now have a section.
 
 ## Homepage (https://thawday.com/)
 
@@ -131,9 +131,9 @@ Timings verified against USDA FSIS charts on Oct 22, 2026.
 
 ## Ask (https://thawday.com/ask)
 
-Chat with ThawDay's AI — plans from the USDA charts.
+Chat with ThawDay's AI: plans from the USDA charts.
 
-Hi, I'm ThawDay's AI assistant. I build your turkey timeline straight from the USDA charts — when to buy, thaw, brine, and roast, so dinner lands on time. Nothing you type is saved.
+Hi, I'm ThawDay's AI assistant. I build your turkey timeline straight from the USDA charts: when to buy, thaw, brine, and roast, so dinner lands on time. Nothing you type is saved.
 
 Or tap an example: "A 14-pound frozen turkey, dinner Thursday at 5." "Can I cook it from frozen?"
 
