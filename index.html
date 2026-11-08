@@ -243,6 +243,7 @@
   .ju-other { display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 0.55rem; font-weight: 600; font-size: 0.95rem; }
   .ju-other input { width: 5.25rem; min-height: 48px; font-size: 1rem; padding: 0.4rem 0.6rem; border: 1px solid #b6c2cc; border-radius: 0.6rem; background: #fff; color: inherit; }
   .ju-warn { margin-top: 0.5rem; font-size: 0.92rem; font-weight: 600; color: #9a3412; }
+  .ju-bnote { margin-top: -0.45rem; font-size: 0.92rem; color: var(--muted); }
   .ju-dinner { display: flex; flex-wrap: wrap; gap: 0.5rem 0.75rem; }
   .ju-dinner .hf { display: flex; flex-direction: column; gap: 0.25rem; }
   .ju-dinner label { font-size: 0.875rem; font-weight: 600; }
@@ -558,6 +559,7 @@ window.FLEET_CFG = {
           <button type="button" class="ju-chipbtn" id="ju-brine-yes" aria-pressed="false">I&rsquo;m brining</button>
         </div>
       </div>
+      <p class="ju-bnote">Brining is soaking the bird in salt water before roasting. Optional, makes it juicier.</p>
     </div>
     <ol class="ju-steps">
       <li class="ju-step" id="ju-step-buy"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Buy</span><strong class="ju-sdate" id="ju-buy-date">Sun, Nov 15</strong><span class="ju-scap" id="ju-buy-cap">Buy by this date</span><span class="ju-here" id="ju-here-buy" hidden>You are here</span></li>
@@ -705,7 +707,7 @@ window.FLEET_CFG = {
 <section class="works-with-ai" aria-label="Works with your AI" style="max-width:44rem;margin:2.5rem auto;padding:1.25rem 1rem;border:1px solid rgba(127,127,127,.45);border-radius:14px;font-family:inherit;line-height:1.55">
 <h2 style="margin:.1rem 0 .5rem;font-size:1.35rem">Works with your AI</h2>
 <p style="margin:.4rem 0">Ask your AI when to move the turkey to the fridge. It counts back from your dinner hour and your bird's weight: a computed answer, not a guess.</p>
-<p style="margin:.4rem 0">Connect this site to Claude, Cursor, or any other MCP client. It is free, and it takes about a minute.</p>
+<p style="margin:.4rem 0">Connect this site to Claude, Cursor, or any other MCP client (MCP, the standard way AI apps connect to outside tools). It is free, and it takes about a minute.</p>
 <p style="margin:.8rem 0 .3rem"><strong>1. Copy the server address</strong></p>
 <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:stretch">
 <code id="wai-url" style="flex:1 1 16rem;display:flex;align-items:center;padding:.6rem .7rem;border:1px solid rgba(127,127,127,.45);border-radius:10px;word-break:break-all">https://mcp.thawday.com/mcp</code>
