@@ -162,6 +162,8 @@
  .mathline{margin:10px 0 0;color:var(--muted)}
  button{font-size:16px;font-weight:700;padding:12px 18px;margin:8px 8px 8px 0;border:1px solid var(--accent);border-radius:999px;background:var(--accent);color:#fff;cursor:pointer}
  button.secondary{background:#fff;color:var(--accent)}
+ .gcallink{display:inline-flex;align-items:center;font-size:16px;font-weight:700;padding:12px 18px;margin:8px 8px 8px 0;border:1px solid var(--accent);border-radius:999px;background:#fff;color:var(--accent);text-decoration:none;min-height:48px;box-sizing:border-box}
+ #copyprompt{min-height:48px}
  #hint{color:#b91c1c;font-weight:600;min-height:1.2em;margin:8px 0 0}
  details{margin:10px 0}
  summary{font-weight:700;cursor:pointer;padding:12px 0;min-height:44px}
@@ -338,38 +340,6 @@ window.FLEET_CFG = {
     } catch(e){}
   }
   window.FA = { track: track };
-  /* FLEET-ATTRIB-2026-11-07: first-touch attribution (pattern: SPEC-SS-ATTRIB-01).
-     On first pageview, persist the door as PostHog person properties via
-     people.set_once (a later visit never overwrites): entry_referrer (bare
-     origin only), entry_referring_domain, entry_url (origin+path, no query,
-     no fragment, no tokens), entry_at, entry_app (app kind classified from
-     the user-agent string - in-app browsers name themselves there even when
-     they strip the referrer). No raw UA stored, no PII. */
-  function fleetFirstTouch(){
-    try {
-      if (!window.posthog || !posthog.people || !posthog.people.set_once) return;
-      var ref = document.referrer || "";
-      var refOrigin = "", refDomain = "$direct";
-      if (ref) { try { var ru = new URL(ref); if (ru.origin && ru.origin !== "null") { refOrigin = ru.origin + "/"; refDomain = ru.hostname || "$direct"; } } catch (e) {} }
-      var ua = (navigator.userAgent || "").toLowerCase();
-      var app = "other";
-      if (ua.indexOf("kakaotalk") !== -1) app = "kakaotalk";
-      else if (ua.indexOf("whatsapp") !== -1) app = "whatsapp";
-      else if (ua.indexOf("instagram") !== -1) app = "instagram";
-      else if (ua.indexOf("telegram") !== -1) app = "telegram";
-      else if (ua.indexOf("teams") !== -1) app = "teams";
-      else if (ua.indexOf("fban") !== -1 || ua.indexOf("fbav") !== -1 || ua.indexOf("fb_iab") !== -1 || ua.indexOf("facebook") !== -1) app = "facebook";
-      else if (ua.indexOf("mozilla/") !== -1) app = "browser";
-      posthog.people.set_once({
-        entry_referrer: refOrigin,
-        entry_referring_domain: refDomain,
-        entry_url: window.location.origin + (window.location.pathname || "/"),
-        entry_at: new Date().toISOString(),
-        entry_app: app
-      });
-    } catch (e) {}
-  }
-
   var s = document.createElement("script");
   s.async = true;
   s.src = "https://us.i.posthog.com/static/array.js";
@@ -379,7 +349,6 @@ window.FLEET_CFG = {
         posthog.init(KEY, {api_host: "https://us.i.posthog.com", autocapture: false, capture_pageview: true, disable_session_recording: true, sanitize_properties: function (props) { ["$current_url", "$referrer"].forEach(function (k) { if (typeof props[k] === "string") { try { var u = new URL(props[k]); props[k] = u.origin + u.pathname; } catch (e) { props[k] = ""; } } }); return props; }});
         try { posthog.register({site: SITE, internal: isInternal()}); } catch(e){}
         try { if (isInternal() && posthog.people && posthog.people.set) posthog.people.set({fleet_internal: true}); } catch(e){}
-        try { fleetFirstTouch(); } catch(e){}
         while (Q.length) { var e0 = Q.shift(); try { posthog.capture(e0[0], e0[1]); } catch(e){} }
       }
     } catch(e){}
@@ -642,6 +611,11 @@ window.FLEET_CFG = {
 <button id="movebtn" class="secondary" type="button">Add the fridge move only (.ics)</button>
 <button id="movegbtn" class="secondary" type="button">Add the fridge move in Google Calendar</button>
 <p id="movemsg" aria-live="polite"></p>
+<p class="cardlabel">Remind yourself, no email needed</p>
+<a id="gcalremind" class="gcallink" href="#" target="_blank" rel="noopener">Add to Google Calendar</a>
+<button id="copyprompt" class="secondary" type="button">Copy a reminder prompt</button>
+<p id="remindmsg" aria-live="polite"></p>
+<p id="prompttext"></p>
 </div>
 
 <details class="xpd"><summary>Prefer to ask in chat?</summary>
@@ -810,7 +784,7 @@ function render(){
      no-plan exit now also clears the share text and hides all three
      blocks; the success path at the bottom unhides them. */
   const shareBlocks=["sharehead","shareblock","calblock"].map(id=>document.getElementById(id));
-  const clearShare=()=>{ document.getElementById("sharetext").textContent=""; document.getElementById("calmsg").textContent=""; document.getElementById("movemsg").textContent=""; shareBlocks.forEach(el=>{ if(el) el.hidden=true; }); };
+  const clearShare=()=>{ document.getElementById("sharetext").textContent=""; document.getElementById("calmsg").textContent=""; document.getElementById("movemsg").textContent=""; const rm=document.getElementById("remindmsg"); if(rm) rm.textContent=""; const pt=document.getElementById("prompttext"); if(pt) pt.textContent=""; const gl=document.getElementById("gcalremind"); if(gl&&typeof gl.setAttribute==="function"){ gl.setAttribute("href","#"); if(typeof gl.removeAttribute==="function") gl.removeAttribute("data-valid"); } shareBlocks.forEach(el=>{ if(el) el.hidden=true; }); };
   const showShare=()=>{ shareBlocks.forEach(el=>{ if(el) el.hidden=false; }); };
   if(!date||!time){ hint.textContent="Check the date and time."; out.innerHTML=""; cold.innerHTML=""; frozencook.innerHTML=""; math.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; document.getElementById("timelinehead").hidden=true; clearShare(); return; }
   /* Item 98 L2: an empty weight field mid-typing is not an out-of-range
@@ -912,6 +886,7 @@ function render(){
     : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb fresh turkey): ${buySeg}${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. ${shareLink}`) + " Done at 165 F.";
   document.getElementById("sharetext").textContent=txt;
   lastPlan={rows:rows,lb:lb,state:state,dinner:dinner,warning:warning};
+  updateRemind(lastPlan);
   document.getElementById("cardarea").hidden=false;
   document.getElementById("timelinehead").hidden=false;
   showShare();
@@ -1099,6 +1074,70 @@ document.getElementById("movegbtn").addEventListener("click",()=>{
   window.open(url,"_blank");
   document.getElementById("movemsg").textContent="Google Calendar opened with the fridge move filled in.";
 });
+/* 2026-11-08 (SPEC-TD-REMIND-01, Addendum 2043): two no-email reminder
+   actions on the plan surface. (a) "Add to Google Calendar" is a real
+   link whose href is rebuilt on every render: a Google Calendar
+   template URL for a move-date MORNING event (9:00-9:30 AM on the
+   plan's own fridge-move date), titled "Move your <weight> lb turkey
+   from freezer to fridge". It sits alongside the .ics downloads above
+   and never replaces them; the older fridge-move Google button keeps
+   its own exact-time behaviour. (b) "Copy a reminder prompt" copies a
+   ready prompt for the visitor's own AI, carrying the plan's weight,
+   move date, and dinner date. Both read only lastPlan's thaw row,
+   exactly like the calendar files: no date is recomputed, nothing is
+   sent anywhere, and no email is collected or promised. A fresh bird,
+   a passed fridge start (cold-water plan), a cook-from-frozen plan,
+   and a past dinner get an honest message instead of a dead link. */
+function remindParts(plan){
+  if(!plan) return null;
+  if(plan.warning&&plan.warning.kind==="past") return null;
+  const thaw=plan.rows.find(r=>r.id==="thaw");
+  if(!thaw||thaw.late||thaw.frozen) return null;
+  const when=new Date(thaw.when.getTime()); when.setHours(9,0,0,0);
+  const end=new Date(when.getTime()+30*60000);
+  const title="Move your "+plan.lb+" lb turkey from freezer to fridge";
+  const detail=thaw.detail+" Dinner: "+fmt(plan.dinner)+". Never thaw a turkey on the counter. Plan from ThawDay: https://thawday.com/calculator";
+  const url="https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(title)
+    +"&dates="+icsUTC(when)+"/"+icsUTC(end)+"&details="+encodeURIComponent(detail);
+  const d=plan.dinner;
+  const isThanksgiving=d.getMonth()===10&&d.getDay()===4&&d.getDate()>=22&&d.getDate()<=28;
+  const prompt="Remind me on "+fmtDateOnly(when)+" at 9am: move my "+plan.lb+" lb turkey from freezer to fridge. "
+    +(isThanksgiving?"Thanksgiving dinner is ":"Dinner is ")+fmtDateOnly(d)+".";
+  return {when:when,end:end,title:title,detail:detail,url:url,prompt:prompt};
+}
+function remindBlockReason(plan){
+  if(!plan) return "Set your dinner date and time first.";
+  if(plan.warning&&plan.warning.kind==="past") return "That dinner time is already past, so there is no move to remind you about.";
+  const thaw=plan.rows.find(r=>r.id==="thaw");
+  if(!thaw) return "A fresh turkey is already in the fridge, so there is no fridge move to remind you about.";
+  if(thaw.late) return "Your fridge start date has passed. The plan above starts with cold water today, so there is no fridge move to remind you about.";
+  if(thaw.frozen) return "This plan cooks the turkey from frozen, so there is no fridge move to remind you about.";
+  return "";
+}
+function updateRemind(plan){
+  try{
+    const link=document.getElementById("gcalremind"), pt=document.getElementById("prompttext"), msg=document.getElementById("remindmsg");
+    if(!link||!pt||typeof link.setAttribute!=="function") return;
+    const rp=remindParts(plan);
+    if(msg) msg.textContent="";
+    if(rp){ link.setAttribute("href",rp.url); link.setAttribute("data-valid","1"); pt.textContent=rp.prompt; }
+    else { link.setAttribute("href","#"); if(typeof link.removeAttribute==="function") link.removeAttribute("data-valid"); pt.textContent=""; }
+  }catch(e){ /* a host stub without a full DOM must never break render() */ }
+}
+document.getElementById("gcalremind").addEventListener("click",(e)=>{
+  if(!remindParts(lastPlan)){ e.preventDefault(); document.getElementById("remindmsg").textContent=remindBlockReason(lastPlan); return; }
+  document.getElementById("remindmsg").textContent="Google Calendar opened with your fridge-move morning reminder filled in.";
+});
+document.getElementById("copyprompt").addEventListener("click",async()=>{
+  render();
+  const msg=document.getElementById("remindmsg");
+  const rp=remindParts(lastPlan);
+  if(!rp){ msg.textContent=remindBlockReason(lastPlan); return; }
+  document.getElementById("prompttext").textContent=rp.prompt;
+  try{ await navigator.clipboard.writeText(rp.prompt); msg.textContent="Reminder prompt copied. Paste it into your own AI and ask it to remind you."; }
+  catch(e){ msg.textContent="Copy the prompt below and paste it into your own AI."; }
+});
+// REMIND ACTIONS END
 // CALENDAR FILE END
 ["date","time","weight","state","brine"].forEach(id=>document.getElementById(id).addEventListener("input",render));
 /* 2026-10-31 (SPEC-THAW-GUESTSIZE-1): the guest helper sets the weight
