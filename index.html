@@ -670,7 +670,7 @@ window.FLEET_CFG = {
 <!-- Works with your AI (fleet AI section, 2026-11-04) -->
 <section class="works-with-ai" aria-label="Works with your AI" style="max-width:44rem;margin:2.5rem auto;padding:1.25rem 1rem;border:1px solid rgba(127,127,127,.45);border-radius:14px;font-family:inherit;line-height:1.55">
 <h2 style="margin:.1rem 0 .5rem;font-size:1.35rem">Works with your AI</h2>
-<p style="margin:.4rem 0">Ask your AI when to move the turkey to the fridge. It counts back from your dinner hour and your bird's weight — a computed answer, not a guess.</p>
+<p style="margin:.4rem 0">Ask your AI when to move the turkey to the fridge. It counts back from your dinner hour and your bird's weight: a computed answer, not a guess.</p>
 <p style="margin:.4rem 0">Connect this site to Claude, Cursor, or any other MCP client. It is free, and it takes about a minute.</p>
 <p style="margin:.8rem 0 .3rem"><strong>1. Copy the server address</strong></p>
 <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:stretch">
@@ -679,11 +679,11 @@ window.FLEET_CFG = {
 </div>
 <p style="margin:.9rem 0 .3rem"><strong>2. Add it to your AI</strong></p>
 <details>
-<summary style="min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:600">Claude Code — one command</summary>
+<summary style="min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:600">Claude Code: one command</summary>
 <pre style="overflow-x:auto;padding:.7rem;border:1px solid rgba(127,127,127,.35);border-radius:10px"><code>claude mcp add --transport http thawday https://mcp.thawday.com/mcp</code></pre>
 </details>
 <details>
-<summary style="min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:600">Claude Desktop or Cursor — paste into the MCP settings</summary>
+<summary style="min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:600">Claude Desktop or Cursor: paste into the MCP settings</summary>
 <pre style="overflow-x:auto;padding:.7rem;border:1px solid rgba(127,127,127,.35);border-radius:10px"><code>{
   "mcpServers": {
     "thawday": {
@@ -898,7 +898,7 @@ window.FLEET_CFG = {
     if (plan.mode !== cur.plan.mode) { cur.plan = plan; renderPlan(); return; }
     cur.plan = plan;
 
-    buyCapEl.textContent = (plan.mode === "fridge" && juStartOfDay(now).getTime() > juStartOfDay(plan.buy).getTime()) ? "Date passed — buy it now" : "Buy by this date";
+    buyCapEl.textContent = (plan.mode === "fridge" && juStartOfDay(now).getTime() > juStartOfDay(plan.buy).getTime()) ? "Date passed: buy it now" : "Buy by this date";
 
     var step = null, st = "";
     if (plan.mode === "fridge") {
