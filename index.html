@@ -176,6 +176,16 @@
   .livestrip .ls-more { display: inline-flex; align-items: center; min-height: 44px;
     color: var(--accent); font-weight: 700; text-decoration: none; }
   .livestrip .ls-more:hover { text-decoration: underline; }
+  /* 2026-11-08 SPEC-TD-DIST-01: exact-weight link row under the band
+     table, so the homepage deep-links every per-weight page. Static
+     links only — the livestrip script never touches this block. */
+  .livestrip .ls-weights { margin-top: 0.6rem; padding-top: 0.6rem; border-top: 1px solid #ecd9b8; }
+  .livestrip .ls-weights-label { font-weight: 700; color: var(--ink); margin-bottom: 0.35rem; }
+  .livestrip .ls-weight-links { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; }
+  .livestrip .ls-weight-links a { display: inline-flex; align-items: center; justify-content: center;
+    min-height: 44px; min-width: 44px; padding: 0.45rem 0.65rem; border: 1px solid var(--accent);
+    border-radius: 999px; background: #fff; color: var(--accent); font-weight: 700; text-decoration: none; }
+  .livestrip .ls-weight-links a:hover { text-decoration: underline; }
   .shortanswer > p:first-child { font-weight: 700; color: var(--ink); }
   .shortanswer ul { margin: 0.5rem 0 0.25rem; }
   .shortanswer li { display: flex; flex-direction: column; gap: 0.1rem; padding: 0.35rem 0; margin-bottom: 0; border-bottom: 1px solid #f0e4cf; }
@@ -233,7 +243,6 @@
   .ju-other { display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 0.55rem; font-weight: 600; font-size: 0.95rem; }
   .ju-other input { width: 5.25rem; min-height: 48px; font-size: 1rem; padding: 0.4rem 0.6rem; border: 1px solid #b6c2cc; border-radius: 0.6rem; background: #fff; color: inherit; }
   .ju-warn { margin-top: 0.5rem; font-size: 0.92rem; font-weight: 600; color: #9a3412; }
-  .ju-bnote { margin-top: -0.45rem; font-size: 0.92rem; color: var(--muted); }
   .ju-dinner { display: flex; flex-wrap: wrap; gap: 0.5rem 0.75rem; }
   .ju-dinner .hf { display: flex; flex-direction: column; gap: 0.25rem; }
   .ju-dinner label { font-size: 0.875rem; font-weight: 600; }
@@ -549,7 +558,6 @@ window.FLEET_CFG = {
           <button type="button" class="ju-chipbtn" id="ju-brine-yes" aria-pressed="false">I&rsquo;m brining</button>
         </div>
       </div>
-      <p class="ju-bnote">Brining is soaking the bird in salt water before roasting. Optional, makes it juicier.</p>
     </div>
     <ol class="ju-steps">
       <li class="ju-step" id="ju-step-buy"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Buy</span><strong class="ju-sdate" id="ju-buy-date">Sun, Nov 15</strong><span class="ju-scap" id="ju-buy-cap">Buy by this date</span><span class="ju-here" id="ju-here-buy" hidden>You are here</span></li>
@@ -586,6 +594,30 @@ window.FLEET_CFG = {
       <li><span class="ls-w">13 to 16 lb</span><span class="ls-d"><strong>Sunday, November 22</strong></span></li>
       <li><span class="ls-w">Up to 12 lb</span><span class="ls-d"><strong>Monday, November 23</strong></span></li>
     </ul>
+    <!-- 2026-11-08 SPEC-TD-DIST-01: one-tap route from the homepage to
+         the visitor's exact-weight page (all 17, matching the chart). -->
+    <nav class="ls-weights" aria-label="Exact weight pages">
+      <p class="ls-weights-label">Your exact weight:</p>
+      <ul class="ls-weight-links">
+        <li><a href="/how-long-to-thaw-an-8-lb-turkey">8 lb</a></li>
+        <li><a href="/how-long-to-thaw-a-9-lb-turkey">9 lb</a></li>
+        <li><a href="/how-long-to-thaw-a-10-lb-turkey">10 lb</a></li>
+        <li><a href="/how-long-to-thaw-an-11-lb-turkey">11 lb</a></li>
+        <li><a href="/how-long-to-thaw-a-12-lb-turkey">12 lb</a></li>
+        <li><a href="/how-long-to-thaw-a-13-lb-turkey">13 lb</a></li>
+        <li><a href="/how-long-to-thaw-a-14-lb-turkey">14 lb</a></li>
+        <li><a href="/how-long-to-thaw-a-15-lb-turkey">15 lb</a></li>
+        <li><a href="/how-long-to-thaw-a-16-lb-turkey">16 lb</a></li>
+        <li><a href="/how-long-to-thaw-a-17-lb-turkey">17 lb</a></li>
+        <li><a href="/how-long-to-thaw-a-18-lb-turkey">18 lb</a></li>
+        <li><a href="/how-long-to-thaw-a-19-lb-turkey">19 lb</a></li>
+        <li><a href="/how-long-to-thaw-a-20-lb-turkey">20 lb</a></li>
+        <li><a href="/how-long-to-thaw-a-21-lb-turkey">21 lb</a></li>
+        <li><a href="/how-long-to-thaw-a-22-lb-turkey">22 lb</a></li>
+        <li><a href="/how-long-to-thaw-a-23-lb-turkey">23 lb</a></li>
+        <li><a href="/how-long-to-thaw-a-24-lb-turkey">24 lb</a></li>
+      </ul>
+    </nav>
     <p class="ls-note" id="ls-note">Dinner is Thursday, November 26, 2026. Brining? Move it about a day earlier.</p>
     <a class="ls-more" id="ls-more" href="/when-to-thaw-turkey-for-thanksgiving">See the full Thanksgiving plan</a>
   </section>
@@ -673,7 +705,7 @@ window.FLEET_CFG = {
 <section class="works-with-ai" aria-label="Works with your AI" style="max-width:44rem;margin:2.5rem auto;padding:1.25rem 1rem;border:1px solid rgba(127,127,127,.45);border-radius:14px;font-family:inherit;line-height:1.55">
 <h2 style="margin:.1rem 0 .5rem;font-size:1.35rem">Works with your AI</h2>
 <p style="margin:.4rem 0">Ask your AI when to move the turkey to the fridge. It counts back from your dinner hour and your bird's weight: a computed answer, not a guess.</p>
-<p style="margin:.4rem 0">Connect this site to Claude, Cursor, or any other MCP client (MCP, the standard way AI apps connect to outside tools). It is free, and it takes about a minute.</p>
+<p style="margin:.4rem 0">Connect this site to Claude, Cursor, or any other MCP client. It is free, and it takes about a minute.</p>
 <p style="margin:.8rem 0 .3rem"><strong>1. Copy the server address</strong></p>
 <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:stretch">
 <code id="wai-url" style="flex:1 1 16rem;display:flex;align-items:center;padding:.6rem .7rem;border:1px solid rgba(127,127,127,.45);border-radius:10px;word-break:break-all">https://mcp.thawday.com/mcp</code>
