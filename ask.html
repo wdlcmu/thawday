@@ -222,6 +222,23 @@ function parseAsk(raw, nowOverride){
   var now=nowOverride||new Date();
   var today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
   var t=" "+String(raw).toLowerCase().replace(/[\u2019]/g,"'")+" ";
+  /* SPEC-TD-ADV1108-07 (MEDIUM, filed Nov 8, 2026, Addendum
+     2284): "five days back" is ordinary English for "five days
+     ago", but the elapsed-day vocabulary held no "back" anchor,
+     so a bird stated finished five days back drew a weight
+     ask-back — or, with a weight, a premise-blind frozen-bird
+     plan — instead of the past-window "Do not cook it". The
+     strictly-adjacent shape (number + day(s) + back, digits or
+     the spelled one..twelve the ago read accepts) is restated
+     here as "N days ago", so every elapsed read below — agoM,
+     the 956 claim governance, the negation / correction /
+     buy-event guards, the thawedWord past-day gates and
+     finishHit's until-tail tests — hears it exactly as it hears
+     "ago". Adjacency is the guard: a bare "back" ("put it back
+     in the fridge", "back shelf", "back on Monday") never
+     matches and creates no anchor. No new numbers: the count is
+     the visitor's own stated days, carried through unchanged. */
+  t=t.replace(/\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+days?\s+back\b/g,"$1 days ago");
   var p={state:"frozen",brine:"no",intent:"plan",dateDefaulted:false,timeDefaulted:false,stateExplicit:false,brineExplicit:false};
   var wm=t.match(/(\d+(?:\.\d+)?)\s*-?\s*(lbs?|pounds?|pounder)\b/);
   if(wm) p.lb=parseFloat(wm[1]);
@@ -899,6 +916,7 @@ function answerAsk(raw, nowOverride){
   var midThawHtml=null;
   if(p.lb&&p.lb>=4&&p.lb<=24&&p.premise!=="counter"&&p.premise!=="warmwater"&&p.premise!=="coldovernight"){
     var mtT=" "+String(raw).toLowerCase().replace(/[\u2019]/g,"'")+" ";
+    mtT=mtT.replace(/\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+days?\s+back\b/g,"$1 days ago"); /* SPEC-TD-ADV1108-07: same days-back restatement as parseAsk's t above, so this block's clause anchor test hears a days-back anchor as ago. */
     /* SPEC-TD-ADV1108-06 (MEDIUM, filed Nov 8, 2026, Addendum
        2284): the finish-phrase stand-down in the condition below
        heard "done/finished thawing" inside the visitor's
