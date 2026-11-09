@@ -899,7 +899,33 @@ function answerAsk(raw, nowOverride){
   var midThawHtml=null;
   if(p.lb&&p.lb>=4&&p.lb<=24&&p.premise!=="counter"&&p.premise!=="warmwater"&&p.premise!=="coldovernight"){
     var mtT=" "+String(raw).toLowerCase().replace(/[\u2019]/g,"'")+" ";
-    if(/\b(?:fridge|refrigerator)\b/.test(mtT)&&!/\b(?:finished|finish|done|completed|complete) thawing\b/.test(mtT)&&!/\bfully thawed\b/.test(mtT)&&!/\bthawed for\b/.test(mtT)&&!/\bbeen thawed\b/.test(mtT)){
+    /* SPEC-TD-ADV1108-06 (MEDIUM, filed Nov 8, 2026, Addendum
+       2284): the finish-phrase stand-down in the condition below
+       heard "done/finished thawing" inside the visitor's
+       QUESTION ("Is it done thawing?") as if the bird had been
+       STATED finished, so a still-thawing bird fell through to
+       the post-thaw hold on the wrong clock. The stand-down is
+       now clause-scoped (mtFinStand): an occurrence inside an
+       interrogative clause (the clause ends at "?", or opens
+       with is / has / can / should / when / will / did) that
+       carries no elapsed anchor of its own (no ago, yesterday,
+       since, weekday, or "for N days") is a question about
+       state, not a stated premise, and does not stand the
+       mid-thaw read down. A declarative finished premise
+       anywhere — including beside a done-thawing question (the
+       C4/C5 sentinels) — still stands it down, and every
+       ambiguous occurrence stands it down too: the safety
+       stand-down wins every tie. */
+    var mtFinStand=false;
+    { var mtFinRe=/\b(?:finished|finish|done|completed|complete) thawing\b/g, mtFinM;
+      while((mtFinM=mtFinRe.exec(mtT))!==null){ var mtS=0, mtE=mtT.length, mtCh="", mtI;
+        for(mtI=mtFinM.index-1;mtI>=0;mtI--){ if(/[.!?;,]/.test(mtT[mtI])){ mtS=mtI+1; break; } }
+        for(mtI=mtFinM.index+mtFinM[0].length;mtI<mtT.length;mtI++){ if(/[.!?;,]/.test(mtT[mtI])){ mtE=mtI; mtCh=mtT[mtI]; break; } }
+        var mtCl=mtT.slice(mtS,mtE);
+        var mtQ=(mtCh==="?")||/^\s*(?:is|has|can|should|when|will|did)\b/.test(mtCl);
+        var mtAnch=/\bago\b|\byesterday\b|day before yesterday|\bsince\b|\b(?:sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b|\bfor\s+(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+days?\b/.test(mtCl);
+        if(!(mtQ&&!mtAnch)){ mtFinStand=true; break; } } }
+    if(/\b(?:fridge|refrigerator)\b/.test(mtT)&&!mtFinStand&&!/\bfully thawed\b/.test(mtT)&&!/\bthawed for\b/.test(mtT)&&!/\bbeen thawed\b/.test(mtT)){
       var mtWords="\\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve";
       var mtM=mtT.match(new RegExp("(?:thawing|defrosting)[^.!?]{0,48}?\\bfor ("+mtWords+") (?:full |whole )?days?\\b"))
              ||mtT.match(new RegExp("\\bfor ("+mtWords+") (?:full |whole )?days?\\b[^.!?]{0,32}?(?:thawing|defrosting)\\b"));
