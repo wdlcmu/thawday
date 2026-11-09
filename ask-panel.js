@@ -227,6 +227,22 @@ function parseAsk(raw, nowOverride){
   if(/\bcounter\w*|room temperature/.test(pt)) p.premise="counter";
   else if(/lukewarm\b|tepid\b|warm-?ish\b|\bheated\b|(?:feels?|felt) (?:warm|hot)\b|\b(?:warm|hot)(?: \w+){0,3}? (?:water|sink|basin|bath|soak|tub)\b/.test(pt)) p.premise="warmwater";
   else if(/cold water/.test(pt)&&/(overnight|all night|(?:through|for|over) the (?:whole )?night|through tonight|through (?:the )?(?:dawn|sunrise|daybreak)|(?:till|until|til) (?:the |tomorrow )?morning|(?:till|until|til) (?:i|we) wake|(?:till|until|til) (?:(?:i|we) (?:get|wake) up|(?:everyone|everybody) (?:gets|wakes) up)|(?:till|until|til) (?:the )?(?:dawn|sunrise|daybreak|first light|sunup|daylight|break of (?:the )?day|first crack of (?:light|dawn)|day breaks|crack of (?:the )?dawn|sun (?:comes up|rises|is up|comes back up|peeks up))|midnight (?:to|till|until) (?:the )?(?:morning|dawn|sunrise|daybreak)|while (?:[a-z]+ ){0,3}(?:asleep|sleeping|sleeps|sleep)\b|while (?:i|we) (?:sleep|am asleep|am sleeping)|while i'?m (?:sleeping|asleep))/.test(pt)) p.premise="coldovernight";
+  /* SPEC-TD-ADV1108-02 (HIGH, filed Nov 8, 2026, Addendum 2255): the
+     counter premise with a stated PAST time out \u2014 overnight, all
+     day, all night, or a past "for N hours" with N over 2 \u2014 is not
+     a prospective thaw question: that bird is already out past the
+     site's own 2-hour line, so answerAsk leads with the counter
+     page's discard verdict and builds no plan for that bird. The
+     past framing is structural: a sitting-out verb in the past
+     (left / sat / sitting / been / was / stayed / kept / spent) must
+     be present, so a prospective "Can I thaw it on the counter
+     overnight?" \u2014 no past verb \u2014 keeps the plain No and the safe
+     plan exactly as before. */
+  if(p.premise==="counter"){ var cpVerb=/\b(?:left|sat|sitting|been|was|were|stayed|kept|spent)\b/.test(t);
+    if(cpVerb&&/\b(?:overnight|all day|all night|whole day|entire day|all afternoon|all morning)\b/.test(t)) p.counterPast=true;
+    else if(cpVerb){ var cpH=t.match(/\b(?:for|over)\s+(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+hours?\b/); if(cpH&&dayNum(cpH[1])>2) p.counterPast=true; }
+    if(!p.counterPast&&/\b(?:left|sat|been|was|stayed|kept)\b[^.!?]{0,60}?\bsince\s+(?:yesterday|last night)\b/.test(t)) p.counterPast=true;
+  }
   /* SPEC-COLDQA1103-3 (2026-11-03): the still-frozen scenario. The two
      rescue paths are weight-free facts the site already publishes (the
      still-frozen page leads with them), so a bird named still frozen
@@ -654,6 +670,34 @@ function parseAsk(raw, nowOverride){
       if(/day after tomorrow/.test(t)) cookOff=2;
       else if(/\btomorrow\b/.test(t)) cookOff=1;
       else { var cookM=t.match(/(?:cook|good for|eat|serve)[^.]{0,24}?\b(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/); if(cookM) cookOff=(wdNames.indexOf(cookM[1])-today.getDay()+7)%7; }
+      /* SPEC-TD-ADV1108-01 (HIGH, filed Nov 8, 2026 by the
+         pre-Thanksgiving adversarial pass, Addendum 2255): the
+         forward count above heard only "tomorrow" and weekday
+         names, so a cook day named as a holiday ("cooking it on
+         Thanksgiving", "on Christmas Day") or an explicit calendar
+         date ("on November 28") silently dropped the forward count
+         and the verdict counted to today alone \u2014 a bird thawed
+         yesterday and cooked on Thanksgiving (19 days later) was
+         cleared as "At 1 day, still inside that window. Cook it
+         today." When the earlier reads found nothing, a cook-framed
+         holiday or calendar date now supplies the same forward
+         count, resolved with this parser's own date rules
+         (nextThanksgiving; Christmas Day Dec 25 and Christmas Eve
+         Dec 24, rolling to next year once past, as the dinner read
+         below does; Thanksgiving Eve the day before Thanksgiving;
+         an explicit month-day in this year). A cook date already
+         past today supplies no forward count \u2014 the elapsed-only
+         verdict stands, exactly as before \u2014 and no other shape
+         changes. */
+      if(cookOff===0){ var cookDateAdv=null;
+        var holAdv=t.match(/(?:cook\w*|eat\w*|serve\w*|dinner|supper|good for)[^.!?]{0,48}?\b(thanksgiving eve|christmas eve|thanksgiving|christmas(?: day)?)\b/);
+        if(holAdv){ if(holAdv[1]==="thanksgiving") cookDateAdv=nextThanksgiving(today);
+          else if(holAdv[1]==="thanksgiving eve"){ var tgAdv=nextThanksgiving(today); cookDateAdv=new Date(tgAdv.getFullYear(),tgAdv.getMonth(),tgAdv.getDate()-1); }
+          else { var cdAdv=new Date(today.getFullYear(),11,holAdv[1]==="christmas eve"?24:25); if(cdAdv<today) cdAdv=new Date(today.getFullYear()+1,11,holAdv[1]==="christmas eve"?24:25); cookDateAdv=cdAdv; } }
+        else { var dtAdv=t.match(/(?:cook\w*|eat\w*|serve\w*|dinner|supper|good for)[^.!?]{0,48}?\b(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|sept|oct|nov|dec)\s+(\d{1,2})\b/);
+          if(dtAdv){ var moAdv={january:0,february:1,march:2,april:3,may:4,june:5,july:6,august:7,september:8,october:9,november:10,december:11,jan:0,feb:1,mar:2,apr:3,jun:5,jul:6,aug:7,sep:8,sept:8,oct:9,nov:10,dec:11}; cookDateAdv=new Date(today.getFullYear(),moAdv[dtAdv[1]],parseInt(dtAdv[2],10)); } }
+        if(cookDateAdv){ var diffAdv=Math.round((cookDateAdv-today)/86400000); if(diffAdv>0) cookOff=diffAdv; }
+      }
       p.holdDays=elapsed+cookOff; if(cookOff>0) p.holdFuture=true;
     }
   }
@@ -749,7 +793,9 @@ function answerAsk(raw, nowOverride){
      the bird it describes is already thawed, so no frozen plan is
      built for it, and the rule does not need a weight. */
   var premiseHtml="";
-  if(p.premise==="counter") premiseHtml=`<div class="row"><strong>No. Never thaw a turkey on the counter.</strong><br>The outside warms up hours before the inside thaws. Bacteria grow in that warm layer. Use the fridge, at 40 F or below, or cold water. The safe plan is below.</div>`;
+  if(p.premise==="counter") premiseHtml=p.counterPast
+    ? `<div class="row"><strong>No. Never thaw a turkey on the counter.</strong><br>The outside warms up hours before the inside thaws. Bacteria grow in that warm layer. A turkey that sat out for more than 2 hours cannot be made safe, by cooking or by freezing. Throw it out.</div>`
+    : `<div class="row"><strong>No. Never thaw a turkey on the counter.</strong><br>The outside warms up hours before the inside thaws. Bacteria grow in that warm layer. Use the fridge, at 40 F or below, or cold water. The safe plan is below.</div>`;
   else if(p.premise==="warmwater") premiseHtml=`<div class="row"><strong>No. Warm water speeds up the wrong thing.</strong><br>The surface of the bird warms into the danger zone long before the center thaws. Cold water, changed every 30 minutes, is the fast safe method. The safe plan is below.</div>`;
   else if(p.premise==="coldovernight") premiseHtml=`<div class="row"><strong>No. Cold water only works while you are awake to change it.</strong><br>Change the water every 30 minutes. Cook it right after it thaws. An overnight soak breaks both rules at once. The safe plan is below.</div>`;
   else if(p.premise==="stillfrozen") premiseHtml=`<div class="row"><strong>Dinner can still happen.</strong><br>Two safe paths. Cold water: seal the bird in a leak-proof plastic bag and submerge it in cold tap water, at 30 minutes per pound. Change the water every 30 minutes, and cook it right after it thaws. Or cook it from frozen: USDA says cooking a turkey from frozen is safe, and it takes at least 50 percent longer than a thawed bird. Never thaw on the counter. The safe plan is below.</div>`;
@@ -757,6 +803,15 @@ function answerAsk(raw, nowOverride){
     hint.textContent="";
     var holdVerdict = p.holdDays==null ? "" : (p.holdDays>2 ? (p.holdFuture ? ` By the day you cook it, yours will have been thawed for ${p.holdDays} days. That is past the window. Do not cook it.` : ` Yours has been in the fridge for ${p.holdDays} days. That is past the window. Do not cook it.`) : (p.holdFuture ? ` By the day you cook it, yours will have been thawed for ${p.holdDays} day${p.holdDays===1?"":"s"}. That is still inside the window.` : ` At ${p.holdDays} day${p.holdDays===1?"":"s"}, it is still inside that window. Cook it today.`));
     out.innerHTML=`<div class="row"><strong>Cook a thawed turkey within 1 to 2 days. That is the USDA rule.</strong><br>The clock starts when the turkey is fully thawed.${holdVerdict}</div>`;
+    document.getElementById("askp-calclink").innerHTML="";
+    return {rows:[],warning:null,parsed:p};
+  }
+  /* SPEC-TD-ADV1108-02: a bird already out past 2 hours gets the
+     discard verdict and no plan \u2014 no cold-water or fridge row may
+     read as that bird's rescue. A plan for a NEW bird starts only
+     when the visitor says they have one. */
+  if(p.premise==="counter"&&p.counterPast&&p.lb){ hint.textContent="";
+    out.innerHTML=premiseHtml+`<div class="row">If you get a new frozen turkey, say so and I will build its safe plan.</div>`;
     document.getElementById("askp-calclink").innerHTML="";
     return {rows:[],warning:null,parsed:p};
   }
