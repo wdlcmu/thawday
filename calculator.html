@@ -1091,7 +1091,7 @@ function buildICS(plan){
     lines.push("DTSTART:"+icsUTC(ev.when));
     lines.push("DTEND:"+icsUTC(end));
     lines.push("SUMMARY:"+icsEscape("ThawDay: "+ev.label+" ("+plan.lb+" lb turkey)"));
-    lines.push("DESCRIPTION:"+icsEscape(ev.detail+" Plan from ThawDay: https://thawday.com/calculator"+" Dates from ThawDay. Planning your own bird? thawday.com — every weight, every date."));
+    lines.push("DESCRIPTION:"+icsEscape(ev.detail+" Plan from ThawDay: https://thawday.com/calculator"+" Dates from ThawDay. Planning your own bird? thawday.com, every weight, every date."));
     lines.push("URL:https://thawday.com/calculator?via=share");
     if(ev.id==="buy"||ev.id==="thaw"){
       lines.push("BEGIN:VALARM");
@@ -1125,7 +1125,7 @@ document.getElementById("calbtn").addEventListener("click",()=>{
 function moveParts(plan){
   const thaw=plan.rows.find(r=>r.id==="thaw");
   return {when:thaw.when, title:"Move the "+plan.lb+" lb turkey to the fridge",
-    detail:thaw.detail+" Dinner: "+fmt(plan.dinner)+". Never thaw a turkey on the counter. Plan from ThawDay: https://thawday.com/calculator"+" Dates from ThawDay. Planning your own bird? thawday.com — every weight, every date."};
+    detail:thaw.detail+" Dinner: "+fmt(plan.dinner)+". Never thaw a turkey on the counter. Plan from ThawDay: https://thawday.com/calculator"+" Dates from ThawDay. Planning your own bird? thawday.com, every weight, every date."};
 }
 function buildMoveICS(plan){
   const mp=moveParts(plan), stamp=icsUTC(new Date()), end=new Date(mp.when.getTime()+30*60000);

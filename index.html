@@ -617,7 +617,7 @@ window.FLEET_CFG = {
       <p class="ju-bnote">Brining is soaking the bird in salt water before roasting. Optional, makes it juicier.</p>
     </div>
     <ol class="ju-steps">
-      <li class="ju-step" id="ju-step-buy"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Buy</span><strong class="ju-sdate" id="ju-buy-date">Sun, Nov 15</strong><span class="ju-scap" id="ju-buy-cap">Buy by this date</span><span class="ju-here" id="ju-here-buy" hidden>You are here</span></li>
+      <li class="ju-step ju-here-step" id="ju-step-buy"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Buy</span><strong class="ju-sdate" id="ju-buy-date">Sun, Nov 15</strong><span class="ju-scap" id="ju-buy-cap">Buy by this date</span><span class="ju-here" id="ju-here-buy">You are here</span></li>
       <li class="ju-step" id="ju-step-thaw"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Thaw</span><strong class="ju-sdate" id="ju-thaw-date">Sun, Nov 22</strong><span class="ju-scap" id="ju-thaw-cap">Move it to the fridge</span><span class="ju-here" id="ju-here-thaw" hidden>You are here</span></li>
       <li class="ju-step ju-off" id="ju-step-brine"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Brine</span><strong class="ju-sdate" id="ju-brine-date">Wed, Nov 25</strong><span class="ju-scap" id="ju-brine-cap">If you brine</span><span class="ju-here" id="ju-here-brine" hidden>You are here</span></li>
       <li class="ju-step" id="ju-step-roast"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Roast</span><strong class="ju-sdate" id="ju-roast-date">Thu, Nov 26</strong><span class="ju-scap" id="ju-roast-cap">In the oven by 1:17 PM</span><span class="ju-here" id="ju-here-roast" hidden>You are here</span></li>
@@ -632,7 +632,7 @@ window.FLEET_CFG = {
       <p class="ju-calmsg" id="ju-calmsg" aria-live="polite"></p>
     </div>
     <div class="ju-cd" id="ju-cd" role="img" aria-label="Counting down to move day, Sunday, November 22.">
-      <div class="ju-cd-digits" id="ju-cd-digits" aria-hidden="true" hidden><span class="ju-cd-cell ju-cd-d"><b id="ju-cd-d"></b><i id="ju-cd-dl">days</i></span><span class="ju-cd-cell"><b id="ju-cd-h">00</b><i>hrs</i></span><span class="ju-cd-cell"><b id="ju-cd-m">00</b><i>min</i></span><span class="ju-cd-cell"><b id="ju-cd-s">00</b><i>sec</i></span></div>
+      <div class="ju-cd-digits" id="ju-cd-digits" aria-hidden="true" hidden><span class="ju-cd-cell ju-cd-d"><b id="ju-cd-d"></b><i id="ju-cd-dl">days</i></span><span class="ju-cd-cell"><b id="ju-cd-h"></b><i>hrs</i></span><span class="ju-cd-cell"><b id="ju-cd-m"></b><i>min</i></span><span class="ju-cd-cell"><b id="ju-cd-s"></b><i>sec</i></span></div>
       <p class="ju-cd-label" id="ju-cd-label">Counting down to move day, Sunday, November 22.</p>
       <p class="ju-cd-sub" id="ju-cd-sub">Dinner is Thursday, November 26, 2026.</p>
     </div>
@@ -1194,7 +1194,7 @@ window.FLEET_CFG = {
       lines.push("DTSTART:" + icsUTC(ev.when));
       lines.push("DTEND:" + icsUTC(end));
       lines.push("SUMMARY:" + icsEscape("ThawDay: " + ev.label + " (" + state.lb + " lb turkey)"));
-      lines.push("DESCRIPTION:" + icsEscape(ev.detail + " Plan from ThawDay: https://thawday.com/calculator" + " Dates from ThawDay. Planning your own bird? thawday.com — every weight, every date."));
+      lines.push("DESCRIPTION:" + icsEscape(ev.detail + " Plan from ThawDay: https://thawday.com/calculator" + " Dates from ThawDay. Planning your own bird? thawday.com, every weight, every date."));
       lines.push("URL:https://thawday.com/calculator?via=share");
       if (ev.id === "buy" || ev.id === "thaw") {
         lines.push("BEGIN:VALARM");
