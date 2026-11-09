@@ -799,6 +799,52 @@ function answerAsk(raw, nowOverride){
   else if(p.premise==="warmwater") premiseHtml=`<div class="row"><strong>No. Warm water speeds up the wrong thing.</strong><br>The surface of the bird warms into the danger zone long before the center thaws. Cold water, changed every 30 minutes, is the fast safe method. The safe plan is below.</div>`;
   else if(p.premise==="coldovernight") premiseHtml=`<div class="row"><strong>No. Cold water only works while you are awake to change it.</strong><br>Change the water every 30 minutes. Cook it right after it thaws. An overnight soak breaks both rules at once. The safe plan is below.</div>`;
   else if(p.premise==="stillfrozen") premiseHtml=`<div class="row"><strong>Dinner can still happen.</strong><br>Two safe paths. Cold water: seal the bird in a leak-proof plastic bag and submerge it in cold tap water, at 30 minutes per pound. Change the water every 30 minutes, and cook it right after it thaws. Or cook it from frozen: USDA says cooking a turkey from frozen is safe, and it takes at least 50 percent longer than a thawed bird. Never thaw on the counter. The safe plan is below.</div>`;
+  /* SPEC-TD-ADV1108-03 (MEDIUM, filed Nov 8, 2026 by the
+     pre-Thanksgiving adversarial pass, Addendum 2255): "has been
+     thawing in the fridge for N days" names a bird STILL thawing,
+     but this engine heard it as a completed-thaw hold ("At
+     2 days, it is still inside that window. Cook it today.") and
+     a second wording dropped the premise and built a frozen-bird
+     plan with a 2:17 AM cold-water rescue. The live worker hears
+     the same premise correctly (chat.mjs stillThawingPremise /
+     midThawAnswer), so the panel now answers in the worker's own
+     shape: day N of the weight's band, days of thaw left, the
+     1-to-2-day clock stated as not started, and the cold-water
+     catch-up at the engine's own 30 minutes per pound. The read
+     is narrow by construction: a weight in the 4 to 24 lb range,
+     the word fridge, and a thawing-for-N-days span (digits or
+     spelled, either order) are all required; a bird stated as
+     finished or thawed stands down to the hold read below, the
+     unsafe premises keep their own leads, and past the band plus
+     the 1-to-2-day window the hold verdict governs exactly as
+     before. No new numbers: band days are thawDays(lb), cold
+     water is lb times the site's 30 minutes per pound. */
+  var midThawHtml=null;
+  if(p.lb&&p.lb>=4&&p.lb<=24&&p.premise!=="counter"&&p.premise!=="warmwater"&&p.premise!=="coldovernight"){
+    var mtT=" "+String(raw).toLowerCase().replace(/[\u2019]/g,"'")+" ";
+    if(/\b(?:fridge|refrigerator)\b/.test(mtT)&&!/\b(?:finished|finish|done|completed|complete) thawing\b/.test(mtT)&&!/\bfully thawed\b/.test(mtT)&&!/\bthawed for\b/.test(mtT)&&!/\bbeen thawed\b/.test(mtT)){
+      var mtWords="\\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve";
+      var mtM=mtT.match(new RegExp("(?:thawing|defrosting)[^.!?]{0,48}?\\bfor ("+mtWords+") (?:full |whole )?days?\\b"))
+             ||mtT.match(new RegExp("\\bfor ("+mtWords+") (?:full |whole )?days?\\b[^.!?]{0,32}?(?:thawing|defrosting)\\b"));
+      if(mtM){ var mtNum={one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12};
+        var mtN=/^\d+$/.test(mtM[1])?parseInt(mtM[1],10):mtNum[mtM[1]];
+        var mtTotal=thawDays(p.lb), mtCw=Math.round((p.lb*30/60)*10)/10;
+        var mtCwText="cold water: seal the bird in a leak-proof plastic bag and submerge it in cold tap water, at 30 minutes per pound \u2014 about "+mtCw+" hours for a "+p.lb+" lb bird. Change the water every 30 minutes, and cook it right after it thaws.";
+        if(mtN>=1&&mtN<mtTotal){ var mtLeft=mtTotal-mtN;
+          midThawHtml=`<div class="row"><strong>Day ${mtN} of ${mtTotal} \u2014 that is normal for a ${p.lb} lb bird, with about ${mtLeft} ${mtLeft===1?"day":"days"} of fridge thaw left.</strong><br>The 1 to 2 day window for cooking starts only when the turkey is fully thawed, so yours has not started that clock. Keep it in the fridge at 40 F or below until it finishes. If dinner is sooner than that, the safe catch-up is ${mtCwText} Or cook it from frozen: USDA says cooking a turkey from frozen is safe, and it takes at least 50 percent longer than a thawed bird. Never thaw on the counter.</div>`;
+        } else if(mtN===mtTotal){
+          midThawHtml=`<div class="row"><strong>Day ${mtTotal} of ${mtTotal} \u2014 your ${p.lb} lb bird is on the last day of its fridge thaw.</strong><br>It should finish thawing today. The 1 to 2 day window for cooking starts only when the turkey is fully thawed, so cook it within 1 to 2 days from when it finishes. Keep it in the fridge at 40 F or below until then. If dinner is sooner than that, the safe catch-up is ${mtCwText}</div>`;
+        } else if(mtN<=mtTotal+2){
+          midThawHtml=`<div class="row"><strong>Your ${p.lb} lb bird needed ${mtTotal} days to thaw in the fridge, so after ${mtN} days it should be fully thawed by now.</strong><br>The 1 to 2 day window for cooking starts when the turkey is fully thawed, so that clock is now running: cook it today to be safe. Keep it in the fridge at 40 F or below until you cook it.</div>`;
+        }
+      }
+    }
+  }
+  if(midThawHtml){ hint.textContent="";
+    out.innerHTML=midThawHtml;
+    document.getElementById("askp-calclink").innerHTML="";
+    return {rows:[],warning:null,parsed:p};
+  }
   if(p.premise==="hold"){
     hint.textContent="";
     var holdVerdict = p.holdDays==null ? "" : (p.holdDays>2 ? (p.holdFuture ? ` By the day you cook it, yours will have been thawed for ${p.holdDays} days. That is past the window. Do not cook it.` : ` Yours has been in the fridge for ${p.holdDays} days. That is past the window. Do not cook it.`) : (p.holdFuture ? ` By the day you cook it, yours will have been thawed for ${p.holdDays} day${p.holdDays===1?"":"s"}. That is still inside the window.` : ` At ${p.holdDays} day${p.holdDays===1?"":"s"}, it is still inside that window. Cook it today.`));

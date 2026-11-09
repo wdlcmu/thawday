@@ -2,30 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<script>
-/* FLEET-FT2-2026-11-08: first-touch capture at the door. The first page
-   this browser ever loads on this site stores its referrer, UTM tags and
-   landing address in localStorage (first write wins, never overwritten).
-   The PostHog first-touch writer reads this store, so a creator's
-   discovery channel survives the tool-page to homepage hop that used
-   to erase it (attribution trace, Nov 8, 2026, BP-5). The address is
-   cut to origin + path, /s/ and /g/ code segments are dropped, and no
-   query beyond utm_* and a whitelisted ?via= kind word is kept. */
-(function(){try{
-if(localStorage.getItem("fleet_ft2"))return;
-var q=new URLSearchParams(location.search);
-function utm(n){var v=q.get(n)||"";return v.slice(0,100);}
-var p=location.pathname||"/";
-if(/^\/(s|g)\/[^/]/.test(p))p=p.replace(/^\/(s|g)\/[^/]+.*$/,"/$1/");
-var via=q.get("via")||"";
-var ft={r:document.referrer||"",u:location.origin+p,
-via:["share","own","group"].indexOf(via)>=0?via:"",
-s:utm("utm_source"),m:utm("utm_medium"),c:utm("utm_campaign"),
-at:new Date().toISOString()};
-localStorage.setItem("fleet_ft2",JSON.stringify(ft));
-}catch(e){}})();
-</script>
-
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>How Long to Thaw A 23 lb Turkey | ThawDay</title>
 <meta name="description" content="A 23 lb turkey needs about 6 days in the fridge. For Thanksgiving 2026, move it on Friday, November 20. In cold water: 11 hours 30 minutes. USDA times.">
@@ -95,6 +71,12 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:.
 footer p{margin:4px 0}
 footer a{color:var(--accent);font-weight:600;text-decoration:none;display:inline-block;padding:12px 6px;min-height:44px}
 footer a:hover{text-decoration:underline}
+.calrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0 4px}
+.calrow button{font:inherit;font-size:.9375rem;font-weight:700;padding:10px 14px;min-height:44px;border:1px solid var(--accent);border-radius:999px;background:var(--accent);color:#fff;cursor:pointer}
+.calrow a.cal-g{font-size:.9375rem;font-weight:700;padding:10px 14px;min-height:44px;border:1px solid var(--accent);border-radius:999px;background:#fff;color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;box-sizing:border-box}
+.calrow-s{margin:8px 0 2px}
+.calrow-s button,.calrow-s a.cal-g{font-size:.875rem;padding:7px 12px;min-height:44px}
+.cal-note{flex-basis:100%;color:var(--muted);font-size:.875rem;margin:2px 0 0}
 </style>
 </head>
 <body>
@@ -102,13 +84,14 @@ footer a:hover{text-decoration:underline}
 <p class="ident">ThawDay gives plain thaw times for holiday food.</p>
 <h1>How long to thaw a 23 lb turkey</h1>
 <p class="answer"><strong>A 23 lb turkey needs about 6 days in the fridge.</strong> Move it on <strong>Friday, November 20</strong>. Dinner is Thursday, November 26. In cold water, it needs 11 hours 30 minutes.</p>
+<div class="calrow"><button type="button" id="movebtn">Add the fridge move to calendar (.ics)</button><a class="cal-g" id="moveg" href="#" target="_blank" rel="noopener">Add it in Google Calendar</a><p class="cal-note" id="movemsg" aria-live="polite"></p></div>
 <a class="cta" href="/calculator">Get my full turkey plan</a>
 <h2>Times near this size</h2>
 <table>
 <tr><th>Turkey weight</th><th>In the fridge</th><th>In cold water</th></tr>
 <tr><td>21 lb</td><td>About 6 days</td><td>10 hours 30 minutes</td></tr>
 <tr><td>23 lb</td><td>About 6 days</td><td>11 hours 30 minutes</td></tr>
-<tr><td>25 lb</td><td>About 6 days</td><td>12 hours 30 minutes</td></tr>
+<tr><td>25 lb</td><td colspan="2">Over the 24 lb limit in the USDA charts this site uses. For a bird this big, call the USDA Meat and Poultry Hotline: 1-888-674-6854.</td></tr>
 </table>
 <h2>In the fridge</h2>
 <p>Keep the fridge at 40 F or below. Leave the bird in its wrap, on a tray. USDA rate: 24 hours per 4 to 5 pounds. Start a big bird a full week out.</p>
@@ -121,6 +104,33 @@ footer a:hover{text-decoration:underline}
 <h2>Running late with a big bird?</h2>
 <p>Read <a href="/thaw-a-turkey-fast">how to thaw a turkey fast</a>. The <a href="/calculator">calculator</a> plans the full week. Or <a href="/ask">ask in your own words</a>.</p>
 </div>
+<script>
+/* 2026-11-01 (competitor steal #1): the fridge-move moment as a calendar
+   event. The dates below are the exact move dates this page prints above,
+   for a 5 PM dinner -- the convention this page states itself. The parity
+   harness (cal-move-2026-11-01/parity.mjs) checks every date here against
+   the calculator engine's thaw row for the same dinner and weight. The
+   file is built in the browser; nothing leaves the device. */
+(function(){
+var DINNER="Thanksgiving dinner, Thursday, November 26, 2026 at 5 PM";
+var PAGE="https://thawday.com/how-long-to-thaw-a-23-lb-turkey";
+var MOVES=[{lb:"23",band:null,days:6,y:2026,mo:11,d:20}];
+function esc(s){return String(s).replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\r?\n/g,"\\n");}
+function utc(d){return d.toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"");}
+function fold(l){var o=[];while(l.length>73){o.push(l.slice(0,73));l=" "+l.slice(73);}o.push(l);return o.join("\r\n");}
+function when(m){return new Date(m.y,m.mo-1,m.d,17,0);}
+function title(m){return m.lb?("Move the "+m.lb+" lb turkey to the fridge"):"Move the turkey to the fridge";}
+function detail(m){return (m.lb?("Fridge thaw: "+m.days+" days for a "+m.lb+" lb turkey."):"For a "+m.band+" turkey: "+m.days+" days in the fridge.")+" Dinner: "+DINNER+". Fridge thaw, per the USDA chart. Keep the fridge at 40 F or below. Never thaw a turkey on the counter. Plan from ThawDay: "+PAGE+" Dates from ThawDay. Planning your own bird? thawday.com — every weight, every date.";}
+function ics(m){var st=when(m),en=new Date(st.getTime()+30*60000);var L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//ThawDay//Turkey Plan//EN","CALSCALE:GREGORIAN","METHOD:PUBLISH","BEGIN:VEVENT","UID:thawday-move-"+(m.lb||m.band.replace(/[^0-9]/g,""))+"-"+utc(st)+"@thawday.com","DTSTAMP:"+utc(new Date()),"DTSTART:"+utc(st),"DTEND:"+utc(en),"SUMMARY:"+esc(title(m)),"DESCRIPTION:"+esc(detail(m)),"URL:https://thawday.com/?via=share","BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+esc(title(m)),"TRIGGER:-P1D","END:VALARM","END:VEVENT","END:VCALENDAR"];return L.map(fold).join("\r\n")+"\r\n";}
+function gurl(m){var st=when(m),en=new Date(st.getTime()+30*60000);return "https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(title(m))+"&dates="+utc(st)+"/"+utc(en)+"&details="+encodeURIComponent(detail(m));}
+function dl(m){var blob=new Blob([ics(m)],{type:"text/calendar"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="thawday-fridge-move.ics";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url);},4000);}
+var b=document.getElementById("movebtn");if(b){b.addEventListener("click",function(){dl(MOVES[0]);var n=document.getElementById("movemsg");if(n){n.textContent="Calendar file downloaded. Open it to add the fridge move.";}});}
+var g=document.getElementById("moveg");if(g){g.href=gurl(MOVES[0]);}
+var bs=document.querySelectorAll(".mvb"),gs=document.querySelectorAll(".mvg"),i;
+for(i=0;i<bs.length;i++){(function(el){el.addEventListener("click",function(){dl(MOVES[Number(el.getAttribute("data-i"))]);});})(bs[i]);}
+for(i=0;i<gs.length;i++){gs[i].href=gurl(MOVES[Number(gs[i].getAttribute("data-i"))]);}
+})();
+</script>
 <section class="more">
 <h2>More turkey questions, answered</h2>
 <ul>
@@ -178,79 +188,15 @@ window.FLEET_CFG = {
     } catch(e){}
   }
   window.FA = { track: track };
-  /* FLEET-ATTRIB-2026-11-07: first-touch attribution (pattern: SPEC-SS-ATTRIB-01).
-     On first pageview, persist the door as PostHog person properties via
-     people.set_once (a later visit never overwrites): entry_referrer (bare
-     origin only), entry_referring_domain, entry_url (origin+path, no query,
-     no fragment, no tokens), entry_at, entry_app (app kind classified from
-     the user-agent string - in-app browsers name themselves there even when
-     they strip the referrer). No raw UA stored, no PII. */
-  /* FLEET-FT2-2026-11-08: first-touch now reads the fleet_ft2 door store written by the <head> snippet (the acting person's entry referrer/UTM survive page hops); prop names unchanged, entry_utm_* added. */
-  function fleetFirstTouch(){
-    try {
-      if (!window.posthog || !posthog.people || !posthog.people.set_once) return;
-      var ft = null;
-      try { ft = JSON.parse(localStorage.getItem("fleet_ft2") || "null"); } catch (e) {}
-      var ref = (ft && typeof ft.r === "string") ? ft.r : (document.referrer || "");
-      var refOrigin = "", refDomain = "$direct";
-      if (ref) {
-        try {
-          var ru = new URL(ref);
-          if (ru.origin && ru.origin !== "null") { refOrigin = ru.origin + "/"; refDomain = ru.hostname || "$direct"; }
-        } catch (e) {}
-        if (!refOrigin) {
-          var m = /^[a-z][a-z0-9+.-]*:\/\/[^/?#]+/i.exec(ref);
-          if (m) { refOrigin = m[0] + "/"; refDomain = m[0].split("://")[1] || "$direct"; }
-        }
-      }
-      var entryUrl, entryAt;
-      if (ft && ft.u) {
-        entryUrl = ft.u + (ft.via ? "?via=" + ft.via : "");
-        entryAt = ft.at || new Date().toISOString();
-      } else {
-        var path = window.location.pathname || "/";
-        if (/^\/(s|g)\/[^/]/.test(path)) path = path.replace(/^\/(s|g)\/[^/]+.*$/, "/$1/");
-        var viaRaw = "";
-        try { viaRaw = new URLSearchParams(window.location.search).get("via") || ""; } catch (e) {}
-        var via = (viaRaw === "share" || viaRaw === "own" || viaRaw === "group") ? "?via=" + viaRaw : "";
-        entryUrl = window.location.origin + path + via;
-        entryAt = new Date().toISOString();
-      }
-      var ua = (navigator.userAgent || "").slice(0, 500);
-      var l = ua.toLowerCase();
-      var app = "other";
-      if (l.indexOf("kakaotalk") !== -1) app = "kakaotalk";
-      else if (l.indexOf("whatsapp") !== -1) app = "whatsapp";
-      else if (l.indexOf("instagram") !== -1) app = "instagram";
-      else if (l.indexOf("telegram") !== -1) app = "telegram";
-      else if (l.indexOf("teams") !== -1) app = "teams";
-      else if (l.indexOf("fban") !== -1 || l.indexOf("fbav") !== -1 || l.indexOf("fb_iab") !== -1 || l.indexOf("facebook") !== -1) app = "facebook";
-      else if (l.indexOf("mozilla/") !== -1) app = "browser";
-      var props = {
-        entry_referrer: refOrigin,
-        entry_referring_domain: refDomain,
-        entry_url: entryUrl,
-        entry_at: entryAt,
-        entry_user_agent: ua,
-        entry_app: app
-      };
-      if (ft && ft.s) props.entry_utm_source = ft.s;
-      if (ft && ft.m) props.entry_utm_medium = ft.m;
-      if (ft && ft.c) props.entry_utm_campaign = ft.c;
-      posthog.people.set_once(props);
-    } catch (e) {}
-  }
-
   var s = document.createElement("script");
   s.async = true;
   s.src = "https://us.i.posthog.com/static/array.js";
   s.onload = function(){
     try {
       if (window.posthog && posthog.init) {
-        posthog.init(KEY, {persistence: "localStorage", api_host: "https://us.i.posthog.com", autocapture: false, capture_pageview: true, disable_session_recording: true});
+        posthog.init(KEY, {api_host: "https://us.i.posthog.com", autocapture: false, capture_pageview: true, disable_session_recording: true});
         try { posthog.register({site: SITE, internal: isInternal()}); } catch(e){}
         try { if (isInternal() && posthog.people && posthog.people.set) posthog.people.set({fleet_internal: true}); } catch(e){}
-        try { fleetFirstTouch(); } catch(e){}
         while (Q.length) { var e0 = Q.shift(); try { posthog.capture(e0[0], e0[1]); } catch(e){} }
       }
     } catch(e){}
