@@ -631,9 +631,9 @@ window.FLEET_CFG = {
       <p class="ju-sharetext" id="ju-sharetext" aria-live="polite"></p>
       <p class="ju-calmsg" id="ju-calmsg" aria-live="polite"></p>
     </div>
-    <div class="ju-cd" id="ju-cd" role="img" aria-label="Counting down to move day, Sunday, November 22.">
+    <div class="ju-cd" id="ju-cd" role="img" aria-label="Counting down to move day, Nov 22.">
       <div class="ju-cd-digits" id="ju-cd-digits" aria-hidden="true" hidden><span class="ju-cd-cell ju-cd-d"><b id="ju-cd-d"></b><i id="ju-cd-dl">days</i></span><span class="ju-cd-cell"><b id="ju-cd-h"></b><i>hrs</i></span><span class="ju-cd-cell"><b id="ju-cd-m"></b><i>min</i></span><span class="ju-cd-cell"><b id="ju-cd-s"></b><i>sec</i></span></div>
-      <p class="ju-cd-label" id="ju-cd-label">Counting down to move day, Sunday, November 22.</p>
+      <p class="ju-cd-label" id="ju-cd-label">Counting down to move day, Nov 22.</p>
       <p class="ju-cd-sub" id="ju-cd-sub">Dinner is Thursday, November 26, 2026.</p>
     </div>
     <a class="ju-full" id="ju-full" href="/calculator?w=14&amp;s=frozen&amp;b=no&amp;d=2026-11-26&amp;t=17:00">See the full day-by-day plan</a>
@@ -646,10 +646,10 @@ window.FLEET_CFG = {
   <section class="livestrip" aria-label="Move dates by weight, updated for today">
     <p class="ls-head" id="ls-head">Thanksgiving move dates by weight</p>
     <ul class="ls-rows" id="ls-rows">
-      <li><span class="ls-w">21 to 24 lb</span><span class="ls-d"><strong>Friday, November 20</strong></span></li>
-      <li><span class="ls-w">17 to 20 lb</span><span class="ls-d"><strong>Saturday, November 21</strong></span></li>
-      <li><span class="ls-w">13 to 16 lb</span><span class="ls-d"><strong>Sunday, November 22</strong></span></li>
-      <li><span class="ls-w">Up to 12 lb</span><span class="ls-d"><strong>Monday, November 23</strong></span></li>
+      <li><span class="ls-w">21 to 24 lb</span><span class="ls-d"><strong>Fri, Nov 20</strong></span></li>
+      <li><span class="ls-w">17 to 20 lb</span><span class="ls-d"><strong>Sat, Nov 21</strong></span></li>
+      <li><span class="ls-w">13 to 16 lb</span><span class="ls-d"><strong>Sun, Nov 22</strong></span></li>
+      <li><span class="ls-w">Up to 12 lb</span><span class="ls-d"><strong>Mon, Nov 23</strong></span></li>
     </ul>
     <!-- 2026-11-08 SPEC-TD-DIST-01: one-tap route from the homepage to
          the visitor's exact-weight page (all 17, matching the chart). -->
@@ -1017,7 +1017,7 @@ window.FLEET_CFG = {
     }
     if (plan.mode === "fridge") {
       var moveStart = juStartOfDay(plan.thawStart);
-      if (now.getTime() < moveStart.getTime()) { target = moveStart; tail = "until move day, " + fmtLong(plan.thawStart) + "."; }
+      if (now.getTime() < moveStart.getTime()) { target = moveStart; tail = "until move day, " + fmtShort(plan.thawStart) + "."; }
       else if (now.getTime() < plan.ovenIn.getTime()) { target = plan.ovenIn; tail = "until the oven, " + fmtLong(plan.ovenIn) + "."; }
       else { target = dinner; tail = "until dinner."; }
     } else if (plan.mode === "coldwater") {
@@ -1258,7 +1258,7 @@ window.FLEET_CFG = {
   function sod(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
   function addDays(d, n) { var x = new Date(d.getTime()); x.setDate(x.getDate() + n); return x; }
   function thanksgiving(y) { var nov1 = new Date(y, 10, 1); var off = (4 - nov1.getDay() + 7) % 7; return new Date(y, 10, 1 + off + 21); }
-  var FMT = { weekday: "long", month: "long", day: "numeric" };
+  var FMT = { weekday: "short", month: "short", day: "numeric" };
   var FMTY = { weekday: "long", month: "long", day: "numeric", year: "numeric" };
   function fmt(d, o) { return d.toLocaleDateString("en-US", o || FMT); }
   var today = sod(new Date()), year = today.getFullYear();
