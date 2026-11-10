@@ -675,27 +675,19 @@ window.FLEET_CFG = {
         <li><a href="/how-long-to-thaw-a-24-lb-turkey">24 lb</a></li>
       </ul>
     </nav>
-    <p class="ls-note" id="ls-note">Dinner is Thursday, November 26, 2026. Brining? Move it about a day earlier.</p>
+    <p class="ls-note" id="ls-note">Brining? Move it about a day earlier.</p>
     <a class="ls-more" id="ls-more" href="/when-to-thaw-turkey-for-thanksgiving">See the full Thanksgiving plan</a>
   </section>
   <section class="info" aria-label="Short answer for Thanksgiving 2026">
     <h2>Short answer for Thanksgiving 2026</h2>
     <div class="shortanswer">
-      <p>Dinner is Thursday, November 26, 2026.</p>
-      <p>Move a frozen bird to the fridge on:</p>
-      <ul>
-        <li>Up to 12 lb: <strong>Monday, November 23</strong></li>
-        <li>13 to 16 lb: <strong>Sunday, November 22</strong></li>
-        <li>17 to 20 lb: <strong>Saturday, November 21</strong></li>
-        <li>21 to 24 lb: <strong>Friday, November 20</strong></li>
-      </ul>
+      <p>Move dates by weight are in the chart above, one row per size.</p>
       <!-- 2026-11-03 SPEC-COLDQA1103-2: the example box is the no-brine
            date, so it completes the list above; the brine note is the
            card's last line and can no longer read as its caption.
            2026-11-04 SPEC-TD-EVE-01: the worked-example line and the
            timeline strip moved to the hero, directly under the
            identity line; they live only there now. -->
-      <p class="brine-note">Brining? Move it about a day earlier.</p>
       <p class="brine-note">Crowded fridge? Move it a day earlier. A thawed bird keeps 1 to 2 days, so early is safe.</p>
     </div>
   </section>
@@ -1216,11 +1208,11 @@ window.FLEET_CFG = {
     var txt = juShareText(plan, cur.dinner, now);
     var native = !!(navigator.share);
     try { fleetTrack("share_intent", { tool: "turkey-timeline", channel: native ? "native" : "clipboard" }); } catch (e) {}
-    if (shareTextEl2) shareTextEl2.textContent = txt;
+    if (shareTextEl2) shareTextEl2.textContent = "";
     if (native) {
-      try { await navigator.share({ title: "Your Turkey Thaw Plan", text: txt }); } catch (e) { /* sheet closed, text stays visible */ }
+      try { await navigator.share({ title: "Your Turkey Thaw Plan", text: txt }); if (shareTextEl2) shareTextEl2.textContent = "Shared."; } catch (e) { if (shareTextEl2) shareTextEl2.textContent = ""; }
     } else {
-      try { await navigator.clipboard.writeText(txt); if (shareTextEl2) shareTextEl2.textContent = txt + " (copied)"; } catch (e) { /* long-press fallback: text stays visible */ }
+      try { await navigator.clipboard.writeText(txt); if (shareTextEl2) shareTextEl2.textContent = "Copied \u2014 paste it anywhere to share your plan."; } catch (e) { if (shareTextEl2) shareTextEl2.textContent = "Copy did not work. Your plan is still on this page."; }
     }
   });
   if (calBtn) calBtn.addEventListener("click", function () {
@@ -1311,7 +1303,7 @@ window.FLEET_CFG = {
     more.setAttribute("href", "/thaw-a-turkey-in-cold-water");
     more.textContent = "How to thaw in cold water";
   } else {
-    note.textContent = "Dinner is " + fmt(ev.date, FMTY) + ". Brining? Move it about a day earlier.";
+    note.textContent = "Brining? Move it about a day earlier.";
     more.setAttribute("href", ev.href);
     more.textContent = "See the full " + ev.name + " plan";
   }

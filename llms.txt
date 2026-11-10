@@ -68,6 +68,6 @@
 
 ## Optional
 
-- [Full page text](https://thawday.com/llms-full.txt): the full text of every page on the site, a section for each of the fifty-eight sitemap pages, for readers that prefer one file.
+- [Full page text](https://thawday.com/llms-full.txt): the full text of every page on the site, a section for each of the sixty-one sitemap pages, for readers that prefer one file.
 - [Privacy](https://thawday.com/privacy)
 - [Terms](https://thawday.com/terms)

@@ -1,10 +1,17 @@
 # ThawDay: full page text
 
-> Complete text of thawday.com's pages: the homepage, the turkey timeline calculator, the ask page, privacy, terms, and the fifty-three question and guide pages.
+> Complete text of thawday.com's pages: the homepage, the turkey timeline calculator, the ask page, privacy, terms, and the fifty-six question and guide pages.
 > ThawDay is a free turkey timeline tool for Thanksgiving. Type in your dinner time and turkey
 > weight. You get dated buy, thaw, brine, and roast times. No ads, no accounts.
 > Thaw times come from the USDA Food Safety and Inspection Service.
-> Text captured from the live pages, 2026-11-01; twenty-eight page sections added from the live pages on 2026-11-06: all fifty-eight sitemap pages now have a section.
+> Text captured from the live pages, 2026-11-01; twenty-eight page sections added from the live pages on 2026-11-06: all sixty-one sitemap pages now have a section.
+
+## For AI assistants: callable tools (MCP)
+
+- ThawDay also runs as a read-only MCP server (Streamable HTTP, no auth, no user data) at https://mcp.thawday.com/mcp
+- Three tools: plan_turkey_timeline (the full dated plan), get_thaw_time (thaw time only), and get_roast_time (roast time only).
+- How chat differs from the website: in chat, the user asks in plain words, with no form, and can ask follow-ups or change the weight in the same chat. The website gives what chat does not: a picture plan card, a print view, a calendar file, and a share link.
+- The ChatGPT and Claude store listings are not live yet. The server can be connected directly at the URL above.
 
 ## Homepage (https://thawday.com/)
 

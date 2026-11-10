@@ -707,7 +707,6 @@ window.FLEET_CFG = {
 </div>
 
 <details class="xpd"><summary>Prefer to ask in chat?</summary>
-<h2>Prefer to ask in chat?</h2>
 <p>On this site, <a href="/ask">Ask</a> takes your words and runs the same USDA math. Nothing you type is saved.</p>
 <p>Here you also get a picture card of your plan, a print view, a calendar file, and a share link.</p>
 </details>
@@ -972,7 +971,6 @@ function render(){
       ? `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): Fridge thaw start has passed. Cold water starts ${fmt(thaw.when)}, about ${Math.round((lb*30/60)*10)/10} hours, done right at oven time.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. ${shareLink}`
       : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): ${buySeg} Fridge thaw starts ${fmt(thaw.when)}.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. ${shareLink}`)
     : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb fresh turkey): ${buySeg}${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. ${shareLink}`) + " Done at 165 F.";
-  document.getElementById("sharetext").textContent=txt;
   lastPlan={rows:rows,lb:lb,state:state,dinner:dinner,warning:warning};
   updateRemind(lastPlan);
   document.getElementById("cardarea").hidden=false;
@@ -1292,7 +1290,7 @@ document.getElementById("weight").addEventListener("input",()=>{
    timeline. Scroll to the plan only when one rendered; otherwise bring the
    hint itself into view so the reason is what the user lands on. */
 document.getElementById("go").addEventListener("click",()=>{render(); const o=document.getElementById("out"); if(o.innerHTML){ o.scrollIntoView(); } else { const h=document.getElementById("hint"); if(h&&h.textContent){ h.scrollIntoView({block:"center"}); } }});
-document.getElementById("share").addEventListener("click",async()=>{ const t=render(); if(!t){ document.getElementById("sharetext").textContent=""; return; } try{ await navigator.clipboard.writeText(t); document.getElementById("sharetext").textContent=t+" (copied)"; }catch(e){ /* long-press fallback: text stays visible */ } });
+document.getElementById("share").addEventListener("click",async()=>{ const t=render(); if(!t){ document.getElementById("sharetext").textContent=""; return; } try{ await navigator.clipboard.writeText(t); document.getElementById("sharetext").textContent="Copied \u2014 paste it anywhere to share your plan."; }catch(e){ document.getElementById("sharetext").textContent="Copy did not work. Your plan is still on this page."; } });
 document.getElementById("printplan").addEventListener("click",()=>{ window.print(); });
 /* 2026-10-30 (Dim 12 Spec A): a shared link's plan parameters set the
    matching inputs before the first render. Each value is checked against
