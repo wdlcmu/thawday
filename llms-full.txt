@@ -4,7 +4,7 @@
 > ThawDay is a free turkey timeline tool for Thanksgiving. Type in your dinner time and turkey
 > weight. You get dated buy, thaw, brine, and roast times. No ads, no accounts.
 > Thaw times come from the USDA Food Safety and Inspection Service.
-> Text captured from the live pages, 2026-11-01; twenty-eight page sections added from the live pages on 2026-11-06: all sixty-one sitemap pages now have a section.
+> Text captured from the live pages, 2026-11-01; twenty-eight page sections added from the live pages on 2026-11-06: all sixty-one sitemap pages now have a section. The homepage, calculator, and turkey thaw time per pound sections were refreshed from the live pages on 2026-11-10.
 
 ## For AI assistants: callable tools (MCP)
 
@@ -15,126 +15,172 @@
 
 ## Homepage (https://thawday.com/)
 
-For Thanksgiving 2026. Type in your dinner time. Get buy, thaw, brine, and roast dates. Brining is just soaking the bird in salt water first. It is optional. Free forever. No ads. No accounts. Ready in 30 seconds.
-
-Buy. Thaw. Brine. Roast.
-
-Countdown: days, hours, minutes, and seconds until Thanksgiving, Thursday, November 26, 2026. Next do-by: buy a frozen turkey by Sunday, November 15, 2026. Biggest birds (21 to 24 lb) move to the fridge Friday, November 20, 2026.
-
-### Short answer for Thanksgiving 2026
-
-Dinner is Thursday, November 26, 2026. Move a frozen bird to the fridge on:
-
-- Up to 12 lb: Monday, November 23
-- 13 to 16 lb: Sunday, November 22
-- 17 to 20 lb: Saturday, November 21
-- 21 to 24 lb: Friday, November 20
-
-A 14 lb bird moves Sunday, November 22. Your dinner hour does not change this date.
-
-### Thaw times at a glance
-
+ThawDay tells you when to thaw your turkey.
+ThawDay
+For Thanksgiving 2026
+A 14 lb bird moves Sunday, November 22 . Your dinner hour does not change this date.
+Turkey weight
+Other weight lb
+ThawDay covers 4 to 24 lb birds, the range in the USDA charts. For a bigger bird, call the USDA hotline: 1-888-674-6854.
+Dinner date Dinner time
+Brine?
+Brining is soaking the bird in salt water before roasting. Optional, makes it juicier.
+Buy Sun, Nov 15 Buy by this date You are here
+Thaw Sun, Nov 22 Move it to the fridge You are here
+Brine Wed, Nov 25 If you brine You are here
+Roast Thu, Nov 26 In the oven by 1:17 PM You are here
+First step: buy a frozen turkey by Sunday, November 15.
+days hrs min sec
+Counting down to move day, Nov 22.
+Dinner is Thursday, November 26, 2026.
+See the full day-by-day plan
+Thanksgiving move dates by weight
+21 to 24 lb Fri, Nov 20
+17 to 20 lb Sat, Nov 21
+13 to 16 lb Sun, Nov 22
+Up to 12 lb Mon, Nov 23
+Your exact weight:
+8 lb
+9 lb
+10 lb
+11 lb
+12 lb
+13 lb
+14 lb
+15 lb
+16 lb
+17 lb
+18 lb
+19 lb
+20 lb
+21 lb
+22 lb
+23 lb
+24 lb
+Brining? Move it about a day earlier.
+See the full Thanksgiving plan
+Short answer for Thanksgiving 2026
+Move dates by weight are in the chart above, one row per size.
+Crowded fridge? Move it a day earlier. A thawed bird keeps 1 to 2 days, so early is safe.
+Thaw times at a glance
 Use the fridge at 40 F or below: 24 hours per 4 to 5 pounds.
-
-- 4 to 12 lb: fridge 1 to 3 days; cold water 2 to 6 hours
-- 12 to 16 lb: fridge 3 to 4 days; cold water 6 to 8 hours
-- 16 to 20 lb: fridge 4 to 5 days; cold water 8 to 10 hours
-- 20 to 24 lb: fridge 5 to 6 days; cold water 10 to 12 hours
-
-Short on time? Cold water: seal the bird in a leak-proof bag, submerge it in cold tap water, 30 minutes per pound, change the water every 30 minutes, cook right after. Never thaw on the counter.
-
+Weight Fridge Cold water
+4–12 lb 1–3 days 2–6 hrs
+12–16 lb 3–4 days 6–8 hrs
+16–20 lb 4–5 days 8–10 hrs
+20–24 lb 5–6 days 10–12 hrs
+Short on time? Cold water: seal the bird in a leak-proof bag. Submerge it in cold tap water. 30 minutes per pound. Change the water every 30 minutes. Cook right after. Never thaw on the counter.
 USDA Food Safety and Inspection Service.
-
-### Three safe ways to thaw
-
-Fridge: 24 hours per 4 to 5 lb, hands-off. Cold water: 30 minutes per lb, fastest. Microwave: per your oven manual, no waiting.
-
-### How it works
-
-You enter: dinner day and time, bird size in pounds. We do the math: USDA thaw charts, counted back from dinner. You get your dates: buy, thaw, brine, and roast.
-
-### Two ways to use ThawDay
-
-On this site: tap through the quiz, get the full dated plan and picture card. Print it. Share it.
-
-In ChatGPT or Claude (coming soon): ask in plain words, follow up in the same chat. Both ways use USDA charts.
-
-### Questions
-
+Three safe ways to thaw
+Fridge 24 hours per 4–5 lb Hands-off
+Cold water 30 min per lb Fastest
+Microwave Per your microwave manual No waiting
+How it works
+You enter. Dinner day and time. Bird size, in pounds.
+We do the math. We use USDA thaw charts. We count back from dinner.
+You get your dates. Buy, thaw, brine, and roast.
+Two ways to use ThawDay
+In ChatGPT or Claude (coming soon)
+Ask in plain words. Follow up in the same chat.
+Both ways use USDA charts.
+Questions
+More questions
 When do I start thawing?
-Allow 24 hours for every 4 to 5 pounds. 12 to 16 pounds needs 3 to 4 days. Start 4 days before you cook. It keeps 1 to 2 days once thawed. Keep it in the fridge.
-
+Allow 24 hours for every 4 to 5 pounds. 12 to 16 pounds needs 3 to 4 days. It keeps 1 to 2 days once thawed. Keep it in the fridge.
 Is fridge thawing or cold water thawing better?
-The fridge is hands-off. Cold water is faster. Seal it in a leak-proof bag, under cold tap water. Change the water every 30 minutes. Then cook right after. Never thaw on the counter.
-
+The fridge is hands-off. Cold water is faster. Both are safe if done right.
 Can I cook a turkey from frozen?
-Yes. USDA says it is safe. It takes at least half longer than a thawed bird. For a 15 lb bird at 325 F: 5 hours 45 minutes at least, up to 6 hours 30 minutes. Do not use an oven bag. Pull the giblet packet out with tongs, 20 to 30 minutes in. The calculator gives the time for your bird.
-
-How does the timeline tool work?
-Tell it dinner time and turkey size. Get every date: buy, thaw, brine, roast.
-
-Every question, answered in full: How long to thaw a turkey. When to take the turkey out of the freezer for Thanksgiving. Can you thaw a turkey in cold water? Can you cook a turkey from frozen? How long can a thawed turkey stay in the fridge?
-
-### Made by a dad, on the side
-
+Yes. USDA says it is safe. It takes at least half longer. Than a thawed bird. For a 15 lb bird at 325 F. 5 hours 45 minutes at least. Up to 6 hours 30 minutes. Do not use an oven bag. Pull the giblet packet out with tongs. Do it 20 to 30 minutes in. The calculator gives the time for your bird.
+Every question, answered in full
+How long to thaw a turkey When to take the turkey out of the freezer for Thanksgiving Can you thaw a turkey in cold water? Can you cook a turkey from frozen? How long can a thawed turkey stay in the fridge?
+Made by a dad, on the side
 I'm Billy, a dad in Redmond, Washington. I build these tools on the side, with AI: one idea, one website, no company behind it. ThawDay is my turkey tool: one question, one right answer, timed to your dinner.
-
-Timings verified against USDA FSIS charts on Oct 22, 2026.
+Works with your AI
+Ask your AI when to move the turkey to the fridge. It counts back from your dinner hour and your bird's weight: a computed answer, not a guess.
+Connect this site to Claude, Cursor, or any other MCP client (MCP, the standard way AI apps connect to outside tools). It is free, and it takes about a minute.
+1. Copy the server address
+https://mcp.thawday.com/mcp
+2. Add it to your AI
+Claude Code: one command
+claude mcp add --transport http thawday https://mcp.thawday.com/mcp
+Claude Desktop or Cursor: paste into the MCP settings
+{ "mcpServers": { "thawday": { "url": "https://mcp.thawday.com/mcp" } } }
+3. Ask your AI: “My turkey is 14 pounds and dinner is Thursday at 4. When should it go in the fridge?”
+Built with Muse.
+Privacy Terms
+More family tools: The Present Picker, gifts in five picks · Pick My Secret Santa, a free draw with no accounts
+Timings verified against USDA FSIS charts on Oct 22, 2026. Cook-from-frozen times verified against the USDA from-frozen chart on Oct 30, 2026.
 
 ## Calculator (https://thawday.com/calculator)
 
-When do I take the turkey out of the freezer? Type in your dinner time and turkey weight. You get buy, thaw, brine, and roast dates.
-
-Three steps. Thirty seconds. Free.
-
+ThawDay
+When should the turkey come out?
+Your dinner time and weight. Get buy, thaw, brine, roast dates.
+Brining is just soaking the bird in salt water first. It is optional.
 This tool plans turkeys with no stuffing. For safety, the USDA does not recommend cooking stuffing inside the bird. Cook it in a casserole dish instead. Every time here is for an unstuffed turkey.
-
-Not sure what size to buy? How many people eat? Want leftovers too? USDA says one pound per person. For leftovers, plan half a pound more each. The guest count sets the turkey weight: one pound per person, or one and a half pounds per person for leftovers, inside the tool's 8 to 24 pound range.
-
-Inputs, in three tap steps: how many people eat (1 to 30) and want leftovers, which set the turkey weight, or the turkey weight itself (lb or kg, 8 to 24 lb); frozen or fresh; soak in salt water (brine), yes or no; dinner date; dinner time. Frozen, no brine, and Thanksgiving Day at 5:00 PM are pre-picked, so most people only answer the first step.
-
-Output: your timeline (dated buy, thaw, brine, and roast times), plus a turkey card, one picture with the whole plan on it, good for the group chat (share or download as PNG). You can also print the plan.
-
+Step 1 of 3
+When is dinner?
+Thanksgiving Day at 5:00 PM is filled in. Change it only if your dinner is different.
+Dinner date Dinner time
+How many people are eating?
+Want leftovers too?
+USDA says one pound per person. For leftovers, plan half a pound more each.
+Two birds cook faster.
+Type the number instead
+How many people eat? Want leftovers too? No leftovers Yes, leftovers
+Type the weight instead
+Turkey weight (lb, 4 to 24)
+Turkey weight (kg, 1.8 to 10.9)
+Your turkey
+Frozen or fresh?
+Soak in salt water (brine)?
+Frozen or fresh? Frozen Fresh Soak in salt water (brine)? No Yes
+Rather say it in your own words? Ask here instead. One line, same math.
+Your plan:
+Your timeline
+Your turkey card
+One picture with the whole plan on it. Good for the group chat.
+Download the card (PNG)
 Safety: When in doubt, use a meat thermometer: 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing. Never thaw a turkey on the counter.
-
+Share
+Send it or print it
+Put it on your calendar
+Remind yourself, no email needed
+Add to Google Calendar
 Prefer to ask in chat?
-ThawDay is also built for ChatGPT and Claude. It is not in their stores yet.
-In chat, there is no form. You just ask. Ask for the full plan, just the thaw time, or just the roast time. Change the weight and ask again. The new plan comes back in the same chat.
-Here on the site, you get what chat does not give you: a picture card of your plan, a print view, a calendar file, and a share link. Both ways use USDA charts.
-
-### FAQ
-
+On this site, Ask takes your words and runs the same USDA math. Nothing you type is saved.
+Here you also get a picture card of your plan, a print view, a calendar file, and a share link.
+FAQ
 How much turkey per person?
 Plan one pound of whole turkey per person. For leftovers, add half a pound per person. Bone and skin make up much of the weight.
-
 Where do these numbers come from?
 The USDA Food Safety and Inspection Service thaw chart and 325 F roasting chart. See footer date.
-
 My turkey is still frozen and dinner is tomorrow. Am I doomed?
-Use the cold-water method: about 30 minutes per pound, change the water every 30 minutes, cook it right after it thaws.
-
+Use the cold-water method: seal the bird in a leak-proof plastic bag, submerge it in cold tap water, about 30 minutes per pound, change the water every 30 minutes, cook it right after it thaws.
 Can I cook a turkey from frozen?
 Yes. USDA says it is safe, and it takes at least 50 percent longer than a thawed bird. At 325 F, a 15 lb bird needs 5 hours 45 minutes to 6 hours 30 minutes from frozen. Do not use an oven bag. Pull the giblet packet out with tongs after 20 to 30 minutes of baking. The cook-from-frozen section on this page gives the time for your bird.
-
-Cook it from frozen (calculator section, frozen birds only)
-No time to thaw at all? USDA says cooking a turkey from frozen is safe. It takes at least 50 percent longer than a thawed bird. The calculator gives the USDA from-frozen band for your bird's weight, the middle of that band, and the oven time for your dinner. From-frozen times from the USDA chart, checked Oct 30, 2026.
-
 Stuffed or unstuffed?
-This tool plans turkeys with no stuffing.
-
+This tool plans turkeys with no stuffing. For optimum safety, stuffing a turkey is not recommended. For more even cooking, it is recommended you cook your stuffing outside the bird in a casserole. The stuffing must reach a safe minimum internal temperature of 165 F.
 How do I know it is done?
 A meat thermometer: 165 F in the thickest part of the breast, the innermost thigh, and the innermost wing. Color is not a reliable signal.
-
+Can I trust the pop-up timer?
+If your turkey has a pop-up temperature indicator, it is recommended that you also check the internal temperature of the turkey in the innermost part of the thigh and wing and the thickest part of the breast with a food thermometer. The minimum internal temperature should reach 165 F for safety.
+How long should the turkey rest before carving?
+For quality, let the turkey stand for 20 minutes before carving to allow juices to set. The turkey will carve more easily.
+Should I wash the turkey before cooking?
+No. Washing or rinsing any meat or poultry is not recommended, and actually increases the risk you will cross-contaminate germs to other foods you're preparing.
+How long do leftovers keep?
+Use refrigerated turkey, stuffing, and gravy within 3 to 4 days. Discard any turkey, stuffing, and gravy left out at room temperature longer than 2 hours; 1 hour in temperatures above 90 F. Divide leftovers into smaller portions. Refrigerate or freeze in covered shallow containers for quicker cooling. If freezing leftovers, use within 2 to 6 months for best quality.
 Does this work for Christmas dinner?
-The math is the same. A Christmas version is planned.
-
+The math is the same. Change the dinner date to Friday, December 25, or see the Christmas move dates .
 What we don't do
-Your plan stays on your device. The page saves it in your browser so it shows again when you return. We don't send your dinner details anywhere. The timeline math runs in your browser. We don't sell turkeys, groceries, or anything else. We don't ask for your email or an account. There is nothing to sign up for.
-
-Our guarantees
-In the calculator, we never receive what you type, not your date, your dinner hour, or your turkey's weight. No account, no email, and no cost. The full plan is yours on the spot. There are no ads on this site.
-
-Timings verified against USDA FSIS charts on Oct 22, 2026.
+Your plan stays on your device. The timeline math runs in your browser, and we don't send your dinner details anywhere.
+What if my turkey is over 24 pounds?
+This tool covers 4 to 24 lb birds, the range in the USDA charts it uses. For a bigger bird, call the USDA Meat and Poultry Hotline at 1-888-674-6854. Real food safety experts answer on weekdays.
+Built with Muse.
+Privacy Terms
+Timings verified against USDA FSIS charts on Oct 22, 2026. Cook-from-frozen times verified against the USDA from-frozen chart on Oct 30, 2026.
+Bird over 24 lb, or a food safety question this page cannot answer? Call the USDA Meat and Poultry Hotline: 1-888-674-6854 .
 
 ## Ask (https://thawday.com/ask)
 
@@ -983,7 +1029,7 @@ Timings from USDA FSIS guides, checked Nov 4, 2026.
 ThawDay
 ThawDay gives plain thaw times for holiday food.
 Turkey thaw time per pound
-Fridge: 1 day per 4 to 5 lb. Cold water: 30 minutes per pound. Buy a 14 lb bird on Friday, November 20. Put it in the fridge by Sunday, November 22 .
+Fridge: 1 day per 4 to 5 lb. Cold water: 30 minutes per pound. Buy a 14 lb bird by Sunday, November 15. Put it in the fridge by Sunday, November 22 .
 Get my full turkey plan
 The math, by weight
 Turkey weight In the fridge In cold water
@@ -1005,6 +1051,32 @@ How long to thaw a turkey
 Thaw a turkey fast
 How long to thaw a 14 lb turkey
 When to thaw a turkey for Thanksgiving
+How long to thaw an 8 lb turkey
+How long to thaw a 9 lb turkey
+How long to thaw a 10 lb turkey
+How long to thaw an 11 lb turkey
+How long to thaw a 12 lb turkey
+How long to thaw a 13 lb turkey
+How long to thaw a 15 lb turkey
+How long to thaw a 16 lb turkey
+How long to thaw a 17 lb turkey
+How long to thaw an 18 lb turkey
+How long to thaw a 19 lb turkey
+How long to thaw a 20 lb turkey
+How long to thaw a 21 lb turkey
+How long to thaw a 22 lb turkey
+How long to thaw a 23 lb turkey
+How long to thaw a 24 lb turkey
+How long to thaw a turkey breast
+How long to thaw a ham
+How long to thaw a Butterball turkey
+How long to thaw a spatchcock turkey
+Can you thaw a turkey in an air fryer?
+How long to brine a turkey
+When should I take the turkey out of the freezer for Christmas?
+Can you thaw a turkey in cold water?
+How long can a thawed turkey stay in the fridge?
+How long to cook a turkey
 Built with Muse.
 Privacy Terms
 Timings from USDA FSIS guides, checked Nov 4, 2026.

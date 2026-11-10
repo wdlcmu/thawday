@@ -965,7 +965,7 @@ function answerAsk(raw, nowOverride){
   out.innerHTML=premiseHtml+`<div class="row"><strong>${summary}</strong>${lead?`<br><span class="lead">${lead}</span>`:""}</div>`+bodyHtml;
   var dstr=dinner.getFullYear()+"-"+String(dinner.getMonth()+1).padStart(2,"0")+"-"+String(dinner.getDate()).padStart(2,"0");
   var tstr=String(dinner.getHours()).padStart(2,"0")+":"+String(dinner.getMinutes()).padStart(2,"0");
-  document.getElementById("askp-calclink").innerHTML=`Want the picture card, print view, or calendar file? <a href="/calculator?via=share&w=${lb}&s=${state}&b=${brine}&d=${dstr}&t=${tstr}">Open this plan in the calculator</a>. It builds those from this same plan.`;
+  document.getElementById("askp-calclink").innerHTML=location.pathname.indexOf("/calculator")===0?`Want the picture card, print view, or calendar file? Close this panel: the calculator on this page builds those from this same plan.`:`Want the picture card, print view, or calendar file? <a href="/calculator?via=share&w=${lb}&s=${state}&b=${brine}&d=${dstr}&t=${tstr}">Open this plan in the calculator</a>. It builds those from this same plan.`;
   try{ fleetTrack("ask_answered",{tool:"turkey-timeline-ask",intent:p.intent}); }catch(e){}
   return {rows:rows,warning:warning,parsed:p};
 }
@@ -1005,7 +1005,7 @@ function answerAsk(raw, nowOverride){
     var dp=facts.dinnerParts;
     var dstr=dp.y+"-"+String(dp.mo+1).padStart(2,"0")+"-"+String(dp.d).padStart(2,"0");
     var tstr=String(dp.h).padStart(2,"0")+":"+String(dp.mi).padStart(2,"0");
-    document.getElementById("askp-calclink").innerHTML="Want the picture card, print view, or calendar file? <a href=\"/calculator?via=share&w="+facts.lb+"&s="+(facts.state||"frozen")+"&b="+(facts.brine||"no")+"&d="+dstr+"&t="+tstr+"\">Open this plan in the calculator</a>. It builds those from this same plan.";
+    document.getElementById("askp-calclink").innerHTML=location.pathname.indexOf("/calculator")===0?"Want the picture card, print view, or calendar file? Close this panel: the calculator on this page builds those from this same plan.":"Want the picture card, print view, or calendar file? <a href=\"/calculator?via=share&w="+facts.lb+"&s="+(facts.state||"frozen")+"&b="+(facts.brine||"no")+"&d="+dstr+"&t="+tstr+"\">Open this plan in the calculator</a>. It builds those from this same plan.";
   }
   function runAsk(){
     if(panelBusy) return;
