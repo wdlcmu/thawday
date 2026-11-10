@@ -284,6 +284,15 @@ localStorage.setItem("fleet_ft2",JSON.stringify(ft));
   .ju-here { margin-top: 0.4rem; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; background: var(--accent); color: #fff; border-radius: 999px; padding: 0.18rem 0.55rem; white-space: nowrap; }
   .ju-step.ju-off .ju-dot { background: #d8c9ae; }
   .ju-step.ju-off .ju-sdate { color: var(--muted); }
+  /* SPEC-TD-CHECKABLE-01 (2026-11-10): each step carries a Done box.
+     Checks save on this device only, one set per exact plan; once a
+     plan has saved checks, the You-are-here marker sits on the next
+     unchecked step instead of the calendar step. */
+  .ju-check { display: flex; align-items: center; justify-content: center; gap: 0.45rem; min-height: 44px; margin-top: 0.3rem; padding: 0 0.5rem; cursor: pointer; font-size: 0.9rem; font-weight: 600; color: #374151; }
+  .ju-check input { width: 26px; height: 26px; accent-color: var(--accent); flex: none; cursor: pointer; }
+  .ju-step.ju-done .ju-slabel { text-decoration: line-through; color: var(--muted); }
+  .ju-step.ju-done .ju-sdate { color: var(--muted); }
+  .ju-checkhint { margin-top: 0.7rem; font-size: 0.9rem; color: var(--muted); }
   .ju-status { margin-top: 0.9rem; font-size: 0.98rem; font-weight: 600; color: var(--ink); }
   .ju-cd { margin-top: 0.9rem; border-top: 1px solid #f0e4cf; padding-top: 0.85rem; text-align: center; }
   .ju-cd-digits { display: flex; gap: 0.9rem; justify-content: center; align-items: flex-start; margin-bottom: 0.15rem; }
@@ -617,11 +626,12 @@ window.FLEET_CFG = {
       <p class="ju-bnote">Brining is soaking the bird in salt water before roasting. Optional, makes it juicier.</p>
     </div>
     <ol class="ju-steps">
-      <li class="ju-step ju-here-step" id="ju-step-buy"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Buy</span><strong class="ju-sdate" id="ju-buy-date">Sun, Nov 15</strong><span class="ju-scap" id="ju-buy-cap">Buy by this date</span><span class="ju-here" id="ju-here-buy">You are here</span></li>
-      <li class="ju-step" id="ju-step-thaw"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Thaw</span><strong class="ju-sdate" id="ju-thaw-date">Sun, Nov 22</strong><span class="ju-scap" id="ju-thaw-cap">Move it to the fridge</span><span class="ju-here" id="ju-here-thaw" hidden>You are here</span></li>
-      <li class="ju-step ju-off" id="ju-step-brine"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Brine</span><strong class="ju-sdate" id="ju-brine-date">Wed, Nov 25</strong><span class="ju-scap" id="ju-brine-cap">If you brine</span><span class="ju-here" id="ju-here-brine" hidden>You are here</span></li>
-      <li class="ju-step" id="ju-step-roast"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Roast</span><strong class="ju-sdate" id="ju-roast-date">Thu, Nov 26</strong><span class="ju-scap" id="ju-roast-cap">In the oven by 1:17 PM</span><span class="ju-here" id="ju-here-roast" hidden>You are here</span></li>
+      <li class="ju-step ju-here-step" id="ju-step-buy"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Buy</span><strong class="ju-sdate" id="ju-buy-date">Sun, Nov 15</strong><span class="ju-scap" id="ju-buy-cap">Buy by this date</span><span class="ju-here" id="ju-here-buy">You are here</span><label class="ju-check" id="ju-checkwrap-buy"><input type="checkbox" id="ju-check-buy" data-step="buy">Done</label></li>
+      <li class="ju-step" id="ju-step-thaw"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Thaw</span><strong class="ju-sdate" id="ju-thaw-date">Sun, Nov 22</strong><span class="ju-scap" id="ju-thaw-cap">Move it to the fridge</span><span class="ju-here" id="ju-here-thaw" hidden>You are here</span><label class="ju-check" id="ju-checkwrap-thaw"><input type="checkbox" id="ju-check-thaw" data-step="thaw">Done</label></li>
+      <li class="ju-step ju-off" id="ju-step-brine"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Brine</span><strong class="ju-sdate" id="ju-brine-date">Wed, Nov 25</strong><span class="ju-scap" id="ju-brine-cap">If you brine</span><span class="ju-here" id="ju-here-brine" hidden>You are here</span><label class="ju-check" id="ju-checkwrap-brine" hidden><input type="checkbox" id="ju-check-brine" data-step="brine">Done</label></li>
+      <li class="ju-step" id="ju-step-roast"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Roast</span><strong class="ju-sdate" id="ju-roast-date">Thu, Nov 26</strong><span class="ju-scap" id="ju-roast-cap">In the oven by 1:17 PM</span><span class="ju-here" id="ju-here-roast" hidden>You are here</span><label class="ju-check" id="ju-checkwrap-roast"><input type="checkbox" id="ju-check-roast" data-step="oven">Done</label></li>
     </ol>
+    <p class="ju-checkhint">Check a step off when it is done. Your checks stay saved on this device.</p>
     <p class="ju-status" id="ju-status">First step: buy a frozen turkey by Sunday, November 15.</p>
     <div class="ju-share">
       <div class="ju-share-btns">
@@ -853,7 +863,55 @@ window.FLEET_CFG = {
   function isoDate(d) { return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); }
 
   var state = { lb: 14, brine: false };
-  var cur = { dinner: null, plan: null };
+  var cur = { dinner: null, plan: null, checkKey: null, checks: null };
+
+  /* SPEC-TD-CHECKABLE-01 (2026-11-10): per-plan step checks, saved on
+     this device only. The key names the exact plan (weight, frozen,
+     brine, dinner date and time) so two plans never share checks.
+     The calculator writes the same key for the same plan; this page's
+     Roast step is stored under the calculator's name for it, "oven".
+     cur.checks is null until a plan has any saved checks at all —
+     that is what keeps the calendar marker in charge until the cook
+     starts checking steps off. */
+  var CHECK_IDS = ["buy", "thaw", "brine", "roast"];
+  var CHECK_CANON = { buy: "buy", thaw: "thaw", brine: "brine", roast: "oven" };
+  function checkKey() {
+    return "tdchecks:" + state.lb + "|frozen|" + (state.brine ? "yes" : "no") + "|" + dateEl.value + "|" + (timeEl.value || "17:00");
+  }
+  function loadChecks(key) {
+    try {
+      var raw = localStorage.getItem(key);
+      if (!raw) return null;
+      var arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr : null;
+    } catch (e) { return null; }
+  }
+  function saveChecks(key, arr) {
+    try { localStorage.setItem(key, JSON.stringify(arr)); } catch (e) {}
+  }
+  function stepApplicable(id) {
+    if (id === "brine") return !brineStepEl.classList.contains("ju-off");
+    return true;
+  }
+  function applyChecks() {
+    var done = cur.checks || [];
+    for (var i = 0; i < CHECK_IDS.length; i++) {
+      var id = CHECK_IDS[i], on = done.indexOf(CHECK_CANON[id]) >= 0;
+      var box = $("ju-check-" + id), node = $("ju-step-" + id), wrap = $("ju-checkwrap-" + id);
+      if (box) box.checked = on;
+      if (node) node.classList.toggle("ju-done", on);
+      if (wrap) wrap.hidden = !stepApplicable(id);
+    }
+  }
+  function currentCheckedStep() {
+    var done = cur.checks || [];
+    for (var i = 0; i < CHECK_IDS.length; i++) {
+      var id = CHECK_IDS[i];
+      if (!stepApplicable(id)) continue;
+      if (done.indexOf(CHECK_CANON[id]) < 0) return id;
+    }
+    return null;
+  }
 
   function readDinner() {
     var dv = dateEl.value, tv = timeEl.value || "17:00";
@@ -889,6 +947,8 @@ window.FLEET_CFG = {
     var now = new Date();
     var plan = juCompute(dinner, state.lb, state.brine, now);
     cur.dinner = dinner; cur.plan = plan;
+    cur.checkKey = checkKey();
+    cur.checks = loadChecks(cur.checkKey);
     var lb = state.lb;
 
     var tg = juThanksgiving(dinner.getFullYear());
@@ -946,6 +1006,7 @@ window.FLEET_CFG = {
     var stx = $("ju-sharetext"), cmx = $("ju-calmsg");
     if (stx) stx.textContent = "";
     if (cmx) cmx.textContent = "";
+    applyChecks();
     renderLive();
   }
 
@@ -1000,6 +1061,16 @@ window.FLEET_CFG = {
       step = "thaw"; st = "You are here: no thaw time left. This bird cooks from frozen.";
     } else {
       st = "That dinner time is past. Pick a date ahead of you, and the plan lines up.";
+    }
+    /* SPEC-TD-CHECKABLE-01: once this plan has saved checks, they say
+       where the cook is — the marker sits on the next unchecked step,
+       not the calendar step. With no saved checks, the calendar
+       marker above runs exactly as before. A past dinner keeps its
+       own status line either way. */
+    if (cur.checks && plan.mode !== "past") {
+      var cs = currentCheckedStep();
+      step = cs;
+      if (!cs) st = "Every step is checked off. Dinner is " + fmtLongY(dinner) + ".";
     }
     statusEl.textContent = st;
     setHere(step);
@@ -1080,6 +1151,26 @@ window.FLEET_CFG = {
   dateEl.addEventListener("change", renderPlan);
   timeEl.addEventListener("input", renderPlan);
   timeEl.addEventListener("change", renderPlan);
+
+  /* SPEC-TD-CHECKABLE-01: checking a step saves the plan's set in
+     place (no re-render) and lets renderLive move the marker. */
+  for (var ci = 0; ci < CHECK_IDS.length; ci++) {
+    (function (id) {
+      var box = $("ju-check-" + id);
+      if (!box) return;
+      box.addEventListener("change", function () {
+        if (!cur.checkKey) return;
+        var done = cur.checks ? cur.checks.slice() : [];
+        var canon = CHECK_CANON[id], ix = done.indexOf(canon);
+        if (box.checked && ix < 0) done.push(canon);
+        if (!box.checked && ix >= 0) done.splice(ix, 1);
+        cur.checks = done;
+        saveChecks(cur.checkKey, done);
+        applyChecks();
+        renderLive();
+      });
+    })(CHECK_IDS[ci]);
+  }
 
   /* SPEC-SHARE-THAW-1 (2026-11-06, Addendum 1847): the calculator's
      share + calendar loop, surfaced under the homepage plan. The

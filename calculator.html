@@ -230,6 +230,18 @@ localStorage.setItem("fleet_ft2",JSON.stringify(ft));
  #out .row{padding:14px 16px}
  #out .row>strong{display:block;font-size:1.375rem;line-height:1.25;color:var(--ink)}
  #out .warnrow>strong{display:inline;font-size:1rem}
+ /* SPEC-TD-CHECKABLE-01 (2026-11-10): each timeline row carries a Done
+    box. Checks save on this device only, one set per exact plan, and
+    once a plan has saved checks its first unchecked row is tagged
+    Next step. The homepage writes the same store key for the same
+    plan (its Roast step is this page's oven row). */
+ #out .row-current{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+ #out .row.is-done{background:#faf6ec}
+ #out .row.is-done>strong{color:var(--muted)}
+ .nexttag{display:inline-block;background:var(--accent);color:#fff;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:.18rem .55rem;margin-bottom:6px}
+ .rowcheck{display:flex;align-items:center;gap:10px;min-height:44px;margin-top:8px;cursor:pointer;font-weight:600}
+ .rowcheck input{width:26px;height:26px;flex:none;accent-color:var(--accent);cursor:pointer;margin:0;padding:0}
+ .checkhint{color:var(--muted);font-size:.9rem;margin:4px 0 2px}
  #cardarea{border:1px solid var(--line);border-radius:12px;background:#fff;padding:4px 16px 14px;margin-top:20px}
  #cardarea h2{margin-top:14px}
  .sharecard{border:1px solid var(--line);border-radius:12px;background:#fff;padding:6px 16px 12px;margin:10px 0}
@@ -857,7 +869,7 @@ function fmtShort(d){ return fmt(d).replace(":00 "," "); }
    MCP plan output. */
 function fmtDateOnly(d){ return d.toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric",year:"numeric"}); }
 function durText(min){ const h=Math.floor(min/60), r=min%60; return (h?h+" hour"+(h===1?"":"s"):"")+(h&&r?" ":"")+(r?r+" minutes":""); }
-let lastPlan=null, lastCardBlob=null;
+let lastPlan=null, lastCardBlob=null, lastCheckKey=null;
 function render(){
   const date=document.getElementById("date").value, time=document.getElementById("time").value;
   const lb=Number(document.getElementById("weight").value), state=document.getElementById("state").value, brine=document.getElementById("brine").value;
@@ -890,6 +902,15 @@ function render(){
      content is invented for out-of-range birds. */
   if(!(lb>=4&&lb<=24)){ hint.textContent="This tool covers 4 to 24 lb birds, the range in the USDA charts it uses. It cannot give a timeline outside that range."; out.innerHTML=""; cold.innerHTML=""; frozencook.innerHTML=""; math.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; document.getElementById("timelinehead").hidden=true; clearShare(); return; }
   hint.textContent=""; const dinner=new Date(date+"T"+time);
+  /* SPEC-TD-CHECKABLE-01 (2026-11-10): per-plan step checks, saved on
+     this device only. The key names the exact plan (weight, state,
+     brine, dinner date and time); the homepage writes the same key
+     for the same plan. checkRecord stays false until a plan has any
+     saved checks, so an untouched plan renders exactly as before. */
+  const checkKey="tdchecks:"+lb+"|"+state+"|"+brine+"|"+date+"|"+time;
+  let checkDone=[], checkRecord=false;
+  try { const rawCk=localStorage.getItem(checkKey); if(rawCk){ const arrCk=JSON.parse(rawCk); if(Array.isArray(arrCk)){ checkDone=arrCk; checkRecord=true; } } } catch(e) {}
+  lastCheckKey=checkKey;
   const now=new Date();
   const rows=buildTimeline(dinner,lb,state,brine,now);
   /* 2026-10-24 (feasibility warning, Billy's tap): the late cold-water path
@@ -899,7 +920,11 @@ function render(){
      honest outs. No USDA math changed. */
   const warning=planWarning(rows,lb,dinner,now);
   const warnHtml=warning?`<div class="row warnrow"><strong>${warning.kind==="past"?"That dinner time is already past.":"This plan cannot work as entered."}</strong><br>${warning.kind==="past"?"Pick a date and time ahead of you, and the plan will line up.":warning.kind==="lead"?`The turkey would have had to go in the oven at ${fmt(warning.oven)}. There is not enough time to roast it before this dinner. What can work instead: a smaller bird, or a later dinner.`:warning.kind==="brine"?(warning.reason==="thaw"?`Brining was set to start at ${fmt(warning.brine)}, but the turkey does not finish thawing until ${fmt(warning.finish)}. A brine cannot start before the bird is thawed. What can work instead: skip the brine.`:`Brining was set to start at ${fmt(warning.brine)}. That time has already passed, so a full brine cannot fit before this dinner. What can work instead: skip the brine, or use a shorter brine that starts now.`):`Cold water from now finishes thawing at ${fmt(warning.finish)}. The turkey needs to be in the oven before then. What can work instead: a smaller bird, a fresh bird, or a later dinner.`}</div>`:"";
-  out.innerHTML=warnHtml+rows.map(r=>`<div class="row"><strong>${r.id==="buy"?fmtDateOnly(r.when):fmt(r.when)}</strong><br>${r.label}<br>${r.detail}</div>`).join("");
+  /* SPEC-TD-CHECKABLE-01: every row carries its Done box; saved checks
+     render checked, and the first unchecked row is the Next step. */
+  const firstOpen=checkRecord?rows.findIndex(r=>!checkDone.includes(r.id)):-1;
+  const rowHtml=rows.map((r,ix)=>{ const isDone=checkDone.includes(r.id); return `<div class="row${isDone?" is-done":""}${ix===firstOpen?" row-current":""}" data-step="${r.id}">${ix===firstOpen?`<span class="nexttag">Next step</span>`:""}<strong>${r.id==="buy"?fmtDateOnly(r.when):fmt(r.when)}</strong><br>${r.label}<br>${r.detail}<label class="rowcheck"><input type="checkbox" data-check="${r.id}"${isDone?" checked":""}> Done</label></div>`; }).join("");
+  out.innerHTML=`<p class="checkhint">Check a step off when it is done. Your checks stay saved on this device.</p>`+warnHtml+rowHtml;
   /* 2026-10-31 (steal-list STEAL-TD-MATH-1, from the OnlyCalculators and
      RichMiser step-by-step workings): one show-the-working line under the
      timeline. Display only: every number is read from the engine's own
@@ -984,6 +1009,24 @@ function render(){
   try { localStorage.setItem("thawday_plan_inputs_v1", JSON.stringify({w:lb,s:state,b:brine,d:date,t:time})); } catch (e) {}
   return txt;
 }
+/* SPEC-TD-CHECKABLE-01: one delegated listener for every row's Done
+   box. It updates the saved set in place — no re-render, so the row
+   animations never restart — and moves the Next step tag to the
+   first row still unchecked. */
+document.getElementById("out").addEventListener("change",e=>{
+  const box=e.target&&e.target.closest?e.target.closest("input[data-check]"):null;
+  if(!box||!lastCheckKey) return;
+  let done=[]; try { const raw=localStorage.getItem(lastCheckKey); if(raw){ const a=JSON.parse(raw); if(Array.isArray(a)) done=a; } } catch(err) {}
+  const id=box.getAttribute("data-check"), ix=done.indexOf(id);
+  if(box.checked&&ix<0) done.push(id);
+  if(!box.checked&&ix>=0) done.splice(ix,1);
+  try { localStorage.setItem(lastCheckKey,JSON.stringify(done)); } catch(err) {}
+  const rowEl=box.closest(".row"); if(rowEl) rowEl.classList.toggle("is-done",box.checked);
+  document.querySelectorAll("#out .nexttag").forEach(t=>t.remove());
+  document.querySelectorAll("#out .row-current").forEach(t=>t.classList.remove("row-current"));
+  const open=[...document.querySelectorAll("#out .row[data-step]")].find(el=>{ const b=el.querySelector("input[data-check]"); return b&&!b.checked; });
+  if(open){ open.classList.add("row-current"); const tag=document.createElement("span"); tag.className="nexttag"; tag.textContent="Next step"; open.insertBefore(tag,open.firstChild); }
+});
 // TURKEY CARD START - the card reads only lastPlan, the same rows render() just put on screen. It never recomputes dates.
 function cardLines(plan){
   const rows=plan.rows;
