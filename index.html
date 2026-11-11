@@ -913,6 +913,22 @@ window.FLEET_CFG = {
     return null;
   }
 
+  /* SPEC-TD-TAPFIX-01: the status sentence's rendering of the SAME
+     next-undone step currentCheckedStep() returns for the marker —
+     one source of truth, two renderings. The words are the step row's
+     own caption and date, read from the row as rendered, so the
+     sentence can never name a different step, wording, or date than
+     the row the marker sits on. Brine is named only when it is an
+     applicable (checkable) step, exactly as the marker treats it. */
+  function nextStepSentence(id) {
+    var capEl = id === "buy" ? buyCapEl : id === "thaw" ? thawCapEl : id === "brine" ? brineCapEl : roastCapEl;
+    var dateEl = id === "buy" ? buyDateEl : id === "thaw" ? thawDateEl : id === "brine" ? brineDateEl : roastDateEl;
+    var cap = (capEl.textContent || "").trim();
+    var date = (dateEl.textContent || "").trim();
+    if (cap) cap = cap.charAt(0).toLowerCase() + cap.slice(1);
+    return "Next step: " + cap + (date ? " " + date : "") + ".";
+  }
+
   function readDinner() {
     var dv = dateEl.value, tv = timeEl.value || "17:00";
     var dm = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dv || "");
@@ -1066,11 +1082,17 @@ window.FLEET_CFG = {
        where the cook is — the marker sits on the next unchecked step,
        not the calendar step. With no saved checks, the calendar
        marker above runs exactly as before. A past dinner keeps its
-       own status line either way. */
-    if (cur.checks && plan.mode !== "past") {
+       own status line either way.
+       SPEC-TD-TAPFIX-01: the status sentence derives from that SAME
+       next-undone value — once any step is checked, the sentence
+       names the step the marker sits on, in that row's own words;
+       when every applicable step is checked it reads "All steps
+       done." With no step checked, the calendar sentence above runs
+       exactly as before. */
+    if (cur.checks && cur.checks.length && plan.mode !== "past") {
       var cs = currentCheckedStep();
       step = cs;
-      if (!cs) st = "Every step is checked off. Dinner is " + fmtLongY(dinner) + ".";
+      st = !cs ? "All steps done." : nextStepSentence(cs);
     }
     statusEl.textContent = st;
     setHere(step);
