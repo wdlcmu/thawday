@@ -174,6 +174,8 @@ localStorage.setItem("fleet_ft2",JSON.stringify(ft));
  a{color:var(--accent)}
  .brand{font-weight:800;font-size:1.125rem;margin:0}
  .brand a{color:var(--ink);text-decoration:none;display:inline-block;padding:12px 8px;margin:-12px -8px}
+ .calcidentity{font-size:1rem;line-height:1.28;color:#374151;margin:8px 0 2px}
+ .calcexample{font-size:1rem;line-height:1.4;color:var(--ink);margin:2px 0 8px}
  h1{font-size:clamp(1.75rem,6vw,2.5rem);font-weight:800;letter-spacing:-0.02em;margin:10px 0 8px}
  h2{font-size:1.25rem;margin:28px 0 8px}
  label{display:block;margin:14px 0 4px;font-weight:600}
@@ -206,7 +208,7 @@ localStorage.setItem("fleet_ft2",JSON.stringify(ft));
     text, FAQ and footer; keep the timeline + cold-water rows + safety box
     (Item 98 M2: the printout is the fridge-door artifact, it keeps 165 F). */
  @media print{
-  .brand,label,input,select,button,#hint,#cardarea,#sharetext,details,footer,h2{display:none!important}
+  .brand,.calcidentity,.calcexample,label,input,select,button,#hint,#cardarea,#sharetext,details,footer,h2{display:none!important}
   #quiz,#qsummary{display:none!important}
   #cold h2,#frozencook h2{display:block!important}
   body{padding:0}
@@ -557,6 +559,14 @@ window.FLEET_CFG = {
 </head>
 <body>
 <p class="brand"><a href="/">ThawDay</a></p>
+<!-- SPEC-TD-TAPFIX-02 (2026-11-11): identity first, then a concrete
+     example, on screen one — the same order as the homepage. The
+     identity line is the homepage line verbatim. The example line's
+     static text is the default plan (14 lb, Thu Nov 26, 5:00 PM);
+     render() rewrites it from the plan on the page on every render,
+     so a shared or edited plan shows its own bird and dates. -->
+<p class="calcidentity">ThawDay tells you when to thaw your turkey.</p>
+<p class="calcexample" id="calcexample">A 14 lb bird for Thu, Nov 26 at 5:00 PM moves Sun, Nov 22.</p>
 <!-- SPEC-TD-EVE-05 (2026-11-04): hero back inside Template v2 —
      headline 6 words (was 10), subline 11 words (was 17), one job.
      The brine explainer keeps its own line below the subline. -->
@@ -874,6 +884,7 @@ function render(){
   const date=document.getElementById("date").value, time=document.getElementById("time").value;
   const lb=Number(document.getElementById("weight").value), state=document.getElementById("state").value, brine=document.getElementById("brine").value;
   const hint=document.getElementById("hint"), out=document.getElementById("out"), cold=document.getElementById("cold"), frozencook=document.getElementById("frozencook"), math=document.getElementById("math");
+  const exEl=document.getElementById("calcexample");
   /* 2026-11-04 (SPEC-TD-EVE-07): the Share / Print / calendar blocks are
      static HTML below the timeline. A no-plan render (bad date, weight
      out of range) used to clear only the timeline and the card area, so
@@ -885,7 +896,7 @@ function render(){
   const shareBlocks=["sharehead","shareblock","calblock"].map(id=>document.getElementById(id));
   const clearShare=()=>{ document.getElementById("sharetext").textContent=""; document.getElementById("calmsg").textContent=""; document.getElementById("movemsg").textContent=""; const rm=document.getElementById("remindmsg"); if(rm) rm.textContent=""; const pt=document.getElementById("prompttext"); if(pt) pt.textContent=""; const gl=document.getElementById("gcalremind"); if(gl&&typeof gl.setAttribute==="function"){ gl.setAttribute("href","#"); if(typeof gl.removeAttribute==="function") gl.removeAttribute("data-valid"); } shareBlocks.forEach(el=>{ if(el) el.hidden=true; }); };
   const showShare=()=>{ shareBlocks.forEach(el=>{ if(el) el.hidden=false; }); };
-  if(!date||!time){ hint.textContent="Check the date and time."; out.innerHTML=""; cold.innerHTML=""; frozencook.innerHTML=""; math.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; document.getElementById("timelinehead").hidden=true; clearShare(); return; }
+  if(!date||!time){ hint.textContent="Check the date and time."; out.innerHTML=""; cold.innerHTML=""; frozencook.innerHTML=""; math.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; document.getElementById("timelinehead").hidden=true; if(exEl) exEl.hidden=true; clearShare(); return; }
   /* Item 98 L2: an empty weight field mid-typing is not an out-of-range
      bird: show no hint and keep the last plan on screen. */
   if(document.getElementById("weight").value===""){ hint.textContent=""; return; }
@@ -900,7 +911,7 @@ function render(){
      so an honest refusal never leaves an empty heading over nothing;
      the success path below unhides it with the plan. No timeline
      content is invented for out-of-range birds. */
-  if(!(lb>=4&&lb<=24)){ hint.textContent="This tool covers 4 to 24 lb birds, the range in the USDA charts it uses. It cannot give a timeline outside that range."; out.innerHTML=""; cold.innerHTML=""; frozencook.innerHTML=""; math.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; document.getElementById("timelinehead").hidden=true; clearShare(); return; }
+  if(!(lb>=4&&lb<=24)){ hint.textContent="This tool covers 4 to 24 lb birds, the range in the USDA charts it uses. It cannot give a timeline outside that range."; out.innerHTML=""; cold.innerHTML=""; frozencook.innerHTML=""; math.innerHTML=""; lastPlan=null; document.getElementById("cardarea").hidden=true; document.getElementById("timelinehead").hidden=true; if(exEl) exEl.hidden=true; clearShare(); return; }
   hint.textContent=""; const dinner=new Date(date+"T"+time);
   /* SPEC-TD-CHECKABLE-01 (2026-11-10): per-plan step checks, saved on
      this device only. The key names the exact plan (weight, state,
@@ -996,6 +1007,24 @@ function render(){
       ? `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): Fridge thaw start has passed. Cold water starts ${fmt(thaw.when)}, about ${Math.round((lb*30/60)*10)/10} hours, done right at oven time.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. ${shareLink}`
       : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb frozen turkey): ${buySeg} Fridge thaw starts ${fmt(thaw.when)}.${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. ${shareLink}`)
     : `ThawDay plan for ${fmtShort(dinner)} (${lb} lb fresh turkey): ${buySeg}${brineTxt} Oven in ${fmt(oven.when)}. Sides ${fmt(rows.find(r=>r.id==="sides").when)}. ${shareLink}`) + " Done at 165 F.";
+  /* SPEC-TD-TAPFIX-02 (2026-11-11): the header example line follows this
+     plan. It reads only the rows buildTimeline() just made for these
+     inputs: the weight, the dinner date/time and the fridge-move date
+     are the same values the timeline below renders — never a second
+     computation and never hard-coded. A fresh bird has no thaw row, so
+     its example names the oven date; a late plan names its cold-water
+     start; a cook-from-frozen plan says so. */
+  if(exEl){
+    const exDateFmt={weekday:"short",month:"short",day:"numeric"};
+    const exDinnerTxt=dinner.toLocaleString("en-US",exDateFmt);
+    const exTimeTxt=dinner.toLocaleString("en-US",{hour:"numeric",minute:"2-digit"});
+    let exTxt="";
+    if(thaw&&thaw.frozen) exTxt=`A ${lb} lb bird for ${exDinnerTxt} at ${exTimeTxt} cooks from frozen.`;
+    else if(thaw&&thaw.late) exTxt=`A ${lb} lb bird for ${exDinnerTxt} at ${exTimeTxt} starts cold water ${thaw.when.toLocaleString("en-US",exDateFmt)}.`;
+    else if(thaw) exTxt=`A ${lb} lb bird for ${exDinnerTxt} at ${exTimeTxt} moves ${thaw.when.toLocaleString("en-US",exDateFmt)}.`;
+    else if(oven) exTxt=`A ${lb} lb bird for ${exDinnerTxt} at ${exTimeTxt} goes in the oven ${oven.when.toLocaleString("en-US",exDateFmt)}.`;
+    exEl.textContent=exTxt; exEl.hidden=!exTxt;
+  }
   lastPlan={rows:rows,lb:lb,state:state,dinner:dinner,warning:warning};
   updateRemind(lastPlan);
   document.getElementById("cardarea").hidden=false;
