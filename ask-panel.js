@@ -1199,9 +1199,15 @@ function answerAsk(raw, nowOverride){
          band unguarded. Bottom + offset size are both transform-free
          and exact — the same constants method as the Secret Santa
          Addendum 987 guard this reference generalizes. */
-      if (bottom !== null && cs.bottom !== 'auto') box.top = vh - bottom - h;
+      /* Visual viewport height: window.innerHeight tracks the LAYOUT
+         viewport, which on mobile Safari can exceed the visible area
+         while the URL bar is expanded — the resting box then sat below
+         the fold and resting-state targets never registered a hit. The
+         visual viewport is what the pill is actually seen against. */
+      var vvh = (window.visualViewport && window.visualViewport.height) || vh;
+      if (bottom !== null && cs.bottom !== 'auto') box.top = vvh - bottom - h;
       else if (top !== null && cs.top !== 'auto') box.top = top;
-      else box.top = vh - h;
+      else box.top = vvh - h;
       box.right = box.left + w;
       box.bottom = box.top + h;
       resting = box;
@@ -1265,26 +1271,25 @@ function answerAsk(raw, nowOverride){
       setYield(hit);
     }
 
-    var hideTimer = null;
+    /* SPEC-FLEET-ASKPILL-01 (Nov 10, 2026): yielding is now a FADE, not a
+       disappearance — port of the Santa SPEC-SS-ASKPILL-01 fix. The old
+       behaviour slid the pill off-screen and then display:none'd it
+       (SPEC-05), so on any page stretch where watched content sat under
+       the pill's corner, the page's ONE AI entry point was simply gone,
+       sometimes for most of the scroll. A vanished door reads as a broken
+       site; a faded one does not. The pill now stays in place at low
+       opacity while yielded: still visible, still tappable, content
+       readable through it, and it never fully covers a full-opacity
+       target the way the resting pill did. Tapping it (or keyboard
+       focus, which unyields in update()) restores full opacity.
+       Resting-box bookkeeping is unchanged, so SPEC-05's parked-rect
+       concern no longer applies — the pill never leaves its box. */
     function setYield(on) {
       if (on === yielded) return;
       yielded = on;
-      if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
       if (on) {
         pill.classList.add(className);
-        /* SPEC-05 (Nov 4, 2026): after the slide-out finishes, remove the
-           pill from layout. Parked below the fold it still had a rect that
-           overlapped tap targets scrolling near the bottom edge (the
-           cold-QA settled sweep caught chips and footer links under that
-           parked rect). With display:none the rect is zero and the settled
-           pill can cover nothing, at any scroll depth. */
-        hideTimer = setTimeout(function () {
-          hideTimer = null;
-          if (yielded) pill.classList.add('fyg-hidden');
-        }, 300);
       } else {
-        pill.classList.remove('fyg-hidden');
-        void pill.offsetWidth; /* reflow so the slide back in still animates */
         pill.classList.remove(className);
       }
     }

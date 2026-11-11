@@ -83,9 +83,8 @@
    spec: builds/fleet-yield-guard-2026-11-01/ADOPTION-SPEC.md, ThawDay
    section. Rollback = remove this block + the guard block at the end of
    ask-panel.js.) */
-.fyg-pill { transition: transform .25s ease; }
-.fyg-pill.fyg-yield { transform: translateY(calc(100% + var(--fyg-gap, 20px))); }
-.fyg-pill.fyg-hidden{display:none}
+.fyg-pill { transition: transform .25s ease, opacity .25s ease; }
+.fyg-pill.fyg-yield { opacity: .18; }
 @media (prefers-reduced-motion: reduce) {
   .fyg-pill { transition: none; }
 }
