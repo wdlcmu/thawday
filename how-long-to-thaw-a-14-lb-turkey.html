@@ -78,6 +78,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Ar
 a{color:var(--accent)}
 .brand{font-weight:800;font-size:1.125rem;margin:0}
 .brand a{color:var(--ink);text-decoration:none;display:inline-block;padding:12px 8px;margin:-12px -8px}
+.ident{color:var(--muted);font-size:1rem;margin:2px 0 0}
 h1{font-size:clamp(1.75rem,6vw,2.5rem);font-weight:800;letter-spacing:-0.02em;margin:10px 0 8px}
 h2{font-size:1.25rem;margin:28px 0 8px}
 .lead{font-size:1.125rem}
@@ -87,6 +88,7 @@ th,td{border:1px solid var(--line);padding:10px 12px;text-align:left}
 th{background:#fdf3e3;font-weight:700}
 .safety{background:#fff8e1;border:1px solid #e6c200;border-radius:8px;padding:12px 14px;margin-top:16px}
 .door{border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:20px 0;background:#fff}
+.cta{display:inline-flex;align-items:center;min-height:44px;padding:10px 18px;border-radius:999px;background:var(--accent);color:#fff;font-weight:700;text-decoration:none;margin:6px 0 4px}
 .more{margin-top:28px}
 .more li{margin:6px 0}
 .more li a{display:flex;align-items:center;min-height:44px;padding:10px 0}
@@ -148,11 +150,12 @@ details.xpd h2{margin-top:8px}
 </head>
 <body>
 <p class="brand"><a href="/">ThawDay</a></p>
+<p class="ident">ThawDay gives plain thaw times for holiday food.</p>
 <h1>How long to thaw a 14 lb turkey</h1>
 <p class="answer"><strong>4 days in the fridge.</strong> For a 5 PM Thanksgiving dinner on Thursday, November 26, 2026, move it to the fridge on <strong>Sunday, November 22</strong>. In cold water: 7 hours.</p>
 <div class="tl"><div class="tl-node"><span class="tl-k">Move</span><strong>Sun, Nov 22</strong></div><div class="tl-track"><span class="tl-dots"><i></i><i></i><i></i><i></i></span><span class="tl-cap">4 days</span></div><div class="tl-node tl-end"><span class="tl-k">Dinner</span><strong>Thu, Nov 26</strong></div></div>
-<div class="chips"><span class="chip"><strong>Move</strong> Sun, Nov 22</span><span class="chip"><strong>Fridge</strong> 4 days</span><span class="chip"><strong>Cold water</strong> 7 hours</span></div>
 <div class="calrow"><button type="button" id="movebtn">Add the fridge move to calendar (.ics)</button><a class="cal-g" id="moveg" href="#" target="_blank" rel="noopener">Add it in Google Calendar</a><p class="cal-note" id="movemsg" aria-live="polite"></p></div>
+<a class="cta" href="/calculator">Get my full turkey plan</a>
 <details class="xpd"><summary>Why this date</summary>
 <h2>In the fridge</h2>
 <p>Fridge thawing takes about 24 hours for every 4 to 5 pounds. Keep the fridge at 40 F or below. Put the turkey on a tray, breast up. Leave it in its wrapper. Your band is 13 to 16 lb; every bird in it shares this date.</p>
