@@ -932,8 +932,18 @@ function render(){
   const warning=planWarning(rows,lb,dinner,now);
   const warnHtml=warning?`<div class="row warnrow"><strong>${warning.kind==="past"?"That dinner time is already past.":"This plan cannot work as entered."}</strong><br>${warning.kind==="past"?"Pick a date and time ahead of you, and the plan will line up.":warning.kind==="lead"?`The turkey would have had to go in the oven at ${fmt(warning.oven)}. There is not enough time to roast it before this dinner. What can work instead: a smaller bird, or a later dinner.`:warning.kind==="brine"?(warning.reason==="thaw"?`Brining was set to start at ${fmt(warning.brine)}, but the turkey does not finish thawing until ${fmt(warning.finish)}. A brine cannot start before the bird is thawed. What can work instead: skip the brine.`:`Brining was set to start at ${fmt(warning.brine)}. That time has already passed, so a full brine cannot fit before this dinner. What can work instead: skip the brine, or use a shorter brine that starts now.`):`Cold water from now finishes thawing at ${fmt(warning.finish)}. The turkey needs to be in the oven before then. What can work instead: a smaller bird, a fresh bird, or a later dinner.`}</div>`:"";
   /* SPEC-TD-CHECKABLE-01: every row carries its Done box; saved checks
-     render checked, and the first unchecked row is the Next step. */
-  const firstOpen=checkRecord?rows.findIndex(r=>!checkDone.includes(r.id)):-1;
+     render checked, and the first unchecked row is the Next step.
+     SPEC-TD-TAPFIX-03 (2026-11-11): that Next step tag is the final
+     timeline's own next action, so it renders only once the quiz is
+     complete (the quiz section hidden, the plan summary showing).
+     While Steps 1-3 are still up, the stepper's Next button is the
+     page's only next action and no row is tagged or highlighted,
+     however many checks the plan already has saved. The gate is the
+     quiz state itself, never a visit count: a returning user sees
+     the tag again the moment their final timeline shows. */
+  const quizElNow=document.getElementById("quiz");
+  const quizDoneNow=!!quizElNow&&quizElNow.hidden;
+  const firstOpen=quizDoneNow?rows.findIndex(r=>!checkDone.includes(r.id)):-1;
   const rowHtml=rows.map((r,ix)=>{ const isDone=checkDone.includes(r.id); return `<div class="row${isDone?" is-done":""}${ix===firstOpen?" row-current":""}" data-step="${r.id}">${ix===firstOpen?`<span class="nexttag">Next step</span>`:""}<strong>${r.id==="buy"?fmtDateOnly(r.when):fmt(r.when)}</strong><br>${r.label}<br>${r.detail}<label class="rowcheck"><input type="checkbox" data-check="${r.id}"${isDone?" checked":""}> Done</label></div>`; }).join("");
   out.innerHTML=`<p class="checkhint">Check a step off when it is done. Your checks stay saved on this device.</p>`+warnHtml+rowHtml;
   /* 2026-10-31 (steal-list STEAL-TD-MATH-1, from the OnlyCalculators and
@@ -1038,10 +1048,31 @@ function render(){
   try { localStorage.setItem("thawday_plan_inputs_v1", JSON.stringify({w:lb,s:state,b:brine,d:date,t:time})); } catch (e) {}
   return txt;
 }
+/* SPEC-TD-TAPFIX-03 (2026-11-11): the timeline's Next step tag is
+   synced from ONE place, gated on the quiz state. While the quiz is
+   showing (Steps 1-3 unfinished) every tag and current-row highlight
+   is removed — the stepper's Next is the only next action. Once the
+   quiz is complete (quiz hidden, summary showing) the first row
+   still unchecked carries the tag. The quiz script calls this when
+   it flips between those two states; render() applies the same rule
+   when it rebuilds the rows, and the Done listener below calls it
+   after every check change. Storage is untouched (that is
+   TD-TAPFIX-04's lane, not this one). */
+function syncNextTag(){
+  const outEl=document.getElementById("out"); if(!outEl) return;
+  outEl.querySelectorAll(".nexttag").forEach(t=>t.remove());
+  outEl.querySelectorAll(".row-current").forEach(t=>t.classList.remove("row-current"));
+  const quizEl=document.getElementById("quiz");
+  if(!quizEl||!quizEl.hidden) return;
+  const open=[...outEl.querySelectorAll(".row[data-step]")].find(el=>{ const b=el.querySelector("input[data-check]"); return b&&!b.checked; });
+  if(open){ open.classList.add("row-current"); const tag=document.createElement("span"); tag.className="nexttag"; tag.textContent="Next step"; open.insertBefore(tag,open.firstChild); }
+}
+window.tdSyncNextTag=syncNextTag;
 /* SPEC-TD-CHECKABLE-01: one delegated listener for every row's Done
    box. It updates the saved set in place — no re-render, so the row
    animations never restart — and moves the Next step tag to the
-   first row still unchecked. */
+   first row still unchecked (SPEC-TD-TAPFIX-03: via syncNextTag(),
+   so a check made mid-quiz never raises a competing tag). */
 document.getElementById("out").addEventListener("change",e=>{
   const box=e.target&&e.target.closest?e.target.closest("input[data-check]"):null;
   if(!box||!lastCheckKey) return;
@@ -1051,10 +1082,7 @@ document.getElementById("out").addEventListener("change",e=>{
   if(!box.checked&&ix>=0) done.splice(ix,1);
   try { localStorage.setItem(lastCheckKey,JSON.stringify(done)); } catch(err) {}
   const rowEl=box.closest(".row"); if(rowEl) rowEl.classList.toggle("is-done",box.checked);
-  document.querySelectorAll("#out .nexttag").forEach(t=>t.remove());
-  document.querySelectorAll("#out .row-current").forEach(t=>t.classList.remove("row-current"));
-  const open=[...document.querySelectorAll("#out .row[data-step]")].find(el=>{ const b=el.querySelector("input[data-check]"); return b&&!b.checked; });
-  if(open){ open.classList.add("row-current"); const tag=document.createElement("span"); tag.className="nexttag"; tag.textContent="Next step"; open.insertBefore(tag,open.firstChild); }
+  syncNextTag();
 });
 // TURKEY CARD START - the card reads only lastPlan, the same rows render() just put on screen. It never recomputes dates.
 function cardLines(plan){
@@ -1546,11 +1574,17 @@ render();
        own text -- one source of truth, never a second wording. */
     $("qsummaryText").textContent=who+$("weight").value+" lb turkey \u00b7 "+($("state").value==="fresh"?"Fresh":"Frozen")+" \u00b7 "+($("brine").value==="yes"?"Brine":"No brine")+(($("twobird")&&!$("twobird").hidden)?" \u00b7 "+$("twobird").textContent.replace(/\.$/,""):"")+(when?" \u00b7 Dinner "+when:"");
     $("quiz").hidden=true; $("qsummary").hidden=false;
+    /* SPEC-TD-TAPFIX-03: the quiz is complete, so the timeline's
+       Next step tag becomes the page's single next action. */
+    if(window.tdSyncNextTag) window.tdSyncNextTag();
     var ci=$("calcintro"); if(ci) ci.hidden=true;
     requestAnimationFrame(function(){ $("qsummary").scrollIntoView(); });
   });
   $("qchange").addEventListener("click",function(){
     $("qsummary").hidden=true; $("quiz").hidden=false;
+    /* SPEC-TD-TAPFIX-03: back in the quiz, the stepper's Next is
+       the only next action again — drop the timeline tag. */
+    if(window.tdSyncNextTag) window.tdSyncNextTag();
     var ci=$("calcintro"); if(ci) ci.hidden=false;
     show(1,true);
   });
