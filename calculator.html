@@ -917,8 +917,16 @@ function render(){
      this device only. The key names the exact plan (weight, state,
      brine, dinner date and time); the homepage writes the same key
      for the same plan. checkRecord stays false until a plan has any
-     saved checks, so an untouched plan renders exactly as before. */
-  const checkKey="tdchecks:"+lb+"|"+state+"|"+brine+"|"+date+"|"+time;
+     saved checks, so an untouched plan renders exactly as before.
+     SPEC-TD-TAPFIX-04 (2026-11-11): the key is now thawday_done_v2:.
+     The old tdchecks: keys are no longer read and are NOT deleted
+     (rollback posture) — saved checks reset once, by design. A plan
+     that arrived via a shared link (via=share) carries a share:
+     segment, so it never inherits the homepage's checks for an
+     identical plan; the same plan reached as your own keeps the
+     homepage's key and its checks. */
+  let viaSeg=""; try { viaSeg = new URLSearchParams(window.location.search).get("via")==="share" ? "share:" : ""; } catch(e) {}
+  const checkKey="thawday_done_v2:"+viaSeg+lb+"|"+state+"|"+brine+"|"+date+"|"+time;
   let checkDone=[], checkRecord=false;
   try { const rawCk=localStorage.getItem(checkKey); if(rawCk){ const arrCk=JSON.parse(rawCk); if(Array.isArray(arrCk)){ checkDone=arrCk; checkRecord=true; } } } catch(e) {}
   lastCheckKey=checkKey;
@@ -945,7 +953,7 @@ function render(){
   const quizDoneNow=!!quizElNow&&quizElNow.hidden;
   const firstOpen=quizDoneNow?rows.findIndex(r=>!checkDone.includes(r.id)):-1;
   const rowHtml=rows.map((r,ix)=>{ const isDone=checkDone.includes(r.id); return `<div class="row${isDone?" is-done":""}${ix===firstOpen?" row-current":""}" data-step="${r.id}">${ix===firstOpen?`<span class="nexttag">Next step</span>`:""}<strong>${r.id==="buy"?fmtDateOnly(r.when):fmt(r.when)}</strong><br>${r.label}<br>${r.detail}<label class="rowcheck"><input type="checkbox" data-check="${r.id}"${isDone?" checked":""}> Done</label></div>`; }).join("");
-  out.innerHTML=`<p class="checkhint">Check a step off when it is done. Your checks stay saved on this device.</p>`+warnHtml+rowHtml;
+  out.innerHTML=`<p class="checkhint">Check a step off when it is done. Your checks stay saved on this device, for this plan.</p>`+warnHtml+rowHtml;
   /* 2026-10-31 (steal-list STEAL-TD-MATH-1, from the OnlyCalculators and
      RichMiser step-by-step workings): one show-the-working line under the
      timeline. Display only: every number is read from the engine's own

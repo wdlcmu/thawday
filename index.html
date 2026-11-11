@@ -631,7 +631,7 @@ window.FLEET_CFG = {
       <li class="ju-step ju-off" id="ju-step-brine"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Brine</span><strong class="ju-sdate" id="ju-brine-date">Wed, Nov 25</strong><span class="ju-scap" id="ju-brine-cap">If you brine</span><span class="ju-here" id="ju-here-brine" hidden>You are here</span><label class="ju-check" id="ju-checkwrap-brine" hidden><input type="checkbox" id="ju-check-brine" data-step="brine">Done</label></li>
       <li class="ju-step" id="ju-step-roast"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Roast</span><strong class="ju-sdate" id="ju-roast-date">Thu, Nov 26</strong><span class="ju-scap" id="ju-roast-cap">In the oven by 1:17 PM</span><span class="ju-here" id="ju-here-roast" hidden>You are here</span><label class="ju-check" id="ju-checkwrap-roast"><input type="checkbox" id="ju-check-roast" data-step="oven">Done</label></li>
     </ol>
-    <p class="ju-checkhint">Check a step off when it is done. Your checks stay saved on this device.</p>
+    <p class="ju-checkhint">Check a step off when it is done. Your checks stay saved on this device, for this plan.</p>
     <p class="ju-status" id="ju-status">First step: buy a frozen turkey by Sunday, November 15.</p>
     <div class="ju-share">
       <div class="ju-share-btns">
@@ -872,11 +872,18 @@ window.FLEET_CFG = {
      Roast step is stored under the calculator's name for it, "oven".
      cur.checks is null until a plan has any saved checks at all —
      that is what keeps the calendar marker in charge until the cook
-     starts checking steps off. */
+     starts checking steps off.
+     SPEC-TD-TAPFIX-04 (2026-11-11): the key is now thawday_done_v2:.
+     The old tdchecks: keys are no longer read and are NOT deleted
+     (rollback posture) — saved checks reset once, by design. A plan
+     that arrived via a shared link (via=share on the calculator)
+     carries a share: segment in its key, so a shared plan never
+     inherits this page's checks even when its plan inputs match
+     this page's default plan exactly. */
   var CHECK_IDS = ["buy", "thaw", "brine", "roast"];
   var CHECK_CANON = { buy: "buy", thaw: "thaw", brine: "brine", roast: "oven" };
   function checkKey() {
-    return "tdchecks:" + state.lb + "|frozen|" + (state.brine ? "yes" : "no") + "|" + dateEl.value + "|" + (timeEl.value || "17:00");
+    return "thawday_done_v2:" + state.lb + "|frozen|" + (state.brine ? "yes" : "no") + "|" + dateEl.value + "|" + (timeEl.value || "17:00");
   }
   function loadChecks(key) {
     try {
