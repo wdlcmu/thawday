@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>
+/* FLEET-FT2-2026-11-08: first-touch capture at the door. The first page
+   this browser ever loads on this site stores its referrer, UTM tags and
+   landing address in localStorage (first write wins, never overwritten).
+   The PostHog first-touch writer reads this store, so a creator's
+   discovery channel survives the tool-page to homepage hop that used
+   to erase it (attribution trace, Nov 8, 2026, BP-5). The address is
+   cut to origin + path, /s/ and /g/ code segments are dropped, and no
+   query beyond utm_* and a whitelisted ?via= kind word is kept. */
+(function(){try{
+if(localStorage.getItem("fleet_ft2"))return;
+var q=new URLSearchParams(location.search);
+function utm(n){var v=q.get(n)||"";return v.slice(0,100);}
+var p=location.pathname||"/";
+if(/^\/(s|g)\/[^/]/.test(p))p=p.replace(/^\/(s|g)\/[^/]+.*$/,"/$1/");
+var via=q.get("via")||"";
+var ft={r:document.referrer||"",u:location.origin+p,
+via:["share","own","group"].indexOf(via)>=0?via:"",
+s:utm("utm_source"),m:utm("utm_medium"),c:utm("utm_campaign"),
+at:new Date().toISOString()};
+localStorage.setItem("fleet_ft2",JSON.stringify(ft));
+}catch(e){}})();
+</script>
+<script>
+/* FLEET-FT2-2026-11-08: first-touch capture at the door. The first page
+   this browser ever loads on this site stores its referrer, UTM tags and
+   landing address in localStorage (first write wins, never overwritten).
+   The PostHog first-touch writer reads this store, so a creator's
+   discovery channel survives the tool-page to homepage hop that used
+   to erase it (attribution trace, Nov 8, 2026, BP-5). The address is
+   cut to origin + path, /s/ and /g/ code segments are dropped, and no
+   query beyond utm_* and a whitelisted ?via= kind word is kept. */
+(function(){try{
+if(localStorage.getItem("fleet_ft2"))return;
+var q=new URLSearchParams(location.search);
+function utm(n){var v=q.get(n)||"";return v.slice(0,100);}
+var p=location.pathname||"/";
+if(/^\/(s|g)\/[^/]/.test(p))p=p.replace(/^\/(s|g)\/[^/]+.*$/,"/$1/");
+var via=q.get("via")||"";
+var ft={r:document.referrer||"",u:location.origin+p,
+via:["share","own","group"].indexOf(via)>=0?via:"",
+s:utm("utm_source"),m:utm("utm_medium"),c:utm("utm_campaign"),
+at:new Date().toISOString()};
+localStorage.setItem("fleet_ft2",JSON.stringify(ft));
+}catch(e){}})();
+</script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connect your AI · ThawDay</title>
+<meta name="description" content="Connect ThawDay to Claude, Cursor, or any other MCP client: the server address, the one command, and the settings block.">
+<link rel="canonical" href="https://thawday.com/mcp">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ThawDay">
+<meta property="og:title" content="Connect your AI · ThawDay">
+<meta property="og:description" content="Connect ThawDay to your AI. It counts back from your dinner hour and your bird's weight.">
+<meta property="og:url" content="https://thawday.com/mcp">
+<meta property="og:image" content="https://thawday.com/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="Type in your dinner time. Get buy, thaw, brine, and roast dates.">
+<meta name="twitter:image" content="https://thawday.com/og-card.png">
+<meta name="twitter:image:alt" content="Type in your dinner time. Get buy, thaw, brine, and roast dates.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Connect your AI · ThawDay">
+<meta name="twitter:description" content="Connect ThawDay to your AI. It counts back from your dinner hour and your bird's weight.">
+<style>
+  :root { --accent: #b45309; --ink: #1a1a1a; --muted: #6b7280; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink); background: #fffdf8; line-height: 1.5;
+    display: flex; flex-direction: column; min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  main {
+    display: flex; flex-direction: column; justify-content: flex-start; align-items: center;
+    text-align: center; padding: 4rem 1.5rem 3.5rem; max-width: 42rem; margin: 0 auto; width: 100%;
+    flex: 1;
+  }
+  .kicker {
+    display: inline-block; font-size: 0.875rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem;
+    border: 1px solid var(--accent); border-radius: 999px; padding: 0.35rem 1rem;
+  }
+  h1 { font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1rem; }
+  .note { text-align: left; width: 100%; max-width: 34rem; margin-top: 1.5rem; }
+  .note h2 { font-size: 1.375rem; font-weight: 700; margin-bottom: 0.75rem; text-align: center; }
+  .note p { color: #374151; margin-bottom: 0.75rem; }
+  .note p strong { color: var(--ink); }
+  footer {
+    text-align: center; padding: 2rem 1.5rem; border-top: 1px solid #e5e7eb;
+    font-size: 0.9375rem; color: var(--muted);
+  }
+  footer p { margin-bottom: 0.5rem; }
+  footer a { color: var(--accent); font-weight: 600; text-decoration: none; display: inline-block; padding: 12px 6px; min-height: 44px; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Connect your AI</h1>
+</main>
+<!-- Works with your AI (fleet AI section, 2026-11-04) -->
+<section class="works-with-ai" aria-label="Works with your AI" style="max-width:44rem;margin:2.5rem auto;padding:1.25rem 1rem;border:1px solid rgba(127,127,127,.45);border-radius:14px;font-family:inherit;line-height:1.55">
+<h2 style="margin:.1rem 0 .5rem;font-size:1.35rem">Works with your AI</h2>
+<p style="margin:.4rem 0">Ask your AI when to move the turkey to the fridge. It counts back from your dinner hour and your bird's weight: a computed answer, not a guess.</p>
+<p style="margin:.4rem 0">Connect this site to Claude, Cursor, or any other MCP client (MCP, the standard way AI apps connect to outside tools). It is free, and it takes about a minute.</p>
+<p style="margin:.8rem 0 .3rem"><strong>1. Copy the server address</strong></p>
+<div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:stretch">
+<code id="wai-url" style="flex:1 1 16rem;display:flex;align-items:center;padding:.6rem .7rem;border:1px solid rgba(127,127,127,.45);border-radius:10px;word-break:break-all">https://mcp.thawday.com/mcp</code>
+<button type="button" class="wai-copy" data-copy-target="wai-url" style="min-height:44px;min-width:44px;padding:.6rem 1.1rem;border-radius:10px;border:1px solid rgba(127,127,127,.55);background:transparent;color:inherit;font:inherit;cursor:pointer">Copy</button>
+</div>
+<p style="margin:.9rem 0 .3rem"><strong>2. Add it to your AI</strong></p>
+<details>
+<summary style="min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:600">Claude Code: one command</summary>
+<pre style="overflow-x:auto;padding:.7rem;border:1px solid rgba(127,127,127,.35);border-radius:10px"><code>claude mcp add --transport http thawday https://mcp.thawday.com/mcp</code></pre>
+</details>
+<details>
+<summary style="min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:600">Claude Desktop or Cursor: paste into the MCP settings</summary>
+<pre style="overflow-x:auto;padding:.7rem;border:1px solid rgba(127,127,127,.35);border-radius:10px"><code>{
+  "mcpServers": {
+    "thawday": {
+      "url": "https://mcp.thawday.com/mcp"
+    }
+  }
+}</code></pre>
+</details>
+<p style="margin:.8rem 0 .2rem"><strong>3. Ask your AI:</strong> &ldquo;My turkey is 14 pounds and dinner is Thursday at 4. When should it go in the fridge?&rdquo;</p>
+
+</section>
+<script>
+(function(){var b=document.querySelector('.wai-copy');if(!b)return;b.addEventListener('click',function(){var el=document.getElementById(b.getAttribute('data-copy-target'));var t=el?el.textContent.trim():'';function done(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy';},2000);}function failed(){if(el){try{var r=document.createRange();r.selectNodeContents(el);var s=window.getSelection();s.removeAllRanges();s.addRange(r);}catch(e){}}b.textContent='Select + copy manually';setTimeout(function(){b.textContent='Copy';},4000);}function fallback(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();var ok=false;try{ok=document.execCommand('copy');}catch(e){ok=false;}document.body.removeChild(ta);if(ok){done();}else{failed();}}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fallback);}else{fallback();}});})();
+</script>
+<footer>
+  <p>Built with Muse.</p>
+  <p><a href="/">Home</a> <a href="/privacy">Privacy</a> <a href="/terms">Terms</a></p>
+</footer>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "7488774fc7d54208bf7ece1b8a072e01"}'></script>
+<script>
+window.FLEET_CFG = {
+  site: "thawday"
+};
+</script>
+<!-- Fleet analytics — shared instrumentation (Nov 1, 2026; taxonomy:
+     ~/workspace/chief-of-staff/fleet-instrumentation-taxonomy-2026-11-01.md).
+     PostHog project 624507. Anonymous metadata only: event names + enum
+     properties. Never sends typed text, names, emails, pairings, or
+     tokens. Session recording off, autocapture off.
+     Per site: set window.FLEET_CFG (site slug + hooks) in a small script
+     block BEFORE this block. Internal rule (fleet-wide): ?internal=1
+     once on a device sets a localStorage flag; every event from that
+     device carries internal:true; funnel queries filter it out. -->
+<script>
+(function(){
+  var CFG = window.FLEET_CFG || {};
+  var SITE = CFG.site || "unknown";
+  var KEY = "phc_t9dkHXAZR5VEjPFm3K5JDzGKFsNNxKcwSxxcEBEeLbS7";
+  var _int = null;
+  function isInternal(){
+    if (_int !== null) return _int;
+    var flag = false;
+    try {
+      var q = location.search || "";
+      if (/[?&]internal=1(?:&|$)/.test(q)) { try { localStorage.setItem("fleet_internal", "1"); } catch(e){} flag = true; }
+      else if (/[?&]internal=0(?:&|$)/.test(q)) { try { localStorage.removeItem("fleet_internal"); } catch(e){} }
+      else if (/[?&](probe|sim)=/.test(q)) { flag = true; }
+      else { try { flag = localStorage.getItem("fleet_internal") === "1"; } catch(e){} }
+    } catch(e2){}
+    _int = flag;
+    return flag;
+  }
+  var Q = [];
+  function track(name, props){
+    props = props || {};
+    props.site = SITE;
+    try { if (isInternal()) props.internal = true; } catch(e){}
+    try {
+      if (window.posthog && posthog.capture) posthog.capture(name, props);
+      else { Q.push([name, props]); if (Q.length > 100) Q.shift(); }
+    } catch(e){}
+  }
+  window.FA = { track: track };
+  /* FLEET-ATTRIB-2026-11-07: first-touch attribution (pattern: SPEC-SS-ATTRIB-01).
+     On first pageview, persist the door as PostHog person properties via
+     people.set_once (a later visit never overwrites): entry_referrer (bare
+     origin only), entry_referring_domain, entry_url (origin+path, no query,
+     no fragment, no tokens), entry_at, entry_app (app kind classified from
+     the user-agent string - in-app browsers name themselves there even when
+     they strip the referrer). No raw UA stored, no PII. */
+  /* FLEET-FT2-2026-11-08: first-touch now reads the fleet_ft2 door store written by the <head> snippet (the acting person's entry referrer/UTM survive page hops); prop names unchanged, entry_utm_* added. */
+  function fleetFirstTouch(){
+    try {
+      if (!window.posthog || !posthog.people || !posthog.people.set_once) return;
+      var ft = null;
+      try { ft = JSON.parse(localStorage.getItem("fleet_ft2") || "null"); } catch (e) {}
+      var ref = (ft && typeof ft.r === "string") ? ft.r : (document.referrer || "");
+      var refOrigin = "", refDomain = "$direct";
+      if (ref) {
+        try {
+          var ru = new URL(ref);
+          if (ru.origin && ru.origin !== "null") { refOrigin = ru.origin + "/"; refDomain = ru.hostname || "$direct"; }
+        } catch (e) {}
+        if (!refOrigin) {
+          var m = /^[a-z][a-z0-9+.-]*:\/\/[^/?#]+/i.exec(ref);
+          if (m) { refOrigin = m[0] + "/"; refDomain = m[0].split("://")[1] || "$direct"; }
+        }
+      }
+      var entryUrl, entryAt;
+      if (ft && ft.u) {
+        entryUrl = ft.u + (ft.via ? "?via=" + ft.via : "");
+        entryAt = ft.at || new Date().toISOString();
+      } else {
+        var path = window.location.pathname || "/";
+        if (/^\/(s|g)\/[^/]/.test(path)) path = path.replace(/^\/(s|g)\/[^/]+.*$/, "/$1/");
+        var viaRaw = "";
+        try { viaRaw = new URLSearchParams(window.location.search).get("via") || ""; } catch (e) {}
+        var via = (viaRaw === "share" || viaRaw === "own" || viaRaw === "group") ? "?via=" + viaRaw : "";
+        entryUrl = window.location.origin + path + via;
+        entryAt = new Date().toISOString();
+      }
+      var ua = (navigator.userAgent || "").slice(0, 500);
+      var l = ua.toLowerCase();
+      var app = "other";
+      if (l.indexOf("kakaotalk") !== -1) app = "kakaotalk";
+      else if (l.indexOf("whatsapp") !== -1) app = "whatsapp";
+      else if (l.indexOf("instagram") !== -1) app = "instagram";
+      else if (l.indexOf("telegram") !== -1) app = "telegram";
+      else if (l.indexOf("teams") !== -1) app = "teams";
+      else if (l.indexOf("fban") !== -1 || l.indexOf("fbav") !== -1 || l.indexOf("fb_iab") !== -1 || l.indexOf("facebook") !== -1) app = "facebook";
+      else if (l.indexOf("mozilla/") !== -1) app = "browser";
+      var props = {
+        entry_referrer: refOrigin,
+        entry_referring_domain: refDomain,
+        entry_url: entryUrl,
+        entry_at: entryAt,
+        entry_user_agent: ua,
+        entry_app: app
+      };
+      if (ft && ft.s) props.entry_utm_source = ft.s;
+      if (ft && ft.m) props.entry_utm_medium = ft.m;
+      if (ft && ft.c) props.entry_utm_campaign = ft.c;
+      posthog.people.set_once(props);
+    } catch (e) {}
+  }
+
+  var s = document.createElement("script");
+  s.async = true;
+  s.src = "https://us.i.posthog.com/static/array.js";
+  s.onload = function(){
+    try {
+      if (window.posthog && posthog.init) {
+        posthog.init(KEY, {persistence: "localStorage", api_host: "https://us.i.posthog.com", autocapture: false, capture_pageview: true, disable_session_recording: true});
+        try { posthog.register({site: SITE, internal: isInternal()}); } catch(e){}
+        try { if (isInternal() && posthog.people && posthog.people.set) posthog.people.set({fleet_internal: true}); } catch(e){}
+        try { fleetFirstTouch(); } catch(e){}
+        while (Q.length) { var e0 = Q.shift(); try { posthog.capture(e0[0], e0[1]); } catch(e){} }
+      }
+    } catch(e){}
+  };
+  document.head.appendChild(s);
+
+  function onReady(fn){ if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
+  function vis(el){
+    if (!el) return false;
+    var cs = getComputedStyle(el);
+    if (cs.display === "none" || cs.visibility === "hidden") return false;
+    return !!(el.offsetWidth || el.offsetHeight || (el.getClientRects && el.getClientRects().length));
+  }
+  function txt(el){ return ((el && el.textContent) || "").replace(/\s+/g, " ").trim(); }
+
+  onReady(function(){
+    try {
+      var started = {};
+      (CFG.starts || []).forEach(function(st){
+        Array.prototype.forEach.call(document.querySelectorAll(st.sel), function(el){
+          el.addEventListener(st.on || "click", function(){
+            var k = st.surface || "tool";
+            if (started[k]) return;
+            started[k] = true;
+            track("tool_start", {surface: k});
+          });
+        });
+      });
+      (CFG.completes || []).forEach(function(cp){
+        var done = false;
+        function check(){
+          if (done) return;
+          var el = document.querySelector(cp.sel);
+          if (el && vis(el) && txt(el).length >= (cp.minText || 1)) {
+            done = true;
+            track("tool_complete", {surface: cp.surface || "tool"});
+          }
+        }
+        /* Observe the body and re-resolve the selector on every batch:
+           some tools replace the result node instead of filling it. */
+        new MutationObserver(check).observe(document.body, {childList: true, subtree: true, characterData: true, attributes: true});
+        check();
+      });
+      if (CFG.ask) {
+        var A = CFG.ask;
+        var lastText = "", completed = false;
+        var go = A.goSel ? document.querySelector(A.goSel) : null;
+        if (go) go.addEventListener("click", function(){
+          track("ask_asked", {surface: "ask"});
+          lastText = "";   // a new submission: the observer must classify the coming rendering even if its text matches the previous turn's
+        });
+        var ans = A.answerSel ? document.querySelector(A.answerSel) : null;
+        if (ans) {
+          var checkA = function(){
+            var el = document.querySelector(A.answerSel);
+            if (!el) return;
+            var t = txt(el);
+            if (!t || t === lastText) return;
+            lastText = t;
+            var fb = null;
+            (A.fallbacks || []).some(function(f){ if (f.re.test(t)) { fb = f; return true; } return false; });
+            if (fb) { track("ask_fallback", {surface: "ask", missing: fb.missing}); return; }
+            var props = {surface: "ask"};
+            (A.kinds || []).some(function(k){ if (k.re.test(t)) { props.outcome = k.outcome; return true; } return false; });
+            if (!props.outcome && A.defaultOutcome) props.outcome = A.defaultOutcome;
+            track("ask_answered", props);
+            if (A.completeOnAnswer && !completed) { completed = true; track("tool_complete", {surface: "ask"}); }
+          };
+          new MutationObserver(checkA).observe(document.body, {childList: true, subtree: true, characterData: true});
+        }
+      }
+      (CFG.specials || []).forEach(function(sp){
+        try {
+          if (sp.on === "click") {
+            Array.prototype.forEach.call(document.querySelectorAll(sp.sel), function(el){
+              el.addEventListener("click", function(){ track(sp.name, sp.props || {}); });
+            });
+          } else if (sp.on === "appear") {
+            var fired = false;
+            var chk = function(){
+              if (fired) return;
+              var el = document.querySelector(sp.sel);
+              if (el && vis(el) && txt(el).length) { fired = true; track(sp.name, sp.props || {}); }
+            };
+            new MutationObserver(chk).observe(document.body, {childList: true, subtree: true, characterData: true, attributes: true});
+            chk();
+          } else if (sp.on === "loadmatch") {
+            if (sp.re.test(location.href)) track(sp.name, sp.props || {});
+          }
+        } catch(e){}
+      });
+    } catch(e){}
+  });
+})();
+</script>
+</body>
+</html>
