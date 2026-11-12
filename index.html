@@ -627,9 +627,9 @@ window.FLEET_CFG = {
     </div>
     <ol class="ju-steps">
       <li class="ju-step ju-here-step" id="ju-step-buy"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Buy</span><strong class="ju-sdate" id="ju-buy-date">Sun, Nov 15</strong><span class="ju-scap" id="ju-buy-cap">Buy by this date</span><span class="ju-here" id="ju-here-buy">You are here</span><label class="ju-check" id="ju-checkwrap-buy"><input type="checkbox" id="ju-check-buy" data-step="buy">Done</label></li>
-      <li class="ju-step" id="ju-step-thaw"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Thaw</span><strong class="ju-sdate" id="ju-thaw-date">Sun, Nov 22</strong><span class="ju-scap" id="ju-thaw-cap">Move it to the fridge</span><span class="ju-here" id="ju-here-thaw" hidden>You are here</span><label class="ju-check" id="ju-checkwrap-thaw"><input type="checkbox" id="ju-check-thaw" data-step="thaw">Done</label></li>
-      <li class="ju-step ju-off" id="ju-step-brine"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Brine</span><strong class="ju-sdate" id="ju-brine-date">Wed, Nov 25</strong><span class="ju-scap" id="ju-brine-cap">If you brine</span><span class="ju-here" id="ju-here-brine" hidden>You are here</span><label class="ju-check" id="ju-checkwrap-brine" hidden><input type="checkbox" id="ju-check-brine" data-step="brine">Done</label></li>
-      <li class="ju-step" id="ju-step-roast"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Roast</span><strong class="ju-sdate" id="ju-roast-date">Thu, Nov 26</strong><span class="ju-scap" id="ju-roast-cap">In the oven by 1:17 PM</span><span class="ju-here" id="ju-here-roast" hidden>You are here</span><label class="ju-check" id="ju-checkwrap-roast"><input type="checkbox" id="ju-check-roast" data-step="oven">Done</label></li>
+      <li class="ju-step" id="ju-step-thaw"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Thaw</span><strong class="ju-sdate" id="ju-thaw-date">Sun, Nov 22</strong><span class="ju-scap" id="ju-thaw-cap">Move it to the fridge</span><span class="ju-here" id="ju-here-thaw" hidden></span><label class="ju-check" id="ju-checkwrap-thaw"><input type="checkbox" id="ju-check-thaw" data-step="thaw">Done</label></li>
+      <li class="ju-step ju-off" id="ju-step-brine"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Brine</span><strong class="ju-sdate" id="ju-brine-date">Wed, Nov 25</strong><span class="ju-scap" id="ju-brine-cap">If you brine</span><span class="ju-here" id="ju-here-brine" hidden></span><label class="ju-check" id="ju-checkwrap-brine" hidden><input type="checkbox" id="ju-check-brine" data-step="brine">Done</label></li>
+      <li class="ju-step" id="ju-step-roast"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Roast</span><strong class="ju-sdate" id="ju-roast-date">Thu, Nov 26</strong><span class="ju-scap" id="ju-roast-cap">In the oven by 1:17 PM</span><span class="ju-here" id="ju-here-roast" hidden></span><label class="ju-check" id="ju-checkwrap-roast"><input type="checkbox" id="ju-check-roast" data-step="oven">Done</label></li>
     </ol>
     <p class="ju-checkhint">Check a step off when it is done. Your checks stay saved on this device, for this plan.</p>
     <p class="ju-status" id="ju-status">First step: buy a frozen turkey.</p>
@@ -642,7 +642,7 @@ window.FLEET_CFG = {
       <p class="ju-calmsg" id="ju-calmsg" aria-live="polite"></p>
     </div>
     <div class="ju-cd" id="ju-cd" role="img" aria-label="Counting down to move day.">
-      <div class="ju-cd-digits" id="ju-cd-digits" aria-hidden="true" hidden><span class="ju-cd-cell ju-cd-d"><b id="ju-cd-d"></b><i id="ju-cd-dl">days</i></span><span class="ju-cd-cell"><b id="ju-cd-h"></b><i>hrs</i></span><span class="ju-cd-cell"><b id="ju-cd-m"></b><i>min</i></span><span class="ju-cd-cell"><b id="ju-cd-s"></b><i>sec</i></span></div>
+      <div class="ju-cd-digits" id="ju-cd-digits" aria-hidden="true" hidden><span class="ju-cd-cell ju-cd-d"><b id="ju-cd-d"></b><i id="ju-cd-dl"></i></span><span class="ju-cd-cell"><b id="ju-cd-h"></b><i id="ju-cd-hl"></i></span><span class="ju-cd-cell"><b id="ju-cd-m"></b><i id="ju-cd-ml"></i></span><span class="ju-cd-cell"><b id="ju-cd-s"></b><i id="ju-cd-sl"></i></span></div>
       <p class="ju-cd-label" id="ju-cd-label">Counting down to move day.</p>
       <p class="ju-cd-sub" id="ju-cd-sub">Dinner is 14 days away.</p>
     </div>
@@ -824,6 +824,7 @@ window.FLEET_CFG = {
   var statusEl = $("ju-status"), fullEl = $("ju-full");
   var cdEl = $("ju-cd"), cdDigits = $("ju-cd-digits"), cdD = $("ju-cd-d"), cdH = $("ju-cd-h"),
       cdM = $("ju-cd-m"), cdS = $("ju-cd-s"), cdDl = $("ju-cd-dl"),
+      cdHl = $("ju-cd-hl"), cdMl = $("ju-cd-ml"), cdSl = $("ju-cd-sl"),
       cdLabel = $("ju-cd-label"), cdSub = $("ju-cd-sub");
   if (!dateEl || !timeEl || !weightEl) return;
 
@@ -934,7 +935,11 @@ window.FLEET_CFG = {
     for (var i = 0; i < ids.length; i++) {
       var tag = $("ju-here-" + ids[i]), node = $("ju-step-" + ids[i]);
       var on = ids[i] === step;
-      if (tag) tag.hidden = !on;
+      /* F4 (2026-11-12): static HTML carries the tag text only on the
+         server-rendered current step; the script fills the text of
+         whichever tag it shows, so the raw page never carries four
+         "You are here" tags at once. */
+      if (tag) { if (on && !tag.textContent) tag.textContent = "You are here"; tag.hidden = !on; }
       if (node) node.classList.toggle("ju-here-step", on);
     }
   }
@@ -1107,6 +1112,11 @@ window.FLEET_CFG = {
     var p = cdParts(ms);
     cdD.textContent = p.d; cdH.textContent = pad2(p.h); cdM.textContent = pad2(p.m); cdS.textContent = pad2(p.s);
     if (cdDl) cdDl.textContent = p.d === 1 ? "day" : "days";
+    /* F4 (2026-11-12): unit labels are filled with the digits, so the
+       static page carries no bare "days hrs min sec" labels. */
+    if (cdHl) cdHl.textContent = "hrs";
+    if (cdMl) cdMl.textContent = "min";
+    if (cdSl) cdSl.textContent = "sec";
     cdDigits.hidden = false;
     cdLabel.textContent = tail;
     var daysAway = Math.round((juStartOfDay(dinner).getTime() - juStartOfDay(now).getTime()) / 86400000);
