@@ -632,7 +632,7 @@ window.FLEET_CFG = {
       <li class="ju-step" id="ju-step-roast"><span class="ju-dot" aria-hidden="true"></span><span class="ju-slabel">Roast</span><strong class="ju-sdate" id="ju-roast-date">Thu, Nov 26</strong><span class="ju-scap" id="ju-roast-cap">In the oven by 1:17 PM</span><span class="ju-here" id="ju-here-roast" hidden>You are here</span><label class="ju-check" id="ju-checkwrap-roast"><input type="checkbox" id="ju-check-roast" data-step="oven">Done</label></li>
     </ol>
     <p class="ju-checkhint">Check a step off when it is done. Your checks stay saved on this device, for this plan.</p>
-    <p class="ju-status" id="ju-status">First step: buy a frozen turkey by Sunday, November 15.</p>
+    <p class="ju-status" id="ju-status">First step: buy a frozen turkey.</p>
     <div class="ju-share">
       <div class="ju-share-btns">
         <button type="button" class="ju-action" id="ju-share-btn">Share my plan</button>
@@ -641,10 +641,10 @@ window.FLEET_CFG = {
       <p class="ju-sharetext" id="ju-sharetext" aria-live="polite"></p>
       <p class="ju-calmsg" id="ju-calmsg" aria-live="polite"></p>
     </div>
-    <div class="ju-cd" id="ju-cd" role="img" aria-label="Counting down to move day, Nov 22.">
+    <div class="ju-cd" id="ju-cd" role="img" aria-label="Counting down to move day.">
       <div class="ju-cd-digits" id="ju-cd-digits" aria-hidden="true" hidden><span class="ju-cd-cell ju-cd-d"><b id="ju-cd-d"></b><i id="ju-cd-dl">days</i></span><span class="ju-cd-cell"><b id="ju-cd-h"></b><i>hrs</i></span><span class="ju-cd-cell"><b id="ju-cd-m"></b><i>min</i></span><span class="ju-cd-cell"><b id="ju-cd-s"></b><i>sec</i></span></div>
-      <p class="ju-cd-label" id="ju-cd-label">Counting down to move day, Nov 22.</p>
-      <p class="ju-cd-sub" id="ju-cd-sub">Dinner is Thursday, November 26, 2026.</p>
+      <p class="ju-cd-label" id="ju-cd-label">Counting down to move day.</p>
+      <p class="ju-cd-sub" id="ju-cd-sub">Dinner is 14 days away.</p>
     </div>
     <a class="ju-full" id="ju-full" href="/calculator?w=14&amp;s=frozen&amp;b=no&amp;d=2026-11-26&amp;t=17:00">See the full day-by-day plan</a>
   </section>
@@ -922,18 +922,18 @@ window.FLEET_CFG = {
 
   /* SPEC-TD-TAPFIX-01: the status sentence's rendering of the SAME
      next-undone step currentCheckedStep() returns for the marker —
-     one source of truth, two renderings. The words are the step row's
-     own caption and date, read from the row as rendered, so the
-     sentence can never name a different step, wording, or date than
-     the row the marker sits on. Brine is named only when it is an
-     applicable (checkable) step, exactly as the marker treats it. */
+     one source of truth. The words are the step row's own caption,
+     read from the row as rendered, so the sentence can never name a
+     different step than the row the marker sits on. The date itself
+     stays on the row only (F1, 2026-11-12: one date, one place), so
+     the sentence carries no second rendering of it. Brine is named
+     only when it is an applicable (checkable) step, exactly as the
+     marker treats it. */
   function nextStepSentence(id) {
     var capEl = id === "buy" ? buyCapEl : id === "thaw" ? thawCapEl : id === "brine" ? brineCapEl : roastCapEl;
-    var dateEl = id === "buy" ? buyDateEl : id === "thaw" ? thawDateEl : id === "brine" ? brineDateEl : roastDateEl;
     var cap = (capEl.textContent || "").trim();
-    var date = (dateEl.textContent || "").trim();
     if (cap) cap = cap.charAt(0).toLowerCase() + cap.slice(1);
-    return "Next step: " + cap + (date ? " " + date : "") + ".";
+    return "Next step: " + cap + ".";
   }
 
   function readDinner() {
@@ -1072,11 +1072,11 @@ window.FLEET_CFG = {
     if (plan.mode === "fridge") {
       var today = juStartOfDay(now).getTime(), buyD = juStartOfDay(plan.buy).getTime(),
           thawD = juStartOfDay(plan.thawStart).getTime(), dinD = juStartOfDay(dinner).getTime();
-      if (today < buyD) { step = "buy"; st = "You are here: before buy day. Buy a frozen turkey by " + fmtLong(plan.buy) + "."; }
+      if (today < buyD) { step = "buy"; st = "You are here: before buy day."; }
       else if (today === buyD) { step = "buy"; st = "You are here: buy day is today."; }
-      else if (today < thawD) { step = "thaw"; st = "You are here: the fridge move is next, on " + fmtShort(plan.thawStart) + "."; }
+      else if (today < thawD) { step = "thaw"; st = "You are here: the fridge move is next."; }
       else if (today === thawD) { step = "thaw"; st = "You are here: move day is today. The bird goes to the fridge."; }
-      else if (today < dinD) { step = state.brine ? "brine" : "roast"; st = "You are here: the bird is thawing. Dinner is " + fmtShort(dinner) + "."; }
+      else if (today < dinD) { step = state.brine ? "brine" : "roast"; st = "You are here: the bird is thawing."; }
       else { step = "roast"; st = "You are here: dinner is today."; }
     } else if (plan.mode === "coldwater") {
       step = "thaw"; st = "You are here: fridge day has passed. Cold water is the way now.";
@@ -1117,15 +1117,15 @@ window.FLEET_CFG = {
     }
     if (plan.mode === "fridge") {
       var moveStart = juStartOfDay(plan.thawStart);
-      if (now.getTime() < moveStart.getTime()) { target = moveStart; tail = "until move day, " + fmtShort(plan.thawStart) + "."; }
-      else if (now.getTime() < plan.ovenIn.getTime()) { target = plan.ovenIn; tail = "until the oven, " + fmtShort(plan.ovenIn) + "."; }
+      if (now.getTime() < moveStart.getTime()) { target = moveStart; tail = "until move day."; }
+      else if (now.getTime() < plan.ovenIn.getTime()) { target = plan.ovenIn; tail = "until the oven."; }
       else { target = dinner; tail = "until dinner."; }
     } else if (plan.mode === "coldwater") {
-      if (now.getTime() < plan.cwStart.getTime()) { target = plan.cwStart; tail = "until cold water starts, " + fmtShort(plan.cwStart) + "."; }
-      else if (now.getTime() < plan.ovenIn.getTime()) { target = plan.ovenIn; tail = "until the oven, " + fmtShort(plan.ovenIn) + "."; }
+      if (now.getTime() < plan.cwStart.getTime()) { target = plan.cwStart; tail = "until cold water starts."; }
+      else if (now.getTime() < plan.ovenIn.getTime()) { target = plan.ovenIn; tail = "until the oven."; }
       else { target = dinner; tail = "until dinner."; }
     } else {
-      if (now.getTime() < plan.effOvenIn.getTime()) { target = plan.effOvenIn; tail = "until the oven, " + fmtShort(plan.effOvenIn) + "."; }
+      if (now.getTime() < plan.effOvenIn.getTime()) { target = plan.effOvenIn; tail = "until the oven."; }
       else { target = dinner; tail = "until dinner."; }
     }
     var ms = target.getTime() - now.getTime();
@@ -1135,7 +1135,7 @@ window.FLEET_CFG = {
     cdDigits.hidden = false;
     cdLabel.textContent = tail;
     var daysAway = Math.round((juStartOfDay(dinner).getTime() - juStartOfDay(now).getTime()) / 86400000);
-    cdSub.textContent = daysAway === 0 ? "Dinner is today, " + fmtLongY(dinner) + "." : "Dinner is " + fmtLongY(dinner) + ", " + daysAway + (daysAway === 1 ? " day" : " days") + " away.";
+    cdSub.textContent = daysAway === 0 ? "Dinner is today." : "Dinner is " + daysAway + (daysAway === 1 ? " day" : " days") + " away.";
     setAria(cdSentence(ms, tail), now);
   }
 
