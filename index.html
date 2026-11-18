@@ -258,6 +258,12 @@ localStorage.setItem("fleet_ft2",JSON.stringify(ft));
   .ju-ex { display: block; font-size: 1.1rem; color: var(--ink); }
   .ju-ex strong { font-size: 1.5rem; line-height: 1.15; color: var(--accent); white-space: nowrap; }
   .ju-note { display: block; color: var(--muted); font-size: 0.95rem; margin-top: 0.35rem; }
+  .rt { margin-top: 0.95rem; border: 1px solid #e7d9bd; background: #fffaf0; border-radius: 10px; padding: 0.8rem 0.9rem; }
+  .rt-q { font-weight: 700; font-size: 1.05rem; margin: 0; }
+  .rt-sub { color: var(--muted); font-size: 0.95rem; margin: 0.3rem 0 0.6rem; }
+  .rt-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .rt-answer { margin: 0.7rem 0 0; font-size: 1rem; line-height: 1.45; }
+  .rt-answer[hidden] { display: none; }
   .ju-inputs { margin-top: 0.95rem; display: flex; flex-direction: column; gap: 0.85rem; }
   .ju-flabel { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.35rem; }
   .ju-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
@@ -597,6 +603,22 @@ window.FLEET_CFG = {
       <span class="ju-chip" id="ju-chip">For Thanksgiving 2026</span>
     </div>
     <p class="ju-hero"><span class="ju-ex" id="ju-hero-main">A 14 lb bird moves <strong>Sunday, November 22</strong>.</span><span class="ju-note" id="ju-hero-note">Your dinner hour does not change this date.</span></p>
+    <!-- 2026-11-17 rescue triage: one question (how much time is left
+         before cooking) and one answer (the single thaw path that
+         still works), computed by the journey script from its own
+         USDA bands. For late arrivals who already missed the fridge
+         date above. -->
+    <div class="rt" id="rt">
+      <p class="rt-q" id="rt-q">How much time do you have?</p>
+      <p class="rt-sub">Turkey still frozen and time is short? Tap how much time you have before you cook. One safe path still works.</p>
+      <div class="rt-chips" role="group" aria-labelledby="rt-q">
+        <button type="button" class="ju-chipbtn rt-chip" data-h="96" aria-pressed="false">A few days</button>
+        <button type="button" class="ju-chipbtn rt-chip" data-h="24" aria-pressed="false">About a day</button>
+        <button type="button" class="ju-chipbtn rt-chip" data-h="5" aria-pressed="false">A few hours</button>
+        <button type="button" class="ju-chipbtn rt-chip" data-h="0" aria-pressed="false">No time at all</button>
+      </div>
+      <p class="rt-answer" id="rt-answer" aria-live="polite" hidden></p>
+    </div>
     <div class="ju-inputs">
       <div>
         <span class="ju-flabel" id="ju-wlabel">Turkey weight</span>
@@ -1011,6 +1033,7 @@ window.FLEET_CFG = {
     if (cmx) cmx.textContent = "";
     applyChecks();
     renderLive();
+    renderTriage();
   }
 
   function cdUnit(n, w) { return n + " " + w + (n === 1 ? "" : "s"); }
@@ -1165,6 +1188,55 @@ window.FLEET_CFG = {
   dateEl.addEventListener("change", renderPlan);
   timeEl.addEventListener("input", renderPlan);
   timeEl.addEventListener("change", renderPlan);
+
+  /* 2026-11-17 rescue triage: one question (how much time is left
+     before cooking), one answer (the single thaw path that still
+     works). Every number comes from this unit's own engine: fridge
+     days from THAW_BANDS via juThawDays, cold water at
+     CW_MIN_PER_LB, cook-from-frozen oven-in from FROZEN_BANDS via
+     juFrozenRoastMinutes. No new timing data. The stated time can
+     only pick a faster path than the calendar allows, never a
+     slower one: it is capped at the real time left before the bird
+     must go in the oven, so a start time is never in the past.
+     Brine is not counted here; the plan above handles it. */
+  var rtHours = null;
+  var rtAnswer = $("rt-answer");
+  function rtNum(x) { return String(Math.round(x * 10) / 10).replace(/\.0$/, ""); }
+  function renderTriage() {
+    if (!rtAnswer) return;
+    if (rtHours == null || !cur.dinner) { rtAnswer.hidden = true; return; }
+    var now = new Date();
+    var dinner = cur.dinner, lb = state.lb;
+    var plan = juCompute(dinner, lb, false, now);
+    rtAnswer.hidden = false;
+    if (plan.mode === "past") {
+      rtAnswer.textContent = "That dinner time has passed. Set a dinner date and time ahead of you in the plan above, then tap your time again.";
+      return;
+    }
+    var fridgeH = juThawDays(lb) * 24;
+    var cwH = lb * CW_MIN_PER_LB / 60;
+    var untilOvenH = (plan.ovenIn.getTime() - now.getTime()) / 3600000;
+    var avail = Math.min(rtHours, untilOvenH);
+    var head = "For your " + lb + " lb bird, cooking " + fmtDay(dinner) + " at " + fmtTime(dinner) + ": ";
+    if (avail >= fridgeH) {
+      rtAnswer.textContent = head + "use the fridge. Put the bird in by " + fmtTime(plan.thawStart) + " on " + fmtDay(plan.thawStart) + ". It needs " + juThawDays(lb) + " days to thaw, and it keeps 1 to 2 days once thawed.";
+    } else if (avail >= cwH) {
+      var cwStart = new Date(plan.ovenIn.getTime() - lb * CW_MIN_PER_LB * 60000);
+      rtAnswer.textContent = head + "use cold water. Start by " + fmtTime(cwStart) + " on " + fmtDay(cwStart) + ". It takes about " + rtNum(cwH) + " hours, 30 minutes per pound. Seal the bird in a leak-proof bag, cover it with cold tap water, and change the water every 30 minutes. Cook it right after it thaws.";
+    } else {
+      var fzOven = new Date(dinner.getTime() - (juFrozenRoastMinutes(lb) + REST_MIN) * 60000);
+      var fzH = Math.round(juFrozenRoastMinutes(lb) / 30) / 2;
+      rtAnswer.textContent = head + "cook it from frozen. No thaw needed. Put the bird in the oven still frozen by " + fmtTime(fzOven) + " on " + fmtDay(fzOven) + ". It needs about " + rtNum(fzH) + " hours at 325 F. The thermometer decides when it is done: 165 F.";
+    }
+  }
+  var rtChips = document.querySelectorAll(".rt-chip");
+  for (var ri = 0; ri < rtChips.length; ri++) {
+    rtChips[ri].addEventListener("click", function () {
+      rtHours = parseFloat(this.getAttribute("data-h"));
+      for (var rk = 0; rk < rtChips.length; rk++) rtChips[rk].setAttribute("aria-pressed", rtChips[rk] === this ? "true" : "false");
+      renderTriage();
+    });
+  }
 
   /* SPEC-TD-CHECKABLE-01: checking a step saves the plan's set in
      place (no re-render) and lets renderLive move the marker. */
