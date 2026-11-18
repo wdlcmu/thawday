@@ -1347,7 +1347,7 @@ function answerAsk(raw, nowOverride){
 
 ;(function(){
   if (!window.FleetYieldGuard) return;
-  var handle = FleetYieldGuard.init({ pill: '#askp-open', panel: '#askp-panel', gap: 28 });
+  var handle = FleetYieldGuard.init({ pill: '#askp-open', panel: '#askp-panel', gap: 28, className: 'fyg-hide', targets: 'h1, h2, h3, p, li' });
   /* gap 28 (not the reference default 20): device emulation renders
      this pill's resting bottom inset at 24px against the CSS 16px, so
      a 20px gap left a 4px yielded sliver inside the fold in the
