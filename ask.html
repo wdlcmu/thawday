@@ -43,6 +43,7 @@
  .chips{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 4px}
  .chip{min-height:48px;padding:10px 16px;margin:0;font-size:1rem;font-weight:600;border:2px solid #d6cfc4;border-radius:16px;background:#fff;color:var(--ink);cursor:pointer;text-align:left}
  .chip:active{transform:scale(.98)}
+ #answer{scroll-margin-top:12px}
  #answer .row{animation:qin .5s ease both}
  #answer .row:nth-child(2){animation-delay:.06s}
  #answer .row:nth-child(3){animation-delay:.12s}
@@ -1049,7 +1050,14 @@ function answerAsk(raw, nowOverride){
 /* ASK PARSER END */
 document.getElementById("ask").addEventListener("click",function(){
   var v=document.getElementById("q").value;
-  if(answerAsk(v)!==null){ try{ history.replaceState(null,"","/ask?q="+encodeURIComponent(v)); }catch(e){} }
+  if(answerAsk(v)!==null){ try{ history.replaceState(null,"","/ask?q="+encodeURIComponent(v)); }catch(e){}
+    /* Offscreen-effect fix (2026-11-23 fleet sweep): the answer renders
+       below the example chips; on a phone only a clipped sliver of its
+       first row was inside the viewport after a tap, with no scroll,
+       focus move, or confirmation at the tap point. Bring the answer
+       to the reader. Reduced motion gets an instant jump. */
+    var ans=document.getElementById("answer");
+    if(ans){ var rm=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches; try{ ans.scrollIntoView({behavior:rm?"auto":"smooth",block:"start"}); }catch(e){ ans.scrollIntoView(); } } }
 });
 document.querySelectorAll(".chip").forEach(function(ch){ ch.addEventListener("click",function(){
   document.getElementById("q").value=ch.getAttribute("data-q"); document.getElementById("ask").click();
